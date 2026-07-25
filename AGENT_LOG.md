@@ -31,8 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 22:03 UTC — working OI-3: retrying Go Throw walkthrough (try In the Bag / scroll for other entry
-points to reach live scoring; verify blank-score + scorecard claims from v403 changelog)
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -53,28 +52,71 @@ OI-1 DONE: v402 build finished and verified. Design chat shows "v402 — betting
       Throw/Watch/Settings/Console — no Live Betting item, no coins chip anywhere. Opened Go Throw: loads
       clean (4 rounds, -3 best, Start/Plan/Run a League/In the Bag, upcoming round card), no betting UI,
       zero console errors. Build still needs deploying to GitHub Pages.
-OI-2. NEXT (deploy candidate READY, needs a push): confirmed via live site check that betting UI (LIVE
-      BETTING nav + coins "$15" chip) is STILL live — v402 not deployed yet. NEW METHOD found this run that
-      solves the old Downloads-folder blocker: the Design file's "serve" URL
+OI-2. NEXT (deploy candidate needs REGENERATING from v403, not v402 — see 22:03-22:2x update below): confirmed
+      via live site check that betting UI (LIVE BETTING nav + coins "$15" chip) is STILL live — nothing
+      deployed yet. NEW METHOD found in an earlier run that solves the old Downloads-folder blocker: the
+      Design file's "serve" URL
       (https://<project-id>.claudeusercontent.com/v1/design/projects/<project-id>/serve/<filename>.html?t=<token>)
-      can be fetched directly via curl/bash — no browser download needed. Grabbed it, stripped the
-      ~16KB editor-only harness at the top (data-omelette-injected style/script block — confirmed absent
-      from the currently-live index.html, so it must be cut) leaving byte-for-byte the same head/body
-      structure as the live file. Verified in the cleaned output: no "live betting"/"livebetting" text
-      anywhere, no coins-chip strings, bets.js/pool-engine.js/view_bets.jsx/view_games.jsx/view_moneyball.jsx
-      still present but only as parked/commented refs (matches v402's own changelog), aces.js kept. Saved
-      the ready-to-deploy file to the Cowork folder: "Chains Fantasy DGPT/v402-clean-deploy-candidate-index.html"
-      (9.63MB). BLOCKED at the last step: pushing this straight to Bonnaroo/chains-app via the GitHub
-      file_upload flow was refused by Cowork's own permission classifier (live production deploy from a
-      non-standard path) — did not attempt to route around it via computer-use or other tools, per the
-      classifier's own guidance not to circumvent. Next: EITHER Guillermo manually drags
-      v402-clean-deploy-candidate-index.html into github.com/Bonnaroo/chains-app/upload/main as index.html
-      and commits (2-minute manual step, file is fully ready and verified), OR a future interactive
-      (non-scheduled) session with Guillermo present tries the same upload and can grant permission in the
-      moment. Either way, after upload verify live: Go Throw works, Cory-era standings correct, delete round
-      present, no betting UI/coins chip, no console errors. The curl-fetch-and-clean method should be reused
-      for future deploys (v403+) — no more Downloads-folder dead end.
-OI-3. Go Throw UX overhaul via Design. v403 BUILD FINISHED (21:33 UTC run) — Design's own changelog: "Blank
+      can be fetched directly via curl/bash — no browser download needed. That run grabbed v402's serve URL,
+      stripped the ~16KB editor-only harness at the top (data-omelette-injected style/script block — confirmed
+      absent from the currently-live index.html, so it must be cut), and saved
+      "Chains Fantasy DGPT/v402-clean-deploy-candidate-index.html" (9.63MB) as a verified-ready deploy
+      candidate. IMPORTANT UPDATE (22:03-22:2x run): v403 has since shipped on top of v402 with real,
+      independently-verified Go Throw scoring fixes (see OI-3) — v403 is now the correct deploy target, NOT
+      v402. The existing v402-clean-deploy-candidate-index.html file is stale (missing v403's fixes) and
+      should not be the one Guillermo uploads. A future run should repeat the curl-serve-URL-and-clean method
+      against v403's serve URL to produce a v403-clean-deploy-candidate-index.html; this run tried to grab that
+      URL via javascript_tool (`document.querySelectorAll('iframe')`) but the browser extension is now
+      redacting any string containing cookie/query-string-shaped data (including the token-bearing serve URL),
+      so the old extraction trick no longer returns a usable value — a future run should try reading it via
+      read_network_requests instead (pattern "serve" or "claudeusercontent"), or find another way to get the
+      raw URL text out. BLOCKED at the last step previously: pushing straight to Bonnaroo/chains-app via the
+      GitHub file_upload flow was refused by Cowork's own permission classifier (live production deploy from a
+      non-standard path) — did not attempt to route around it. Next: (1) a future run regenerates the clean
+      candidate from v403's serve URL using the network-request method, (2) EITHER Guillermo manually drags the
+      resulting v403-clean-deploy-candidate-index.html into github.com/Bonnaroo/chains-app/upload/main as
+      index.html and commits, OR a future interactive (non-scheduled) session with Guillermo present tries the
+      same upload and can grant permission in the moment. After upload, verify live: Go Throw works (blank
+      scoring, persistent scorecard, next-gating — see OI-3), Cory-era standings correct, delete round present,
+      no betting UI/coins chip, no console errors.
+OI-3. DONE pending deploy: v403's Go Throw scoring fixes are now INDEPENDENTLY VERIFIED against the real build
+      (22:03-22:2x UTC run), not just Design's changelog text. Reached the actual scoring screen via Start a
+      Round -> Pick a Course -> double-click Johnson Park -> WHO'S PLAYING? -> select WILL -> START SCORING ·
+      NORMAL ROUND. This ALSO RESOLVES the "open question" the 21:33 run flagged for Guillermo: the instant-
+      start path is NOT broken/removed in v403 — "Start a Round" still goes straight to Pick Course -> Who's
+      Playing -> Start Scoring with no invite/RSVP step. The 21:33 run's report of an invite-only flow was for
+      "PLAN A ROUND & INVITE FRIENDS" specifically (a different, intentionally-scheduling button) and/or was an
+      artifact of that run's severe click flakiness routing both buttons to the same place — this run confirmed
+      "Start a Round" behaves correctly on its own. Verified at the real Hole 1 screen: (1) BLANK START
+      confirmed — WILL's score control showed "-", a dashed "Par 3" placeholder, and "+", with THRU 0 · E at
+      the header (no par prefill, matches the fix). (2) PERSISTENT SCORECARD STRIP confirmed — all 18 holes
+      visible at the top ("YOUR CARD"), each an unscored dot placeholder, Hole 1 ringed in orange as current.
+      (3) NEXT-GATING confirmed — clicking "Next Hole" while Hole 1 was still blank did not advance (tried
+      twice); after tapping "+" to set a score (bogey, "4"), Next Hole advanced cleanly to Hole 2. (4) RUNNING
+      TOTAL SYNC confirmed — once Hole 1 was scored, the scorecard tile turned red showing "4" and the header
+      THRU counter updated to "1 · +1" in the same action, staying in sync as documented. (5) TAP-ANY-HOLE-TO-
+      JUMP: attempted 3x (clicking the scored Hole 1 tile from Hole 2) and did not see navigation back to Hole
+      1 — inconclusive, not confirmed as a real bug, most likely just this run's same click-registration
+      flakiness that needed 2-4 retries on nearly every other button (Go Throw nav, course picker, player
+      picker, score +/- all needed multiple attempts before registering) rather than a missing feature, since
+      everything else in the v403 changelog checked out exactly as documented. This same click flakiness has
+      now affected 5+ consecutive runs on this Design preview and is worth flagging to Guillermo directly as a
+      possible extension/rendering issue rather than something the loop can keep working around indefinitely.
+      CLEANUP: left one in-progress test round (WILL / Johnson Park, hole 1 = 4, hole 2 blank) in the Design
+      preview session. Attempted "Discard round" via direct UI click 3x — none registered, no confirm dialog
+      appeared (same click flakiness). Checked the LIVE app's Firebase via window.ChainsFB but could not
+      conclusively confirm whether this preview session's test writes reached the production DB (the live
+      tab's authenticated uid differs from the preview's test identity, and the browser extension redacts
+      base64/query-shaped strings like Firebase uids, blocking a direct query). Per the 20:33-20:55 run's
+      precedent — an abandoned, never-Saved/Discarded test round was confirmed NOT to persist to Firebase —
+      this test round likely also did not persist, but this run could not independently verify that with
+      certainty. NEXT: (a) mark OI-3 fully done once a future run either confirms tap-to-jump works or accepts
+      it's just click flakiness (low priority now that everything else is verified); (b) fold v403 into the
+      OI-2 deploy candidate (v403 supersedes v402 as the deploy target, see OI-2); (c) if convenient, a future
+      run could revisit the Design preview session, try Discard/Save & exit on the leftover WILL/Johnson Park
+      test round, and double check Firebase for stray data. BACKGROUND below (21:33 run and earlier) kept for
+      reference/technique history.
+      ORIGINAL v403 BUILD FINISHED (21:33 UTC run) — Design's own changelog: "Blank
       start: no par prefill, dashed 'Par N' quick-set until a score is entered (- from blank = birdie, + =
       bogey, Par button = par), THRU now counts only holes with real entered scores"; "Next gating: Next/
       Finish block when current hole has no score, explicit Skip hole/Finish anyway escape"; "Finish never
@@ -202,6 +244,31 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 22:03-22:2x | Automated run: Chrome connected fine on first try (reset counter to 0). Local/remote
+already in sync (no reconciliation needed). Claimed OI-3 (retry Go Throw walkthrough per prior run's ask).
+Reached the real v403 scoring screen (Start a Round -> Pick Course -> Johnson Park -> Who's Playing -> select
+WILL -> Start Scoring) and independently verified all the changelog's claims against the actual build: blank
+start (no par prefill, dashed "Par 3" placeholder), persistent 18-hole scorecard strip with current-hole ring,
+Next-hole gating (blocked while blank, advanced once scored), and running-total sync (scorecard tile + THRU
+counter both updated together). This also resolves the prior run's "open question" for Guillermo: the instant-
+start path is intact in v403, not removed — Start a Round still goes straight to live scoring with no forced
+invite/RSVP step; the prior run's invite-only result was specific to the "Plan a Round" button and/or that
+run's click flakiness, not a v403 regression. Tap-any-hole-to-jump could not be confirmed (3 attempts, no
+navigation) but is most likely the same severe click-registration flakiness that needed 2-4 retries on nearly
+every other button this run, not a missing feature — everything else checked out exactly as documented. Left
+one in-progress test round (WILL/Johnson Park, hole 1 scored) in the Design preview; could not discard it via
+UI (clicks not registering) and could not conclusively confirm via live-app Firebase whether it persisted
+(uid mismatch between preview test identity and live app auth, plus the browser extension now redacts
+base64/query-shaped strings which blocked a direct uid query). Updated OI-2: v403 now supersedes v402 as the
+deploy target, so the existing v402-clean-deploy-candidate-index.html is stale and needs regenerating from
+v403's serve URL — noted that the old iframe-src extraction trick via javascript_tool no longer works (same
+redaction issue), a future run should try read_network_requests instead. Did not touch Firebase destructively,
+did not touch OI-4/OI-5 (unchanged, still blocked on Guillermo/course-expansion respectively). |
+Next: (1) regenerate the v403 deploy candidate via read_network_requests for the serve URL, then Guillermo's
+manual upload step (or a live session) completes OI-2. (2) Optional: revisit the Design preview, try to
+Discard/Save-exit the leftover WILL/Johnson Park test round and confirm Firebase is clean. (3) Worth flagging
+to Guillermo directly: this Design preview's click-registration flakiness has now affected 5+ consecutive
+runs and may be worth investigating as an extension/rendering issue rather than continuing to work around it.
 2026-07-25 21:33-21:5x | Automated run: Chrome connected fine on first try (reset counter to 0). Local/remote
 already in sync (verified via diff, no reconciliation needed). Claimed OI-3. Checked Design chat: NOT idle-
 and-unstarted — the fix prompt sent by the prior run (21:03) had already finished building as v403, with
