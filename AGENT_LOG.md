@@ -31,8 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 20:03 UTC — working OI-3: Go Throw scoring walkthrough in a fresh Design tab (prior runs hit
-persistent preview-iframe instability; trying fresh tab per their note)
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -91,6 +90,23 @@ OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified — OI-
       after an explicit resize_window call, suggesting the outer window itself is being resized/reflowed by
       something outside our control. Collapsing the left chat sidebar (icon top-left) helped a bit. If this
       recurs, try a fresh tab instead of reusing one that's been open a long time.
+      UPDATE 20:03 run: tried the fresh-tab suggestion above — did NOT fix it. Opened index.html in a brand
+      new tab (never previously used this session), preview loaded fine initially (Dashboard rendered clean,
+      no betting UI, correct standings). Clicked GO THROW in the left nav — instead landed on WATCH (nav item
+      one row below in this layout). Re-clicked GO THROW's actual coordinates 3 more times (verified via
+      screenshot each time) and the app never left the WATCH/Highlights screen — nav clicks inside the
+      preview are simply not registering. Also hit a `Page.captureScreenshot` timeout ("renderer may be
+      frozen or unresponsive") mid-session, same symptom prior runs saw. read_page on the outer tab shows
+      only the Design chrome (chat box, toolbar buttons) — the app nav itself lives inside a cross-origin
+      iframe read_page can't see into, so there's no DOM-level fallback for clicking nav items reliably.
+      Since a fresh, never-before-used tab reproduced the exact same failure, this now looks like a real
+      instability in the Design preview rendering/click-handling itself (possibly load on the
+      claudeusercontent.com preview host, or an extension-side issue), not a stale-tab or leftover-state
+      problem. RECOMMEND flagging this to Guillermo directly as a possible product bug if it keeps recurring
+      — four consecutive automated runs now (19:00-ish through this one) have been unable to reliably
+      interact with the Go Throw scoring flow in preview because of this, so OI-3's actual UX questions
+      (blank-until-entered scoring, tap-to-edit, running totals) remain unverified against v402 through no
+      fault of the build itself.
 OI-4. Marketing site: create repo + GitHub Pages and deploy the marketing site source. SOURCE FILE CONFIRMED
       this run (was "likely resolved," now treating as settled): opened "Chains Marketing Site" in the Design
       System and pulled the project's own chat-history summary text (via get_page_text, which reads the
@@ -120,6 +136,22 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 20:03-20:15 | Automated run: Chrome connected fine (reset counter, confirmed 0). Local was ahead of
+remote by 2 un-pushed run entries (19:30-19:55, 19:34-19:45) — pushed local as authoritative to reconcile
+(commit 0b7d085) before claiming. Claimed OI-3, opened index.html in a BRAND NEW tab (per prior runs'
+suggestion to rule out stale-tab causes) — preview loaded clean initially (Dashboard, no betting UI, correct
+standings). Clicked GO THROW nav item; landed on WATCH instead, then re-clicked GO THROW's exact coordinates
+3 more times and could not navigate away from WATCH — nav clicks in the preview are not registering. Also hit
+a Page.captureScreenshot timeout mid-session ("renderer may be frozen"), matching prior runs' symptom. Since a
+never-before-used tab reproduced the identical failure, this rules out "reuse a stale tab" as the cause —
+recorded as a likely real Design-preview instability under OI-3, not an agent workaround problem. Did not
+reach live scoring; OI-3's actual scoring-UX questions remain unverified. Did not touch OI-2/OI-4 (both
+blocked on Guillermo), did not touch Firebase. |
+Next: OI-3 now needs either (a) Guillermo trying the Go Throw flow himself in a live session to confirm
+whether this is reproducible outside the automated loop too, or (b) a future run trying yet another approach
+(e.g. navigating directly to a deep-link/hash route instead of clicking nav, if one exists) before spending
+more cycles on click-retries. OI-2 (Guillermo's manual upload) and OI-4 (Guillermo's go-ahead + Formspree ID)
+unchanged and still the main blockers on this project.
 2026-07-25 19:34-19:45 | Automated run: Chrome connected fine (reset counter to 0). Local was ahead of remote
 by one un-pushed run entry (19:30-19:55) — pushed local as authoritative to reconcile before claiming.
 Claimed and worked OI-4: confirmed via curl that Bonnaroo/chains-app is still at commit 3d2a5d1 (v402 not
