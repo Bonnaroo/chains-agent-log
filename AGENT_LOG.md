@@ -31,7 +31,9 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-(idle)
+2026-07-25 19:30 UTC — working: re-verified OI-2 still blocked (live site still shows betting UI, v402 not
+deployed), testing Go Throw in v402 preview for OI-3, checking a "Chains Marketing Site" file found in Design
+for OI-4.
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
