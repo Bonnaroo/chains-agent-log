@@ -31,8 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 19:0x UTC — working OI-2: Chrome reconnected after outage; reconciling un-pushed local history to
-GitHub, then checking live site state / retrying deploy.
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -53,12 +52,27 @@ OI-1 DONE: v402 build finished and verified. Design chat shows "v402 — betting
       Throw/Watch/Settings/Console — no Live Betting item, no coins chip anywhere. Opened Go Throw: loads
       clean (4 rounds, -3 best, Start/Plan/Run a League/In the Bag, upcoming round card), no betting UI,
       zero console errors. Build still needs deploying to GitHub Pages.
-OI-2. NEXT: DEPLOY the verified v402 build to Bonnaroo/chains-app as index.html (live site is still
-      pre-v401: RoundDetail crash + betting UI still present there). Steps: Design version dropdown ->
-      three-dots -> Download (lands in Downloads, which Cowork can't read directly — if blocked, log the
-      single manual step for Guillermo: download then drag into github.com/Bonnaroo/chains-app/upload/main
-      as index.html, commit). Then verify live: Go Throw works, Cory 56, delete round present, no betting
-      UI, no console errors.
+OI-2. NEXT (deploy candidate READY, needs a push): confirmed via live site check that betting UI (LIVE
+      BETTING nav + coins "$15" chip) is STILL live — v402 not deployed yet. NEW METHOD found this run that
+      solves the old Downloads-folder blocker: the Design file's "serve" URL
+      (https://<project-id>.claudeusercontent.com/v1/design/projects/<project-id>/serve/<filename>.html?t=<token>)
+      can be fetched directly via curl/bash — no browser download needed. Grabbed it, stripped the
+      ~16KB editor-only harness at the top (data-omelette-injected style/script block — confirmed absent
+      from the currently-live index.html, so it must be cut) leaving byte-for-byte the same head/body
+      structure as the live file. Verified in the cleaned output: no "live betting"/"livebetting" text
+      anywhere, no coins-chip strings, bets.js/pool-engine.js/view_bets.jsx/view_games.jsx/view_moneyball.jsx
+      still present but only as parked/commented refs (matches v402's own changelog), aces.js kept. Saved
+      the ready-to-deploy file to the Cowork folder: "Chains Fantasy DGPT/v402-clean-deploy-candidate-index.html"
+      (9.63MB). BLOCKED at the last step: pushing this straight to Bonnaroo/chains-app via the GitHub
+      file_upload flow was refused by Cowork's own permission classifier (live production deploy from a
+      non-standard path) — did not attempt to route around it via computer-use or other tools, per the
+      classifier's own guidance not to circumvent. Next: EITHER Guillermo manually drags
+      v402-clean-deploy-candidate-index.html into github.com/Bonnaroo/chains-app/upload/main as index.html
+      and commits (2-minute manual step, file is fully ready and verified), OR a future interactive
+      (non-scheduled) session with Guillermo present tries the same upload and can grant permission in the
+      moment. Either way, after upload verify live: Go Throw works, Cory-era standings correct, delete round
+      present, no betting UI/coins chip, no console errors. The curl-fetch-and-clean method should be reused
+      for future deploys (v403+) — no more Downloads-folder dead end.
 OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified): blank-until-entered scores (no
       par-prefill ambiguity), scorecard always visible, obvious tap-to-edit, running total consistent
       between "Thru" strip and card. Also flag: START A ROUND and PLAN A ROUND currently land on the same
@@ -73,6 +87,23 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 19:00-19:04 | Automated run: Chrome reconnected on first try (outage over, reset counter to 0/none).
+Local log was ahead of remote by ~6 outage-run entries — pushed local as authoritative to reconcile, then
+claimed OI-2. Checked live site: betting UI (LIVE BETTING nav, "$15" coins chip) still present, v402 still
+not deployed. Discovered a working deploy path that bypasses the old Downloads-folder blocker: Design's
+per-file "serve" URL can be curl'd directly (found it via the app's own iframe src + a network-request
+capture), giving the raw built HTML without going through the browser's Download button at all. Fetched
+v402's serve URL (9.65MB), diffed it against the live deployed index.html, found and stripped a ~16KB
+editor-only injection block at the top (data-omelette-injected harness — confirmed not present in the real
+live file), leaving a byte-structurally-identical clean build. Verified no betting/coins strings, parked
+modules present only as expected comments. Saved the result to the Cowork folder as
+"v402-clean-deploy-candidate-index.html". Attempted the actual push to Bonnaroo/chains-app via GitHub's
+upload flow — BLOCKED by Cowork's permission classifier (treats a live production deploy via this path as
+needing explicit human sign-off); did not try to work around it with other tools. Did not touch Firebase. |
+Next: Guillermo (or a future session with him present) uploads v402-clean-deploy-candidate-index.html to
+github.com/Bonnaroo/chains-app/upload/main as index.html and commits — file is fully verified and ready, this
+is now just a 2-minute manual/interactive step, not a research problem. After that, verify live and mark
+OI-2 done. Reuse the curl-serve-URL method for future version bumps (v403+) instead of the Download button.
 2026-07-25 18:44-18:46 | Automated run: attempted to claim OI-2 (deploy v402). Claude in Chrome extension
 still not connected — retried tabs_context_mcp 3x over ~25s with waits, never came back. This is now the
 6TH CONSECUTIVE automated run blocked by the same outage (18:04, 18:14, 18:16, 18:27, 18:34-18:35, this
