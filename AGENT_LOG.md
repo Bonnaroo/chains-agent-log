@@ -28,24 +28,33 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-(idle)
+2026-07-25 15:26 UTC — working OI-1: verify Design's RoundDetail fix (v401 regression) in Design preview.
 
 ## OPEN ITEMS (top = next)
-OI-1. VERIFY Design's RoundDetail fix (v401 regression: "Element type is invalid... Check the render method
-      of RoundDetail") — open Go Throw in the Design preview, tap a saved round, read console.
-OI-2. SEND Design (when idle): strip all betting/money UI — Live Betting nav + views, pools, bet-a-buddy,
-      moneyball, coins chip; keep modules dormant; do not touch Go Throw/picks/standings/stats/friends/bag.
-OI-3. DEPLOY next clean build to Bonnaroo/chains-app as index.html (live site is still pre-v401).
-OI-4. Go Throw UX overhaul via Design: blank-until-entered scores (no par-prefill ambiguity), scorecard always
-      visible, obvious tap-to-edit, running total consistent between "Thru" strip and card.
-OI-5. Delete-round button in the UI (users currently cannot remove a round).
-OI-6. Add playRounds to the daily backup workflow in chains-dgpt-data (currently only /league is backed up).
-OI-7. Marketing site: create repo + GitHub Pages and deploy "Chains Marketing Site.html" (waitlist Formspree
+OI-1. VERIFY betting-strip build (prompt was sent to Design ~15:20 UTC; build was in progress): when done,
+      confirm LIVE BETTING nav + coins chip + all pools/bet-a-buddy/moneyball UI are gone AND Go Throw /
+      picks / standings / stats / friends / bag are untouched (test Go Throw fully, read console).
+OI-2. DEPLOY the verified clean build to Bonnaroo/chains-app as index.html (live site is still pre-v401:
+      RoundDetail crash + betting UI still present there). Then verify live: Go Throw works, Cory 56, delete
+      round present, no betting UI.
+OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified): blank-until-entered scores (no
+      par-prefill ambiguity), scorecard always visible, obvious tap-to-edit, running total consistent
+      between "Thru" strip and card. Also flag: START A ROUND and PLAN A ROUND currently land on the same
+      course-picker/invite flow (defaults to next day) — no instant "score right now" path; propose adding
+      instant-start (ask Guillermo if unsure).
+OI-4. Add playRounds to the daily backup workflow in chains-dgpt-data (currently only /league is backed up).
+OI-5. Marketing site: create repo + GitHub Pages and deploy "Chains Marketing Site.html" (waitlist Formspree
       ID still needs Guillermo — note it, don't block).
-OI-8. After deploy: verify live standings header shows Cory 56 and Go Throw works on the live site.
+OI-6. After OI-2: per-state course loader prompt to Design (courses-index.json; keep MI courses.json as-is)
+      once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 15:2x | Automated run (punch-list era): VERIFIED v401 RoundDetail fix in preview — Go Throw opens
+clean, saved round opens full detail (leaderboard + scorecard, gaps for unplayed holes), zero console
+errors; standings header correctly 56 for Cory. Found Delete Round button ALREADY present in v401
+RoundDetail. Tested Plan-a-Round end-to-end (works; "Invite Sent"); noted no instant-start scoring entry.
+SENT betting/money strip prompt to Design; build in progress. | Next: OI-1.
 2026-07-25 15:00 | Manual session: diagnosed+fixed v400 Go Throw white-screen (hs.forEach crash; Firebase
 returns sparse holeScores as objects) via Design -> v401 (toArr/fixRound + error boundary, verified in
 preview). Found v401 RoundDetail regression; fix requested from Design (was building). Deleted 3 stale test
-rounds from Firebase (backed up to _trash). Created this repo as persistent agent memory. | Next: OI-1.
+rounds from Firebase (backed up to _trash). Created this repo as persistent agent memory. | Next: verify.
