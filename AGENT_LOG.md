@@ -31,7 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 21:33 UTC — working OI-3: verifying v403 (Go Throw scoring rework - blank start, persistent scorecard) in the live preview
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -73,16 +73,56 @@ OI-2. NEXT (deploy candidate READY, needs a push): confirmed via live site check
       moment. Either way, after upload verify live: Go Throw works, Cory-era standings correct, delete round
       present, no betting UI/coins chip, no console errors. The curl-fetch-and-clean method should be reused
       for future deploys (v403+) — no more Downloads-folder dead end.
-OI-3. Go Throw UX overhaul via Design. FIX PROMPT SENT this run (21:03 UTC): asked Design to (a) make each
-      hole's score control start BLANK/unset (no par prefill) and only count a score once the player taps
-      +/-, blocking/warning on Next if unset; (b) add a persistent always-visible scorecard/holes-strip (all
-      18 holes, tap any to jump/edit) with running total synced to the THRU counter. Scope explicitly limited
-      to Go Throw's scoring screen only — told Design not to touch Dashboard/Picks/Standings/Bag/betting work.
-      Design immediately started building (seen: "Searching, Reading" then "Reading view_play.jsx"), NOT yet
-      verified/finished — a future run should check Design chat state first; if idle, walk the scoring flow
-      again (Start a Round -> pick course -> Who's Playing -> Start Scoring) via the direct-serve-URL +
-      javascript_tool(element.click()) method to confirm blank-until-entered scoring and the new scorecard
-      both work, then check for regressions elsewhere before calling this done.
+OI-3. Go Throw UX overhaul via Design. v403 BUILD FINISHED (21:33 UTC run) — Design's own changelog: "Blank
+      start: no par prefill, dashed 'Par N' quick-set until a score is entered (- from blank = birdie, + =
+      bogey, Par button = par), THRU now counts only holes with real entered scores"; "Next gating: Next/
+      Finish block when current hole has no score, explicit Skip hole/Finish anyway escape"; "Finish never
+      invents scores: unentered holes save as null (previously silently filled with par)"; "Persistent
+      scorecard strip: all 18 holes always visible at top, current hole ringed, tap any hole to jump/edit,
+      header shows running Thru X/to-par in sync with THRU counter". Chat also says "Dashboard, Picks,
+      Standings, Bag, and the v402 betting removal untouched" and "Out for verification now — deploy to
+      Pages once it clears" — i.e. Design itself is NOT claiming to have independently verified this, it's
+      asking for a human/agent check, same as OI-3's outstanding ask.
+      COULD NOT INDEPENDENTLY VERIFY THE ACTUAL SCORING SCREEN this run (21:33-21:5x UTC): opened the
+      standalone Present-mode preview (Design page -> Present -> "In this tab", confirmed working via Dashboard
+      loading correctly: standings still Cory 56/1...Shanna 37/6, no Live Betting nav item, no coins chip).
+      From there hit SEVERE click-registration flakiness on this specific run, worse than usual — GO THROW
+      sidebar nav intermittently misrouted to WATCH on repeated identical-coordinate clicks (worked once via
+      clicking directly on the row's icon glyph, failed ~4 other times at the same/similar coordinates).
+      Once on Go Throw home (6 rounds, -3 best, no betting UI, matches OI-1's earlier count), clicking either
+      "START A ROUND" or "PLAN A ROUND & INVITE FRIENDS" led to the SAME course-picker screen (header always
+      read "PLAN A ROUND / Where are we playing?" for both buttons) -> selecting a course (tried Flip City,
+      then Mott Park DGC) led to the SAME "invite your friends" screen (date/tee-time/forecast + friend
+      picker, only self "WILL" checked by default) -> clicking "SEND INVITE TO 1 PLAYER" created a scheduled
+      *future* round entry ("Invite Sent", Mott Park DGC, tomorrow 10am) rather than starting live scoring —
+      no "Who's Playing -> Start Scoring" instant-start path was found this run, unlike what pre-v403 runs
+      documented (Start a Round -> Pick Course -> Who's Playing -> Start Scoring, reached successfully in the
+      20:33-20:55 and 21:03-21:08 runs). Also could not open either of the two existing "LIVE NOW" in-progress
+      round cards on Go Throw home (WILL & CORY thru 2, WILL solo thru 2 at Johnson Park) — clicks there did
+      not navigate either; both cards are labeled "WATCH ->" so they may intentionally be spectator-only links,
+      not the score-editor. Left one stray test artifact: a scheduled "Mott Park DGC, Sun Jul 26 10:00 AM"
+      invite from test-identity WILL (created while probing the flow) — not cleaned up given the click
+      flakiness; low-risk (it's a scheduled-round record, not a completed/played round, and matches the kind
+      of harmless test data prior runs have left before), but flagging so nobody's confused if it surfaces.
+      OPEN QUESTION worth flagging to Guillermo directly (not just logging): is there still a way to jump
+      straight into live scoring from Go Throw without going through the invite/RSVP screen (e.g. for someone
+      scoring solo right now, not scheduling a future round with friends)? If v403 removed that instant-start
+      path as a side effect of the scorecard rework, that would itself be a regression worth a fix prompt, but
+      it also could be this run simply never found the right button/flow due to the click issues — genuinely
+      unclear from this session alone.
+      NEXT: a future run should (a) retry the Go Throw walkthrough, ideally trying "IN THE BAG" or scrolling
+      further down Go Throw home for any other entry point besides the two buttons already tried, (b) if still
+      no instant-start path turns up, ask Guillermo whether this is expected in v403 or should be a fix
+      request, (c) once ANY live scoring screen is reached, check the actual OI-3 asks: blank/unset score
+      controls (not par-prefilled), the persistent 18-hole scorecard with tap-to-jump, and correct running
+      totals — none of that has been visually confirmed against the real build yet, only against Design's own
+      changelog text. BACKGROUND (prior run, 21:03-21:08) — sent the fix prompt that produced v403: asked
+      Design to (a) make each hole's score control start BLANK/unset (no par prefill) and only count a score
+      once the player taps +/-, blocking/warning on Next if unset; (b) add a persistent always-visible
+      scorecard/holes-strip (all 18 holes, tap any to jump/edit) with running total synced to the THRU counter.
+      Scope explicitly limited to Go Throw's scoring screen only — told Design not to touch Dashboard/Picks/
+      Standings/Bag/betting work. Design immediately started building (seen: "Searching, Reading" then "Reading
+      view_play.jsx"); it has since finished as v403 per above.
       BACKGROUND (prior run, 20:33-20:5x) — BREAKTHROUGH:
       found a reliable way around the preview-instability problem that blocked the last 4+ runs — instead of
       clicking nav inside the nested Design chat iframe (unreliable: screenshots timeout, clicks don't
@@ -161,6 +201,24 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 21:33-21:5x | Automated run: Chrome connected fine on first try (reset counter to 0). Local/remote
+already in sync (verified via diff, no reconciliation needed). Claimed OI-3. Checked Design chat: NOT idle-
+and-unstarted — the fix prompt sent by the prior run (21:03) had already finished building as v403, with
+Design's own changelog claiming all 4 asks were done (blank start/no par prefill, Next-gating warning on
+unset holes, finish-never-invents-scores, persistent 18-hole scorecard strip). Opened the standalone Present-
+mode preview to independently verify (not just trust the changelog): Dashboard/standings/nav all still correct
+(Cory 56/1...Shanna 37/6, no betting UI). Hit unusually bad click-registration flakiness trying to reach the
+actual scoring screen — GO THROW nav intermittently misrouted to WATCH, and once on Go Throw home, BOTH
+"Start a Round" and "Plan a Round & Invite Friends" led to the identical course-picker + invite/RSVP flow
+(no instant-start "Who's Playing -> Start Scoring" path found), ending in a scheduled Mott Park DGC test
+invite rather than live scoring. Could not open either in-progress "LIVE NOW" round card either (both labeled
+"WATCH ->", may be spectator-only by design). Did NOT reach the real scoring screen, so blank-score/scorecard
+claims remain UNVERIFIED against the actual build, only against Design's own text. Did not touch Firebase,
+did not touch OI-2/OI-4 (still blocked on Guillermo). Left one harmless stray test invite (see OI-3 detail). |
+Next: retry the Go Throw walkthrough (try "In the Bag" or scroll for other entry points); if still no instant-
+start path, ask Guillermo directly whether v403 removed it or whether this run just didn't find the right
+button. Once any scoring screen is reached, do the actual OI-3 verification (blank controls, scorecard,
+running totals, no regressions). OI-2/OI-4 unchanged, still on Guillermo.
 2026-07-25 21:03-21:08 | Automated run: Chrome connected fine (reset counter to 0). Local was ahead of remote
 by 2 un-pushed run entries (20:03-20:15, 20:33-20:55) — pushed local as authoritative to reconcile (commit
 036554e) before claiming. Claimed and worked OI-3: with both real bugs from the prior run concretely
