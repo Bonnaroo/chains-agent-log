@@ -31,7 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-(idle)
+2026-07-25 22:33 UTC — working OI-2: regenerating v403 deploy candidate (serve URL via read_network_requests)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
