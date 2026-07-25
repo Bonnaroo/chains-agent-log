@@ -28,16 +28,15 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 15:35 UTC — working OI-4: adding rounds backup (chains-app-f38f8 users/*/rounds) to
-chains-dgpt-data daily backup workflow. OI-1 skipped this run (Design still paused on usage limit,
-not clicking Resume).
+(idle)
 
 ## OPEN ITEMS (top = next)
 OI-1. VERIFY betting-strip build (prompt sent to Design ~15:20 UTC): as of 15:29 UTC the Design chat is
       PAUSED on Guillermo's usage limit (reset ~1:40 PM) mid-build on this prompt — do not click Resume
       (that spends his quota; leave it for him or a later reset). Once it clears/finishes, confirm LIVE
       BETTING nav + coins chip + all pools/bet-a-buddy/moneyball UI are gone AND Go Throw / picks /
-      standings / stats / friends / bag are untouched (test Go Throw fully, read console).
+      standings / stats / friends / bag are untouched (test Go Throw fully, read console). Still paused
+      as of 15:38 UTC — do not click Resume.
 OI-2. DEPLOY the verified clean build to Bonnaroo/chains-app as index.html (live site is still pre-v401:
       RoundDetail crash + betting UI still present there). Then verify live: Go Throw works, Cory 56, delete
       round present, no betting UI.
@@ -46,13 +45,31 @@ OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified): blank
       between "Thru" strip and card. Also flag: START A ROUND and PLAN A ROUND currently land on the same
       course-picker/invite flow (defaults to next day) — no instant "score right now" path; propose adding
       instant-start (ask Guillermo if unsure).
-OI-4. Add playRounds to the daily backup workflow in chains-dgpt-data (currently only /league is backed up).
-OI-5. Marketing site: create repo + GitHub Pages and deploy "Chains Marketing Site.html" (waitlist Formspree
-      ID still needs Guillermo — note it, don't block).
-OI-6. After OI-2: per-state course loader prompt to Design (courses-index.json; keep MI courses.json as-is)
+OI-4. Marketing site: create repo + GitHub Pages and deploy "Chains Marketing Site.html" (waitlist Formspree
+      ID still needs Guillermo — note it, don't block). NOTE: no file with this exact name exists in the
+      Cowork folder as of this run; closest candidates are chains-website.html and
+      chains-website-fluent2.html in the Chains Fantasy DGPT folder — confirm with Guillermo which is the
+      intended marketing-site source before building/deploying.
+OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; keep MI courses.json as-is)
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 15:35-15:40 | Automated run: OI-1 still blocked (Design chat still shows "Paused — you've hit
+your limit"; did not click Resume). Picked a non-conflicting item: OI-4 (rounds backup), now renumbered
+OI-4->OI-... wait see below. WORKED old-OI-4: chains-app Go Throw rounds are NOT under a top-level
+"playRounds" node — via window.ChainsFB in the live app (anon-auth session) confirmed the real path is
+users/{uid}/rounds/{roundId} in the chains-app-f38f8 Realtime DB (verified against real user "will": 3
+rounds, ids like "pr-..."). Wrote backup_rounds.py (signs in anonymously via Identity Toolkit REST using
+the app's public web apiKey, lists all uids, pulls each user's rounds, writes
+data/backups/rounds-YYYY-MM-DD.json + rounds-latest.json, same pattern as backup_league.py), added it as a
+second step in chains-dgpt-data's backup.yml (still runs daily 06:00 UTC + workflow_dispatch), uploaded
+both via the GitHub web upload flow (never touched the editor). Verified: ran the workflow manually (Run
+#39, Success, 15s) and confirmed data/backups/rounds-latest.json landed in the repo with real data (will:
+3 rounds). Did not touch Firebase data itself (read-only), did not touch the chains-fantasy /league node.
+Also checked OI-5 (now OI-4): no file literally named "Chains Marketing Site.html" exists in the Cowork
+folder; flagged the two likely candidate files and left it for Guillermo/a future run to confirm before
+building. Old OI-4 (rounds backup) is now DONE and removed from the list. | Next: OI-1 (wait for Design
+usage limit to clear; do not click Resume), or clarify the marketing-site source file with Guillermo.
 2026-07-25 15:29 | Automated run: independently re-confirmed the v401 RoundDetail fix in the Design preview
 (opened Go Throw, tapped a saved Tadpole Beach round — full leaderboard + weather strip + 18-hole scorecard
 rendered, no console errors) and confirmed a DELETE ROUND button is already present on RoundDetail (covers
