@@ -28,12 +28,14 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 15:26 UTC — working OI-1: verify Design's RoundDetail fix (v401 regression) in Design preview.
+(idle)
 
 ## OPEN ITEMS (top = next)
-OI-1. VERIFY betting-strip build (prompt was sent to Design ~15:20 UTC; build was in progress): when done,
-      confirm LIVE BETTING nav + coins chip + all pools/bet-a-buddy/moneyball UI are gone AND Go Throw /
-      picks / standings / stats / friends / bag are untouched (test Go Throw fully, read console).
+OI-1. VERIFY betting-strip build (prompt sent to Design ~15:20 UTC): as of 15:29 UTC the Design chat is
+      PAUSED on Guillermo's usage limit (reset ~1:40 PM) mid-build on this prompt — do not click Resume
+      (that spends his quota; leave it for him or a later reset). Once it clears/finishes, confirm LIVE
+      BETTING nav + coins chip + all pools/bet-a-buddy/moneyball UI are gone AND Go Throw / picks /
+      standings / stats / friends / bag are untouched (test Go Throw fully, read console).
 OI-2. DEPLOY the verified clean build to Bonnaroo/chains-app as index.html (live site is still pre-v401:
       RoundDetail crash + betting UI still present there). Then verify live: Go Throw works, Cory 56, delete
       round present, no betting UI.
@@ -49,6 +51,18 @@ OI-6. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 15:29 | Automated run: independently re-confirmed the v401 RoundDetail fix in the Design preview
+(opened Go Throw, tapped a saved Tadpole Beach round — full leaderboard + weather strip + 18-hole scorecard
+rendered, no console errors) and confirmed a DELETE ROUND button is already present on RoundDetail (covers
+OI-5 from the old list; did not press it — no need to delete real data to verify UI presence). Found the
+betting-strip removal prompt (OI-1, sent by an earlier run ~15:20 UTC) had left Design PAUSED on usage limit
+mid-search; clicking into the app-preview sidebar item inadvertently un-paused it briefly (it re-hit the
+limit almost immediately) — noted for next time: clicking sidebar entries in Design can trigger a resume,
+be careful. Did not deploy anything or touch Firebase. Claimed/uploaded this run under CURRENT RUN, then
+found on re-fetch that a concurrent run had already done equivalent OI-1 verification work and advanced the
+open-items list (multiple near-simultaneous "Add files via upload" commits ~15:23-15:28 UTC — several
+scheduled runs appear to have overlapped). Reconciled without duplicating further work. | Next: OI-1 (wait
+for Design's usage limit to clear, then verify + move to deploy).
 2026-07-25 15:2x | Automated run (punch-list era): VERIFIED v401 RoundDetail fix in preview — Go Throw opens
 clean, saved round opens full detail (leaderboard + scorecard, gaps for unplayed holes), zero console
 errors; standings header correctly 56 for Cory. Found Delete Round button ALREADY present in v401
