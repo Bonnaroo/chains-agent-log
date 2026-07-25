@@ -31,16 +31,22 @@ Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = b
 (idle)
 
 ## OPEN ITEMS (top = next)
-OI-1. VERIFY betting-strip build. Usage limit RESET as of this run (17:44 UTC) — clicked Resume (this was
-      now appropriate per the log's own instruction to resume once the limit clears). Build is actively
-      running as of 17:46 UTC (large diff in progress: "Searching for setView/games/goVi...", 1,500+ lines
-      touched, then "Thinking..."). Did NOT interrupt it. NEXT RUN: check Design chat — if build has
-      finished, verify LIVE BETTING nav + coins chip + all pools/bet-a-buddy/moneyball UI are gone AND Go
-      Throw / picks / standings / stats / friends / bag are untouched (test Go Throw fully, read console).
-      If still actively generating (Thinking/Searching/Editing…), do not interrupt — work a different item.
-OI-2. DEPLOY the verified clean build to Bonnaroo/chains-app as index.html (live site is still pre-v401:
-      RoundDetail crash + betting UI still present there). Then verify live: Go Throw works, Cory 56, delete
-      round present, no betting UI.
+OI-1 DONE: v402 build finished and verified. Design chat shows "v402 — betting and money fully stripped":
+      LIVE BETTING nav item removed, #games route dropped (falls back to Dashboard), betting modules
+      (bets.js, pool-engine.js, view_bets.jsx, view_games.jsx, view_moneyball.jsx) parked/commented not
+      deleted, coins chip removed from sidebar identity badge, Picks tab MoneyDisc removed, Dashboard
+      bet-sweat card no longer rendered, aces.js (hole-in-one, not money) kept. Independently re-verified in
+      the live preview: Dashboard renders normally, standings correct (Cory 56/1, Kyle 49/2, Will 47/3,
+      Kadey 46/4, Gabe 46/5, Shanna 37/6), sidebar nav = Dashboard/The Picks/Standings/Live Chains/Go
+      Throw/Watch/Settings/Console — no Live Betting item, no coins chip anywhere. Opened Go Throw: loads
+      clean (4 rounds, -3 best, Start/Plan/Run a League/In the Bag, upcoming round card), no betting UI,
+      zero console errors. Build still needs deploying to GitHub Pages.
+OI-2. NEXT: DEPLOY the verified v402 build to Bonnaroo/chains-app as index.html (live site is still
+      pre-v401: RoundDetail crash + betting UI still present there). Steps: Design version dropdown ->
+      three-dots -> Download (lands in Downloads, which Cowork can't read directly — if blocked, log the
+      single manual step for Guillermo: download then drag into github.com/Bonnaroo/chains-app/upload/main
+      as index.html, commit). Then verify live: Go Throw works, Cory 56, delete round present, no betting
+      UI, no console errors.
 OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified): blank-until-entered scores (no
       par-prefill ambiguity), scorecard always visible, obvious tap-to-edit, running total consistent
       between "Thru" strip and card. Also flag: START A ROUND and PLAN A ROUND currently land on the same
@@ -55,6 +61,18 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 17:54-17:58 | Automated run: claimed OI-1. Opened Design chat and found the betting-strip removal
+build (started by the prior run) had FINISHED as v402 ("betting and money fully stripped from the public
+build") — LIVE BETTING nav removed, #games route dropped, betting modules parked/commented (not deleted),
+coins chip gone, Picks MoneyDisc tab gone, Dashboard bet-sweat card no longer rendered, aces.js (hole-in-one
+feed, not money) correctly kept. Did not just trust the chat summary — opened the live preview myself:
+confirmed sidebar nav has no Live Betting item and no coins chip, Dashboard standings correct (Cory 56 pts,
+1st), and Go Throw opens clean with 4 rounds/-3 best and normal Start/Plan/Run-a-League/Bag options, zero
+console errors. Did not deploy anything yet (deploy is OI-2, needs the Download-from-Design step which may
+require a manual hand-off to Guillermo since Downloads isn't readable by Cowork). Did not touch Firebase. |
+Next: a future run should attempt OI-2 — open the version dropdown in Design, try three-dots -> Download,
+see if file_upload can reach the downloaded file; if not, note the single manual step for Guillermo and move
+to a non-conflicting item (e.g. OI-4 marketing site source confirmation).
 2026-07-25 17:44-17:47 | Automated run: claimed OI-1, opened Design chat, found Guillermo's usage limit had
 RESET (prompt showed "Your usage limit reset? Resume work?"). Clicked Resume — this is not the same as
 clicking Resume while paused-on-limit (which earlier runs correctly avoided); the limit had already cleared,
