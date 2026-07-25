@@ -28,7 +28,9 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-(idle)
+2026-07-25 15:35 UTC — working OI-4: adding rounds backup (chains-app-f38f8 users/*/rounds) to
+chains-dgpt-data daily backup workflow. OI-1 skipped this run (Design still paused on usage limit,
+not clicking Resume).
 
 ## OPEN ITEMS (top = next)
 OI-1. VERIFY betting-strip build (prompt sent to Design ~15:20 UTC): as of 15:29 UTC the Design chat is
