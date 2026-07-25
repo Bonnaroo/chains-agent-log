@@ -31,8 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 19:34 UTC — working OI-4: reviewing "Chains Marketing Site" Design file (scroll full page, confirm
-it's the intended marketing-site source).
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -91,22 +90,57 @@ OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified — OI-
       after an explicit resize_window call, suggesting the outer window itself is being resized/reflowed by
       something outside our control. Collapsing the left chat sidebar (icon top-left) helped a bit. If this
       recurs, try a fresh tab instead of reusing one that's been open a long time.
-OI-4. Marketing site: create repo + GitHub Pages and deploy the marketing site source. LIKELY RESOLVED this
-      run: opened the file literally named "Chains Marketing Site" inside the same Design System (file
-      dropdown -> Chains Marketing Site, edited 2 days ago) — it's a fully built, on-brand landing page
-      ("TALK IS CHEAP. CHAINS KEEPS SCORE" hero, Features/How It Works/The App/FAQ nav, "Try the App" +
-      "Join the Waitlist" CTAs, live-round preview card), clearly more polished/complete than the
-      chains-website.html / chains-website-fluent2.html candidates in the local Cowork folder noted by prior
-      runs. This is almost certainly the intended source. Did NOT deploy or scroll through the full page
-      this run (ran out of reliable interaction time — see the preview-instability note under OI-3, same
-      session). Waitlist Formspree ID still needs Guillermo either way. NEXT: a future run should read
-      through the rest of this Design file (scroll/click through all sections), confirm with Guillermo it's
-      the one to ship (or he confirms in chat), then create the repo + Pages and deploy via the same
-      curl-serve-URL method as OI-2 once export format is confirmed to work for this file type too.
+OI-4. Marketing site: create repo + GitHub Pages and deploy the marketing site source. SOURCE FILE CONFIRMED
+      this run (was "likely resolved," now treating as settled): opened "Chains Marketing Site" in the Design
+      System and pulled the project's own chat-history summary text (via get_page_text, which reads the
+      chat panel even when the live iframe preview won't scroll) — it explicitly describes this file as "a
+      full single-page site with hero, real standings card (Cory 56 -> Shanna 37), live draft board
+      (Ledgestone with snake order), bento features (draft, live scoring, standings, trash talk, awards,
+      leagues), how-it-works flowchart, Chains-vs-spreadsheet comparison, the three real awards (Sniper,
+      Consistent, Closer), waitlist band (needs your Formspree ID), and FAQ. Responsive, fast, all
+      art/avatars/emblem from your CDN." That's authoritative (it's the build's own record, not a guess) and
+      matches the hero section visually confirmed this run and the nav/CTAs prior runs saw. This is the
+      correct marketing-site source, full stop — no more need to "confirm with Guillermo which file." COULD
+      NOT scroll through the rest of the page visually this run: the live preview iframe would not respond to
+      scroll wheel, Page_Down, or clicking-then-scrolling (tried all three), and the outer window kept
+      reporting different resolutions between screenshots even without an explicit resize — this is the same
+      instability prior runs flagged under OI-3, now confirmed to affect this file too, not just the app
+      preview. Did not find a curl-able "serve" URL for this file (checked network requests after a full
+      reload; unlike index.html's app bundle, this static single-page file doesn't appear to expose one via
+      the iframe src — it may need the three-dot "Download" menu instead, same as the app file). Did NOT
+      attempt to create the repo/Pages or deploy — that's a "publish public content" action needing
+      Guillermo's explicit sign-off, not something to do unattended, and the Formspree waitlist ID
+      (`YOUR_FORM_ID` placeholder in the site's `ENDPOINT` constant) still needs to come from him regardless.
+      NEXT: ask Guillermo for (1) go-ahead to ship this exact file as the public marketing site (or any
+      section-level changes he wants first) and (2) his Formspree form ID. Once both are in hand, a future
+      run downloads/exports this file (try three-dot menu -> Download first, then curl-serve-URL as a
+      fallback if a serve link turns up), creates a new repo + enables GitHub Pages, and deploys.
 OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; keep MI courses.json as-is)
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 19:34-19:45 | Automated run: Chrome connected fine (reset counter to 0). Local was ahead of remote
+by one un-pushed run entry (19:30-19:55) — pushed local as authoritative to reconcile before claiming.
+Claimed and worked OI-4: confirmed via curl that Bonnaroo/chains-app is still at commit 3d2a5d1 (v402 not
+deployed, OI-2 unchanged, did not re-attempt the Guillermo-only manual push). Checked Design chat state: idle
+(not mid-build), v402 is the final build in history. Opened "Chains Marketing Site" file and — since the live
+iframe preview once again would not respond to any scroll input (wheel, Page_Down, click-then-scroll all
+tried, window resolution also drifted between screenshots, matching OI-3's earlier instability note but now
+confirmed on this file too) — used get_page_text to pull the Design project's own chat-history summary
+instead of fighting the iframe. That summary independently and authoritatively describes this file as the
+complete built marketing site (hero, standings card, draft board, bento features, how-it-works, comparison,
+awards, waitlist band, FAQ), matching the hero visually confirmed this run and nav/CTAs prior runs saw.
+Treating OI-4's source-file question as settled — this is the right file. Did not find a curl-able serve URL
+for it (checked network requests post-reload; none appeared, unlike index.html's app bundle). Did not deploy
+or create the repo/Pages (needs Guillermo's sign-off — publishing public content — plus his Formspree ID for
+the waitlist form). Also spot-checked GitHub health (P3): Bonnaroo/chains-dgpt-data Actions all green, most
+recent run 18:53 UTC. Did not touch Firebase. |
+Next: ask Guillermo for (1) go-ahead on this marketing-site file as-is and (2) his Formspree form ID, then a
+future run exports it (three-dot Download menu first) and deploys to a new repo + Pages. Also still open:
+OI-2 (deploy candidate ready, needs Guillermo's manual upload), OI-3 (finish the Go Throw scoring walkthrough
+once/if the preview iframe behaves — three consecutive runs now hitting the same scroll-unresponsive issue,
+may be worth trying a completely fresh tab or flagging to Guillermo as a possible extension/rendering bug
+rather than assuming it'll self-resolve).
 2026-07-25 19:30-19:55 | Automated run: Chrome connected fine (reset counter, confirmed local/remote already
 identical, no reconciliation needed). Claimed and worked: (1) OI-2 re-check — live site still shows LIVE
 BETTING nav + "$15" coins chip, v402 still not deployed, no change since last run, did not re-attempt the
