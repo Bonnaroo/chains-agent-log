@@ -28,7 +28,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-(idle)
+2026-07-25 17:44 UTC — working OI-1: checking Design chat usage-limit status / betting-strip build
 
 ## OPEN ITEMS (top = next)
 OI-1. VERIFY betting-strip build (prompt sent to Design ~15:20 UTC): as of 15:29 UTC the Design chat is
