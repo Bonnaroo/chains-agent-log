@@ -31,7 +31,8 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-(idle)
+2026-07-25 20:33 — working OI-3: trying deep-link/hash route into Go Throw instead of nav-clicking, per
+prior run's suggestion, to work around the preview click-registration issue.
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
