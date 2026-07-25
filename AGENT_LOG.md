@@ -73,9 +73,17 @@ OI-2. NEXT (deploy candidate READY, needs a push): confirmed via live site check
       moment. Either way, after upload verify live: Go Throw works, Cory-era standings correct, delete round
       present, no betting UI/coins chip, no console errors. The curl-fetch-and-clean method should be reused
       for future deploys (v403+) — no more Downloads-folder dead end.
-OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified — OI-1 is done, so this is
-      unblocked): blank-until-entered scores (no par-prefill ambiguity), scorecard always visible, obvious
-      tap-to-edit, running total consistent between "Thru" strip and card. BREAKTHROUGH this run (20:33-20:5x):
+OI-3. Go Throw UX overhaul via Design. FIX PROMPT SENT this run (21:03 UTC): asked Design to (a) make each
+      hole's score control start BLANK/unset (no par prefill) and only count a score once the player taps
+      +/-, blocking/warning on Next if unset; (b) add a persistent always-visible scorecard/holes-strip (all
+      18 holes, tap any to jump/edit) with running total synced to the THRU counter. Scope explicitly limited
+      to Go Throw's scoring screen only — told Design not to touch Dashboard/Picks/Standings/Bag/betting work.
+      Design immediately started building (seen: "Searching, Reading" then "Reading view_play.jsx"), NOT yet
+      verified/finished — a future run should check Design chat state first; if idle, walk the scoring flow
+      again (Start a Round -> pick course -> Who's Playing -> Start Scoring) via the direct-serve-URL +
+      javascript_tool(element.click()) method to confirm blank-until-entered scoring and the new scorecard
+      both work, then check for regressions elsewhere before calling this done.
+      BACKGROUND (prior run, 20:33-20:5x) — BREAKTHROUGH:
       found a reliable way around the preview-instability problem that blocked the last 4+ runs — instead of
       clicking nav inside the nested Design chat iframe (unreliable: screenshots timeout, clicks don't
       register, window keeps resizing), extract the iframe's own src via
@@ -153,6 +161,24 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 21:03-21:08 | Automated run: Chrome connected fine (reset counter to 0). Local was ahead of remote
+by 2 un-pushed run entries (20:03-20:15, 20:33-20:55) — pushed local as authoritative to reconcile (commit
+036554e) before claiming. Claimed and worked OI-3: with both real bugs from the prior run concretely
+confirmed (par-prefill counts as a real score, no scorecard/holes-strip exists), sent Design a scoped fix
+prompt — blank-until-entered score control (no par prefill, block/warn Next if unset) plus a persistent
+18-hole scorecard/holes-strip with tap-to-jump and a running total synced to THRU, explicitly scoped to the
+Go Throw scoring screen only (told it not to touch Dashboard/Picks/Standings/Bag/betting work). Typing into
+the chat input hit the usual CDP timeout but the text landed anyway (confirmed via reading the ProseMirror
+div's textContent before sending); clicked Send via javascript_tool since native click/screenshot calls on
+this page were timing out same as prior runs. Confirmed sent: message appended to chat, Design immediately
+started working (Searching/Reading, then "Reading view_play.jsx"). Did not wait for the build to finish (runs
+are 30 min apart; a future run should check and verify). Did not touch OI-2/OI-4 (still blocked on Guillermo),
+did not touch Firebase. |
+Next: a future run checks Design chat state — if idle, verify the build (blank-until-entered scoring works,
+scorecard/holes-strip renders and tap-to-edit works, running totals match, no regressions to Dashboard/Picks/
+Standings/Bag/betting-strip, no console errors) using the direct-serve-URL + javascript_tool(element.click())
+method; if still mid-build, leave it and work a non-conflicting item. OI-2 (Guillermo's manual upload) and
+OI-4 (Guillermo's go-ahead + Formspree ID) unchanged.
 2026-07-25 20:33-20:55 | Automated run: Chrome connected fine (reset counter to 0). Local/remote already in
 sync (no reconciliation needed). Claimed and worked OI-3. Found a workaround for the preview-instability
 problem that blocked the last 4+ runs: pulled the Design chat iframe's own src (a claudeusercontent.com
