@@ -31,9 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 19:30 UTC — working: re-verified OI-2 still blocked (live site still shows betting UI, v402 not
-deployed), testing Go Throw in v402 preview for OI-3, checking a "Chains Marketing Site" file found in Design
-for OI-4.
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -75,20 +73,56 @@ OI-2. NEXT (deploy candidate READY, needs a push): confirmed via live site check
       moment. Either way, after upload verify live: Go Throw works, Cory-era standings correct, delete round
       present, no betting UI/coins chip, no console errors. The curl-fetch-and-clean method should be reused
       for future deploys (v403+) — no more Downloads-folder dead end.
-OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified): blank-until-entered scores (no
-      par-prefill ambiguity), scorecard always visible, obvious tap-to-edit, running total consistent
-      between "Thru" strip and card. Also flag: START A ROUND and PLAN A ROUND currently land on the same
-      course-picker/invite flow (defaults to next day) — no instant "score right now" path; propose adding
-      instant-start (ask Guillermo if unsure).
-OI-4. Marketing site: create repo + GitHub Pages and deploy "Chains Marketing Site.html" (waitlist Formspree
-      ID still needs Guillermo — note it, don't block). NOTE: no file with this exact name exists in the
-      Cowork folder as of this run; closest candidates are chains-website.html and
-      chains-website-fluent2.html in the Chains Fantasy DGPT folder — confirm with Guillermo which is the
-      intended marketing-site source before building/deploying.
+OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified — OI-1 is done, so this is
+      unblocked): blank-until-entered scores (no par-prefill ambiguity), scorecard always visible, obvious
+      tap-to-edit, running total consistent between "Thru" strip and card. RE-CONFIRMED this run: clicked
+      START A ROUND in the v402 preview -> goes straight to "PICK A COURSE" (530 courses, search + recent
+      list) -> picking a course goes to "WHO'S PLAYING?" (round-type chips: Normal/Doubles/Scramble/etc.,
+      player picker, guest-name field) -> a continue bar sits below the fold. Same flow as PLAN A ROUND per
+      prior runs' notes — still no instant "score right now" shortcut. Did NOT reach live scoring/scorecard
+      this run (see note below on preview instability) so blank-until-entered/tap-to-edit/running-total
+      claims remain unverified against the actual v402 build; only the entry flow was re-confirmed. No
+      console errors seen (console tracking started mid-session so page-load errors could've been missed).
+      NOTE FOR NEXT RUN: the Design preview iframe was unusually unresponsive this run — screenshots
+      routinely timed out (~30s) needing retries, scroll-wheel input did NOT move the page at all (tried at
+      multiple coordinates, Page_Down key, and after clicking into the content first), and the browser
+      window kept reporting different screenshot resolutions between calls (1568x698, then 1425x635) even
+      after an explicit resize_window call, suggesting the outer window itself is being resized/reflowed by
+      something outside our control. Collapsing the left chat sidebar (icon top-left) helped a bit. If this
+      recurs, try a fresh tab instead of reusing one that's been open a long time.
+OI-4. Marketing site: create repo + GitHub Pages and deploy the marketing site source. LIKELY RESOLVED this
+      run: opened the file literally named "Chains Marketing Site" inside the same Design System (file
+      dropdown -> Chains Marketing Site, edited 2 days ago) — it's a fully built, on-brand landing page
+      ("TALK IS CHEAP. CHAINS KEEPS SCORE" hero, Features/How It Works/The App/FAQ nav, "Try the App" +
+      "Join the Waitlist" CTAs, live-round preview card), clearly more polished/complete than the
+      chains-website.html / chains-website-fluent2.html candidates in the local Cowork folder noted by prior
+      runs. This is almost certainly the intended source. Did NOT deploy or scroll through the full page
+      this run (ran out of reliable interaction time — see the preview-instability note under OI-3, same
+      session). Waitlist Formspree ID still needs Guillermo either way. NEXT: a future run should read
+      through the rest of this Design file (scroll/click through all sections), confirm with Guillermo it's
+      the one to ship (or he confirms in chat), then create the repo + Pages and deploy via the same
+      curl-serve-URL method as OI-2 once export format is confirmed to work for this file type too.
 OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; keep MI courses.json as-is)
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 19:30-19:55 | Automated run: Chrome connected fine (reset counter, confirmed local/remote already
+identical, no reconciliation needed). Claimed and worked: (1) OI-2 re-check — live site still shows LIVE
+BETTING nav + "$15" coins chip, v402 still not deployed, no change since last run, did not re-attempt the
+push (still a production-deploy action needing Guillermo's own hand or explicit in-session sign-off, not
+something to force from an unattended scheduled run). (2) OI-3 — opened v402 preview, clicked START A ROUND,
+confirmed it goes straight to Pick-a-Course -> Who's-Playing (no instant-start), matching prior runs' note;
+did not reach live scoring due to the preview iframe being unusually unresponsive this run (frequent ~30s
+screenshot timeouts, scroll wheel/Page_Down not moving the page at all, browser window resolution changing
+between calls even after resize_window) — collapsed the chat sidebar to get more room but didn't fully fix
+it; logged the specifics for whoever hits this next. No console errors seen. (3) OI-4 — found and opened the
+"Chains Marketing Site" file in the same Design System project; it's a complete, on-brand landing page,
+almost certainly the real marketing-site source (better candidate than the local .html files prior runs
+flagged). Did not deploy it or read the full page (ran out of reliable interaction time in the same
+unresponsive-preview session). Did not touch Firebase. |
+Next: OI-2 (still needs Guillermo's manual upload, file already sitting ready per prior run), OI-3 (finish the
+scoring/edit-hole/finish walkthrough once the preview is behaving, or in a fresh tab), OI-4 (scroll through
+the rest of the Chains Marketing Site file, confirm with Guillermo it's the right source, then deploy).
 2026-07-25 19:00-19:04 | Automated run: Chrome reconnected on first try (outage over, reset counter to 0/none).
 Local log was ahead of remote by ~6 outage-run entries — pushed local as authoritative to reconcile, then
 claimed OI-2. Checked live site: betting UI (LIVE BETTING nav, "$15" coins chip) still present, v402 still
