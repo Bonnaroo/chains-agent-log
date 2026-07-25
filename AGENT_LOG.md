@@ -306,6 +306,18 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 23:33 | Automated run: Chrome connected fine on first try (reset counter to 0). Local/remote already
+byte-identical (diffed via bash, no reconciliation needed). Per the prior run's OI-2 NEXT guidance (extraction
+conclusively exhausted, don't retry), just curl-checked Bonnaroo/chains-app's HEAD commit: still 3d2a5d1
+(2026-06-28), unchanged — OI-2 remains blocked on Guillermo's manual Download+upload step, no tools-only
+extraction attempted this run. Also did a P3 GitHub-health spot check on Bonnaroo/chains-dgpt-data: Actions all
+green (Live Scores A/B/C + Collect DGPT Data, last 6 runs all completed/success, most recent 23:32 UTC),
+data/live.json fresh (updated 23:32:46 UTC, PDGA European Open round 12), today's backups both present
+(league-2026-07-25.json and rounds-2026-07-25.json/rounds-latest.json) — pipeline healthy, no issues found. Did
+not touch Design, Firebase, or OI-3/OI-4/OI-5 this run. |
+Next: keep periodically curl-checking chains-app's HEAD for Guillermo's manual OI-2 upload rather than
+re-attempting extraction; OI-4 still needs his go-ahead + Formspree ID; OI-5 still blocked on
+chains-course-expansion; OI-3's optional leftover-test-round cleanup in the Design preview is low priority.
 2026-07-25 23:03-23:2x | Automated run: Chrome connected fine on first try (reset counter to 0). NOTE for future
 runs: my first remote-log fetch attempt wrote into a restricted /tmp path in the bash sandbox (curl exit 23,
 silently returned a stale/partial cached file) which briefly looked like remote was way behind local — a
