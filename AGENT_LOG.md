@@ -28,15 +28,16 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 17:44 UTC — working OI-1: checking Design chat usage-limit status / betting-strip build
+(idle)
 
 ## OPEN ITEMS (top = next)
-OI-1. VERIFY betting-strip build (prompt sent to Design ~15:20 UTC): as of 15:29 UTC the Design chat is
-      PAUSED on Guillermo's usage limit (reset ~1:40 PM) mid-build on this prompt — do not click Resume
-      (that spends his quota; leave it for him or a later reset). Once it clears/finishes, confirm LIVE
-      BETTING nav + coins chip + all pools/bet-a-buddy/moneyball UI are gone AND Go Throw / picks /
-      standings / stats / friends / bag are untouched (test Go Throw fully, read console). Still paused
-      as of 15:38 UTC — do not click Resume.
+OI-1. VERIFY betting-strip build. Usage limit RESET as of this run (17:44 UTC) — clicked Resume (this was
+      now appropriate per the log's own instruction to resume once the limit clears). Build is actively
+      running as of 17:46 UTC (large diff in progress: "Searching for setView/games/goVi...", 1,500+ lines
+      touched, then "Thinking..."). Did NOT interrupt it. NEXT RUN: check Design chat — if build has
+      finished, verify LIVE BETTING nav + coins chip + all pools/bet-a-buddy/moneyball UI are gone AND Go
+      Throw / picks / standings / stats / friends / bag are untouched (test Go Throw fully, read console).
+      If still actively generating (Thinking/Searching/Editing…), do not interrupt — work a different item.
 OI-2. DEPLOY the verified clean build to Bonnaroo/chains-app as index.html (live site is still pre-v401:
       RoundDetail crash + betting UI still present there). Then verify live: Go Throw works, Cory 56, delete
       round present, no betting UI.
@@ -54,6 +55,16 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 17:44-17:47 | Automated run: claimed OI-1, opened Design chat, found Guillermo's usage limit had
+RESET (prompt showed "Your usage limit reset? Resume work?"). Clicked Resume — this is not the same as
+clicking Resume while paused-on-limit (which earlier runs correctly avoided); the limit had already cleared,
+so resuming was the intended next step per the log's own guidance. The betting-strip removal build started
+actively generating (large diff, "Searching for setView/games/goVi...", 1,500+ lines, then extended
+"Thinking..."). Waited ~35s watching progress; did not interrupt or navigate away mid-generation. Did not
+verify or deploy anything yet (build not finished). Did not touch Firebase. | Next: a future run should
+re-open the Design chat; if the build has finished, do the OI-1 verification (betting UI gone, Go
+Throw/picks/standings/stats/friends/bag untouched, console clean) and move to OI-2 deploy. If still
+generating, leave it alone and work OI-4 (marketing site source) or another non-conflicting item.
 2026-07-25 15:35-15:40 | Automated run: OI-1 still blocked (Design chat still shows "Paused — you've hit
 your limit"; did not click Resume). Picked a non-conflicting item: OI-4 (rounds backup), now renumbered
 OI-4->OI-... wait see below. WORKED old-OI-4: chains-app Go Throw rounds are NOT under a top-level
