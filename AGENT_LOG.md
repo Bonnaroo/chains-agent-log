@@ -31,8 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 20:33 — working OI-3: trying deep-link/hash route into Go Throw instead of nav-clicking, per
-prior run's suggestion, to work around the preview click-registration issue.
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -76,38 +75,55 @@ OI-2. NEXT (deploy candidate READY, needs a push): confirmed via live site check
       for future deploys (v403+) — no more Downloads-folder dead end.
 OI-3. Go Throw UX overhaul via Design (send AFTER betting strip verified — OI-1 is done, so this is
       unblocked): blank-until-entered scores (no par-prefill ambiguity), scorecard always visible, obvious
-      tap-to-edit, running total consistent between "Thru" strip and card. RE-CONFIRMED this run: clicked
-      START A ROUND in the v402 preview -> goes straight to "PICK A COURSE" (530 courses, search + recent
-      list) -> picking a course goes to "WHO'S PLAYING?" (round-type chips: Normal/Doubles/Scramble/etc.,
-      player picker, guest-name field) -> a continue bar sits below the fold. Same flow as PLAN A ROUND per
-      prior runs' notes — still no instant "score right now" shortcut. Did NOT reach live scoring/scorecard
-      this run (see note below on preview instability) so blank-until-entered/tap-to-edit/running-total
-      claims remain unverified against the actual v402 build; only the entry flow was re-confirmed. No
-      console errors seen (console tracking started mid-session so page-load errors could've been missed).
-      NOTE FOR NEXT RUN: the Design preview iframe was unusually unresponsive this run — screenshots
-      routinely timed out (~30s) needing retries, scroll-wheel input did NOT move the page at all (tried at
-      multiple coordinates, Page_Down key, and after clicking into the content first), and the browser
-      window kept reporting different screenshot resolutions between calls (1568x698, then 1425x635) even
-      after an explicit resize_window call, suggesting the outer window itself is being resized/reflowed by
-      something outside our control. Collapsing the left chat sidebar (icon top-left) helped a bit. If this
-      recurs, try a fresh tab instead of reusing one that's been open a long time.
-      UPDATE 20:03 run: tried the fresh-tab suggestion above — did NOT fix it. Opened index.html in a brand
-      new tab (never previously used this session), preview loaded fine initially (Dashboard rendered clean,
-      no betting UI, correct standings). Clicked GO THROW in the left nav — instead landed on WATCH (nav item
-      one row below in this layout). Re-clicked GO THROW's actual coordinates 3 more times (verified via
-      screenshot each time) and the app never left the WATCH/Highlights screen — nav clicks inside the
-      preview are simply not registering. Also hit a `Page.captureScreenshot` timeout ("renderer may be
-      frozen or unresponsive") mid-session, same symptom prior runs saw. read_page on the outer tab shows
-      only the Design chrome (chat box, toolbar buttons) — the app nav itself lives inside a cross-origin
-      iframe read_page can't see into, so there's no DOM-level fallback for clicking nav items reliably.
-      Since a fresh, never-before-used tab reproduced the exact same failure, this now looks like a real
-      instability in the Design preview rendering/click-handling itself (possibly load on the
-      claudeusercontent.com preview host, or an extension-side issue), not a stale-tab or leftover-state
-      problem. RECOMMEND flagging this to Guillermo directly as a possible product bug if it keeps recurring
-      — four consecutive automated runs now (19:00-ish through this one) have been unable to reliably
-      interact with the Go Throw scoring flow in preview because of this, so OI-3's actual UX questions
-      (blank-until-entered scoring, tap-to-edit, running totals) remain unverified against v402 through no
-      fault of the build itself.
+      tap-to-edit, running total consistent between "Thru" strip and card. BREAKTHROUGH this run (20:33-20:5x):
+      found a reliable way around the preview-instability problem that blocked the last 4+ runs — instead of
+      clicking nav inside the nested Design chat iframe (unreliable: screenshots timeout, clicks don't
+      register, window keeps resizing), extract the iframe's own src via
+      `Array.from(document.querySelectorAll('iframe')).map(f=>f.src)` on the Design page (gives a
+      claudeusercontent.com "serve" URL with an auth token), then navigate a tab DIRECTLY to that URL — this
+      loads the real app as its own top-level page (not nested), and DOM clicks via javascript_tool
+      (`element.click()`) register reliably there even though native mouse clicks/screenshots on this preview
+      host still time out. The app also turns out to be hash-routed (URL gains #dashboard, #play etc. as you
+      navigate) — confirms a URL-based deep-link is possible in principle, though the hash alone isn't enough
+      to jump straight to Go Throw scoring without also being logged in.
+      Using this method: landed on the standalone serve URL's login/"WHO'S PLAYING?" screen (test-mode,
+      pick-your-name, no password), picked WILL, reached Dashboard (correct standings: Cory 56/1, Kyle 49/2,
+      Will 47/3, Kadey 46/4, Gabe 46/5, Shanna 37/6, no betting UI/coins chip — v402 confirmed again), clicked
+      GO THROW -> Go Throw home (Start/Plan/Run a League/Bag, this WILL test-session showed 0 saved rounds
+      unlike prior runs' "4 rounds" note — likely a different test identity than whatever the manual/earlier
+      runs used) -> START A ROUND -> PICK A COURSE -> chose Johnson Park -> WHO'S PLAYING? (round type +
+      player picker, matches prior runs' notes) -> START SCORING · NORMAL ROUND -> **reached the actual
+      hole-by-hole scoring screen for the first time in this loop's history.**
+      FINDINGS (P1/OI-3 UX questions, now verified against real v402 behavior, not just the entry flow):
+      (1) PAR-PREFILL CONFIRMED AS A REAL BUG: hole 1's score control shows "3" (=par) already populated, not
+      blank, before any input — inspected the DOM span directly to confirm it's a real rendered value, not a
+      placeholder. Tapped NEXT HOLE without touching the score: "THRU 0" advanced to "THRU 1 · YOU E" (even
+      par) — confirms the prefilled par silently counts as the entered score if you don't change it. This is
+      exactly the ambiguity P1/OI-3 flagged as needing a fix.
+      (2) NO ALWAYS-VISIBLE SCORECARD: the scoring screen is single-hole (Hole N of 18, one score stepper,
+      Back/Next) with no holes-strip or running scorecard rendered anywhere in the DOM
+      (`[class*="scorecard"], [class*="hole-strip"]` etc. all absent) — so tap-any-hole-to-edit isn't reachable
+      from this screen either, there's nothing to tap. Both still open UX gaps per P1.
+      (3) No console errors seen during this walkthrough (tracking started mid-session, so early page-load
+      errors could be missed, same caveat as before).
+      Did NOT verify running-total math (Thru strip vs a card total) since there's no card to compare against
+      — that part of OI-3 may need to be rephrased once the scorecard itself exists.
+      MID-TEST HANG: attempting to click "Discard round" via javascript_tool froze Runtime.evaluate for 45s
+      (repeatable) — almost certainly a native `confirm()`/`beforeunload` browser dialog blocking the JS
+      thread (matches the "renderer may be frozen" symptom from every prior OI-3 run, now with a concrete
+      cause: JS-triggered confirm dialogs, not general preview instability). Recovered by calling `navigate`
+      to a different URL on the same tab (worked immediately, tab was NOT actually frozen for CDP navigation,
+      only for Runtime.evaluate). Checked Firebase afterward via window.ChainsFB on the live app tab: uid
+      "will" still shows exactly the same 3 pre-existing round ids as before (pr-mrgonhxnwgmc, pr-mrgp2ksut6j9,
+      pr-mrgrh8fwudpb) — the abandoned 2-hole test round was NOT persisted (writes apparently only happen on
+      explicit Save/Discard, which never completed), so no stray test data was left in Firebase. No cleanup
+      needed.
+      NEXT: (a) use the direct-serve-URL + javascript_tool(element.click()) method from now on for any Design
+      preview walkthrough instead of clicking inside the nested chat iframe — much more reliable, though avoid
+      triggering "Discard round"/similar confirm-dialog actions via JS, or be ready to `navigate` away to
+      unstick the tab if one does. (b) send Design a fix prompt for the par-prefill bug (score field should
+      start blank/unset per hole, only count once the player actually taps +/-) and the missing always-visible
+      scorecard, now that both are concretely confirmed rather than assumed.
 OI-4. Marketing site: create repo + GitHub Pages and deploy the marketing site source. SOURCE FILE CONFIRMED
       this run (was "likely resolved," now treating as settled): opened "Chains Marketing Site" in the Design
       System and pulled the project's own chat-history summary text (via get_page_text, which reads the
@@ -137,6 +153,28 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 20:33-20:55 | Automated run: Chrome connected fine (reset counter to 0). Local/remote already in
+sync (no reconciliation needed). Claimed and worked OI-3. Found a workaround for the preview-instability
+problem that blocked the last 4+ runs: pulled the Design chat iframe's own src (a claudeusercontent.com
+"serve" URL with an auth token) and navigated a tab directly to it, loading the app as its own top-level page
+instead of nested inside Design's chat UI — DOM clicks via javascript_tool's element.click() then registered
+reliably (native mouse clicks/screenshots on this host still time out). Logged in as WILL (test-mode,
+no password), reached Dashboard (standings correct, no betting UI, v402 confirmed again), and for the first
+time in this loop's history reached the actual Go Throw scoring screen: Start a round -> Johnson Park ->
+Who's Playing -> Start Scoring. CONFIRMED two real UX bugs: (1) each hole's score control is pre-filled with
+par (not blank) and silently counts as the entered score if you tap Next without changing it — verified via
+THRU counter advancing to "1 · YOU E" after touching nothing; (2) no always-visible scorecard/holes-strip
+exists on the scoring screen, so tap-any-hole-to-edit has nothing to tap. Hit a 45s Runtime.evaluate hang
+trying to click "Discard round" (likely a native confirm() dialog blocking JS) — recovered cleanly via
+navigate() to a different URL rather than retrying eval. Checked Firebase after: uid "will" still has exactly
+the same 3 pre-existing rounds, so the abandoned test round was never persisted — no stray data, no cleanup
+needed. Did not touch OI-2/OI-4 (both still blocked on Guillermo) or send a Design fix prompt this run (saved
+for next, now that the bugs are concretely confirmed rather than assumed). |
+Next: send Design a fix prompt for the par-prefill bug (score should start blank/unset, only count on actual
+input) and the missing always-visible scorecard. Reuse the direct-serve-URL + javascript_tool click method for
+all future Design preview walkthroughs — it's reliable where nav-clicking inside the chat iframe was not.
+Avoid triggering confirm-dialog actions (Discard round, etc.) via JS, or be ready to navigate() away to
+unstick the tab. OI-2 (Guillermo's manual upload) and OI-4 (Guillermo's go-ahead + Formspree ID) unchanged.
 2026-07-25 20:03-20:15 | Automated run: Chrome connected fine (reset counter, confirmed 0). Local was ahead of
 remote by 2 un-pushed run entries (19:30-19:55, 19:34-19:45) — pushed local as authoritative to reconcile
 (commit 0b7d085) before claiming. Claimed OI-3, opened index.html in a BRAND NEW tab (per prior runs'
