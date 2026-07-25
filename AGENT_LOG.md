@@ -31,7 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-25 22:33 UTC — working OI-2: regenerating v403 deploy candidate (serve URL via read_network_requests)
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -52,7 +52,30 @@ OI-1 DONE: v402 build finished and verified. Design chat shows "v402 — betting
       Throw/Watch/Settings/Console — no Live Betting item, no coins chip anywhere. Opened Go Throw: loads
       clean (4 rounds, -3 best, Start/Plan/Run a League/In the Bag, upcoming round card), no betting UI,
       zero console errors. Build still needs deploying to GitHub Pages.
-OI-2. NEXT (deploy candidate needs REGENERATING from v403, not v402 — see 22:03-22:2x update below): confirmed
+OI-2. NEXT (deploy candidate needs REGENERATING from v403, not v402): the old curl-serve-URL method is CONFIRMED
+      DEAD, not just "redacted" — 22:33-22:5x run traced why: the app preview no longer loads via a distinct
+      per-file claudeusercontent.com/v1/design/.../serve/<file>.html?t=<token> URL at all. Its iframe src is
+      now always https://<project-id>.claudeusercontent.com/_bootstrap regardless of Present-mode ("In this
+      tab"), Edit mode, or a fresh reload — confirmed via javascript_tool reading iframe.src repeatedly and via
+      read_network_requests (tracks the top frame fine, e.g. all the OmeletteService GetFile/ListFiles/
+      TrackEvent XHRs show up) but NEVER shows a "serve"/"claudeusercontent" request even right after a full
+      page navigate, meaning the actual app HTML is now delivered into that bootstrap iframe via postMessage
+      from the parent claude.ai frame, not a separate fetchable document. Navigating a tab directly to the
+      bootstrap URL alone (no parent) loads a blank page — confirms it depends on the postMessage handshake,
+      dead end for curl. ALSO TRIED this run: Share -> Export -> "Project HTML (.zip or standalone)" hoping for
+      a fetchable link instead of a Downloads-folder file — clicked it (menu closed normally, no error), but no
+      new network request (zip/download/blob pattern) ever appeared, so either it silently saved straight to
+      Guillermo's Downloads folder (same old dead end) or needs a confirmation step this run didn't see; not
+      independently confirmed either way. NEXT for a future run: (a) try Project HTML export again and
+      immediately screenshot for a possible save-location picker or toast before assuming it's Downloads-only;
+      (b) if it does turn out to save straight to Downloads, this is genuinely back to needing Guillermo's
+      manual hand (download v403 -> upload to Bonnaroo/chains-app) since no observed-via-tools path currently
+      gets the built HTML out of Design without a live human click; (c) don't re-try the old iframe-src-serve-
+      URL trick, it's confirmed architecturally gone, not a transient redaction bug. Live site re-confirmed
+      still un-deployed this run: Bonnaroo/chains-app HEAD is still 3d2a5d1 (2026-06-28), unchanged. Original
+      notes below (v402-era) kept for history/context on the deploy candidate file already sitting in the
+      Cowork folder (v402-clean-deploy-candidate-index.html, now STALE — missing v403's fixes, do not use). |
+      confirmed
       via live site check that betting UI (LIVE BETTING nav + coins "$15" chip) is STILL live — nothing
       deployed yet. NEW METHOD found in an earlier run that solves the old Downloads-folder blocker: the
       Design file's "serve" URL
@@ -244,6 +267,24 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-25 22:33-22:5x | Automated run: Chrome connected fine on first try (reset counter to 0). Local was ahead
+of remote by one un-pushed run entry (22:03-22:2x) — pushed local as authoritative to reconcile (commit
+00d42d1) before claiming. Claimed and worked OI-2 (regenerate v403 deploy candidate). Confirmed the old
+curl-a-serve-URL deploy trick is architecturally dead, not just blocked by extension redaction as the prior run
+guessed: the Design preview iframe's src is always the generic .../\_bootstrap URL now (checked via
+javascript_tool and via read_network_requests right after fresh navigations — no "serve"/claudeusercontent
+per-file request ever fires), meaning the built app HTML is handed to that iframe via postMessage from the
+parent page rather than served at its own fetchable URL; navigating directly to the bootstrap URL alone loads
+blank (depends on the handshake). Also tried Share -> Export -> "Project HTML (.zip or standalone)" as an
+alternate extraction path — click registered (menu closed cleanly) but produced no observable zip/download/blob
+network request, so it's unclear whether that silently went to Guillermo's Downloads folder or needs a
+confirmation dialog this run didn't catch. Re-confirmed live site still undeployed: Bonnaroo/chains-app HEAD
+unchanged at 3d2a5d1 (2026-06-28). Did not touch Firebase, did not touch OI-3/OI-4/OI-5. |
+Next: a future run should retry Project HTML export and screenshot immediately for any save-location prompt
+before assuming Downloads-only; if it is Downloads-only, OI-2 is now confirmed to need Guillermo's own hand (or
+a live session with him) to get v403's HTML out of Design — no tools-only path has worked across several
+runs' worth of attempts now. Do not retry the old iframe-src-serve-URL extraction method again, it's confirmed
+gone architecturally. OI-3/OI-4/OI-5 unchanged.
 2026-07-25 22:03-22:2x | Automated run: Chrome connected fine on first try (reset counter to 0). Local/remote
 already in sync (no reconciliation needed). Claimed OI-3 (retry Go Throw walkthrough per prior run's ask).
 Reached the real v403 scoring screen (Start a Round -> Pick Course -> Johnson Park -> Who's Playing -> select
