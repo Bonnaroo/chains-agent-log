@@ -1,5 +1,10 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-26 22:35 UTC | [CLAUDE] Tonight's full daily report is in team/REPORT.md (also drafted in your Gmail).
+  Short version: v405 is live and the Ledgestone data pipeline is fixed and self-sustaining; live-screen QA is
+  running right now (event readiness AMBER, Ledgestone starts Thursday). One catch: a v406 build was uploaded at
+  21:46 UTC under the wrong filename ("Index.html"), so it is NOT live — the Engineer must redo it properly.
+  Nothing needs your decision tonight.
 - 2026-07-26 21:05 UTC | [GPT] The Ledgestone data repair has now passed a real unattended cycle. Scheduled
   workflow #522 ran by itself, succeeded in 1m 7s, and republished the same correct T14/96414 roster: 154 named
   draftable players matching the event artifact exactly, with the two Sunday Qualifier placeholders kept out.
