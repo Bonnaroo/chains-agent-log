@@ -1,23 +1,30 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## WHAT I DID
-CEO shift (2026-07-26). Created team/LOCK.md (didn't exist before). Processed FROM_OWNER.md — all four owner
-items moved to HANDLED, each already mapped to a board task or STRATEGY.md entry. Ran the Ledgestone Open
-pre-event readiness pass (EVENT_READINESS.md): verified event ID/name/dates/standings/schedule/Live-Chains are
-all correct against the real DGPT/PDGA source, but found and filed two real HIGH-PRIORITY gaps — T-014 (real
-156-player MPO field is published but not synced into the Picks page, so nobody can draft yet) and T-015 (T14's
-draft order looks reversed: Kadey, last event's BEST finisher, picks first instead of last). Updated TO_OWNER.md.
+Second CEO shift (2026-07-26, ~2 min after the first). No new owner input and no product decision needed — this
+was a bookkeeping fix. FROM_OWNER.md still showed all five owner items under NEW even though the prior shift's
+log claimed they'd been moved to HANDLED; the actual file edit never landed. Fixed it: FROM_OWNER.md now shows
+NEW empty and all five items filed under HANDLED with their routing (T-009/T-014/T-015 for Ledgestone, T-010 ace
+wall, T-011 in the bag, T-012 Go Throw, T-013 leagues, STRATEGY.md for the virtual-work/Phase-2-sooner item).
+Did not re-run the event-readiness audit — nothing changed in the last 2 minutes, so re-auditing would be
+busywork. Checked GitHub Issues on chains-app: none open. Checked for stalling: too early to call it (T-014/
+T-015 were only filed last shift), but they're still sitting ASSIGNED, unclaimed.
 
 ## WHAT'S NEXT AND WHOSE JOB IT IS
-Engineer: T-014 and T-015 are the most time-critical items on the board — Ledgestone Open starts 2026-07-30, so
-these need to close in the next shift or two, before T-001/T-002/T-006 etc if there's a scheduling conflict. PM:
-groom the board — it now has 15 tasks total and several roles (pm/engineer/qa/designer) haven't had a real shift
-yet; make sure T-014/T-015 get picked up first given the event clock. QA: once T-014/T-015 are built, verify the
-field matches the real PDGA field 1:1 and the draft order matches "last place picks first" before signing off.
+Engineer: T-014 (sync the real 156-player Ledgestone MPO field into the Picks page) and T-015 (fix the reversed
+draft order) are still unclaimed and are the team's #1 priority — Ledgestone Open starts 2026-07-30. Claim one
+(or both) and get them IN_PROGRESS this shift; don't let another shift pass with them sitting ASSIGNED. QA: once
+Engineer builds T-014/T-015, verify the field matches the real PDGA field 1:1 and the draft order is last-place-
+first before signing off. PM: nothing urgent beyond keeping an eye on T-014/T-015 staffing if Engineer shifts
+keep skipping them.
 
 ## WATCH OUT FOR
-- Ledgestone Open starts 2026-07-30 — T-014/T-015 are the real go/no-go items, not cosmetic.
+- Ledgestone Open starts 2026-07-30 — T-014/T-015 are the real go/no-go items, not cosmetic, and haven't been
+  claimed yet as of this shift.
 - Do NOT start any Phase-2 coding rebuild before 2026-07-29 (STRATEGY.md gate) — still not in place (owner
   hasn't provided GitHub access yet).
 - Never disrupt App A / the founders' league data — friends are playing their season on it.
-- Browser flakiness: commit button moves after adding a file; verify commits via API/SHA (raw CDN caches).
+- Browser flakiness: commit button moves after adding a file; verify commits via API/SHA (raw CDN caches for
+  minutes — this bit us this shift: raw showed a stale BOARD.md missing T-014/T-015 that the contents API
+  correctly showed present). Always verify file edits landed via the contents API, not just by trusting a prior
+  shift's log entry.
