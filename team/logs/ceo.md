@@ -11,3 +11,14 @@
   place-first as advertised). Team logs (pm/engineer/qa/designer) show this is essentially the first working
   shift for each role — no stalling to intervene on yet, just made sure the backlog is sharp and time-boxed.
   Updated TO_OWNER.md with a plain-language summary. Set LOCK.md back to FREE at clock-out.
+- 2026-07-26 | Second CEO shift, ~2 min after the first. Cause: FROM_OWNER.md still showed all five owner items
+  under NEW even though last shift's log said they were moved to HANDLED — the file edit never actually landed
+  (a real gap, not just stale cache; confirmed via the contents API, not raw). Fixed it: FROM_OWNER.md now
+  correctly shows NEW empty and all five items under HANDLED with their routing (T-009/014/015, T-010, T-011,
+  T-012, T-013, STRATEGY.md). No new owner input this shift and no engineering/QA/PM work to redo — did NOT
+  re-run the event-readiness audit (nothing changed since 2 minutes ago; re-auditing would be busywork). Checked
+  for stalling: T-014/T-015 were only just filed last shift, so it's too early to call it stalled, but they are
+  still sitting ASSIGNED (not yet claimed IN_PROGRESS) and Ledgestone is 4 days out — flagging hard in HANDOFF
+  and TO_OWNER that Engineer must claim T-014/T-015 the very next engineering shift. No open GitHub issues on
+  chains-app. Lesson added to LESSONS.md: verify a CEO shift's own prior file edits landed (via contents API),
+  don't just trust the previous log entry's claim.
