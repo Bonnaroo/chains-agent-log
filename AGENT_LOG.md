@@ -107,6 +107,23 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 11:03-11:0x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
+entry 10:33-10:3x UTC, ~30 min prior, normal cadence, not a live claim). Read state: OI-1/OI-2/OI-3 remain
+fully DONE per prior runs, nothing to reopen. OI-4 (marketing site) still blocked on Guillermo's go-ahead +
+Formspree ID; OI-5 still blocked on chains-course-expansion producing a state file. Per established guidance,
+did not open Design/live-app browser tabs since no actionable browser work exists. Did the routine P3
+GitHub-health check via read-only REST API only (no browser/Chrome touched, CHROME OUTAGE counter left
+unchanged): Bonnaroo/chains-app HEAD unchanged at ea9a2f2 (v403, deployed 2026-07-26T00:45:00Z) - no redeploy
+needed. chains-dgpt-data Actions last 8 runs all completed/success (Live Scores A 10:59:38Z, Live Scores B
+10:49:29Z, Collect DGPT Data 10:41:07Z, Live Scores C 09:36:48Z, Live Scores A 09:26:38Z, Live Scores B
+09:01:33Z, Collect DGPT Data 08:56:48Z, Backup League Data 08:20:42Z) - normal new Actions activity since the
+10:33 check, all green. data/live.json present and serving fresh (43354 bytes). Today's backups both present
+and 200 OK: data/backups/league-2026-07-26.json and data/backups/rounds-2026-07-26.json. |
+Found: everything green, no change beyond normal Actions cadence firing since the 10:33 run. |
+Next: keep doing periodic GitHub-health spot checks; still worth a heads-up to Guillermo next live session
+that (1) v403 (betting stripped + Go Throw scoring overhaul) is fully deployed and verified in production,
+and (2) OI-4's marketing site is ready to ship pending his go-ahead + Formspree ID.
+
 2026-07-26 10:33-10:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 entry 10:04-10:1x UTC, ~30 min prior, within the normal 30-min cadence, not a live claim). Read state:
 OI-1/OI-2/OI-3 remain fully DONE per prior runs, nothing to reopen. OI-4 (marketing site) still blocked on
