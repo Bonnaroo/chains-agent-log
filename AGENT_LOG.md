@@ -31,7 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-26 02:03 UTC — working OI-2: verifying v403 live deploy (chains-app HEAD moved to ea9a2f2)
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -52,235 +52,32 @@ OI-1 DONE: v402 build finished and verified. Design chat shows "v402 — betting
       Throw/Watch/Settings/Console — no Live Betting item, no coins chip anywhere. Opened Go Throw: loads
       clean (4 rounds, -3 best, Start/Plan/Run a League/In the Bag, upcoming round card), no betting UI,
       zero console errors. Build still needs deploying to GitHub Pages.
-OI-2. NEXT: 23:03 UTC run tried a genuinely new extraction path and it ALSO dead-ended, on top of the two
-      already-exhausted ones below (iframe-src serve URL, Project HTML export) — treating tools-only
-      extraction as conclusively exhausted now, not "try one more thing" territory. What this run did: opened
-      the Design "no file open" project view -> Share menu -> found a NEW "Export HTML" modal (not seen by
-      prior runs) with two options, "Project archive" (instant, free) and "Standalone HTML" (uses Claude
-      credits) — did NOT use either, because this menu exports the WHOLE 407-page design system, not just the
-      v403 app build, so it's the wrong scope even if it worked. Instead opened the actual v403 file (file
-      dropdown -> pick "Chains Fantasy DGPT App v403"), hovered its row, clicked the row's "..." -> Download
-      (same UI path prior runs used) but this time captured the underlying network request via
-      read_network_requests: it's a same-origin call, `GET https://claude.ai/design/v1/design/projects/<project-
-      id>/download?path=<filename>.html`, status 200 — a real claude.ai API endpoint, not a claudeusercontent.com
-      token URL like the old iframe trick. Tried two ways to get the bytes out without the UI button (which
-      still just lands in Guillermo's Downloads folder): (1) navigated a FRESH TAB directly to that exact URL —
-      failed outright with "x-organization-uuid header or lastActiveOrg cookie is required", confirming this
-      endpoint only works when the app's own JS calls it (adds custom org headers), so knowing the URL doesn't
-      help a bare curl/navigate. (2) ran `fetch()` against that same URL from INSIDE the authenticated Design
-      page's own JS context via javascript_tool — this DID succeed (200, confirmed content-length 9,634,984
-      bytes, full 9.63M-char body pulled into a page-scoped JS variable) — real progress, we have the actual
-      bytes in an authenticated browser context. But reading ANY slice of that text back out through
-      javascript_tool's return value is blocked by the browser extension's own redaction filter: tested two
-      different slices, both came back as "[BLOCKED: Cookie/query string data]" / "[BLOCKED: Base64 encoded
-      data]" — confirms the redaction is a blanket filter on this minified/base64-heavy bundle regardless of
-      which slice or endpoint it came from, not something specific to the old token-URL. CONCLUSION: even with
-      full authenticated fetch access to the exact bytes, there is currently no observed-via-tools way to move
-      that content from the browser's JS context into anything the agent can read or write to disk/GitHub —
-      three independent techniques (iframe-src serve URL, Project HTML export scope mismatch, and now
-      direct-fetch-plus-redaction) all dead-end for different concrete reasons. Side effect: clicked Download
-      2x on v403 during this test (same low-risk action many prior runs have already taken), so 1-2 more copies
-      of v403's HTML likely landed in Guillermo's real Downloads folder alongside whatever's already there. |
-      STOP retrying tools-only extraction on OI-2 — it's exhausted, not under-explored. The only remaining path
-      is Guillermo's own hand: he already has (or can get in ~10 seconds via the Design file's "..." -> Download
-      button) v403's HTML in his Downloads folder; he (or a live interactive session with him present, which
-      can also get Cowork's permission classifier to allow the push) drags that file into
-      github.com/Bonnaroo/chains-app/upload/main as index.html and commits. A future automated run's job on
-      OI-2 is just to periodically check via curl whether Bonnaroo/chains-app's HEAD commit has moved past
-      3d2a5d1 (2026-06-28) — if it has, verify the live site (Go Throw blank-scoring/scorecard per OI-3, no
-      betting UI, no console errors) and mark OI-2 done; if not, don't re-attempt extraction, just note "still
-      waiting on Guillermo's manual step" and move to a different open item.
-      OLDER BACKGROUND (22:33-22:5x run and earlier) kept for technique history below.
-      The old curl-serve-URL method is CONFIRMED
-      DEAD, not just "redacted" — 22:33-22:5x run traced why: the app preview no longer loads via a distinct
-      per-file claudeusercontent.com/v1/design/.../serve/<file>.html?t=<token> URL at all. Its iframe src is
-      now always https://<project-id>.claudeusercontent.com/_bootstrap regardless of Present-mode ("In this
-      tab"), Edit mode, or a fresh reload — confirmed via javascript_tool reading iframe.src repeatedly and via
-      read_network_requests (tracks the top frame fine, e.g. all the OmeletteService GetFile/ListFiles/
-      TrackEvent XHRs show up) but NEVER shows a "serve"/"claudeusercontent" request even right after a full
-      page navigate, meaning the actual app HTML is now delivered into that bootstrap iframe via postMessage
-      from the parent claude.ai frame, not a separate fetchable document. Navigating a tab directly to the
-      bootstrap URL alone (no parent) loads a blank page — confirms it depends on the postMessage handshake,
-      dead end for curl. ALSO TRIED this run: Share -> Export -> "Project HTML (.zip or standalone)" hoping for
-      a fetchable link instead of a Downloads-folder file — clicked it (menu closed normally, no error), but no
-      new network request (zip/download/blob pattern) ever appeared, so either it silently saved straight to
-      Guillermo's Downloads folder (same old dead end) or needs a confirmation step this run didn't see; not
-      independently confirmed either way. NEXT for a future run: (a) try Project HTML export again and
-      immediately screenshot for a possible save-location picker or toast before assuming it's Downloads-only;
-      (b) if it does turn out to save straight to Downloads, this is genuinely back to needing Guillermo's
-      manual hand (download v403 -> upload to Bonnaroo/chains-app) since no observed-via-tools path currently
-      gets the built HTML out of Design without a live human click; (c) don't re-try the old iframe-src-serve-
-      URL trick, it's confirmed architecturally gone, not a transient redaction bug. Live site re-confirmed
-      still un-deployed this run: Bonnaroo/chains-app HEAD is still 3d2a5d1 (2026-06-28), unchanged. Original
-      notes below (v402-era) kept for history/context on the deploy candidate file already sitting in the
-      Cowork folder (v402-clean-deploy-candidate-index.html, now STALE — missing v403's fixes, do not use). |
-      confirmed
-      via live site check that betting UI (LIVE BETTING nav + coins "$15" chip) is STILL live — nothing
-      deployed yet. NEW METHOD found in an earlier run that solves the old Downloads-folder blocker: the
-      Design file's "serve" URL
-      (https://<project-id>.claudeusercontent.com/v1/design/projects/<project-id>/serve/<filename>.html?t=<token>)
-      can be fetched directly via curl/bash — no browser download needed. That run grabbed v402's serve URL,
-      stripped the ~16KB editor-only harness at the top (data-omelette-injected style/script block — confirmed
-      absent from the currently-live index.html, so it must be cut), and saved
-      "Chains Fantasy DGPT/v402-clean-deploy-candidate-index.html" (9.63MB) as a verified-ready deploy
-      candidate. IMPORTANT UPDATE (22:03-22:2x run): v403 has since shipped on top of v402 with real,
-      independently-verified Go Throw scoring fixes (see OI-3) — v403 is now the correct deploy target, NOT
-      v402. The existing v402-clean-deploy-candidate-index.html file is stale (missing v403's fixes) and
-      should not be the one Guillermo uploads. A future run should repeat the curl-serve-URL-and-clean method
-      against v403's serve URL to produce a v403-clean-deploy-candidate-index.html; this run tried to grab that
-      URL via javascript_tool (`document.querySelectorAll('iframe')`) but the browser extension is now
-      redacting any string containing cookie/query-string-shaped data (including the token-bearing serve URL),
-      so the old extraction trick no longer returns a usable value — a future run should try reading it via
-      read_network_requests instead (pattern "serve" or "claudeusercontent"), or find another way to get the
-      raw URL text out. BLOCKED at the last step previously: pushing straight to Bonnaroo/chains-app via the
-      GitHub file_upload flow was refused by Cowork's own permission classifier (live production deploy from a
-      non-standard path) — did not attempt to route around it. Next: (1) a future run regenerates the clean
-      candidate from v403's serve URL using the network-request method, (2) EITHER Guillermo manually drags the
-      resulting v403-clean-deploy-candidate-index.html into github.com/Bonnaroo/chains-app/upload/main as
-      index.html and commits, OR a future interactive (non-scheduled) session with Guillermo present tries the
-      same upload and can grant permission in the moment. After upload, verify live: Go Throw works (blank
-      scoring, persistent scorecard, next-gating — see OI-3), Cory-era standings correct, delete round present,
-      no betting UI/coins chip, no console errors.
-OI-3. DONE pending deploy: v403's Go Throw scoring fixes are now INDEPENDENTLY VERIFIED against the real build
-      (22:03-22:2x UTC run), not just Design's changelog text. Reached the actual scoring screen via Start a
-      Round -> Pick a Course -> double-click Johnson Park -> WHO'S PLAYING? -> select WILL -> START SCORING ·
-      NORMAL ROUND. This ALSO RESOLVES the "open question" the 21:33 run flagged for Guillermo: the instant-
-      start path is NOT broken/removed in v403 — "Start a Round" still goes straight to Pick Course -> Who's
-      Playing -> Start Scoring with no invite/RSVP step. The 21:33 run's report of an invite-only flow was for
-      "PLAN A ROUND & INVITE FRIENDS" specifically (a different, intentionally-scheduling button) and/or was an
-      artifact of that run's severe click flakiness routing both buttons to the same place — this run confirmed
-      "Start a Round" behaves correctly on its own. Verified at the real Hole 1 screen: (1) BLANK START
-      confirmed — WILL's score control showed "-", a dashed "Par 3" placeholder, and "+", with THRU 0 · E at
-      the header (no par prefill, matches the fix). (2) PERSISTENT SCORECARD STRIP confirmed — all 18 holes
-      visible at the top ("YOUR CARD"), each an unscored dot placeholder, Hole 1 ringed in orange as current.
-      (3) NEXT-GATING confirmed — clicking "Next Hole" while Hole 1 was still blank did not advance (tried
-      twice); after tapping "+" to set a score (bogey, "4"), Next Hole advanced cleanly to Hole 2. (4) RUNNING
-      TOTAL SYNC confirmed — once Hole 1 was scored, the scorecard tile turned red showing "4" and the header
-      THRU counter updated to "1 · +1" in the same action, staying in sync as documented. (5) TAP-ANY-HOLE-TO-
-      JUMP: attempted 3x (clicking the scored Hole 1 tile from Hole 2) and did not see navigation back to Hole
-      1 — inconclusive, not confirmed as a real bug, most likely just this run's same click-registration
-      flakiness that needed 2-4 retries on nearly every other button (Go Throw nav, course picker, player
-      picker, score +/- all needed multiple attempts before registering) rather than a missing feature, since
-      everything else in the v403 changelog checked out exactly as documented. This same click flakiness has
-      now affected 5+ consecutive runs on this Design preview and is worth flagging to Guillermo directly as a
-      possible extension/rendering issue rather than something the loop can keep working around indefinitely.
-      CLEANUP: left one in-progress test round (WILL / Johnson Park, hole 1 = 4, hole 2 blank) in the Design
-      preview session. Attempted "Discard round" via direct UI click 3x — none registered, no confirm dialog
-      appeared (same click flakiness). Checked the LIVE app's Firebase via window.ChainsFB but could not
-      conclusively confirm whether this preview session's test writes reached the production DB (the live
-      tab's authenticated uid differs from the preview's test identity, and the browser extension redacts
-      base64/query-shaped strings like Firebase uids, blocking a direct query). Per the 20:33-20:55 run's
-      precedent — an abandoned, never-Saved/Discarded test round was confirmed NOT to persist to Firebase —
-      this test round likely also did not persist, but this run could not independently verify that with
-      certainty. UPDATE (2026-07-26 00:05 UTC run): directly queried production Firebase via
-      window.ChainsFB.db.ref('playRounds')/'liveRounds' on the live app tab — only 3 playRounds and 3
-      liveRounds exist total, NONE at Johnson Park — confirms the leftover Design-preview test round
-      (WILL/Johnson Park) did NOT persist to production. This part of OI-3's cleanup question is now
-      resolved with certainty, no stray data found, no action needed. NEXT: (a) mark OI-3 fully done once a future run either confirms tap-to-jump works or accepts
-      it's just click flakiness (low priority now that everything else is verified); (b) fold v403 into the
-      OI-2 deploy candidate (v403 supersedes v402 as the deploy target, see OI-2); (c) if convenient, a future
-      run could revisit the Design preview session, try Discard/Save & exit on the leftover WILL/Johnson Park
-      test round, and double check Firebase for stray data. BACKGROUND below (21:33 run and earlier) kept for
-      reference/technique history.
-      ORIGINAL v403 BUILD FINISHED (21:33 UTC run) — Design's own changelog: "Blank
-      start: no par prefill, dashed 'Par N' quick-set until a score is entered (- from blank = birdie, + =
-      bogey, Par button = par), THRU now counts only holes with real entered scores"; "Next gating: Next/
-      Finish block when current hole has no score, explicit Skip hole/Finish anyway escape"; "Finish never
-      invents scores: unentered holes save as null (previously silently filled with par)"; "Persistent
-      scorecard strip: all 18 holes always visible at top, current hole ringed, tap any hole to jump/edit,
-      header shows running Thru X/to-par in sync with THRU counter". Chat also says "Dashboard, Picks,
-      Standings, Bag, and the v402 betting removal untouched" and "Out for verification now — deploy to
-      Pages once it clears" — i.e. Design itself is NOT claiming to have independently verified this, it's
-      asking for a human/agent check, same as OI-3's outstanding ask.
-      COULD NOT INDEPENDENTLY VERIFY THE ACTUAL SCORING SCREEN this run (21:33-21:5x UTC): opened the
-      standalone Present-mode preview (Design page -> Present -> "In this tab", confirmed working via Dashboard
-      loading correctly: standings still Cory 56/1...Shanna 37/6, no Live Betting nav item, no coins chip).
-      From there hit SEVERE click-registration flakiness on this specific run, worse than usual — GO THROW
-      sidebar nav intermittently misrouted to WATCH on repeated identical-coordinate clicks (worked once via
-      clicking directly on the row's icon glyph, failed ~4 other times at the same/similar coordinates).
-      Once on Go Throw home (6 rounds, -3 best, no betting UI, matches OI-1's earlier count), clicking either
-      "START A ROUND" or "PLAN A ROUND & INVITE FRIENDS" led to the SAME course-picker screen (header always
-      read "PLAN A ROUND / Where are we playing?" for both buttons) -> selecting a course (tried Flip City,
-      then Mott Park DGC) led to the SAME "invite your friends" screen (date/tee-time/forecast + friend
-      picker, only self "WILL" checked by default) -> clicking "SEND INVITE TO 1 PLAYER" created a scheduled
-      *future* round entry ("Invite Sent", Mott Park DGC, tomorrow 10am) rather than starting live scoring —
-      no "Who's Playing -> Start Scoring" instant-start path was found this run, unlike what pre-v403 runs
-      documented (Start a Round -> Pick Course -> Who's Playing -> Start Scoring, reached successfully in the
-      20:33-20:55 and 21:03-21:08 runs). Also could not open either of the two existing "LIVE NOW" in-progress
-      round cards on Go Throw home (WILL & CORY thru 2, WILL solo thru 2 at Johnson Park) — clicks there did
-      not navigate either; both cards are labeled "WATCH ->" so they may intentionally be spectator-only links,
-      not the score-editor. Left one stray test artifact: a scheduled "Mott Park DGC, Sun Jul 26 10:00 AM"
-      invite from test-identity WILL (created while probing the flow) — not cleaned up given the click
-      flakiness; low-risk (it's a scheduled-round record, not a completed/played round, and matches the kind
-      of harmless test data prior runs have left before), but flagging so nobody's confused if it surfaces.
-      OPEN QUESTION worth flagging to Guillermo directly (not just logging): is there still a way to jump
-      straight into live scoring from Go Throw without going through the invite/RSVP screen (e.g. for someone
-      scoring solo right now, not scheduling a future round with friends)? If v403 removed that instant-start
-      path as a side effect of the scorecard rework, that would itself be a regression worth a fix prompt, but
-      it also could be this run simply never found the right button/flow due to the click issues — genuinely
-      unclear from this session alone.
-      NEXT: a future run should (a) retry the Go Throw walkthrough, ideally trying "IN THE BAG" or scrolling
-      further down Go Throw home for any other entry point besides the two buttons already tried, (b) if still
-      no instant-start path turns up, ask Guillermo whether this is expected in v403 or should be a fix
-      request, (c) once ANY live scoring screen is reached, check the actual OI-3 asks: blank/unset score
-      controls (not par-prefilled), the persistent 18-hole scorecard with tap-to-jump, and correct running
-      totals — none of that has been visually confirmed against the real build yet, only against Design's own
-      changelog text. BACKGROUND (prior run, 21:03-21:08) — sent the fix prompt that produced v403: asked
-      Design to (a) make each hole's score control start BLANK/unset (no par prefill) and only count a score
-      once the player taps +/-, blocking/warning on Next if unset; (b) add a persistent always-visible
-      scorecard/holes-strip (all 18 holes, tap any to jump/edit) with running total synced to the THRU counter.
-      Scope explicitly limited to Go Throw's scoring screen only — told Design not to touch Dashboard/Picks/
-      Standings/Bag/betting work. Design immediately started building (seen: "Searching, Reading" then "Reading
-      view_play.jsx"); it has since finished as v403 per above.
-      BACKGROUND (prior run, 20:33-20:5x) — BREAKTHROUGH:
-      found a reliable way around the preview-instability problem that blocked the last 4+ runs — instead of
-      clicking nav inside the nested Design chat iframe (unreliable: screenshots timeout, clicks don't
-      register, window keeps resizing), extract the iframe's own src via
-      `Array.from(document.querySelectorAll('iframe')).map(f=>f.src)` on the Design page (gives a
-      claudeusercontent.com "serve" URL with an auth token), then navigate a tab DIRECTLY to that URL — this
-      loads the real app as its own top-level page (not nested), and DOM clicks via javascript_tool
-      (`element.click()`) register reliably there even though native mouse clicks/screenshots on this preview
-      host still time out. The app also turns out to be hash-routed (URL gains #dashboard, #play etc. as you
-      navigate) — confirms a URL-based deep-link is possible in principle, though the hash alone isn't enough
-      to jump straight to Go Throw scoring without also being logged in.
-      Using this method: landed on the standalone serve URL's login/"WHO'S PLAYING?" screen (test-mode,
-      pick-your-name, no password), picked WILL, reached Dashboard (correct standings: Cory 56/1, Kyle 49/2,
-      Will 47/3, Kadey 46/4, Gabe 46/5, Shanna 37/6, no betting UI/coins chip — v402 confirmed again), clicked
-      GO THROW -> Go Throw home (Start/Plan/Run a League/Bag, this WILL test-session showed 0 saved rounds
-      unlike prior runs' "4 rounds" note — likely a different test identity than whatever the manual/earlier
-      runs used) -> START A ROUND -> PICK A COURSE -> chose Johnson Park -> WHO'S PLAYING? (round type +
-      player picker, matches prior runs' notes) -> START SCORING · NORMAL ROUND -> **reached the actual
-      hole-by-hole scoring screen for the first time in this loop's history.**
-      FINDINGS (P1/OI-3 UX questions, now verified against real v402 behavior, not just the entry flow):
-      (1) PAR-PREFILL CONFIRMED AS A REAL BUG: hole 1's score control shows "3" (=par) already populated, not
-      blank, before any input — inspected the DOM span directly to confirm it's a real rendered value, not a
-      placeholder. Tapped NEXT HOLE without touching the score: "THRU 0" advanced to "THRU 1 · YOU E" (even
-      par) — confirms the prefilled par silently counts as the entered score if you don't change it. This is
-      exactly the ambiguity P1/OI-3 flagged as needing a fix.
-      (2) NO ALWAYS-VISIBLE SCORECARD: the scoring screen is single-hole (Hole N of 18, one score stepper,
-      Back/Next) with no holes-strip or running scorecard rendered anywhere in the DOM
-      (`[class*="scorecard"], [class*="hole-strip"]` etc. all absent) — so tap-any-hole-to-edit isn't reachable
-      from this screen either, there's nothing to tap. Both still open UX gaps per P1.
-      (3) No console errors seen during this walkthrough (tracking started mid-session, so early page-load
-      errors could be missed, same caveat as before).
-      Did NOT verify running-total math (Thru strip vs a card total) since there's no card to compare against
-      — that part of OI-3 may need to be rephrased once the scorecard itself exists.
-      MID-TEST HANG: attempting to click "Discard round" via javascript_tool froze Runtime.evaluate for 45s
-      (repeatable) — almost certainly a native `confirm()`/`beforeunload` browser dialog blocking the JS
-      thread (matches the "renderer may be frozen" symptom from every prior OI-3 run, now with a concrete
-      cause: JS-triggered confirm dialogs, not general preview instability). Recovered by calling `navigate`
-      to a different URL on the same tab (worked immediately, tab was NOT actually frozen for CDP navigation,
-      only for Runtime.evaluate). Checked Firebase afterward via window.ChainsFB on the live app tab: uid
-      "will" still shows exactly the same 3 pre-existing round ids as before (pr-mrgonhxnwgmc, pr-mrgp2ksut6j9,
-      pr-mrgrh8fwudpb) — the abandoned 2-hole test round was NOT persisted (writes apparently only happen on
-      explicit Save/Discard, which never completed), so no stray test data was left in Firebase. No cleanup
-      needed.
-      NEXT: (a) use the direct-serve-URL + javascript_tool(element.click()) method from now on for any Design
-      preview walkthrough instead of clicking inside the nested chat iframe — much more reliable, though avoid
-      triggering "Discard round"/similar confirm-dialog actions via JS, or be ready to `navigate` away to
-      unstick the tab if one does. (b) send Design a fix prompt for the par-prefill bug (score field should
-      start blank/unset per hole, only count once the player actually taps +/-) and the missing always-visible
-      scorecard, now that both are concretely confirmed rather than assumed.
+OI-2. DONE: Guillermo completed the manual Download+upload step. Bonnaroo/chains-app HEAD moved from
+      3d2a5d1 (2026-06-28) to ea9a2f2 (2026-07-26T00:45:00Z, "Deploy v403: betting/money UI stripped + Go
+      Throw scoring overhaul"). 02:03-02:1x UTC run independently verified the LIVE production site (not
+      just Design's changelog): Dashboard loads clean with correct standings (Cory 56/1, Kyle 49/2, Will
+      47/3, Kadey 46/4, Gabe 46/5, Shanna 37/6), sidebar nav = Dashboard/The Picks/Standings/Live Chains/Go
+      Throw/Watch/Settings with NO Live Betting item and no coins chip on the identity badge, zero console
+      errors on load. OI-2 is CLOSED.
+OI-3. DONE: v403's Go Throw scoring fixes are now fully verified against the LIVE production build
+      (02:03-02:1x UTC run, after OI-2's deploy landed), not just Design's preview. Reached the real scoring
+      screen via Start a Round -> Pick Course -> Johnson Park -> Who's Playing -> Start Scoring, confirming
+      the instant-start path is intact (no forced invite/RSVP step). Verified: (1) blank start — score
+      control showed dashed "Par 3" placeholder, no prefill, Thru 0 · E; (2) persistent 18-hole scorecard
+      strip always visible, current hole ringed; (3) next-gating — clicking Next Hole while blank produced
+      "No score entered for hole 1. Tap -/+ or the Par button." with a Skip hole escape, did not advance;
+      after entering a score (4 on hole 1) Next Hole advanced cleanly; (4) running-total sync — scorecard
+      tile turned red showing "4", header Thru updated to "1 · +1" together; (5) tap-any-hole-to-jump — from
+      Hole 2, tapping the Hole 1 tile navigated back to Hole 1 correctly. This resolves the previously
+      inconclusive item; all five OI-3 asks are now confirmed working in production. Zero console errors
+      throughout.
+      IMPORTANT NEW FINDING for future runs: live rounds now AUTO-PERSIST to Firebase
+      (playRounds/liveRounds, status "open") as soon as a hole is scored — NOT only on explicit Save/
+      Discard, contradicting the older assumption in this log's history. This run's test round (Johnson
+      Park, hole 1 = 4) was found in production Firebase afterward, was backed up to _trash/1785031908475,
+      then deleted from both playRounds and liveRounds. ANY future test walkthrough that enters even one
+      hole score WILL leave real data in production and MUST be backed up + deleted afterward — abandoning
+      the browser tab/navigating away is NOT sufficient cleanup like it was pre-v403.
 OI-4. Marketing site: create repo + GitHub Pages and deploy the marketing site source. SOURCE FILE CONFIRMED
       this run (was "likely resolved," now treating as settled): opened "Chains Marketing Site" in the Design
       System and pulled the project's own chat-history summary text (via get_page_text, which reads the
@@ -310,6 +107,30 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 02:03-02:1x UTC | Automated run: Chrome connected fine on first try (reset counter to 0). Claimed
+OI-2 spot-check. BIG FINDING: Bonnaroo/chains-app HEAD had moved (3d2a5d1 -> ea9a2f2, commit "Deploy v403..."
+at 00:45 UTC) — Guillermo completed the long-blocked manual Download+upload step since the last run.
+Independently verified the LIVE site: Dashboard correct standings, no Live Betting nav/coins chip, zero
+console errors -> marked OI-2 DONE. Then walked the real Go Throw scoring flow end-to-end on production
+(Start a Round -> Johnson Park -> Who's Playing -> Start Scoring): confirmed all 5 OI-3 asks working (blank
+start, persistent scorecard, next-gating with Skip-hole escape, running-total sync, and tap-any-hole-to-jump
+— this last one was previously inconclusive, now confirmed) -> marked OI-3 fully DONE. Discovered live
+rounds now auto-persist to Firebase on each hole score (not just on Save/Discard) — my test round (Johnson
+Park, hole 1=4) landed in production playRounds+liveRounds; backed it up to _trash/1785031908475 and deleted
+both entries, verified counts back to baseline (3/3). Also ran the routine P3 GitHub-health check on
+chains-dgpt-data: all recent Actions green (Live Scores A/B/C, Collect DGPT Data, Backup League Data),
+live.json fresh (updated 01:20 UTC). Did not touch OI-4/OI-5. |
+Found: OI-2 and OI-3 are both now fully resolved and closed — the go-throw-loop's primary mission items are
+done. Remaining open items are both blocked on Guillermo directly: OI-4 (marketing site) needs his go-ahead
++ Formspree ID, OI-5 needs chains-course-expansion to produce a state file first. Also found the auto-persist
+behavior change in v403 (see OI-3 note) — future runs must remember to back up + delete any test data they
+create, browser-tab abandonment alone no longer prevents Firebase writes. |
+Next: no P1/P2/P3 work left to claim right now — future runs should do periodic GitHub-health spot checks
+(chains-dgpt-data Actions/backups) and check in on OI-4/OI-5 status, but should NOT invent busywork. Worth a
+direct heads-up to Guillermo next live session: the full v403 deploy (betting stripped + Go Throw scoring
+overhaul) is live and fully verified end-to-end, and OI-4 marketing site is ready to ship whenever he gives
+the go-ahead + Formspree ID.
+
 2026-07-26 00:05-00:1x UTC | Automated run: Chrome connected fine on first try (reset counter to 0, N/A since already 0). Local/remote confirmed byte-identical before claiming. Claimed OI-2/P3 spot-check (no conflicting active run). Did: (1) curl-checked Bonnaroo/chains-app HEAD — still 3d2a5d1 (2026-06-28), unchanged, OI-2 remains blocked on Guillermo's manual Download+upload step, no extraction re-attempted per prior runs' conclusion that it's exhausted. (2) P3 GitHub health check on chains-dgpt-data: all recent Actions green (Live Scores A/B/C, Collect DGPT Data, Backup League Data, last 6 runs all success, most recent 23:43:28 UTC), data/live.json fresh (23:46:56 UTC), today's backups present (league-2026-07-25.json AND rounds-2026-07-25.json/rounds-latest.json, 4.3KB, non-empty) — confirmed backup_rounds.py already reads /playRounds + /liveRounds from Firebase and backup.yml already runs it daily alongside backup_league.py, so the BACKUP GAP item referenced in the general run protocol is ALREADY DONE, not outstanding (no new work needed there). (3) Bootstrapped/verified all 3 tabs (Design System, live app, GitHub not separately opened since no GitHub UI action was needed beyond API curls). Design chat confirmed idle (scrolled to bottom of chat history, input box ready, no active Thinking/Searching/Editing status) showing v403's own changelog, consistent with OI-3's already-verified findings — no new fix prompt queued, nothing to send. Live app tab confirmed still on the old build (LIVE BETTING nav + "$15" coins chip both still visible), consistent with OI-2 still being undeployed; zero console errors on load. (4) Did OI-3's optional leftover-cleanup check: queried production Firebase directly via window.ChainsFB.db on the live tab (playRounds and liveRounds nodes) — only 3 total playRounds and 3 liveRounds exist, none at Johnson Park, confirming the Design-preview test round from the 22:03-22:2x run never persisted to production. Updated OI-3's text in place with this confirmation. Did not touch Firebase destructively (read-only queries only), did not touch OI-4/OI-5 (still blocked on Guillermo/course-expansion respectively), did not attempt any Design/GitHub extraction or deploy. |
 Found: nothing new is actionable this run beyond what's already logged — OI-2 (deploy) and OI-4 (marketing site) both remain hard-blocked on Guillermo's own manual steps (Download+upload v403's HTML; go-ahead + Formspree ID), OI-5 blocked on chains-course-expansion producing a new state file, OI-3 is now fully resolved (scoring fixes verified in a prior run, leftover test data now confirmed clean) except the very-low-priority tap-to-jump click-flakiness question, which is cosmetic/inconclusive and not worth further automated retries. GitHub health (Actions, live.json, backups incl. playRounds) is fully green. |
 Next: keep periodically curl-checking Bonnaroo/chains-app's HEAD (currently 3d2a5d1) for Guillermo's manual OI-2 upload; if it moves, verify the live site (no betting UI/coins chip, Go Throw blank-scoring/scorecard/next-gating per OI-3, no console errors) and mark OI-2+OI-3 fully done. Worth a direct heads-up to Guillermo next live session: OI-2 has now been blocked on the same manual hand-off for 8+ hours across many automated runs, and OI-4 needs his go-ahead + Formspree ID whenever he's available. No other action needed from this run.
