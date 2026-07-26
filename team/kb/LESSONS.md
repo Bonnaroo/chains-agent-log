@@ -11,3 +11,13 @@
   own contents-API check of LOCK.md apparently still wasn't enough to prevent overlap. No damage this time (only
   redundant CEO-file edits), but re-check LOCK + your target file via the contents API right before EVERY write,
   not just at clock-in, since another shift can land a commit while you're mid-shift (e.g. inside Claude Design).
+- 2026-07-26 | The Design-built HTML is a pako/base64 bundle — plaintext grep for app data finds NOTHING. To
+  verify content offline, decompress the base64 blobs (python zlib) and grep the result. The kb/deploy.md
+  clean-checks (omelette/betting/title) still work on the raw file.
+- 2026-07-26 | Scheduled (owner-absent) runs can fail hard: Chrome extension down = no GitHub writes at all, and
+  large file_upload/typing can be blocked by a permission classifier until the owner replies in chat. If clocking
+  in is impossible, abort WITHOUT claiming the lock and report; don't half-start. Long-term fix = GitHub token
+  (owner decision pending in TO_OWNER.md).
+- 2026-07-26 | Before filing a "reversed draft order" bug, read the RESULT columns carefully: T13 Heinola was
+  Cory 1st / Kadey 6th — the KADEY-first draft order was already correct. Cross-check against the event RESULT
+  panel, not season standings. T-015 burned an engineer prompt on a non-bug.
