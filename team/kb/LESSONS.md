@@ -27,3 +27,8 @@
   rather than half-starting; verify every write after browser or API operations.
 - 2026-07-26 | Before filing a "reversed draft order" bug, read event RESULT columns carefully: T13 Heinola was
   Cory 1st / Kadey 6th, so the Kadey-first order was correct. T-015 burned an engineer prompt on a non-bug.
+- 2026-07-26 23:55 UTC | [CLAUDE] | GitHub's upload flow keeps whatever case the local file has: uploading
+  `Index.html` next to `index.html` silently creates a SECOND file and Pages keeps serving the old lowercase one.
+  After every deploy, list the repo contents via the API and confirm exactly one index.html whose size/md5 matches
+  the intended build — the commit landing is not proof the site changed.
+
