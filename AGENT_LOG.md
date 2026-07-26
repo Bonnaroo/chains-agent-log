@@ -31,7 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-26 06:03 UTC — working: retry Go Throw via deep-link/hash route (per 05:36 run's ask); routine P3 GitHub health check
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -107,6 +107,40 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+
+2026-07-26 06:03-06:1x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle;
+last entry 05:36-05:44 UTC). Per the 05:36 run's guidance, tried entry path (a): navigated the LIVE
+PRODUCTION app directly (bonnaroo.github.io/chains-app), not Design's preview. #go-throw hash route isn't a
+real deep-link (falls back to #dashboard, same as any invalid hash), so instead clicked the GO THROW sidebar
+item on production itself. RESULT: it worked correctly and landed on the real Go Throw screen (8 rounds, -2
+best, Start a Round/Plan a Round/Run a League/In the Bag, Live Now list) -- NOT a misroute to Watch. Zero
+console errors. This strongly suggests the 6/6 + 2/2 nav-misroute-to-Watch the last two runs saw is confined
+to Design's unlogged post-v403 PREVIEW build (present-mode), not present in the actual deployed production
+site -- production's Go Throw nav is healthy. Did not click Start a Round or enter any scores, so did not
+touch Firebase and no auto-persist cleanup needed this run. Noted but did NOT act on: the Live Now list on
+production currently shows 3 in-progress rounds under "WILL (YOU)" / "WILL & CORY (YOU)" (Johnson Park,
+Otterburn) -- did not open or inspect these to determine test vs. real data, since OI-3's known auto-persist
+behavior means a future run should verify via Firebase directly (not the UI) before assuming these are
+leftover test artifacts rather than genuine user rounds; flagging only, no deletes taken on unconfirmed data.
+Ran the routine P3 GitHub-health check via REST API: chains-dgpt-data Actions still green (3 most recent
+Live Scores runs A/B/C all completed/success, latest 04:48:50Z), data/live.json fresh (sha b0d6af2,
+2026-07-26T04:52:20Z), chains-app HEAD unchanged at ea9a2f2 (v403 production, as expected -- no new Design
+build has been marked ready/downloaded). OI-1/OI-2/OI-3 remain DONE, OI-4/OI-5 unchanged (still blocked on
+Guillermo / chains-course-expansion respectively). Did not push anything to Bonnaroo/chains-app or touch
+Firebase this run -- only this log update. |
+Found: production's GO THROW nav is healthy (contradicts nothing about OI-3, which was already verified on
+production) -- the misroute bug reported by the last two runs appears to be isolated to Design's preview
+environment, not a real production regression. Worth Guillermo knowing this so he doesn't worry the shipped
+app is broken: the nav bug, if real, only affects the in-progress Design build he hasn't shipped yet. Also
+flagging 3 unreviewed in-progress Go-Throw rounds visible on production Live Now (Will solo x2, Will & Cory)
+for a future run or Guillermo to confirm are real, not test leftovers. GitHub, Firebase health otherwise
+normal. |
+Next: a future run should (a) verify via Firebase directly (window.ChainsFB) whether the 3 Live Now
+in-progress rounds are real user data or old test artifacts before touching them, (b) if a future Design
+build gets marked ready, re-test the GO THROW nav specifically in that preview to see if the misroute
+persists now that it's confirmed production-side is fine, (c) keep periodic P3 GitHub-health checks going.
+OI-4 (marketing site) still needs Guillermo's go-ahead + Formspree ID; OI-5 still blocked on
+chains-course-expansion.
 
 2026-07-26 05:36-05:44 UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 entry 05:03-05:2x UTC). Retried the Go Throw preview walkthrough per the 05:03 run's explicit ask (1-2 tries
