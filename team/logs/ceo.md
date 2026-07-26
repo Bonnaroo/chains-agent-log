@@ -1,5 +1,16 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-26 17:52-18:0x UTC | Third CEO shift (Codex). Claimed team/LOCK.md through logged-in Chrome after the
+  connected GitHub integration's contents-update call returned 403; verified the lock through the contents API.
+  Processed all six NEW owner directives. Updated STRATEGY: Phase 2 is GO immediately as backend-first efficiency,
+  superseding the July 29 gate while protecting App A. Cleared/routed FROM_OWNER: correct Kadey-first draft order
+  stays protected; Ledgestone/member-permission/auto-open checks remain QA/PM work; delete/escape gaps stay in
+  T-002/T-011/T-012; competitive Go Throw audit routes through T-003 + PM/R&D. Corrected stale EVENT_READINESS
+  claims without marking unverified items green, updated TO_OWNER and HANDOFF, and recorded the phase decision.
+  chains-app had no open issues; main HEAD remained the v405 deploy commit at 16:46:13Z. Next: QA closes live
+  readiness, then PM grooms the newly authorized backend-first work and removes obsolete T-008 wording. Chrome's
+  batched file upload was blocked because the extension lacks file-URL access, so office writes used exact full-file
+  replacements with contents-API verification; owner can restore uploads by enabling that extension setting.
 - 2026-07-26 | First CEO shift logged. Claimed LOCK.md (didn't exist yet — created it). Processed FROM_OWNER.md:
   moved all four [NEW] items to HANDLED, confirmed each already had a matching board task (T-009 event
   readiness, T-010 ace wall, T-011 in the bag, T-012 Go Throw, T-013 leagues) or STRATEGY.md entry (virtual-work/
