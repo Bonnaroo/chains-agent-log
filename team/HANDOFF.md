@@ -1,56 +1,47 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## LAST WORKER / ROLE / UTC / TASK
-**[GPT] ChatGPT/Codex | CEO | 2026-07-26 21:05 UTC | T-009 scheduled-collection proof**
+**[CLAUDE] Claude/Cowork | QA | 2026-07-27 00:05 UTC | T-014 + T-015 live QA + v406 deploy repair**
 
 ## WHAT CHANGED
-- [GPT] Reused the 20:00 [GPT] Ledgestone collector repair and PDGA-number reconciliation method instead of
-  repeating the visible-app audit or independently approving GPT's own earlier work.
-- [GPT] Proved the fix survives unattended operation: the first post-repair scheduled `Collect DGPT Data` run
-  30219698728 (#522) triggered via schedule at 20:46 UTC, completed Success in 1m 7s, and generated data commit
-  `5fc3a0e7466c3985566efb8bcf8fa2bc95719535`.
-- [GPT] Recorded the immutable-run evidence in T-009, EVENT_READINESS, TO_OWNER, the CEO log, LESSONS, and
-  kb/testing.md. No App A build, Design prompt, deploy, or product-data write was needed.
+- [CLAUDE] Found the 21:46Z v406 deploy never went live: it was committed as miscased `Index.html` (62e2a46)
+  while Pages kept serving `index.html` (byte-identical to v405 commit 1f22274, md5 42da2a19...).
+- [CLAUDE] Verified v406 offline (gzip-decompressed the Design bundle: Ledgestone feed wiring identical to v405;
+  only diff = new "You have a live round open / round in progress" affordance; no harness; betting strings at
+  exact dormant parity with v405), then deployed it to lowercase index.html (chains-app commit 30a2201) and
+  deleted the stray `Index.html` (b3be810).
+- [CLAUDE] Closed T-014 (live feed consumption + 154-pro Registered list verified) and T-015 (not-a-bug,
+  Kadey-first order confirmed live). BOARD, EVENT_READINESS, qa log, LESSONS updated.
 
 ## VERIFICATION / EVIDENCE
-- GitHub Actions page `https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/30219698728` identifies #522 as
-  `Triggered via schedule`, base commit `8e7ba35597d8c760d85437e75302ee6d85b6ce67`, Status Success, 1m 7s.
-- Generated commit `5fc3a0e7466c3985566efb8bcf8fa2bc95719535` contains `data/field.json` updated
-  `2026-07-26T20:47:51.222616+00:00`: T14, event 96414, 154 named players.
-- At the same commit, `data/events/96414-MPO.json` was collected `2026-07-26T20:47:39.365158+00:00` with 156
-  slots: 154 PDGA-numbered players and two `Sunday Qualifier` placeholders. Exact PDGA-number set comparison is
-  154/154 with zero missing and zero extra.
-- Live URL `https://bonnaroo.github.io/chains-app/` loaded with title `Chains · Fantasy DGPT 2026`; this was
-  availability only, not the independent T-014/T-015 interaction pass. App HEAD remains v405 commit
-  `1f22274e4ad9b9746c08be058d69d1ca655c40ab`; open `chains-app` issues remain zero.
-- [GPT] Office writes were re-fetched and verified after commits
-  `8cf2de9892ea75d8a1698e313a54cd99b4494160` (BOARD/EVENT_READINESS/HANDOFF/TO_OWNER),
-  `4bf8aaa696fd75144af21da3d966498a798ee5b3` (LESSONS/testing), and
-  `462b986ba282c18e5c7b0b0ef63f978efac90ec3` (CEO log).
+- Live https://bonnaroo.github.io/chains-app/index.html serves 9,643,999 bytes, md5 98a498e3f6c043a21156376ebadf4641
+  = exact v406 file. Repo root now has exactly one index.html.
+- The live page's own resource timing lists a fetch of
+  raw.githubusercontent.com/Bonnaroo/chains-dgpt-data/main/data/field.json (no cache-buster = app-initiated).
+  That feed at 22:52:22Z: event_tag T14, event_id 96414, 154 players. UI shows "154 pros registered · updated
+  Jul 26, 6:52 PM" — same artifact. Draft order on dashboard + Picks: KADEY, SHANNA, GABE, WILL, KYLE, CORY.
+- Office commits this shift: 9468bf9 (lock claim), then the clock-out batch (see latest commits).
 
 ## DATA / SAFETY
-No data changed this shift. The scheduled collector regenerated public, version-controlled JSON from PDGA; GPT
-performed no Firebase, account, league, pick, standings, round, user, or deletion operation. No backup was needed.
-Legacy `chains-fantasy /league` was not accessed. Betting removal, Watch, Settings, the starter-league pin, and
-the owner-confirmed Kadey-first/Cory-last order remain protected.
+No Firebase, league, pick, standings, round, or user data changed. Entered and exited the Picks "Edit picks" mode
+as WILL-C without selecting any player (returned to read-only). Legacy chains-fantasy /league untouched. Betting
+stays removed; Watch/Settings/starter-league pin/draft order protected.
 
 ## REUSABLE METHOD FOR THE OTHER AI
-[GPT] added a recurrence gate: after a manual workflow run proves a data repair, require the next genuine
-schedule-triggered run and record its run ID, base SHA, generated SHA, and exact-commit artifact reconciliation.
-Claude should reuse this before declaring scheduled collection healthy; a manual green run alone is insufficient.
+[CLAUDE] Deploy verification gate: after any chains-app upload, GET /contents/?ref=main and confirm exactly one
+`index.html` whose size+md5 equal the intended build, then curl the live URL and md5-compare. A green commit with
+a miscased filename ships nothing. (Reused GPT's decompress-and-grep method to verify the bundle offline.)
 
-## WHAT'S NEXT AND WHO OWNS IT
-- [QA] Independently verify the live Registered screen consumes fresh T14/96414 feed data rather than its bundled
-  fallback; reconcile all 154 named players and document how the two Sunday Qualifier placeholders appear.
-- [QA] Verify member own-only drafting, a discoverable Draft Now path, registration-finalized/draft-open behavior,
-  pick-lock/WD handling, and the protected Kadey-first/Cory-last order. Then close T-014/T-015 if all pass.
-- [PM] After the event gate, groom obsolete T-008 wording and split the authorized Phase 2A backend migration into
-  reversible tasks that protect App A.
+## WHAT'S NEXT AND WHOSE JOB
+- [PM] Convert the permission finding into a task: member own-only drafting does not exist — "Edit picks" as a
+  regular member unlocks all six members' players AND scores. Also still open: pick-lock/WD handling at the real
+  first tee (Ledgestone tees off 2026-07-30) and automatic registration-close→draft-open logic.
+- [Engineer] T-002/T-012: v406's live-round banner is a step; the reachable Cancel/Delete round control is still
+  the anchor bug and unverified.
+- [Owner] github-token.txt still holds the placeholder; pasting a real token makes shifts browser-free.
 
 ## WATCH OUT FOR
-- Do not self-approve the independent UI/drafting QA from this CEO/backend shift.
-- Do not treat 154 versus 156 as a roster defect: the two excluded slots are non-numbered Sunday Qualifier
-  placeholders and must not become draftable players.
-- Workflow #522 retains one non-blocking warning: checkout/setup-python target Node 20 and are forced to Node 24.
-- The GitHub connector reads but cannot write repository contents (403); Codex Chrome is the verified write path.
-- Never hand-edit `chains-app/index.html`; never touch legacy `chains-fantasy /league`.
+- Do not upload build files with a capitalized filename; Pages is case-sensitive (see LESSONS).
+- The two Sunday Qualifier slots are non-draftable placeholders, not missing players (154 named is correct).
+- The Picks "Edit picks" mode auto-saves — do not test it by selecting players on the live league.
+- 2026-07-26 lock races: two 21:5xZ claims collided earlier; re-read LOCK via contents API right before writes.

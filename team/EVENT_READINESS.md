@@ -11,10 +11,11 @@ Verified source facts from the 2026-07-26 CEO passes:
 
 ### A. The Picks / Draft
 - [x] Correct event ID, number, name, dates, tier, and location are shown for T14.
-- [ ] LIVE QA PENDING (T-014 REVIEW): v405 is deployed with the field feed + expiring 156-slot fallback; confirm
-      the live Registered list matches PDGA 96414 one-for-one and picks are open for members.
-- [ ] LIVE QA PENDING (T-015 REVIEW): owner ground truth says the displayed order is correct — KADEY first,
-      then SHANNA, GABE, WILL, KYLE, CORY last because Cory won Heinola. Confirm live and close as not-a-bug.
+- [x] LIVE QA DONE — 2026-07-26 23:55 UTC [CLAUDE]: live app (v406) itself fetches data/field.json (verified in
+      resource timing); Registered list shows 154 named pros updated Jul 26 6:52 PM = the 22:52Z feed run for
+      T14/96414; qualifier placeholders not draftable; picks open. T-014 closed.
+- [x] LIVE QA DONE — 2026-07-26 23:55 UTC [CLAUDE]: live order KADEY ... CORY confirmed against the T13 result
+      panel (Cory 1st, Kadey 6th). T-015 closed as not-a-bug.
 - [ ] MEMBER PERMISSIONS / DISCOVERABILITY: confirm a signed-in member can pick only their own players when the
       draft is open; commissioner editing is correction authority, not the normal drafting path. Confirm the
       way to start drafting is obvious. PM must route any failure immediately.
@@ -41,13 +42,17 @@ Verified source facts from the 2026-07-26 CEO passes:
       `5fc3a0e7466c3985566efb8bcf8fa2bc95719535` refreshed `field.json` at 20:47:51Z and event 96414 at
       20:47:39Z; the exact-commit artifacts still reconcile 154/154 numbered players with zero missing/extra,
       plus two non-draftable Sunday Qualifier placeholders.
-- [ ] Verify the live app consumes the repaired field feed before relying on the bundled fallback.
+- [x] VERIFIED — 2026-07-26 23:55 UTC [CLAUDE]: the live page's own network log shows it fetched
+      Bonnaroo/chains-dgpt-data data/field.json; rendered count/timestamp match the 22:52Z generated artifact.
 - [ ] Verify automatic registration-finalized -> draft-open behavior, not just this event's manual/snapshot fix.
 
 ## STATUS
-**AMBER — backend feed repaired; independent live QA remains.** The collector and generated artifacts now cover
+**GREEN except member-permission check.** Field feed, live consumption, roster 154/154, draft order, and picks-open are all verified live on v406. The collector and generated artifacts now cover
 Ledgestone correctly, and v405's fallback still protects availability. T-009 remains open until QA proves the live
-app consumes the repaired feed, confirms member-only drafting/discoverability/lock behavior, and closes T-014/T-015.
+app consumed the repaired feed and T-014/T-015 are closed. REMAINING (PM): member own-only drafting does NOT
+exist today — "Edit picks" as member WILL-C unlocks every member's picks and scores; plus pick-lock/WD behavior
+at the real first tee. Also note: a 21:46Z deploy landed as miscased `Index.html` and never went live; [CLAUDE]
+redeployed v406 to lowercase index.html (commit 30a2201) and removed the stray file (b3be810).
 
 ## REUSABLE
 Repeat A-D for every DGPT event about five days before it starts. Do not accept a correct-looking UI fallback as

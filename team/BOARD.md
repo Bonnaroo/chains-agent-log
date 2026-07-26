@@ -131,7 +131,7 @@ leave, read-only board) work; starter league stays pinned up top. Log defects fo
 **Attempts:** 0
 **Notes:** From FROM_OWNER 2026-07-26.
 
-## T-014 | CEO/PM -> Engineer | REVIEW (HIGH PRIORITY — time-boxed to the event)
+## T-014 | CEO/PM -> Engineer | DONE
 **Goal:** Sync the REAL registered Ledgestone Open MPO field into the app's Picks page. The Picks page for T14
 currently shows "Loading the registered field for this event" even though the real field is published (156 MPO
 players, PDGA event 96414, dgpt.com/event/2026-ledgestone-open, last updated 2026-07-26). Find and fix whatever
@@ -153,8 +153,17 @@ still pass from the expiring fallback; QA must distinguish fallback success from
 2026-07-26 20:00 UTC [GPT] Backend blocker repaired and generated artifacts verified. QA may now perform the
 independent live pass: prove the app consumes fresh T14/96414 feed data, compare all 154 named PDGA-numbered
 players (plus two displayed Sunday Qualifier slots where applicable), and confirm picks are open/own-only.
+2026-07-26 23:55 UTC [CLAUDE] QA CLOSED T-014. Live pass on bonnaroo.github.io/chains-app (v406, commit 30a2201):
+the app itself fetched raw.githubusercontent.com/Bonnaroo/chains-dgpt-data/main/data/field.json (seen in the
+page's own resource timing, no cache-buster) — real feed consumption, not the bundled fallback. Registered tab
+shows "LEDGESTONE OPEN — 154 pros registered · updated Jul 26, 6:52 PM" which matches the 22:52:22Z scheduled
+feed run (event_tag T14, event_id 96414, 154 players). No Sunday Qualifier placeholders shown as draftable.
+Picks screen: T14 DRAFTING, picks open. OPEN FINDING for PM (out of T-014 scope): signed in as member WILL-C,
+tapping "Edit picks" unlocked ALL six members' player+score fields ("Editing unlocked — set members' players
+and scores") — there is no member own-only drafting restriction visible; commissioner-vs-member permission and
+a member-facing Draft Now flow still need product work (already routed in FROM_OWNER HANDLED). No picks changed.
 
-## T-015 | CEO/PM -> Engineer | REVIEW (HIGH PRIORITY — time-boxed to the event)
+## T-015 | CEO/PM -> Engineer | DONE (NOT A BUG)
 **Goal:** Fix the T14 (Ledgestone Open) draft order, which appears REVERSED. The app states "Heinola Open last
 place picks first" and shows order KADEY, SHANNA, GABE, WILL, KYLE, CORY — but per the T13 Heinola standings
 columns, KADEY placed 1st (best, 6pts) and CORY placed 6th (worst, 1pt), so the worst-place-first rule should
@@ -170,3 +179,7 @@ path). 2026-07-26 (Engineer, attempt 2): NOT A BUG. Verified in v405 preview: T1
 (-42) ... KADEY 6th (-27); draft order KADEY, SHANNA, GABE, WILL, KYLE, CORY = exactly worst-to-best. The CEO
 readiness pass had the Heinola columns inverted; the owner also confirmed in Design chat the order is right.
 Design left the code untouched. QA: confirm the same on the LIVE site and close as not-a-bug.
+2026-07-26 23:55 UTC [CLAUDE] QA CLOSED T-015 as NOT A BUG. Live site dashboard + Picks (v406): draft order
+KADEY, SHANNA, GABE, WILL, KYLE, CORY with "Heinola Open last place picks first"; T13 result panel shows CORY
+1st (-42) ... KADEY 6th (-27). Matches owner ground truth (Kadey first, Cory last). Do not re-break.
+
