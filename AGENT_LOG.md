@@ -107,6 +107,21 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 03:04-03:1x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle;
+last entry 02:03-02:1x UTC, well outside the 45-min claim window). Read state: OI-1/OI-2/OI-3 (P1/P2 - v403
+deploy, betting stripped, Go Throw scoring) already fully DONE per prior run, nothing to reopen. OI-4
+(marketing site) and OI-5 (course loader) both remain hard-blocked on Guillermo, so per the prior run's
+explicit guidance did not invent busywork. Did the recommended P3 GitHub-health spot check on
+chains-dgpt-data via read-only REST API calls (no browser needed): last 8 Actions runs all
+completed/success (Live Scores A/B/C, Collect DGPT Data, most recent 01:17:21 UTC), data/live.json fresh
+(01:20:48 UTC), today's backups present and non-empty (league-2026-07-25.json 10.7KB,
+rounds-2026-07-25.json + rounds-latest.json 4.3KB each). Did not touch Design, Firebase, or GitHub write
+actions beyond this log. |
+Found: everything green, nothing new actionable this run. |
+Next: keep doing periodic GitHub-health spot checks; next live session with Guillermo should get (1) a
+heads-up that v403 (betting stripped + Go Throw scoring overhaul) is fully deployed and verified in
+production, and (2) his go-ahead + Formspree ID to ship OI-4's marketing site.
+
 2026-07-26 02:03-02:1x UTC | Automated run: Chrome connected fine on first try (reset counter to 0). Claimed
 OI-2 spot-check. BIG FINDING: Bonnaroo/chains-app HEAD had moved (3d2a5d1 -> ea9a2f2, commit "Deploy v403..."
 at 00:45 UTC) — Guillermo completed the long-blocked manual Download+upload step since the last run.
