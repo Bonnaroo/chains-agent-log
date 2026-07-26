@@ -75,7 +75,7 @@ Cross-cutting (apply to EVERY screen/button):
 - Chrome outage: after 1 failed retry increment counter; at 3 consecutive, auto-pause (enabled:false) + flag.
 
 ## CURRENT RUN
-(idle)
+CLAIMED 2026-07-26 14:47 UTC | scheduled run "chains-go-throw-loop" | verifying/deploying v404, then Cancel-Round blocker build.
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
