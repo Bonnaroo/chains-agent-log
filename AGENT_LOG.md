@@ -107,6 +107,35 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 14:03-14:1x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
+local entry 13:33-13:3x UTC, ~30 min prior, normal cadence). RECONCILIATION NOTE: the 13:33 run's own log
+entry claimed it pushed the reconciled file to GitHub via the upload flow, but this run's fresh curl of
+raw.githubusercontent.com showed remote's newest RUN LOG line is STILL the 04:03 entry — that push did not
+actually land (browser upload likely didn't complete, or committed to the wrong branch/path; no error was
+visible from the log text alone). So the local-ahead-of-remote gap persists and has now grown by 5 more
+entries (13:33, 13:05, 12:33, 12:03, 10:33 all still missing from remote). Treating local as authoritative
+again and pushing the full file — all backlogged entries plus this one — via the GitHub upload/main flow this
+run, then verifying afterward with a fresh raw curl that the push actually took (not just assuming success
+from the UI). Read state: OI-1/OI-2/OI-3 remain fully DONE per prior runs, nothing to reopen. OI-4 (marketing
+site) still blocked on Guillermo's go-ahead + Formspree ID; OI-5 still blocked on chains-course-expansion
+producing a state file. Did the routine P3 GitHub-health check via read-only REST API: Bonnaroo/chains-app
+HEAD unchanged at ea9a2f2 (v403, deployed 2026-07-26T00:45:00Z) - no redeploy needed. chains-dgpt-data Actions
+recent runs all completed/success (Live Scores A 13:54:10Z, Collect DGPT Data 12:59:52Z, Live Scores B
+12:56:46Z, Live Scores C 12:17:09Z, Live Scores A 12:09:56Z) - all green. data/live.json fresh (sha 1915a89,
+43354 bytes). Today's backups present and correctly sized: data/backups/league-2026-07-26.json (10749 bytes),
+data/backups/rounds-2026-07-26.json (4314 bytes) and rounds-latest.json (4314 bytes, backed_up_at
+2026-07-26T08:20:49Z, source field correctly reads "firebase chains-app-f38f8 /playRounds + /liveRounds"). |
+Found: everything green on P3; the recurring finding is that health-check-only runs keep writing valid local
+RUN LOG entries but the GitHub push step is silently failing or being skipped more often than the log itself
+realizes — this is now the second consecutive "reconciliation" run to hit the same gap. |
+Next: whichever run pushes this file should verify the push with an independent raw-curl re-fetch showing the
+new top entry BEFORE reporting success, not just trust that the upload UI completed. If pushes keep silently
+failing, worth flagging to Guillermo directly as a possible issue with the upload/main flow or file_upload
+tool rather than continuing to assume it's just missed browser opens. Otherwise: keep doing periodic
+GitHub-health spot checks; still worth a heads-up to Guillermo next live session that (1) v403 is fully
+deployed and verified in production, and (2) OI-4's marketing site is ready to ship pending his go-ahead +
+Formspree ID.
+
 2026-07-26 13:33-13:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 local entry 13:05-13:0x UTC, ~30 min prior, normal cadence, not a live claim). RECONCILIATION NOTE: found
 remote (raw.githubusercontent.com) still stuck at the 04:03 entry as its newest RUN LOG line — the 10:04
