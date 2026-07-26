@@ -107,6 +107,24 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 12:33-12:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
+entry 12:03-12:0x UTC, ~30 min prior, normal cadence, not a live claim). Read state: OI-1/OI-2/OI-3 remain
+fully DONE per prior runs, nothing to reopen. OI-4 (marketing site) still blocked on Guillermo's go-ahead +
+Formspree ID; OI-5 still blocked on chains-course-expansion producing a state file. Claude in Chrome
+connected fine on first try (fresh tab, counter stays at 0). Per established guidance, did not open
+Design/live-app browser tabs since no actionable browser work exists this run. Did the routine P3
+GitHub-health check via read-only REST API: Bonnaroo/chains-app HEAD unchanged at ea9a2f2 (v403, deployed
+2026-07-26T00:45:00Z) - no redeploy needed. chains-dgpt-data Actions last 8 runs all completed/success (Live
+Scores C 12:17:09Z, Live Scores A 12:09:56Z, Live Scores B 11:50:59Z, Collect DGPT Data 11:46:56Z, Live
+Scores C 11:08:41Z, Live Scores A 10:59:38Z, Live Scores B 10:49:29Z, Collect DGPT Data 10:41:07Z) - all
+green, normal cadence continuing. data/live.json present and serving fresh (43354 bytes, last commit
+12:20:37Z, ~13 min old at check time). Today's backups both present and 200 OK: data/backups/league-2026-07-26.json
+(10749 bytes) and data/backups/rounds-2026-07-26.json (4314 bytes). |
+Found: everything green, no change beyond normal Actions cadence firing since the 12:03 run. |
+Next: keep doing periodic GitHub-health spot checks; still worth a heads-up to Guillermo next live session
+that (1) v403 (betting stripped + Go Throw scoring overhaul) is fully deployed and verified in production,
+and (2) OI-4's marketing site is ready to ship pending his go-ahead + Formspree ID.
+
 2026-07-26 12:03-12:0x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 entry 11:03-11:0x UTC, ~1 hour prior, well outside the claim window). Read state: OI-1/OI-2/OI-3 remain
 fully DONE per prior runs, nothing to reopen. OI-4 (marketing site) still blocked on Guillermo's go-ahead +
