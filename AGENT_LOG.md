@@ -107,6 +107,24 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 04:03-04:0x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
+entry 03:04-03:1x UTC, well outside the 45-min claim window). Did a read-only P3 GitHub-health check via the
+public REST API only (no browser/Chrome extension touched this run, so CHROME OUTAGE counter left unchanged):
+chains-dgpt-data Actions last 8 runs all completed/success (Live Scores B 03:55:58Z, Collect DGPT Data
+03:52:53Z, Live Scores C/A ~01:09-01:17Z, Collect DGPT Data + Live Scores B ~00:10-00:11Z, Live Scores C
+23:43:28Z and Backup League Data 23:38:06Z from the prior UTC day), data/live.json fresh (sha d4e259f, ~8 min
+old at check time, parses cleanly with event/round fields populated), backups directory's newest dated files
+are still league-2026-07-25.json (10.7KB) and rounds-2026-07-25.json/rounds-latest.json (4.3KB each) — no
+2026-07-26-dated backup expected yet since that workflow last fired 23:38 UTC on 07-25 and runs once daily,
+not stale. chains-app HEAD unchanged at ea9a2f2 (v403, deployed 2026-07-26T00:45:00Z) — no redeploy needed.
+OI-1/OI-2/OI-3 remain DONE per prior runs, nothing to reopen. OI-4 (marketing site) and OI-5 (course loader)
+remain hard-blocked on Guillermo / chains-course-expansion respectively — per established guidance did not
+invent busywork or open Design/live-app browser tabs since no actionable browser work exists this run. |
+Found: everything green, no change since the 03:04 run. |
+Next: keep doing periodic GitHub-health spot checks; still worth a heads-up to Guillermo next live session
+that (1) v403 (betting stripped + Go Throw scoring overhaul) is fully deployed and verified in production,
+and (2) OI-4's marketing site is ready to ship pending his go-ahead + Formspree ID.
+
 2026-07-26 03:04-03:1x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle;
 last entry 02:03-02:1x UTC, well outside the 45-min claim window). Read state: OI-1/OI-2/OI-3 (P1/P2 - v403
 deploy, betting stripped, Go Throw scoring) already fully DONE per prior run, nothing to reopen. OI-4
