@@ -107,6 +107,28 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 04:33-04:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
+entry 04:03-04:0x UTC, outside the 45-min claim window). Chrome connected fine on first try (reset counter to
+0). Checked the Design tab per protocol before touching anything else: chat status showed "Searching, Reading
+x2, Editing" then "Waiting, Screenshot, Generating HTML, Finishing up" — Design is actively MID-BUILD on a new
+version (post-v403, not yet named/verified), so per protocol did NOT interrupt or send anything to Design this
+run. Picked a non-Design item instead: (1) live-app sanity check (read-only, no scoring) — Dashboard loads
+clean, standings match expected (Cory 56/1, Kyle 49/2, Will 47/3, Kadey 46/4, Gabe 46/5, Shanna 37/6), sidebar
+nav has no Live Betting item/coins chip, zero console errors; chains-app HEAD unchanged at ea9a2f2 (v403) — no
+redeploy needed since the new build isn't finished yet. (2) P3 GitHub-health check via REST API: chains-dgpt-data
+Actions all green (Live Scores B 03:55:58Z, Collect DGPT Data 03:52:53Z, Live Scores C/A ~01:09-01:17Z, plus
+older runs all success), data/live.json fresh (sha d4e259f), data/backups newest files still
+league-2026-07-25.json + rounds-2026-07-25.json/rounds-latest.json (today's 07-26 backup not expected yet,
+daily job last fired 23:38 UTC on 07-25). OI-1/OI-2/OI-3 remain DONE, OI-4/OI-5 remain blocked on
+Guillermo/chains-course-expansion respectively — no state change. Did not touch Firebase, did not send
+anything to Design. |
+Found: everything green, no regressions; Design is working on a new (unlogged) build right now — worth
+checking next run whether it finished and what it changed. |
+Next: next run should check the Design chat first — if the new build finished, verify it in preview/production
+per usual (no betting UI, Go Throw scoring intact, no console errors) and log what it is; if still mid-build,
+keep doing periodic GitHub-health checks. Still worth a heads-up to Guillermo that OI-4's marketing site is
+ready pending his go-ahead + Formspree ID.
+
 2026-07-26 04:03-04:0x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 entry 03:04-03:1x UTC, well outside the 45-min claim window). Did a read-only P3 GitHub-health check via the
 public REST API only (no browser/Chrome extension touched this run, so CHROME OUTAGE counter left unchanged):
