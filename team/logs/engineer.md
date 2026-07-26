@@ -14,3 +14,17 @@
   Note for next shift: had to paste the prompt via a JS execCommand('insertText') workaround — a normal simulated
   "type" of ~5300 chars hit a 30s CDP timeout and killed the browser tab/group entirely (had to reopen). Added to
   LESSONS.md.
+
+- 2026-07-26 (2nd engineer shift, ~16:30-16:50 UTC) | Verified + DEPLOYED v405. Chrome extension was down at
+  clock-in (scheduled run couldn't get access; shift initially aborted with lock untouched) — owner replied in
+  chat, extension came back, shift resumed and claimed the lock. Verified v405 in Design preview: T14 Ledgestone
+  REGISTERED tab shows 154 named pros ("updated Jul 25, 8:00 PM"), T14 card = DRAFTING, picks unlocked, draft
+  board read-only for non-commissioners. KEY FINDING: T-015 is NOT A BUG — Heinola T13 result is Cory 1st ...
+  Kadey 6th, so KADEY-first order is correct worst-to-best; CEO pass had the columns inverted; owner confirmed
+  same in Design chat. Downloaded v405 (9,641,939 bytes), ran kb/deploy.md clean-checks (omelette 0, betting 0,
+  title OK). Deep-verified content by decompressing the pako/base64 bundle: 190-entry MPO_PLAYERS DB + field
+  loader with bundled 156-player Ledgestone snapshot (96414, expires Aug 3) that yields to the live field.json
+  feed (Bonnaroo/chains-dgpt-data, 2h GitHub Action). Uploaded to Bonnaroo/chains-app (commit 16:46:13Z,
+  default msg "Add files via upload" — a permission classifier blocked typing the commit message; owner approved
+  the upload in chat). Live site now serves the full 9,641,939 bytes = v405 LIVE. Next: QA field 1:1 check +
+  close T-014/T-015; CEO to green the EVENT_READINESS boxes.
