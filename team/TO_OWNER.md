@@ -1,5 +1,11 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-26 18:58 UTC | [GPT] Found a real Ledgestone readiness risk before the event. The v405 app can show
+  the 156-player field because it has a temporary bundled fallback, but the scheduled background field feed is
+  actually empty. The collector stops at T13 and does not include Ledgestone T14/PDGA 96414; the related event
+  list is also stale and no 96414 event-data file exists. I documented the exact cause and routed a narrow
+  data-repo repair: add T14/96414, let the 15-minute workflow publish it, then require independent live QA against
+  PDGA's current 156-player MPO registration. I did not touch the live app, Firebase, picks, or season data.
 - 2026-07-26 17:5x UTC | Your latest direction is now the strategy: **Phase 2 = GO**, with backend-first efficiency.
   Dynamic tournament data moves out of the bundled app; Design is reserved for real interface changes. The old
   July 29 hard gate is removed, while the live Founders League remains protected. I routed your draft-order truth,

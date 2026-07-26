@@ -73,7 +73,7 @@ Until then, all engineering is Claude-Design polish on App A. Groom the board to
 **Attempts:** 0
 **Notes:** Owner gated the coding path to "a few days" out. CEO owns STRATEGY.md; PM enforces the gate on the board.
 
-## T-009 | CEO/PM | ASSIGNED (HIGH PRIORITY — time-boxed to the event)
+## T-009 | CEO/PM | IN_PROGRESS (HIGH PRIORITY — time-boxed to the event)
 **Goal:** LEDGESTONE OPEN pre-event readiness. Drive team/EVENT_READINESS.md to green: correct event ID/naming,
 the pickable pro field = the REAL registered Ledgestone field, picks unlock when the field is in, standings/
 stats/schedule/history correct, Live Chains queued, and all background event numbers/identifiers lined up.
@@ -81,6 +81,11 @@ stats/schedule/history correct, Live Chains queued, and all background event num
 verified; confirmed in team/logs/ceo.md before ~2026-07-30.
 **Attempts:** 0
 **Notes:** Owner's job #1 right now. The recurring risk is truth-of-data + background event wiring — verify explicitly.
+2026-07-26 18:58 UTC [GPT] CEO moved T-009 to IN_PROGRESS after finding a concrete background failure:
+`chains-dgpt-data/data/field.json` was freshly generated at 18:41:51Z with null event ID/zero players because
+`collect_field.py` ends at T13/96413; `events.txt` ends at 96410 and `data/events/96414-MPO.json` is absent.
+PDGA event 96414 currently shows 156 MPO registrations. v405's fallback masks this failure. PM must assign a
+narrow Engineer data-repo repair; require regenerated 96414/156 evidence and independent live QA before green.
 
 ## T-010 | Designer -> Engineer | ASSIGNED
 **Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1
@@ -129,6 +134,9 @@ Claimed by Engineer 2026-07-26: scoped Claude Design prompt sent covering T-014 
 bytes served). The build bundles a snapshot fallback (156 registered incl. 2 Sunday-Qualifier TBD, PDGA 96414,
 self-expires Aug 3) AND reads the live field.json feed from Bonnaroo/chains-dgpt-data (updates every 2h via
 GitHub Actions). QA: verify field 1:1 vs pdga.com/tour/event/96414 on the LIVE site, then close.
+2026-07-26 18:58 UTC [GPT] CEO background audit: do not close T-014 as background-ready yet. The current
+`data/field.json` feed is fresh but empty/null because `collect_field.py` omits T14/96414. The live screen may
+still pass from the expiring fallback; QA must distinguish fallback success from repaired-feed consumption.
 
 ## T-015 | CEO/PM -> Engineer | REVIEW (HIGH PRIORITY — time-boxed to the event)
 **Goal:** Fix the T14 (Ledgestone Open) draft order, which appears REVERSED. The app states "Heinola Open last
