@@ -31,7 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-26 05:03 UTC — working: check Design build status (post-v403 build seen mid-generation at 04:33), P3 GitHub-health spot check
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -107,6 +107,47 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 05:03-05:2x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
+entry 04:33-04:3x UTC, outside the 45-min claim window). Chrome connected fine on first try (reset counter to
+0). Checked Design tab per protocol: the 04:33 mid-build had finished -- new build's changelog (still labeled
+"v403 -- Go Throw scoring screen reworked") lists 4 items: blank start (no par prefill, THRU counts only real
+scores), next-gating (blocks Next/Finish on unset holes with named-player warning, Skip/Finish-anyway escape),
+"Finish never invents scores" (NEW fix: unentered holes now save as null instead of silently filling with par
+up to the last hole reached -- a genuinely new behavior change beyond what OI-3 already verified in
+production), and the persistent scorecard strip (already known/verified). Dashboard/Picks/Standings/Bag and
+the v402 betting removal reported untouched. Opened the standalone Present-mode preview to verify
+independently: Dashboard/standings/nav all correct (Cory 56/1...Shanna 37/6, no betting UI, no coins chip),
+matches production. Tried 6 times (over ~3 min, varying click coordinates and adding wait time) to navigate to
+GO THROW to test the new Finish-never-invents-scores behavior -- every single attempt deterministically routed
+to WATCH instead, never once landing on Go Throw. This is more severe than prior runs' "intermittent" nav
+flakiness (which sometimes succeeded on retry) -- in this session it was 6/6 consistent misroutes to Watch
+specifically, worth treating as a possible real regression in this build's nav routing rather than pure
+preview instability, though could still be an extension/rendering artifact like before. Could not verify the
+new "Finish never invents scores" fix in the preview as a result. Confirmed via javascript_tool that the app
+iframe is cross-origin (claudeusercontent.com) and inaccessible to page-context JS, and read_page returns
+empty for the same reason -- no tools-only DOM-click workaround exists for this right now. Did not touch
+Firebase (never reached a screen that could write data). Also ran the routine P3 GitHub-health check:
+chains-dgpt-data Actions all green (Live Scores C 04:48:50Z, Live Scores A 04:39:13Z, plus older runs all
+success), data/live.json fresh (sha 8137b22), backups unchanged since yesterday (today's 07-26 backup not due
+yet). chains-app HEAD unchanged at ea9a2f2 (v403) -- correct, this newer build hasn't been marked
+ready/downloaded so no redeploy expected. Live production app sanity-checked: zero console errors. OI-1/OI-2/
+OI-3 remain DONE, OI-4/OI-5 remain blocked on Guillermo/chains-course-expansion respectively -- no state
+change to the open items list. |
+Found: Design has a finished, unlogged build (still labeled v403) with one genuinely new fix -- Finish no
+longer invents par scores for unentered holes, saves null instead -- layered on top of the
+already-deployed-and-verified v403 production fixes. Could not verify it due to a highly reproducible (6/6)
+GO THROW nav misroute to WATCH in this preview session, worse than previously logged intermittent flakiness.
+GitHub/Firebase/production all healthy, no regressions found anywhere else. |
+Next: a future run should retry the Go Throw walkthrough (a brand-new tab did NOT fix this same issue back on
+2026-07-25 20:03, so don't expect a fresh tab alone to help, but worth 1-2 tries before assuming it's
+structural); if nav is still broken, flag it to Guillermo directly as a possibly-real bug to check outside the
+automated loop, not just an extension quirk -- it's now blocking verification of the new Finish-fix and is
+more consistent than before. Once Go Throw is reachable: verify blank start, next-gating, the new
+null-not-par Finish behavior specifically, scorecard strip, and check for regressions to
+Dashboard/Picks/Standings/Bag/betting-strip; remember any hole-score entered WILL auto-persist to production
+Firebase (per OI-3's finding) and must be backed up + deleted after. OI-4 (marketing site, needs Guillermo's
+go-ahead + Formspree ID) and OI-5 (blocked on chains-course-expansion) unchanged.
+
 2026-07-26 04:33-04:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 entry 04:03-04:0x UTC, outside the 45-min claim window). Chrome connected fine on first try (reset counter to
 0). Checked the Design tab per protocol before touching anything else: chat status showed "Searching, Reading
