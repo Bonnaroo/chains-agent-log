@@ -16,32 +16,39 @@ accounts, that works flawlessly and scales without issues.
   leagues, open/close accounts, help a stuck user look up their login). Points at App B's data (can preview against
   App A now). Read-only first; management actions added later with proper owner-only auth.
 
-## PHASES
-- PHASE 1 — NOW (a few days): polish APP A in Claude Design until it truly works — every feature solid, no
-  dead-ends, backend clean. Build the Council dashboard v1 (read-only metrics) early; it's useful and low-risk.
-  Get the design RIGHT here because App B forks from it.
-- PHASE 2 — starts ~2026-07-29 (NOT before; owner gated it "a few days"): graduate to a REAL coded app. Standard
-  path: one codebase (React + Capacitor) that ships to web + iPhone + Android, reusing Firebase. This is where real
-  branches / pull-requests / CI / automated tests actually apply. Fork App B (public, league-optional, real
-  accounts) from the polished App A design. Owner still steers + tests (via TestFlight/preview builds); he just
-  won't hand-build in Claude Design anymore.
+## PHASES — OWNER UPDATED 2026-07-26
+- PHASE 1 — CONTINUES IN PARALLEL: polish APP A until its existing features truly work, with no dead-ends and no
+  regression to the live Founders League. Build the Council read-only dashboard when authorized and practical.
+- PHASE 2A — GO NOW (backend-first efficiency): stop rebuilding the whole app for dynamic-data changes. Move event
+  fields, registered-player lists, registration state, standings, results, and similar changing data out of the
+  static bundle and into the chains-app-f38f8 backend. One scoped Design build may be used to make APP A read those
+  backend values; afterward routine data updates are backend writes, not Design rebuilds. Use Design only for real
+  UI/feature work such as escape hatches and delete controls. PM must split and assign this safely; protect the live
+  season and never touch the legacy chains-fantasy /league node.
+- PHASE 2B — REAL CODED PUBLIC APP: one codebase (React + Capacitor) for web + iPhone + Android, with automated
+  tests and normal version control. This is APP B, separate from the live Founders League. Internal planning and
+  reversible scaffolding may begin now that the owner said Phase 2 is GO, but it must not alter APP A or publish a
+  new app without owner approval. A separate Firebase project is still required before connecting real App B data.
 - PHASE 3 — launch hardening: real accounts + security pass, Council management actions, app-store submission.
 
-## WHAT ONLY THE OWNER CAN PROVIDE (CEO flags these in TO_OWNER.md when each is needed — not yet)
-- A new Firebase project for App B (Google account / Firebase console).
+## EFFICIENCY RULE
+Choose the cheapest reliable layer: backend/data update first, real coded source second once App B exists, and a
+Design rebuild only when the visible interface itself must change. Do not spend Design credits baking tournament
+data into the HTML bundle.
+
+## ACCESS REALITY (verified 2026-07-26)
+Codex's connected GitHub integration can read the Chains repositories but returned HTTP 403 on a contents write.
+Codex's logged-in Chrome session can commit to GitHub and is the current verified write path. Continue working via
+that path; do not wait for CLAW or require github-token.txt. If the owner wants fully browser-free unattended writes,
+the GitHub integration must be granted repository-contents write permission. This is an efficiency improvement, not
+a blocker to office work.
+
+## WHAT ONLY THE OWNER CAN PROVIDE (CEO flags these when actually needed)
+- A new Firebase project for App B.
 - Apple Developer Program ($99/yr) + Google Play Console ($25 one-time) for store submission.
-- A privacy policy + store listing assets (marketing role can draft copy; owner publishes).
+- Final approval for any new public deployment, app-store submission, or irreversible action.
 
-## HARD GATE
-Do NOT begin the Phase 2 coding rebuild before 2026-07-29. Until then, all engineering is Claude-Design polish on App A.
-
-## UPDATE 2026-07-26 — owner wants agents to work "virtually" (no browser) and may bring Phase 2 forward
-The browser-driving overhead is the owner's pain point. Moving to a real codebase is what removes it (agents
-edit real code + use real git instead of clicking a browser). Owner is open to starting the code path SOONER.
-BLOCKER / OWNER DECISION NEEDED (flag in TO_OWNER.md): to let scheduled agents work on code WITHOUT the browser,
-the team needs a non-browser way to write to GitHub — i.e. a GitHub access token / connected GitHub integration
-(there is currently no git CLI or credentials in the agent environment; all writes go through the browser).
-Options for the owner: (a) generate a GitHub personal access token for the team to use, or (b) connect a GitHub
-integration/MCP. Once that exists, we can scaffold the real app (React + Capacitor, reuse Firebase) in a new
-repo and the team works in code, browser-free. Until the owner provides that access, keep the 2026-07-29 gate and
-keep polishing App A in Claude Design. Do NOT start the code rebuild until the access method is in place.
+## SAFETY GATE
+Phase 2 is authorized, but APP A remains protected: no migration may risk Founders League season data, scoring,
+picks, standings, or confirmed-good screens. Changes must be scoped, backed up where applicable, independently
+verified, and rolled out in reversible slices.
