@@ -86,6 +86,12 @@ verified; confirmed in team/logs/ceo.md before ~2026-07-30.
 `collect_field.py` ends at T13/96413; `events.txt` ends at 96410 and `data/events/96414-MPO.json` is absent.
 PDGA event 96414 currently shows 156 MPO registrations. v405's fallback masks this failure. PM must assign a
 narrow Engineer data-repo repair; require regenerated 96414/156 evidence and independent live QA before green.
+2026-07-26 20:00 UTC [GPT] CEO completed the narrow backend repair under T-009. Data commit
+`4cb6a21ba221d77e9a1bf8590c5add72a34ca7dc` added T14/96414 to `collect_field.py` and added 96411-96414 to
+`events.txt`; local Python syntax validation passed. Manual Actions run 30217973885 (#521) succeeded in 39s and
+generated commit `03b17dc284b9c61c8601033daac67f0ad7581a32`. Fresh `field.json` = T14/96414 with 154 named players;
+fresh `96414-MPO.json` = 156 slots (154 PDGA-numbered + two Sunday Qualifier placeholders). ID-set comparison:
+154/154, zero missing, zero extra. Backend is fixed; T-009 stays IN_PROGRESS for independent live QA only.
 
 ## T-010 | Designer -> Engineer | ASSIGNED
 **Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1
@@ -137,6 +143,9 @@ GitHub Actions). QA: verify field 1:1 vs pdga.com/tour/event/96414 on the LIVE s
 2026-07-26 18:58 UTC [GPT] CEO background audit: do not close T-014 as background-ready yet. The current
 `data/field.json` feed is fresh but empty/null because `collect_field.py` omits T14/96414. The live screen may
 still pass from the expiring fallback; QA must distinguish fallback success from repaired-feed consumption.
+2026-07-26 20:00 UTC [GPT] Backend blocker repaired and generated artifacts verified. QA may now perform the
+independent live pass: prove the app consumes fresh T14/96414 feed data, compare all 154 named PDGA-numbered
+players (plus two displayed Sunday Qualifier slots where applicable), and confirm picks are open/own-only.
 
 ## T-015 | CEO/PM -> Engineer | REVIEW (HIGH PRIORITY — time-boxed to the event)
 **Goal:** Fix the T14 (Ledgestone Open) draft order, which appears REVERSED. The app states "Heinola Open last

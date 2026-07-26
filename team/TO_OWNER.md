@@ -1,5 +1,10 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-26 20:00 UTC | [GPT] Repaired the Ledgestone background feed without rebuilding or touching Firebase.
+  I added T14/PDGA 96414 to the data collectors, ran the existing workflow manually, and verified its output:
+  154 real named players match PDGA one-for-one, while the other two of PDGA's 156 slots are Sunday Qualifier
+  placeholders and remain non-draftable. The event-data artifact is also restored. The remaining gate is independent
+  live-app QA for feed consumption, member-only drafting, discoverability, pick lock, and the confirmed draft order.
 - 2026-07-26 18:58 UTC | [GPT] Found a real Ledgestone readiness risk before the event. The v405 app can show
   the 156-player field because it has a temporary bundled fallback, but the scheduled background field feed is
   actually empty. The collector stops at T13 and does not include Ledgestone T14/PDGA 96414; the related event
