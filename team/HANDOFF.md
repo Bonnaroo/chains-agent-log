@@ -1,30 +1,34 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## WHAT I DID
-Second CEO shift (2026-07-26, ~2 min after the first). No new owner input and no product decision needed — this
-was a bookkeeping fix. FROM_OWNER.md still showed all five owner items under NEW even though the prior shift's
-log claimed they'd been moved to HANDLED; the actual file edit never landed. Fixed it: FROM_OWNER.md now shows
-NEW empty and all five items filed under HANDLED with their routing (T-009/T-014/T-015 for Ledgestone, T-010 ace
-wall, T-011 in the bag, T-012 Go Throw, T-013 leagues, STRATEGY.md for the virtual-work/Phase-2-sooner item).
-Did not re-run the event-readiness audit — nothing changed in the last 2 minutes, so re-auditing would be
-busywork. Checked GitHub Issues on chains-app: none open. Checked for stalling: too early to call it (T-014/
-T-015 were only filed last shift), but they're still sitting ASSIGNED, unclaimed.
+Three shifts today (2026-07-26), the last two back-to-back at the owner's request (he didn't want to wait for
+the next hourly dispatch): (1) CEO — created LOCK.md, routed FROM_OWNER.md, ran the Ledgestone Open readiness
+pass, found + filed T-014 (real MPO field not loaded) and T-015 (draft order backwards) as HIGH PRIORITY.
+(2) A second CEO shift ran ~2 min later in parallel/overlap with my own follow-up work — it re-did the
+FROM_OWNER.md->HANDLED routing (harmless, same end state) based on a stale raw-CDN read, and its own HANDOFF
+snapshot ("T-014/T-015 still unclaimed") is now OUT OF DATE — ignore that specific claim, this file supersedes
+it. (3) Engineer — claimed T-014 + T-015, read the Design project readme (confirms "last place drafts first" is
+the real rule and the MPO field is a static, manually-grown database — exactly matching both bugs), and sent one
+scoped Claude Design prompt fixing both: the real 156-player Ledgestone field (PDGA event 96414) + corrected
+draft-order sort. Design started building; did not wait for/verify it.
+
+NOTE ON CONCURRENCY: two shifts ran on top of each other around 16:03-16:11 UTC despite the LOCK mechanism —
+worth the CEO/PM checking why (possibly raw-CDN cache lag on the LOCK.md read, or a scheduler double-fire). No
+data was lost this time (only CEO-scoped files overlapped, harmlessly), but flag it — see WATCH OUT FOR.
 
 ## WHAT'S NEXT AND WHOSE JOB IT IS
-Engineer: T-014 (sync the real 156-player Ledgestone MPO field into the Picks page) and T-015 (fix the reversed
-draft order) are still unclaimed and are the team's #1 priority — Ledgestone Open starts 2026-07-30. Claim one
-(or both) and get them IN_PROGRESS this shift; don't let another shift pass with them sitting ASSIGNED. QA: once
-Engineer builds T-014/T-015, verify the field matches the real PDGA field 1:1 and the draft order is last-place-
-first before signing off. PM: nothing urgent beyond keeping an eye on T-014/T-015 staffing if Engineer shifts
-keep skipping them.
+Engineer (next shift): check if the build after "v404" cleared. If so, verify in the Design Present view —
+Ledgestone Open shows the real MPO field, picks unlock, and draft order starts with CORY (T13 last place), not
+KADEY — then deploy via kb/deploy.md. If still building or paused on a usage limit, note it and let a later
+shift pick it up. QA: once deployed, verify the field 1:1 against pdga.com/tour/event/96414 and confirm draft
+order against Standings. CEO/PM: investigate the concurrency incident above before it causes a real conflict.
 
 ## WATCH OUT FOR
-- Ledgestone Open starts 2026-07-30 — T-014/T-015 are the real go/no-go items, not cosmetic, and haven't been
-  claimed yet as of this shift.
-- Do NOT start any Phase-2 coding rebuild before 2026-07-29 (STRATEGY.md gate) — still not in place (owner
-  hasn't provided GitHub access yet).
+- Ledgestone Open starts 2026-07-30 — T-014/T-015 are the real go/no-go items, not cosmetic.
+- Two shifts ran concurrently today despite LOCK.md — always verify LOCK + the file you're about to edit via the
+  contents API (not raw.githubusercontent, which caches for minutes) immediately before writing, and re-check
+  right before clock-out in case another shift landed a commit while you worked.
+- Long Claude Design prompts (~5000+ chars) can CDP-timeout and kill the browser tab via the normal "type"
+  action — use execCommand('insertText') on the ProseMirror contenteditable instead (see kb/LESSONS.md).
+- Do NOT start any Phase-2 coding rebuild before 2026-07-29 (STRATEGY.md gate) — still not in place.
 - Never disrupt App A / the founders' league data — friends are playing their season on it.
-- Browser flakiness: commit button moves after adding a file; verify commits via API/SHA (raw CDN caches for
-  minutes — this bit us this shift: raw showed a stale BOARD.md missing T-014/T-015 that the contents API
-  correctly showed present). Always verify file edits landed via the contents API, not just by trusting a prior
-  shift's log entry.
