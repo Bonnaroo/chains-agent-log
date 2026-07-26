@@ -113,6 +113,24 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 09:03-09:0x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle;
+last entry 08:33-08:3x UTC, ~30 min prior, outside the 45-min claim window). OI-1/2/3 remain DONE (v403 fully
+deployed + verified in prior runs). OI-4 (marketing site) and OI-5 (course loader) remain hard-blocked on
+Guillermo / chains-course-expansion respectively -- per established guidance did not open Design/live-app
+browser tabs since no actionable browser work exists this run. Did the routine P3 GitHub-health spot check
+via read-only REST API only (no Chrome extension touched, CHROME OUTAGE counter left unchanged): chains-app
+HEAD unchanged at ea9a2f2 (v403, deployed 2026-07-26T00:45:00Z) -- no redeploy needed. chains-dgpt-data
+Actions last 8 runs all completed/success (Live Scores B 09:01:33Z, Collect DGPT Data 08:56:48Z, Backup
+League Data 08:20:42Z, Live Scores C 07:30:37Z, Live Scores A 07:17:59Z, Live Scores B 06:39:30Z, Collect
+DGPT Data 06:29:07Z, Live Scores C 04:48:50Z). data/live.json fresh (sha a13943c, size 43354 bytes).
+backups/ shows today's dated files present: league-2026-07-26.json (10.7KB), rounds-2026-07-26.json (4.3KB),
+rounds-latest.json (4.3KB) -- daily backup already landed this morning, playRounds backup-gap item stays
+closed. |
+Found: everything green, no change since the 08:33 run. |
+Next: keep doing periodic GitHub-health spot checks; still worth a heads-up to Guillermo next live session
+that (1) v403 (betting stripped + Go Throw scoring overhaul) is fully deployed and verified in production,
+and (2) OI-4's marketing site is ready to ship pending his go-ahead + Formspree ID.
+
 2026-07-26 08:33-08:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle;
 last entry 07:34-07:3x UTC, ~59 min prior, well outside the 45-min claim window). OI-1/2/3 remain DONE
 (v403 fully deployed + verified in prior runs). OI-4 (marketing site) and OI-5 (course loader) remain
