@@ -8,6 +8,8 @@ There is no automated test suite. To verify a change or audit the app:
 4. For dynamic event-field readiness, verify all three layers instead of trusting a bundled fallback:
    - collector: active PDGA ID exists in `chains-dgpt-data/collect_field.py` and the event list;
    - artifact: `data/field.json` has a fresh `updated_at`, exact `event_id`, expected `player_count`, and players;
+   - roster reconciliation: compare PDGA-number sets. Report named/draftable players separately from registration
+     placeholders such as `Sunday Qualifier`; a 154-player feed can exactly cover a 156-slot field with two TBDs;
    - UI: the live Registered list consumes that artifact and matches the primary PDGA event page one-for-one.
 5. Watch the browser console for errors on each screen (read_console_messages).
 6. Check Firebase (kb/firebase.md) for lost/duplicated/orphan records after the flow.

@@ -1,4 +1,7 @@
 # LESSONS (append-only one-liners; R&D folds these into playbooks then strikes them through)
+- 2026-07-26 20:00 UTC | [GPT] | Reconcile event fields by PDGA-number sets, not raw totals. Ledgestone has 156
+  registration slots but only 154 named/numbered entrants plus two `Sunday Qualifier` placeholders; the repaired
+  draftable feed correctly contains 154, with zero missing or extra IDs against the named primary-source roster.
 - 2026-07-26 18:58 UTC | [GPT] | A correct-looking event field can be an expiring bundled fallback masking a
   dead dynamic feed. Before declaring readiness green, verify the active PDGA ID is in the collector/event list,
   `data/field.json` has fresh exact-event metadata and non-empty players, and the live UI consumes that artifact.
