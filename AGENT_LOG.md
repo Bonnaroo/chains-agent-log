@@ -31,9 +31,7 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-2026-07-26 01:33 UTC — working OI-2: Bonnaroo/chains-app HEAD moved to ea9a2f2 ("Deploy v403...") at
-00:45 UTC — verifying the live v403 deploy (no betting UI/coins chip, Go Throw blank-scoring/scorecard/
-next-gating, no console errors) and closing out OI-2.
+(idle)
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
@@ -44,6 +42,34 @@ instead of continuing to fire every 30 min into a dead extension — flags it he
 A human re-enables the task (Cowork scheduled tasks list) and resets this counter after fixing Chrome.
 
 ## OPEN ITEMS (top = next)
+OI-2 DONE (2026-07-26 01:33-02:0x UTC run): Bonnaroo/chains-app HEAD moved to ea9a2f2 ("Deploy v403: betting/
+     money UI stripped + Go Throw scoring overhaul...") at 2026-07-26 00:45 UTC — Guillermo completed the
+     manual Download+upload hand-off that blocked this item for 9+ hours across many prior runs. Independently
+     re-verified against the LIVE production site (not just the Design preview): (1) no betting UI anywhere —
+     sidebar nav is Dashboard/The Picks/Standings/Live Chains/Go Throw/Watch/Settings, no Live Betting item, no
+     coins chip in the identity badge; (2) standings correct (Cory 56/1, Kyle 49/2, Will 47/3, Kadey 46/4, Gabe
+     46/5, Shanna 37/6); (3) Go Throw home loads clean, instant-start path intact (Start a Round -> Pick Course
+     -> Who's Playing -> Start Scoring, no forced invite/RSVP step); (4) BLANK START confirmed on the real
+     production build — Hole 1 score control showed "-", dashed "Par 3" placeholder, THRU 0 · E, no par
+     prefill; (5) PERSISTENT SCORECARD confirmed — all 18 holes visible at top ("YOUR CARD"), current hole
+     ringed; (6) NEXT-GATING confirmed — clicking Next Hole while blank did not advance, showed "No score
+     entered for hole 1. Tap −/+ or the Par button." with a Skip hole escape, matching the documented fix
+     exactly; (7) RUNNING TOTAL SYNC confirmed — after tapping "+" (score 4/bogey), the scorecard tile went red
+     showing "4" and header updated to "THRU 1 · YOU +1" together; (8) zero console errors throughout. Tap-any-
+     hole-to-jump was not re-tested this run (already deprioritized as low-value/inconclusive click-flakiness
+     in earlier runs, not worth spending more cycles on). CLEANUP: this verification pass created one real test
+     round (WILL solo, Old Farm Park) on PRODUCTION (not the Design preview) to reach the scoring screen — the
+     in-UI "Discard round" control triggered a native confirm() dialog that froze CDP (same known issue as
+     prior Design-preview runs); recovered by overriding window.confirm to auto-accept via javascript_tool, but
+     the round still ended up persisted (found in both /liveRounds and /playRounds as id pr-ms14oddud4d8, not
+     actually discarded by the UI flow) rather than removed. Backed up both copies to /_trash/<Date.now()> per
+     the safety protocol, then deleted both nodes; re-verified via query that neither path still has the id.
+     Go Throw home confirmed back to its original 6-rounds/-2-best state with only the 3 pre-existing live
+     rounds, no stray data left behind. NOTE for future runs: the in-app "Discard round" button appears to not
+     reliably work even with confirm() overridden — if verifying Go Throw on production again, prefer using
+     "End round early" cleanly or be ready to clean up via window.ChainsFB.db directly (back up to _trash
+     first) rather than trusting Discard to actually remove the round. OI-2 and OI-3 (see below) are now both
+     FULLY DONE — no further action needed on either.
 OI-1 DONE: v402 build finished and verified. Design chat shows "v402 — betting and money fully stripped":
       LIVE BETTING nav item removed, #games route dropped (falls back to Dashboard), betting modules
       (bets.js, pool-engine.js, view_bets.jsx, view_games.jsx, view_moneyball.jsx) parked/commented not
@@ -143,7 +169,9 @@ OI-2. NEXT: 23:03 UTC run tried a genuinely new extraction path and it ALSO dead
       same upload and can grant permission in the moment. After upload, verify live: Go Throw works (blank
       scoring, persistent scorecard, next-gating — see OI-3), Cory-era standings correct, delete round present,
       no betting UI/coins chip, no console errors.
-OI-3. DONE pending deploy: v403's Go Throw scoring fixes are now INDEPENDENTLY VERIFIED against the real build
+OI-3. FULLY DONE (deploy verified 2026-07-26 01:33-02:0x UTC run, see OI-2 above for the production
+      re-verification of blank-start/scorecard/next-gating/running-totals). Original build-verification notes
+      below, kept for history. v403's Go Throw scoring fixes are now INDEPENDENTLY VERIFIED against the real build
       (22:03-22:2x UTC run), not just Design's changelog text. Reached the actual scoring screen via Start a
       Round -> Pick a Course -> double-click Johnson Park -> WHO'S PLAYING? -> select WILL -> START SCORING ·
       NORMAL ROUND. This ALSO RESOLVES the "open question" the 21:33 run flagged for Guillermo: the instant-
@@ -312,6 +340,24 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 01:33-02:0x UTC | Automated run: Chrome connected fine on first try. Read remote log, claimed
+OI-2 spot-check. Did: (1) curl-checked Bonnaroo/chains-app HEAD — MOVED for the first time in 9+ hours, to
+ea9a2f2 "Deploy v403: betting/money UI stripped + Go Throw scoring overhaul" at 00:45 UTC — Guillermo did the
+manual Download+upload hand-off. (2) Bootstrapped the live app tab and independently re-verified the deploy on
+PRODUCTION (not Design preview): no betting UI/coins chip, correct standings, instant-start Go Throw flow
+intact, blank-start scoring (no par prefill), persistent 18-hole scorecard, Next-hole gating with "Skip hole"
+escape, running-total sync between scorecard tile and THRU header, zero console errors — all matching v403's
+documented fixes exactly. (3) Cleanup: the verification round (WILL solo, Old Farm Park) didn't actually get
+removed by the in-UI "Discard round" button (confirm() dialog issue, same as known Design-preview bug) and was
+found persisted in production /liveRounds and /playRounds — backed up both to /_trash/<timestamp> then deleted,
+confirmed removed, Go Throw home back to its original 6-rounds/-2-best state. Did not touch OI-4/OI-5. |
+Found: OI-2 and OI-3 are now BOTH fully done — the 9+ hour manual-deploy blocker is resolved, and the live
+production build passes every check the loop has been tracking. Also found the "Discard round" button doesn't
+reliably work even when window.confirm is overridden — worth noting for any future production Go Throw testing.|
+Next: OI-4 (marketing site) still needs Guillermo's go-ahead + Formspree ID — worth a direct ask next live
+session. OI-5 still blocked on chains-course-expansion producing a state file. No other action needed; next
+run can do a routine P3 GitHub-health spot check (chains-dgpt-data Actions/backups) since the main app-deploy
+blocker is now cleared.
 2026-07-26 00:05-00:1x UTC | Automated run: Chrome connected fine on first try (reset counter to 0, N/A since already 0). Local/remote confirmed byte-identical before claiming. Claimed OI-2/P3 spot-check (no conflicting active run). Did: (1) curl-checked Bonnaroo/chains-app HEAD — still 3d2a5d1 (2026-06-28), unchanged, OI-2 remains blocked on Guillermo's manual Download+upload step, no extraction re-attempted per prior runs' conclusion that it's exhausted. (2) P3 GitHub health check on chains-dgpt-data: all recent Actions green (Live Scores A/B/C, Collect DGPT Data, Backup League Data, last 6 runs all success, most recent 23:43:28 UTC), data/live.json fresh (23:46:56 UTC), today's backups present (league-2026-07-25.json AND rounds-2026-07-25.json/rounds-latest.json, 4.3KB, non-empty) — confirmed backup_rounds.py already reads /playRounds + /liveRounds from Firebase and backup.yml already runs it daily alongside backup_league.py, so the BACKUP GAP item referenced in the general run protocol is ALREADY DONE, not outstanding (no new work needed there). (3) Bootstrapped/verified all 3 tabs (Design System, live app, GitHub not separately opened since no GitHub UI action was needed beyond API curls). Design chat confirmed idle (scrolled to bottom of chat history, input box ready, no active Thinking/Searching/Editing status) showing v403's own changelog, consistent with OI-3's already-verified findings — no new fix prompt queued, nothing to send. Live app tab confirmed still on the old build (LIVE BETTING nav + "$15" coins chip both still visible), consistent with OI-2 still being undeployed; zero console errors on load. (4) Did OI-3's optional leftover-cleanup check: queried production Firebase directly via window.ChainsFB.db on the live tab (playRounds and liveRounds nodes) — only 3 total playRounds and 3 liveRounds exist, none at Johnson Park, confirming the Design-preview test round from the 22:03-22:2x run never persisted to production. Updated OI-3's text in place with this confirmation. Did not touch Firebase destructively (read-only queries only), did not touch OI-4/OI-5 (still blocked on Guillermo/course-expansion respectively), did not attempt any Design/GitHub extraction or deploy. |
 2026-07-26 00:34 UTC | Automated run: Chrome tools loaded fine. Read remote log (672 lines), local/remote in sync, no active claim (CURRENT RUN was idle, last run closed ~00:1x). Did: (1) curl-checked Bonnaroo/chains-app HEAD via GitHub API — still 3d2a5d1 (2026-06-28), unchanged, OI-2 remains blocked on Guillermo's manual Download+upload step; per prior runs' conclusion that tools-only extraction is exhausted, did not re-attempt it. (2) P3 GitHub health check on chains-dgpt-data via API: last 8 workflow runs (Collect DGPT Data, Live Scores A/B/C, Backup League Data) all completed/success, most recent 00:11:04 UTC; data/live.json fresh (00:12:38 UTC); today's backups present (league-2026-07-25.json 10.7KB, rounds-2026-07-25.json 4.3KB). Did not open the Design/live-app/GitHub browser tabs this run since the only actionable item (OI-2) is explicitly blocked on Guillermo's hand and no other OPEN ITEM had new information to check (OI-4 needs his go-ahead+Formspree ID, OI-5 blocked on chains-course-expansion, OI-3 already fully verified). Did not touch Firebase or Design this run, no writes/deploys attempted. |
 Found: nothing changed since the 00:05-00:1x run — GitHub health fully green, OI-2/OI-4/OI-5 all still blocked on the same non-agent-actionable items (Guillermo's manual steps / course-expansion dependency). |
