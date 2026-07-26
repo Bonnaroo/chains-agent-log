@@ -25,6 +25,9 @@
 - `.github/workflows/collect.yml` schedule is `*/15 * * * *` and runs `python collect_field.py`.
 - `chains-app` main remains v405 deploy commit `1f22274e4ad9b9746c08be058d69d1ca655c40ab` from 16:46:13Z.
 - Open issues search for `Bonnaroo/chains-app` returned none.
+- [GPT] Office evidence landed in commits `7b3f84719d779f34b147f07ed192d7ef0859c510` (BOARD,
+  EVENT_READINESS, HANDOFF, TO_OWNER), `b1e15ab0c78d652ade0cbe6b9dd7c4c5c6fd2ee1` (CEO log), and
+  `d4ef8e26ed345731ada4a1eec4e06598188a21f5` (LESSONS/testing playbook); each file was re-read via GitHub.
 
 ## DATA / SAFETY
 No app, Firebase, league, pick, standings, round, registration, or user data changed. No Design build or live
