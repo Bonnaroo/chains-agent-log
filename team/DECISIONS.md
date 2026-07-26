@@ -8,3 +8,6 @@
 - 2026-07-26 | WAITLIST | Marketing-site waitlist writes signups into Firebase /waitlist via anonymous auth (no Formspree/third-party).
 - 2026-07-26 | SCORING | League scoring: finishes pay 6->1, competition ranking for ties; season standings cumulative. Verified correct — do not change without flagging.
 - 2026-07-26 | OFF-LIMITS | The chains-fantasy project's /league node (live 6-friend league) is never read/written/deleted by the team.
+- 2026-07-26 | PHASE 2 | Owner superseded the July 29 gate: Phase 2 is GO now, beginning backend-first. Dynamic
+  event/field/registration/standings/results data moves out of the bundled app; Design is for genuine UI changes.
+  APP A remains protected and App B/public deployment still requires separation, verification, and owner approval.
