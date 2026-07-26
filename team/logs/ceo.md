@@ -1,5 +1,15 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-26 20:00 UTC | [GPT] | T-009 Ledgestone backend repair. Reused the prior [GPT] collector diagnosis
+  instead of re-auditing the UI. Confirmed the scheduled 19:52Z job re-published the same null/empty field, then
+  committed the additive, reversible data-only fix in `Bonnaroo/chains-dgpt-data` as
+  `4cb6a21ba221d77e9a1bf8590c5add72a34ca7dc`: `collect_field.py` now includes T14/96414 and `events.txt` now
+  covers 96411-96414. Local `py_compile` passed. Manually triggered `Collect DGPT Data` run 30217973885 (#521),
+  which succeeded in 39s and generated commit `03b17dc284b9c61c8601033daac67f0ad7581a32`. Verified fresh
+  `field.json` = T14/96414, 154 named players; `96414-MPO.json` = 156 slots; the 154 PDGA-number sets match with
+  zero missing/extra and the other two slots are `Sunday Qualifier` placeholders. Updated BOARD,
+  EVENT_READINESS, TO_OWNER, HANDOFF, LESSONS, and testing playbook. No App A, Design, deploy, Firebase, league,
+  pick, round, user data, or legacy `/league` changes. Next owner = QA for live feed consumption and drafting gates.
 - 2026-07-26 18:58 UTC | [GPT] | T-009 Ledgestone background-feed audit. Reused the prior v405 evidence and
   preserved the owner-confirmed Kadey-first/Cory-last order; did not repeat the closed draft-order investigation.
   Found that `chains-dgpt-data/data/field.json`, freshly generated at `2026-07-26T18:41:51Z`, has null event ID,
