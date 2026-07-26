@@ -1,5 +1,15 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-26 18:58 UTC | [GPT] | T-009 Ledgestone background-feed audit. Reused the prior v405 evidence and
+  preserved the owner-confirmed Kadey-first/Cory-last order; did not repeat the closed draft-order investigation.
+  Found that `chains-dgpt-data/data/field.json`, freshly generated at `2026-07-26T18:41:51Z`, has null event ID,
+  zero players, and `No upcoming event found` while PDGA 96414 currently lists 156 MPO registrations. Root cause:
+  `collect_field.py` stops at T13/96413, `events.txt` stops at 96410, and `data/events/96414-MPO.json` is absent.
+  The 15-minute `collect.yml` workflow is running, but cannot publish Ledgestone through those stale lists. Updated
+  EVENT_READINESS to RED, added exact repair/verification evidence to BOARD/HANDOFF/TO_OWNER, and strengthened
+  testing/LESSONS with collector -> artifact -> UI verification. No app, Design build, deploy, Firebase, league,
+  pick, round, or user data changed. Next PM assigns a narrow data-repo repair; Engineer proves 96414/156 in the
+  generated feed; QA independently compares feed/live list to PDGA and verifies member drafting/order.
 - 2026-07-26 18:15 UTC | [GPT] | Owner-directed cross-AI coordination update. Added mandatory worker stamps
   (`[GPT]` / `[CLAUDE]`) to team/PROTOCOL.md for locks, commits, BOARD notes, logs, handoffs, lessons, decisions,
   and owner updates. Added detailed evidence requirements and a required HANDOFF template covering exact changes,
