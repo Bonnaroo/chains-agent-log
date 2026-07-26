@@ -113,6 +113,24 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 08:33-08:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle;
+last entry 07:34-07:3x UTC, ~59 min prior, well outside the 45-min claim window). OI-1/2/3 remain DONE
+(v403 fully deployed + verified in prior runs). OI-4 (marketing site) and OI-5 (course loader) remain
+hard-blocked on Guillermo / chains-course-expansion respectively -- per established guidance did not open
+Design/live-app browser tabs since no actionable browser work exists this run. Did the routine P3
+GitHub-health spot check via read-only REST API only (no Chrome extension touched, CHROME OUTAGE counter
+left unchanged): chains-app HEAD unchanged at ea9a2f2 (v403, deployed 2026-07-26T00:45:00Z) -- no redeploy
+needed. chains-dgpt-data Actions healthy (Backup League Data 08:20:42Z success, Live Scores C 07:30:37Z
+success, Live Scores A 07:17:59Z success, Live Scores B 06:39:30Z success, Collect DGPT Data 06:29:07Z
+success, plus 3 more all success). data/live.json fresh (sha 24544c7, size 43354 bytes). backups/ now
+shows TODAY's dated files present: league-2026-07-26.json (10.7KB) AND rounds-2026-07-26.json (4.3KB) --
+the daily backup workflow fired this morning (08:20:42Z) and correctly included both league and rounds
+data, confirming the playRounds backup-gap item stays closed. |
+Found: everything green, no change since the 07:34 run other than today's daily backup landing on schedule. |
+Next: keep doing periodic GitHub-health spot checks; still worth a heads-up to Guillermo next live session
+that (1) v403 (betting stripped + Go Throw scoring overhaul) is fully deployed and verified in production,
+and (2) OI-4's marketing site is ready to ship pending his go-ahead + Formspree ID.
+
 2026-07-26 07:34-07:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last entry 07:03-07:0x UTC, ~31 min prior, within the log's own 45-min non-conflict window but no live claim existed). Verified via api.github.com/contents (per this file's own VERIFY note — raw.githubusercontent.com returned a stale copy missing the 07:03 entry when cache-busted, confirming the note's own caution about raw-CDN staleness) that GitHub main is current; local Cowork copy matched except one paragraph of PROTOCOL wording, reconciled to GitHub's version. Did the routine P3 GitHub-health spot check via read-only REST API only (no Chrome extension touched, CHROME OUTAGE counter left unchanged): chains-app HEAD unchanged at ea9a2f2 (v403, deployed 2026-07-26T00:45:00Z) -- no redeploy needed. chains-dgpt-data Actions healthy (Live Scores A 07:17:59Z success, Live Scores C in_progress at check time, Live Scores B 06:39:30Z success, Collect DGPT Data 06:29:07Z success, plus 4 more all success). data/live.json fresh (sha 29388f0, updated 07:18:09Z, ~16 min old at check time). backups/ newest files still league-2026-07-25.json (10.7KB) and rounds-2026-07-25.json/rounds-latest.json (4.3KB each) -- no 2026-07-26 backup expected yet (daily workflow, last fired ~23:38 UTC prior day, not due). OI-1/OI-2/OI-3 remain DONE. OI-4 (marketing site) and OI-5 (course loader) remain hard-blocked on Guillermo / chains-course-expansion respectively -- per established guidance did not open Design/live-app browser tabs since no actionable browser work exists this run. |
 Found: everything green, no change since the 07:03 run. |
 Next: keep doing periodic GitHub-health spot checks; still worth a heads-up to Guillermo next live session that (1) v403 (betting stripped + Go Throw scoring overhaul) is fully deployed and verified in production, and (2) OI-4's marketing site is ready to ship pending his go-ahead + Formspree ID.
