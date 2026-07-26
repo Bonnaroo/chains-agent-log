@@ -1,30 +1,43 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
-## WHAT I DID
-CEO shift 2026-07-26 17:52-18:0x UTC. Processed every current owner directive and reconciled the office with the
-latest ground truth. STRATEGY now records Phase 2 = GO as a backend-first efficiency phase; the obsolete July 29
-hard gate is removed while APP A/Founders League protections remain. FROM_OWNER is cleared and all items are
-routed. EVENT_READINESS no longer claims the already-correct Kadey-first order is reversed, and it now explicitly
-requires QA of member-only picking, draft discoverability, registration-finalized auto-open logic, field feed,
-first-tee lock, and WD handling. TO_OWNER has the plain-language result.
+## LAST WORKER / ROLE / UTC / TASK
+**[GPT] ChatGPT/Codex | CEO | 2026-07-26 18:15 UTC | Cross-AI attribution and memory protocol**
 
-Infrastructure finding: the connected GitHub app reads successfully but returned 403 on a contents update. Codex
-claimed the office lock and committed through the user's logged-in Chrome successfully. Use the contents API for
-fresh reads/verification and Codex Chrome upload for writes until the integration receives contents-write access.
-Chrome's local-file upload is also disabled because the ChatGPT extension lacks file-URL access, so this shift used
-exact full-file editor replacements with post-commit contents-API verification. Enable the extension's "Allow access
-to file URLs" setting to restore the office playbook's batched upload flow.
+## WHAT CHANGED
+- [GPT] Replaced team/PROTOCOL.md with a two-worker operating standard. Mandatory identities are `[GPT]` for
+  ChatGPT/Codex and `[CLAUDE]` for Claude/Cowork/Claude-in-Chrome.
+- [GPT] Stamps are now required in LOCK.md claims, GitHub commit summaries, BOARD notes, role logs, HANDOFF,
+  LESSONS, DECISIONS, and TO_OWNER entries. The stamp follows the worker even when it operates the other company's
+  site or tool.
+- [GPT] Added a detailed evidence standard and a required HANDOFF structure so either AI can resume cold.
+- [GPT] Added a cross-AI learning loop: read the other worker's recent results, preserve verified work, record good
+  methods in LESSONS/playbooks, and explicitly report whether the next worker reused or challenged the method.
+- [GPT] Updated DECISIONS.md and kb/LESSONS.md to make this an owner-directed standing rule.
 
-## WHAT'S NEXT AND WHOSE JOB IT IS
-QA first: close T-014/T-015 on the LIVE app and verify the unchecked EVENT_READINESS items, especially that each
-member can pick only their own players and the commissioner edit path is exceptional correction authority. PM next:
-groom T-001 into QA ownership; replace T-008's obsolete July 29 gate; split Phase 2A into reversible backend-first
-migration tasks; and capture auto-open registration logic plus Draft Now discoverability without duplicating T-014.
-Engineer/Designer after PM: proceed only from assigned scoped tasks, protecting confirmed-good screens and live data.
+## VERIFICATION / EVIDENCE
+- GitHub connector could read but still returned HTTP 403 when attempting to claim LOCK.md through the contents API.
+- [GPT] Claimed the shared lock through Codex-controlled Chrome and verified the exact lock text through GitHub.
+- The updated files were committed with a `[GPT]` commit prefix and then re-read from GitHub to confirm the identity,
+  evidence, and cross-AI sections landed.
+
+## DATA / SAFETY
+No application, Firebase, league, pick, standings, round, or user data changed. Legacy chains-fantasy /league was
+not accessed. No Design build or live deploy occurred.
+
+## REUSABLE METHOD FOR THE OTHER AI
+Use identity-by-worker, not identity-by-tool. Example: GPT driving Claude Design remains `[GPT]`; Claude editing
+GitHub remains `[CLAUDE]`. Before starting, read HANDOFF + LESSONS + relevant log/task notes; do not spend a shift
+rediscovering a verified method. If evidence conflicts, record the contrary evidence rather than silently overriding.
+
+## WHAT'S NEXT AND WHO OWNS IT
+- [CLAUDE] On the next Claude shift: acknowledge this handoff in the selected role log using `[CLAUDE]`; use the
+  new stamp everywhere; state whether the cross-AI method was reused or whether contrary evidence was found.
+- [GPT] On the next GPT shift: use the same `[GPT]` stamps and detailed handoff; do not fall back to generic "agent."
+- QA/PM priorities from the preceding shift remain: independently close Ledgestone v405 readiness and groom the
+  newly authorized backend-first Phase 2 work.
 
 ## WATCH OUT FOR
-- Ledgestone starts July 30; do not mark readiness green from Design preview alone.
-- Do not repeat the draft-order error: Kadey first/Cory last is correct because Cory won Heinola.
-- Never touch legacy chains-fantasy /league; APP A season data is live.
-- GitHub connector writes currently fail with 403 despite read access; verify every Chrome commit via contents API.
-- Batched Chrome uploads require the ChatGPT extension's "Allow access to file URLs" setting.
+- GitHub connector writes still return 403 even though read access works; Chrome is the verified write path.
+- Historical entries are intentionally unstamped; do not rewrite them.
+- Attribution must never be inferred from role or commit author alone; the explicit bracket stamp is authoritative.
+- Preserve the confirmed-correct Ledgestone order: Kadey first, Cory last.

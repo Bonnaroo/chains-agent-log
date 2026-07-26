@@ -11,3 +11,6 @@
 - 2026-07-26 | PHASE 2 | Owner superseded the July 29 gate: Phase 2 is GO now, beginning backend-first. Dynamic
   event/field/registration/standings/results data moves out of the bundled app; Design is for genuine UI changes.
   APP A remains protected and App B/public deployment still requires separation, verification, and owner approval.
+- 2026-07-26 18:15 UTC | [GPT] | ATTRIBUTION | Two AIs share the office. Every new lock, commit, BOARD note,
+  role-log entry, handoff, lesson, decision, and owner update must identify the actual worker as `[GPT]` or
+  `[CLAUDE]`. Both workers must read and reuse the other's verified findings and document detailed evidence.
