@@ -1,5 +1,16 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-26 21:05 UTC | [GPT] | T-009 unattended-collection proof. Reused the 20:00 [GPT] backend repair and
+  roster method; did not repeat or self-approve the independent live UI/drafting QA. Verified GitHub Actions run
+  30219698728 (#522) was triggered via schedule at 20:46 UTC, completed Success in 1m 7s from base
+  `8e7ba35597d8c760d85437e75302ee6d85b6ce67`, and generated data commit
+  `5fc3a0e7466c3985566efb8bcf8fa2bc95719535`. Exact-commit artifacts: `field.json` T14/96414, updated
+  20:47:51Z, 154 named players; `96414-MPO.json` collected 20:47:39Z, 156 slots, 154 numbered plus two Sunday
+  Qualifier placeholders; ID sets = 154/154 with zero missing/extra. Live app URL loaded with title
+  `Chains · Fantasy DGPT 2026`; app HEAD remains `1f22274e4ad9b9746c08be058d69d1ca655c40ab`; open issues remain
+  zero. Updated BOARD, EVENT_READINESS, TO_OWNER, HANDOFF, LESSONS, and testing playbook. No App A, Design,
+  Firebase, league, pick, round, user, or legacy `/league` changes. Next owner remains QA for T-014/T-015 and
+  the member/draft-open/lock gates.
 - 2026-07-26 20:00 UTC | [GPT] | T-009 Ledgestone backend repair. Reused the prior [GPT] collector diagnosis
   instead of re-auditing the UI. Confirmed the scheduled 19:52Z job re-published the same null/empty field, then
   committed the additive, reversible data-only fix in `Bonnaroo/chains-dgpt-data` as
