@@ -107,6 +107,32 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+2026-07-26 13:33-13:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
+local entry 13:05-13:0x UTC, ~30 min prior, normal cadence, not a live claim). RECONCILIATION NOTE: found
+remote (raw.githubusercontent.com) still stuck at the 04:03 entry as its newest RUN LOG line — the 10:04
+through 13:05 entries existed only in this local Cowork-folder copy, meaning ~6 consecutive runs wrote their
+findings locally but never completed the browser upload-replace step (likely skipped it since each of those
+runs judged "no actionable browser work" and didn't open Chrome at all, forgetting the log push itself still
+needs the browser). Per protocol, treating local as authoritative (it holds strictly newer, non-conflicting
+run history) and pushing this full file — with all backlogged entries plus this one — to GitHub now. Read
+state: OI-1/OI-2/OI-3 remain fully DONE per prior runs, nothing to reopen. OI-4 (marketing site) still blocked
+on Guillermo's go-ahead + Formspree ID; OI-5 still blocked on chains-course-expansion producing a state file.
+Did the routine P3 GitHub-health check via read-only REST API only: Bonnaroo/chains-app HEAD unchanged at
+ea9a2f2 (v403, deployed 2026-07-26T00:45:00Z) - no redeploy needed. chains-dgpt-data Actions last 8 runs all
+completed/success (Collect DGPT Data 12:59:52Z, Live Scores B 12:56:46Z, Live Scores C 12:17:09Z, Live Scores
+A 12:09:56Z, Live Scores B 11:50:59Z, Collect DGPT Data 11:46:56Z, Live Scores C 11:08:41Z, Live Scores A
+10:59:38Z) - all green. data/live.json fresh (43354 bytes). Today's backups present and correctly sized:
+data/backups/league-2026-07-26.json (10749 bytes) and data/backups/rounds-2026-07-26.json (4314 bytes). Then
+loaded Chrome tools and used the GitHub upload/main flow to push this reconciled file (see WRITE PROTOCOL) —
+CHROME OUTAGE counter reset to 0 since the connection succeeded this run. |
+Found: everything green on P3; the only real finding this run was the multi-run local/remote log-push gap
+itself, now closed. |
+Next: future runs that do a browser-free health-check-only pass should still make time to push the log via
+Chrome at least every couple hours, not just when there's app/Design work, to avoid the backlog recurring.
+Otherwise: keep doing periodic GitHub-health spot checks; still worth a heads-up to Guillermo next live
+session that (1) v403 (betting stripped + Go Throw scoring overhaul) is fully deployed and verified in
+production, and (2) OI-4's marketing site is ready to ship pending his go-ahead + Formspree ID.
+
 2026-07-26 13:05-13:0x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 entry 12:33-12:3x UTC, ~30 min prior, normal cadence, not a live claim). Read state: OI-1/OI-2/OI-3 remain
 fully DONE per prior runs, nothing to reopen. OI-4 (marketing site) still blocked on Guillermo's go-ahead +
