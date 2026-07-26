@@ -1,17 +1,18 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## WHAT I DID
-Set up the office (this team/ folder), seeded the board with the real current backlog, wrote the role charters
-and the starter playbooks (deploy, github, claude-design, firebase, testing). Replaced the old single
-every-30-min audit loop with the dispatcher-with-hats model.
+Added the CEO layer (roles/ceo.md, FROM_OWNER.md = owner's desk seeded with 4 real owner notes, TO_OWNER.md,
+STRATEGY.md = the two-app plan + phase gates, OWNER_SETUP.md). Added board tasks T-006 (In the Bag fix), T-007
+(Council/admin dashboard v1, read-only), T-008 (PM: hold the coding-path gate until 2026-07-29). Office is otherwise
+as before (v404 verify/deploy = T-001, Cancel-Round blocker = T-002).
 
 ## WHAT'S NEXT AND WHOSE JOB IT IS
-PM should run first: groom the board, confirm assignments, triage any GitHub Issues. Then Engineer picks up
-T-001 (verify+deploy v404) and T-002 (Cancel/Delete round blocker). QA runs T-003 (full ROADMAP audit) on a
-different shift than whoever built the change under review.
+CEO should run FIRST: process the 4 [NEW] items in FROM_OWNER.md — route the In-the-Bag one to T-006 (done), and
+confirm STRATEGY.md captures the public-app split, the Council app, and the coding-path timing (done); reply in
+TO_OWNER.md. Then PM grooms/assigns. Then Engineer picks up T-001 (verify+deploy v404) and T-002 (Cancel-Round).
+QA runs audits on a different shift than the author.
 
 ## WATCH OUT FOR
-- Claude Design preview has intermittent click flakiness; use the standalone Present view + confirm actions via
-  screenshots. Typing into the Design chat may report a CDP timeout but usually lands — verify before sending.
-- The GitHub web "Commit changes" button moves down after a file is added — click the CURRENT position, verify the commit landed via the API (raw CDN caches; check the commit SHA).
-- v404 may already be built and just needs deploy; check Design chat state before re-prompting.
+- Do NOT start any Phase-2 coding rebuild before 2026-07-29 (STRATEGY.md gate). Phase 1 = Claude-Design polish on App A only.
+- Never disrupt App A / the founders' league data — friends are playing their season on it.
+- Browser flakiness: commit button moves after adding a file; verify commits via API/SHA (raw CDN caches).

@@ -44,3 +44,29 @@ as DRAFTS for Guillermo. Nothing published.
 **Done when:** Markdown drafts committed to team/marketing/; sources cited if any research used.
 **Attempts:** 0
 **Notes:** Marketing site already live at bonnaroo.github.io/chains-site; this is supporting copy + launch prep only.
+
+## T-006 | Designer -> Engineer | ASSIGNED
+**Goal:** IN THE BAG fix (owner-reported). Make managing the bag obvious: a clear way to ADD and DELETE/REMOVE a
+disc, sensible handling when there are many discs, and a way out of every state. Designer specs it first, then
+Engineer builds it via Claude Design (Go Throw / In the Bag only; DO-NOT-TOUCH applies).
+**Done when:** A user can add and delete discs from their bag with an obvious control + confirm; many-disc list is
+tidy; QA verifies in the built app; no orphan discs left in Firebase.
+**Attempts:** 0
+**Notes:** From FROM_OWNER.md 2026-07-26. Anchor UX principle: every action has a clear way out + explanation.
+
+## T-007 | Engineer | ASSIGNED
+**Goal:** COUNCIL / Admin dashboard v1 (READ-ONLY). A separate small page (its own repo + GitHub Pages, e.g.
+Bonnaroo/chains-admin — NOT inside the product app) that reads Firebase and shows live metrics: # accounts,
+# leagues, # players, # rounds (play/live), # waitlist signups, and a list of open GitHub Issues. Owner-facing.
+**Done when:** Guillermo can open one page and see current counts + the issue list. Read-only only — no delete/
+create yet (management actions are a later, carefully-authed task). Link it in TO_OWNER.md when live.
+**Attempts:** 0
+**Notes:** From FROM_OWNER.md 2026-07-26 ("the council"). Points at App A's Firebase (chains-app-f38f8) for now;
+will repoint to App B later. Use the anon-auth read pattern from kb/firebase.md. Management actions = future task.
+
+## T-008 | PM | ASSIGNED
+**Goal:** Keep STRATEGY.md's phase gate honored: do NOT let any coding-path/rebuild work start before 2026-07-29.
+Until then, all engineering is Claude-Design polish on App A. Groom the board to reflect this.
+**Done when:** Board + assignments contain no Phase-2 code-rebuild tasks before 2026-07-29; note it in the pm log.
+**Attempts:** 0
+**Notes:** Owner gated the coding path to "a few days" out. CEO owns STRATEGY.md; PM enforces the gate on the board.

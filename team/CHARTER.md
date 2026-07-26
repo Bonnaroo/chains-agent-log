@@ -25,3 +25,12 @@ Live app = v403 (betting removed, Go Throw scoring overhaul). v404 (Go Throw pol
 Top priority: a reachable Cancel/Delete control for in-progress rounds (the anchor "no way out" bug).
 Launch-critical majors: real email/password accounts, real-registered-player + real-event-field picks with
 pre-tournament PDGA/DGPT verification, an escape-hatch sweep, a Firebase security pass.
+
+## Chain of command + the two-app plan (see STRATEGY.md for detail)
+- Owner (Guillermo) talks ONLY to the CEO. He drops notes in team/FROM_OWNER.md; the CEO replies in
+  team/TO_OWNER.md and the daily REPORT.md. Chain: Owner -> CEO -> PM -> workers.
+- There will be THREE things, kept separate: APP A "Founders League" (the current live HTML app for Guillermo +
+  friends this season — do not disrupt), APP B "Public" (future commercial app, own repo + own database, real
+  email/password accounts, LEAGUE-OPTIONAL), and the COUNCIL/Admin back-office (owner-only metrics + management).
+- LEAGUE-OPTIONAL principle: in the public app, a user can use Go Throw, Watch/Live Chains, videos, and Settings
+  WITHOUT joining a league. The league is one mode, not a requirement.
