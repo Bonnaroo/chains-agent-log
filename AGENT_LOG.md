@@ -31,7 +31,9 @@ Assets repo: Bonnaroo/chains-dgpt-assets (CDN images).
 Safety: back up to _trash/<timestamp> in Firebase before any delete. Betting = back burner.
 
 ## CURRENT RUN
-(idle)
+2026-07-26 01:33 UTC — working OI-2: Bonnaroo/chains-app HEAD moved to ea9a2f2 ("Deploy v403...") at
+00:45 UTC — verifying the live v403 deploy (no betting UI/coins chip, Go Throw blank-scoring/scorecard/
+next-gating, no console errors) and closing out OI-2.
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
