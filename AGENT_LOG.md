@@ -107,6 +107,48 @@ OI-5. After OI-2: per-state course loader prompt to Design (courses-index.json; 
       once chains-course-expansion has produced at least one new state file.
 
 ## RUN LOG (newest first — format: date time UTC | did | found | next)
+
+2026-07-26 05:36-05:44 UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
+entry 05:03-05:2x UTC). Retried the Go Throw preview walkthrough per the 05:03 run's explicit ask (1-2 tries
+before treating the nav misroute as structural rather than flaky). Opened the v403 build via Design > file
+dropdown > "Chains — Fantasy DGPT app" > Present > "In this tab" (standalone present-mode, no chat sidebar,
+same technique prior runs called the "standalone Present-mode preview"). Dashboard verified clean: correct
+standings (Cory 56/1, Kyle 49/2, Will 47/3, Kadey 46/4, Gabe 46/5, Shanna 37/6), sidebar nav =
+Dashboard/The Picks/Standings/Live Chains/Go Throw/Watch/Settings/Console, no Live Betting item, no coins
+chip — matches known-good state. Clicked GO THROW's sidebar nav item twice (once from a fresh Dashboard
+load, once again after the first misroute) — both attempts deterministically landed on WATCH/Highlights
+instead, 2/2 this run. Combined with the 05:03 run's 6/6, that's 8 consecutive misroutes to the same wrong
+destination (never anywhere else) across two independent runs. Per the 05:03 run's own guidance, stopped
+after 2 tries rather than continuing to burn cycles, and is escalating this as a likely real nav-routing bug
+rather than pure preview/extension instability, since the failure is 100% consistent to one specific wrong
+target instead of random. Did not reach Go Throw, so the new "Finish never invents scores" (null-not-par)
+fix from the latest unlogged v403 sub-build remains unverified. Did not touch Firebase (never reached a
+score-writing screen). Ran the routine P3 GitHub-health check via REST API: chains-dgpt-data Actions still
+green (no new runs since 04:48:50Z Live Scores C, consistent with normal cadence), data/live.json unchanged
+(sha 8137b22), chains-app HEAD unchanged at ea9a2f2 (v403 production — correct, this newer preview build
+still isn't marked ready/downloaded so no redeploy expected). Also confirmed the Bonnaroo GitHub account
+itself is healthy and all expected repos are present (chains-app, chains-dgpt-data, disco-fantasy,
+chains-agent-log, plus Guillermo's unrelated AHMC-training-library/hi-jax/latenight-monologues repos) —
+first time this loop has explicitly sanity-checked the account/repo list rather than assuming it. OI-1/OI-2/
+OI-3 remain DONE, OI-4/OI-5 unchanged (blocked on Guillermo / chains-course-expansion respectively). Per this
+project's established pattern (see RUN LOG history), did NOT push anything to Bonnaroo/chains-app (deploy)
+or attempt any Firebase writes — this run made no production changes, only this log update. |
+Found: the GO THROW nav misroute to WATCH is now reproducible 8+ times in a row across two runs (2/2 this
+run, 6/6 the prior run) with 100% consistency to the same wrong destination — worth Guillermo checking this
+specific nav item himself (in Design's preview and/or asking Design directly) to confirm whether it's a real
+routing regression shipped in the unlogged post-v403 build, versus something isolated to this automated
+preview session/extension. GitHub, Firebase, and production all otherwise healthy, no other regressions
+found. |
+Next: do not keep retrying the identical click-based nav approach — a future run (or Guillermo directly)
+should either (a) try a different entry path into Go Throw (e.g. a deep-link/hash route, if the app exposes
+one, similar to how the live app uses #dashboard), or (b) ask Design directly whether GO THROW's nav target
+changed in this unlogged build, or (c) wait for Guillermo to confirm/deny the bug in a live session before
+spending more automated cycles on it. Once Go Throw is reachable: verify blank start, next-gating, the new
+null-not-par Finish behavior specifically, scorecard strip, and check Dashboard/Picks/Standings/Bag/
+betting-strip for regressions; remember any hole score entered auto-persists to production Firebase and must
+be backed up + deleted afterward (per OI-3's finding). OI-4 (marketing site) still needs Guillermo's
+go-ahead + Formspree ID; OI-5 still blocked on chains-course-expansion.
+
 2026-07-26 05:03-05:2x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 entry 04:33-04:3x UTC, outside the 45-min claim window). Chrome connected fine on first try (reset counter to
 0). Checked Design tab per protocol: the 04:33 mid-build had finished -- new build's changelog (still labeled
