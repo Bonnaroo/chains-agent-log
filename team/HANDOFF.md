@@ -1,18 +1,23 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## WHAT I DID
-Added the CEO layer (roles/ceo.md, FROM_OWNER.md = owner's desk seeded with 4 real owner notes, TO_OWNER.md,
-STRATEGY.md = the two-app plan + phase gates, OWNER_SETUP.md). Added board tasks T-006 (In the Bag fix), T-007
-(Council/admin dashboard v1, read-only), T-008 (PM: hold the coding-path gate until 2026-07-29). Office is otherwise
-as before (v404 verify/deploy = T-001, Cancel-Round blocker = T-002).
+CEO shift (2026-07-26). Created team/LOCK.md (didn't exist before). Processed FROM_OWNER.md — all four owner
+items moved to HANDLED, each already mapped to a board task or STRATEGY.md entry. Ran the Ledgestone Open
+pre-event readiness pass (EVENT_READINESS.md): verified event ID/name/dates/standings/schedule/Live-Chains are
+all correct against the real DGPT/PDGA source, but found and filed two real HIGH-PRIORITY gaps — T-014 (real
+156-player MPO field is published but not synced into the Picks page, so nobody can draft yet) and T-015 (T14's
+draft order looks reversed: Kadey, last event's BEST finisher, picks first instead of last). Updated TO_OWNER.md.
 
 ## WHAT'S NEXT AND WHOSE JOB IT IS
-CEO should run FIRST: process the 4 [NEW] items in FROM_OWNER.md — route the In-the-Bag one to T-006 (done), and
-confirm STRATEGY.md captures the public-app split, the Council app, and the coding-path timing (done); reply in
-TO_OWNER.md. Then PM grooms/assigns. Then Engineer picks up T-001 (verify+deploy v404) and T-002 (Cancel-Round).
-QA runs audits on a different shift than the author.
+Engineer: T-014 and T-015 are the most time-critical items on the board — Ledgestone Open starts 2026-07-30, so
+these need to close in the next shift or two, before T-001/T-002/T-006 etc if there's a scheduling conflict. PM:
+groom the board — it now has 15 tasks total and several roles (pm/engineer/qa/designer) haven't had a real shift
+yet; make sure T-014/T-015 get picked up first given the event clock. QA: once T-014/T-015 are built, verify the
+field matches the real PDGA field 1:1 and the draft order matches "last place picks first" before signing off.
 
 ## WATCH OUT FOR
-- Do NOT start any Phase-2 coding rebuild before 2026-07-29 (STRATEGY.md gate). Phase 1 = Claude-Design polish on App A only.
+- Ledgestone Open starts 2026-07-30 — T-014/T-015 are the real go/no-go items, not cosmetic.
+- Do NOT start any Phase-2 coding rebuild before 2026-07-29 (STRATEGY.md gate) — still not in place (owner
+  hasn't provided GitHub access yet).
 - Never disrupt App A / the founders' league data — friends are playing their season on it.
 - Browser flakiness: commit button moves after adding a file; verify commits via API/SHA (raw CDN caches).

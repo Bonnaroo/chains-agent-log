@@ -110,3 +110,26 @@ leave, read-only board) work; starter league stays pinned up top. Log defects fo
 **Done when:** A dated pass/fail of the league flows is in team/logs/qa.md; any breakage filed for the PM.
 **Attempts:** 0
 **Notes:** From FROM_OWNER 2026-07-26.
+
+## T-014 | CEO/PM -> Engineer | ASSIGNED (HIGH PRIORITY — time-boxed to the event)
+**Goal:** Sync the REAL registered Ledgestone Open MPO field into the app's Picks page. The Picks page for T14
+currently shows "Loading the registered field for this event" even though the real field is published (156 MPO
+players, PDGA event 96414, dgpt.com/event/2026-ledgestone-open, last updated 2026-07-26). Find and fix whatever
+is blocking the field-sync (data source, trigger, or Firebase write) so the real field loads and picks unlock.
+**Done when:** The Picks page for Ledgestone Open shows the real 156-player MPO field (name-matched, no stale/
+missing/extra players) and members can draft from it; verified by QA.
+**Attempts:** 0
+**Notes:** From CEO event-readiness pass 2026-07-26 (EVENT_READINESS.md). Event ID/name/dates already verified
+correct — this is specifically the field-loading step. Ledgestone starts 2026-07-30; this is time-critical.
+
+## T-015 | CEO/PM -> Engineer | ASSIGNED (HIGH PRIORITY — time-boxed to the event)
+**Goal:** Fix the T14 (Ledgestone Open) draft order, which appears REVERSED. The app states "Heinola Open last
+place picks first" and shows order KADEY, SHANNA, GABE, WILL, KYLE, CORY — but per the T13 Heinola standings
+columns, KADEY placed 1st (best, 6pts) and CORY placed 6th (worst, 1pt), so the worst-place-first rule should
+start with CORY, not KADEY. Current order runs best-to-worst instead of worst-to-best. Verify the draft-order
+formula/sort direction and correct it before the draft locks.
+**Done when:** Draft order for T14 (and future events) correctly starts with the prior event's last-place
+finisher and ends with the prior event's first-place finisher; verified against standings data by QA.
+**Attempts:** 0
+**Notes:** From CEO event-readiness pass 2026-07-26 (EVENT_READINESS.md). Coordinate with T-014 (fix field load
+first, or in the same pass, since both block real drafting for this event).
