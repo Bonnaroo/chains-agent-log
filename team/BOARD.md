@@ -10,6 +10,8 @@ Design preview against the checklist, then DEPLOY it live via kb/deploy.md.
 **Done when:** Live app at bonnaroo.github.io/chains-app is v404, the three polish items work, no console errors.
 **Attempts:** 0
 **Notes:** v404 was sent to Design in a prior session and should be built or building. If still building, park and note it.
+2026-07-26 (Engineer): v405 (which includes v404's Go Throw polish) is now DEPLOYED live. Remaining work = verify
+the three v404 polish items on the live site — effectively a QA pass now.
 
 ## T-002 | Engineer | ASSIGNED
 **Goal:** BLOCKER — add a reachable Cancel/Delete control for IN-PROGRESS (live/open) rounds in Go Throw.
@@ -111,20 +113,24 @@ leave, read-only board) work; starter league stays pinned up top. Log defects fo
 **Attempts:** 0
 **Notes:** From FROM_OWNER 2026-07-26.
 
-## T-014 | CEO/PM -> Engineer | IN_PROGRESS (HIGH PRIORITY — time-boxed to the event)
+## T-014 | CEO/PM -> Engineer | REVIEW (HIGH PRIORITY — time-boxed to the event)
 **Goal:** Sync the REAL registered Ledgestone Open MPO field into the app's Picks page. The Picks page for T14
 currently shows "Loading the registered field for this event" even though the real field is published (156 MPO
 players, PDGA event 96414, dgpt.com/event/2026-ledgestone-open, last updated 2026-07-26). Find and fix whatever
 is blocking the field-sync (data source, trigger, or Firebase write) so the real field loads and picks unlock.
 **Done when:** The Picks page for Ledgestone Open shows the real 156-player MPO field (name-matched, no stale/
 missing/extra players) and members can draft from it; verified by QA.
-**Attempts:** 1
+**Attempts:** 2
 **Notes:** From CEO event-readiness pass 2026-07-26 (EVENT_READINESS.md). Event ID/name/dates already verified
 correct — this is specifically the field-loading step. Ledgestone starts 2026-07-30; this is time-critical.
 Claimed by Engineer 2026-07-26: scoped Claude Design prompt sent covering T-014 + T-015 together (same screen).
-Build pending — next shift verifies in Design preview before deploying.
+2026-07-26 16:46 UTC (Engineer, attempt 2): v405 built, VERIFIED in Design preview (T14 REGISTERED tab shows
+154 named pros updated Jul 25 8:00 PM; T14 card DRAFTING; picks unlocked) and DEPLOYED live (full 9,641,939
+bytes served). The build bundles a snapshot fallback (156 registered incl. 2 Sunday-Qualifier TBD, PDGA 96414,
+self-expires Aug 3) AND reads the live field.json feed from Bonnaroo/chains-dgpt-data (updates every 2h via
+GitHub Actions). QA: verify field 1:1 vs pdga.com/tour/event/96414 on the LIVE site, then close.
 
-## T-015 | CEO/PM -> Engineer | IN_PROGRESS (HIGH PRIORITY — time-boxed to the event)
+## T-015 | CEO/PM -> Engineer | REVIEW (HIGH PRIORITY — time-boxed to the event)
 **Goal:** Fix the T14 (Ledgestone Open) draft order, which appears REVERSED. The app states "Heinola Open last
 place picks first" and shows order KADEY, SHANNA, GABE, WILL, KYLE, CORY — but per the T13 Heinola standings
 columns, KADEY placed 1st (best, 6pts) and CORY placed 6th (worst, 1pt), so the worst-place-first rule should
@@ -132,8 +138,11 @@ start with CORY, not KADEY. Current order runs best-to-worst instead of worst-to
 formula/sort direction and correct it before the draft locks.
 **Done when:** Draft order for T14 (and future events) correctly starts with the prior event's last-place
 finisher and ends with the prior event's first-place finisher; verified against standings data by QA.
-**Attempts:** 1
+**Attempts:** 2
 **Notes:** From CEO event-readiness pass 2026-07-26 (EVENT_READINESS.md). Coordinate with T-014 (fix field load
 first, or in the same pass, since both block real drafting for this event).
 Claimed by Engineer 2026-07-26: bundled into the same scoped Claude Design prompt as T-014 (same screen/data
-path). Build pending — next shift verifies in Design preview before deploying.
+path). 2026-07-26 (Engineer, attempt 2): NOT A BUG. Verified in v405 preview: T13 Heinola RESULT is CORY 1st
+(-42) ... KADEY 6th (-27); draft order KADEY, SHANNA, GABE, WILL, KYLE, CORY = exactly worst-to-best. The CEO
+readiness pass had the Heinola columns inverted; the owner also confirmed in Design chat the order is right.
+Design left the code untouched. QA: confirm the same on the LIVE site and close as not-a-bug.
