@@ -34,3 +34,14 @@ accounts, that works flawlessly and scales without issues.
 
 ## HARD GATE
 Do NOT begin the Phase 2 coding rebuild before 2026-07-29. Until then, all engineering is Claude-Design polish on App A.
+
+## UPDATE 2026-07-26 — owner wants agents to work "virtually" (no browser) and may bring Phase 2 forward
+The browser-driving overhead is the owner's pain point. Moving to a real codebase is what removes it (agents
+edit real code + use real git instead of clicking a browser). Owner is open to starting the code path SOONER.
+BLOCKER / OWNER DECISION NEEDED (flag in TO_OWNER.md): to let scheduled agents work on code WITHOUT the browser,
+the team needs a non-browser way to write to GitHub — i.e. a GitHub access token / connected GitHub integration
+(there is currently no git CLI or credentials in the agent environment; all writes go through the browser).
+Options for the owner: (a) generate a GitHub personal access token for the team to use, or (b) connect a GitHub
+integration/MCP. Once that exists, we can scaffold the real app (React + Capacitor, reuse Firebase) in a new
+repo and the team works in code, browser-free. Until the owner provides that access, keep the 2026-07-29 gate and
+keep polishing App A in Claude Design. Do NOT start the code rebuild until the access method is in place.

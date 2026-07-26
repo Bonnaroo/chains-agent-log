@@ -70,3 +70,43 @@ Until then, all engineering is Claude-Design polish on App A. Groom the board to
 **Done when:** Board + assignments contain no Phase-2 code-rebuild tasks before 2026-07-29; note it in the pm log.
 **Attempts:** 0
 **Notes:** Owner gated the coding path to "a few days" out. CEO owns STRATEGY.md; PM enforces the gate on the board.
+
+## T-009 | CEO/PM | ASSIGNED (HIGH PRIORITY — time-boxed to the event)
+**Goal:** LEDGESTONE OPEN pre-event readiness. Drive team/EVENT_READINESS.md to green: correct event ID/naming,
+the pickable pro field = the REAL registered Ledgestone field, picks unlock when the field is in, standings/
+stats/schedule/history correct, Live Chains queued, and all background event numbers/identifiers lined up.
+**Done when:** Every box in EVENT_READINESS.md (Active Event section) is checked green, with any gap fixed and
+verified; confirmed in team/logs/ceo.md before ~2026-07-30.
+**Attempts:** 0
+**Notes:** Owner's job #1 right now. The recurring risk is truth-of-data + background event wiring — verify explicitly.
+
+## T-010 | Designer -> Engineer | ASSIGNED
+**Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1
+on a hole during a Go Throw round. Ace appears on the Ace wall automatically, attributed to the player + hole + course.
+**Done when:** Scoring a 1 in a round creates the ace entry automatically; no manual ace entry path remains; QA verified.
+**Attempts:** 0
+**Notes:** From FROM_OWNER 2026-07-26.
+
+## T-011 | Designer -> Engineer | ASSIGNED
+**Goal:** IN THE BAG as a real feature: quick disc COUNT at the top; drill-down to see all discs; optional
+detailed inventory (log every disc you own) that can be SHARED so other users can view your bag; plus obvious
+add/delete-disc with a way out (supersedes/absorbs T-006).
+**Done when:** A user can see their disc count, view all discs, add/remove discs (with confirm + way out), and
+optionally build + share a detailed bag others can view; QA verified; no orphan discs in Firebase.
+**Attempts:** 0
+**Notes:** From FROM_OWNER 2026-07-26. Folds in T-006 (mark T-006 merged into T-011 when PM grooms).
+
+## T-012 | Engineer | ASSIGNED
+**Goal:** GO THROW round management completeness: start a round, save it, delete finished rounds, QUIT/cancel a
+round mid-play (folds into T-002), and ADD or REMOVE players in the middle of a round. Each action has a clear
+control + confirm + way out.
+**Done when:** All of the above work in the built app and persist correctly (no orphan/stuck records); QA verified.
+**Attempts:** 0
+**Notes:** From FROM_OWNER 2026-07-26. Coordinate with T-002 (cancel/delete round) so they don't collide.
+
+## T-013 | QA | ASSIGNED
+**Goal:** LEAGUES end-to-end check: create-a-league flow + all league features (invite, commissioner controls,
+leave, read-only board) work; starter league stays pinned up top. Log defects for the PM.
+**Done when:** A dated pass/fail of the league flows is in team/logs/qa.md; any breakage filed for the PM.
+**Attempts:** 0
+**Notes:** From FROM_OWNER 2026-07-26.
