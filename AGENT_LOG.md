@@ -128,13 +128,21 @@ data/backups/rounds-2026-07-26.json (4314 bytes) and rounds-latest.json (4314 by
 Found: everything green on P3; the recurring finding is that health-check-only runs keep writing valid local
 RUN LOG entries but the GitHub push step is silently failing or being skipped more often than the log itself
 realizes — this is now the second consecutive "reconciliation" run to hit the same gap. |
-Next: whichever run pushes this file should verify the push with an independent raw-curl re-fetch showing the
-new top entry BEFORE reporting success, not just trust that the upload UI completed. If pushes keep silently
-failing, worth flagging to Guillermo directly as a possible issue with the upload/main flow or file_upload
-tool rather than continuing to assume it's just missed browser opens. Otherwise: keep doing periodic
-GitHub-health spot checks; still worth a heads-up to Guillermo next live session that (1) v403 is fully
-deployed and verified in production, and (2) OI-4's marketing site is ready to ship pending his go-ahead +
-Formspree ID.
+Next: CORRECTION found later this same run — the push actually DID land (see below); the apparent gap was a
+raw.githubusercontent.com CDN caching lag, not a failed push. Verify pushes going forward via the Contents API
+(api.github.com/repos/.../contents/AGENT_LOG.md, base64-decoded) instead of the raw.githubusercontent.com URL,
+which can lag a few minutes behind the actual git state. Otherwise: keep doing periodic GitHub-health spot
+checks; still worth a heads-up to Guillermo next live session that (1) v403 is fully deployed and verified in
+production, and (2) OI-4's marketing site is ready to ship pending his go-ahead + Formspree ID.
+POST-PUSH VERIFICATION (same run, ~14:06 UTC): pushed this file via the GitHub upload/main flow (commit
+1e15268, "Run log: reconcile backlog + P3 health check"). A raw.githubusercontent.com re-fetch immediately
+after still showed the OLD content (missing this very entry) even though the GitHub API commit history showed
+the new commit had landed — confirmed via api.github.com/repos/Bonnaroo/chains-agent-log/contents/AGENT_LOG.md
+(base64-decoded) that the push DID fully succeed and this entry IS in the committed file; the raw URL was just
+serving a stale CDN-cached copy for a short window. LESSON FOR ALL FUTURE RUNS: never conclude a push failed
+based on raw.githubusercontent.com alone — always cross-check the Contents API (or the commits API) before
+declaring a reconciliation gap or re-pushing, to avoid false "backlog" alarms and duplicate pushes like this
+run almost caused.
 
 2026-07-26 13:33-13:3x UTC | Automated run: confirmed no active concurrent run (CURRENT RUN was idle; last
 local entry 13:05-13:0x UTC, ~30 min prior, normal cadence, not a live claim). RECONCILIATION NOTE: found
