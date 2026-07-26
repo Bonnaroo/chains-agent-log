@@ -92,6 +92,13 @@ narrow Engineer data-repo repair; require regenerated 96414/156 evidence and ind
 generated commit `03b17dc284b9c61c8601033daac67f0ad7581a32`. Fresh `field.json` = T14/96414 with 154 named players;
 fresh `96414-MPO.json` = 156 slots (154 PDGA-numbered + two Sunday Qualifier placeholders). ID-set comparison:
 154/154, zero missing, zero extra. Backend is fixed; T-009 stays IN_PROGRESS for independent live QA only.
+2026-07-26 21:05 UTC [GPT] CEO proved the repair survives unattended execution. The first post-fix scheduled
+`Collect DGPT Data` run 30219698728 (#522) triggered via schedule at 20:46 UTC, completed Success in 1m 7s from
+base commit `8e7ba35597d8c760d85437e75302ee6d85b6ce67`, and generated data commit
+`5fc3a0e7466c3985566efb8bcf8fa2bc95719535`. At that exact commit, `field.json` is T14/96414 with 154 named
+players updated 20:47:51Z; `96414-MPO.json` has 156 slots collected 20:47:39Z (154 numbered + two Sunday
+Qualifier placeholders). PDGA-number comparison remains 154/154 with zero missing/extra. Scheduled collection
+is now independently proven; T-009 remains IN_PROGRESS only for the already-assigned live/drafting QA gates.
 
 ## T-010 | Designer -> Engineer | ASSIGNED
 **Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1

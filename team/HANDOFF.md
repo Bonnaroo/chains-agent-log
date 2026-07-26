@@ -1,57 +1,52 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## LAST WORKER / ROLE / UTC / TASK
-**[GPT] ChatGPT/Codex | CEO | 2026-07-26 20:00 UTC | T-009 Ledgestone backend-feed repair**
+**[GPT] ChatGPT/Codex | CEO | 2026-07-26 21:05 UTC | T-009 scheduled-collection proof**
 
 ## WHAT CHANGED
-- [GPT] Reused the 18:58 [GPT] collector diagnosis instead of repeating the visible-app audit. The scheduled
-  19:52 UTC job reproduced the null/empty field, confirming the defect was active.
-- [GPT] Committed an additive data-only repair to `Bonnaroo/chains-dgpt-data` as
-  `4cb6a21ba221d77e9a1bf8590c5add72a34ca7dc`: `collect_field.py` now includes `("T14", 96414)`, and
-  `events.txt` now covers 96411, 96412, 96413, and 96414.
-- [GPT] Manually started existing `Collect DGPT Data` workflow run 30217973885 (#521). It regenerated the
-  active field and the Ledgestone event artifact; no Design build, App A deploy, or Firebase write was needed.
-- [GPT] Advanced T-009 and T-014 notes, changed EVENT_READINESS from RED to AMBER, informed Guillermo in
-  TO_OWNER, and added named-roster-versus-placeholder reconciliation to LESSONS and kb/testing.md.
+- [GPT] Reused the 20:00 [GPT] Ledgestone collector repair and PDGA-number reconciliation method instead of
+  repeating the visible-app audit or independently approving GPT's own earlier work.
+- [GPT] Proved the fix survives unattended operation: the first post-repair scheduled `Collect DGPT Data` run
+  30219698728 (#522) triggered via schedule at 20:46 UTC, completed Success in 1m 7s, and generated data commit
+  `5fc3a0e7466c3985566efb8bcf8fa2bc95719535`.
+- [GPT] Recorded the immutable-run evidence in T-009, EVENT_READINESS, TO_OWNER, the CEO log, LESSONS, and
+  kb/testing.md. No App A build, Design prompt, deploy, or product-data write was needed.
 
 ## VERIFICATION / EVIDENCE
-- Local `python -m py_compile collect_field.py` passed before upload.
-- Workflow run `https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/30217973885` completed Success in 39s
-  against commit `4cb6a21ba221d77e9a1bf8590c5add72a34ca7dc`.
-- Generated commit `03b17dc284b9c61c8601033daac67f0ad7581a32` published `data/field.json` at
-  `2026-07-26T19:58:54.471332+00:00` with `event_tag: T14`, `event_id: 96414`, `player_count: 154`.
-- `data/events/96414-MPO.json` now exists with `event_id: 96414`, event name `DGPT+ Ledgestone Open`, 156 slots,
-  and collection time `2026-07-26T19:58:42.352067+00:00`.
-- Primary PDGA page `https://www.pdga.com/tour/event/96414` still shows MPO (156): 154 named/PDGA-numbered players
-  plus two `Sunday Qualifier` placeholders. Set comparison between the field feed and event artifact = 154/154,
-  zero missing IDs, zero extra IDs.
-- `chains-app` main remains v405 commit `1f22274e4ad9b9746c08be058d69d1ca655c40ab`; open Issues = none.
-- [GPT] Office evidence was verified after commits `329e1d3846330cdcc1166b185f44509fead80dfa`
-  (BOARD/EVENT_READINESS/HANDOFF/TO_OWNER), `f53e3638f2fc70947a6a64d14bf0e1ce88c5ade3`
-  (LESSONS/testing), and `fd1d076ebbe2bc7ccd1b3e3c9aa0a9b52c03278e` (CEO log).
+- GitHub Actions page `https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/30219698728` identifies #522 as
+  `Triggered via schedule`, base commit `8e7ba35597d8c760d85437e75302ee6d85b6ce67`, Status Success, 1m 7s.
+- Generated commit `5fc3a0e7466c3985566efb8bcf8fa2bc95719535` contains `data/field.json` updated
+  `2026-07-26T20:47:51.222616+00:00`: T14, event 96414, 154 named players.
+- At the same commit, `data/events/96414-MPO.json` was collected `2026-07-26T20:47:39.365158+00:00` with 156
+  slots: 154 PDGA-numbered players and two `Sunday Qualifier` placeholders. Exact PDGA-number set comparison is
+  154/154 with zero missing and zero extra.
+- Live URL `https://bonnaroo.github.io/chains-app/` loaded with title `Chains · Fantasy DGPT 2026`; this was
+  availability only, not the independent T-014/T-015 interaction pass. App HEAD remains v405 commit
+  `1f22274e4ad9b9746c08be058d69d1ca655c40ab`; open `chains-app` issues remain zero.
 
 ## DATA / SAFETY
-Changed only two version-controlled collector inputs in `chains-dgpt-data`: `collect_field.py` and `events.txt`.
-The workflow regenerated public JSON artifacts from PDGA. No Firebase, league, picks, standings, rounds, accounts,
-or user data changed; no deletion or backup was needed. Legacy `chains-fantasy /league` was not accessed. App A,
-betting removal, Watch, Settings, starter-league pin, and Kadey-first/Cory-last order were untouched.
+No data changed this shift. The scheduled collector regenerated public, version-controlled JSON from PDGA; GPT
+performed no Firebase, account, league, pick, standings, round, user, or deletion operation. No backup was needed.
+Legacy `chains-fantasy /league` was not accessed. Betting removal, Watch, Settings, the starter-league pin, and
+the owner-confirmed Kadey-first/Cory-last order remain protected.
 
 ## REUSABLE METHOD FOR THE OTHER AI
-[GPT] improved the prior three-layer method: compare PDGA-number sets, not raw registration totals. A field can
-have 156 slots while the safe draftable feed correctly has 154 named players because two slots are non-draftable
-`Sunday Qualifier` placeholders. Verify collector coverage -> generated artifact -> named ID-set equality -> UI.
-Claude should reuse this exact distinction and should not re-add qualifier placeholders to the draftable pool.
+[GPT] added a recurrence gate: after a manual workflow run proves a data repair, require the next genuine
+schedule-triggered run and record its run ID, base SHA, generated SHA, and exact-commit artifact reconciliation.
+Claude should reuse this before declaring scheduled collection healthy; a manual green run alone is insufficient.
 
 ## WHAT'S NEXT AND WHO OWNS IT
-- [QA] Independently verify the live app consumes the fresh T14/96414 feed rather than its bundled fallback;
-  compare all 154 named players, confirm how the two qualifier slots display, and record observable evidence.
-- [QA] Confirm picks are open, a member can draft only their own players, the Draft Now path is discoverable,
-  the lock/WD behavior matches the league rule, and order remains Kadey first / Cory last. Then close T-014/T-015.
-- [PM] Groom obsolete T-008 wording and split Phase 2A backend migration only after the event-readiness QA gate.
+- [QA] Independently verify the live Registered screen consumes fresh T14/96414 feed data rather than its bundled
+  fallback; reconcile all 154 named players and document how the two Sunday Qualifier placeholders appear.
+- [QA] Verify member own-only drafting, a discoverable Draft Now path, registration-finalized/draft-open behavior,
+  pick-lock/WD handling, and the protected Kadey-first/Cory-last order. Then close T-014/T-015 if all pass.
+- [PM] After the event gate, groom obsolete T-008 wording and split the authorized Phase 2A backend migration into
+  reversible tasks that protect App A.
 
 ## WATCH OUT FOR
-- Do not treat raw count 154 versus 156 as a regression: the two excluded records are duplicate Sunday Qualifier
-  placeholders with no PDGA number and must not become draftable players.
-- Workflow #521 has one non-blocking GitHub warning: checkout/setup-python target Node 20 and are forced to Node 24.
-- The GitHub connector still reads but cannot write contents (403); Codex Chrome upload remains the verified path.
-- Do not hand-edit `chains-app/index.html`; do not touch legacy `chains-fantasy /league`.
+- Do not self-approve the independent UI/drafting QA from this CEO/backend shift.
+- Do not treat 154 versus 156 as a roster defect: the two excluded slots are non-numbered Sunday Qualifier
+  placeholders and must not become draftable players.
+- Workflow #522 retains one non-blocking warning: checkout/setup-python target Node 20 and are forced to Node 24.
+- The GitHub connector reads but cannot write repository contents (403); Codex Chrome is the verified write path.
+- Never hand-edit `chains-app/index.html`; never touch legacy `chains-fantasy /league`.

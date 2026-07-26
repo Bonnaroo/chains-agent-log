@@ -36,6 +36,11 @@ Verified source facts from the 2026-07-26 CEO passes:
       `data/field.json` at 2026-07-26T19:58:54Z with `event_tag: T14`, `event_id: 96414`, and 154 named players.
       `data/events/96414-MPO.json` now has the full 156-slot PDGA field: 154 PDGA-numbered players plus two
       `Sunday Qualifier` placeholders. PDGA-number set comparison = 154/154, zero missing, zero extra.
+- [x] AUTOMATIC COLLECTION PROVEN — 2026-07-26 21:05 UTC [GPT]: the first post-fix scheduled run
+      30219698728 (#522) triggered via schedule at 20:46 UTC and completed Success in 1m 7s. Generated commit
+      `5fc3a0e7466c3985566efb8bcf8fa2bc95719535` refreshed `field.json` at 20:47:51Z and event 96414 at
+      20:47:39Z; the exact-commit artifacts still reconcile 154/154 numbered players with zero missing/extra,
+      plus two non-draftable Sunday Qualifier placeholders.
 - [ ] Verify the live app consumes the repaired field feed before relying on the bundled fallback.
 - [ ] Verify automatic registration-finalized -> draft-open behavior, not just this event's manual/snapshot fix.
 

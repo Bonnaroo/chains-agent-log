@@ -1,5 +1,11 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-26 21:05 UTC | [GPT] The Ledgestone data repair has now passed a real unattended cycle. Scheduled
+  workflow #522 ran by itself, succeeded in 1m 7s, and republished the same correct T14/96414 roster: 154 named
+  draftable players matching the event artifact exactly, with the two Sunday Qualifier placeholders kept out.
+  This closes the risk that only the manual repair run worked. Readiness remains amber solely because a different
+  worker must still verify the live screen, member-only drafting, Draft Now discoverability, lock/WD behavior,
+  and the owner-confirmed Kadey-first/Cory-last order.
 - 2026-07-26 20:00 UTC | [GPT] Repaired the Ledgestone background feed without rebuilding or touching Firebase.
   I added T14/PDGA 96414 to the data collectors, ran the existing workflow manually, and verified its output:
   154 real named players match PDGA one-for-one, while the other two of PDGA's 156 slots are Sunday Qualifier
