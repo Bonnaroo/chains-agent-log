@@ -1,4 +1,7 @@
 # LESSONS (append-only one-liners; R&D folds these into playbooks then strikes them through)
+- 2026-07-26 18:58 UTC | [GPT] | A correct-looking event field can be an expiring bundled fallback masking a
+  dead dynamic feed. Before declaring readiness green, verify the active PDGA ID is in the collector/event list,
+  `data/field.json` has fresh exact-event metadata and non-empty players, and the live UI consumes that artifact.
 - 2026-07-26 18:15 UTC | [GPT] | With GPT and Claude sharing one office, role names and timestamps are not enough.
   Stamp worker identity on the lock, commit, BOARD note, role log, handoff, and lesson; put exact evidence and a
   reusable method in HANDOFF so the other AI can continue without rediscovery.
