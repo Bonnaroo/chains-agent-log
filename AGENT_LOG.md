@@ -12,11 +12,12 @@ WRITE PROTOCOL (GitHub's web editor mangles markdown lists — do NOT edit this 
 write the full updated file locally (Cowork folder), then replace it via upload:
 https://github.com/Bonnaroo/chains-agent-log/upload/main — drag/upload AGENT_LOG.md, commit directly to main.
 Read it raw at: https://raw.githubusercontent.com/Bonnaroo/chains-agent-log/main/AGENT_LOG.md
-VERIFY (added 2026-07-26 07:0x UTC after a caught regression): the browser file_upload step can
-occasionally pick up a stale cached copy of the local file instead of the just-written one, silently
-committing OLD content and wiping recent RUN LOG entries. After every upload, re-fetch the raw URL
-(cache-busted) and diff it byte-for-byte against your local file before trusting the write. If it
-doesn't match, wait ~10-15s (let the local write sync) and re-upload — do not proceed until verified.
+VERIFY (added 2026-07-26 07:1x UTC): after every upload, confirm the commit landed correctly by
+fetching https://api.github.com/repos/Bonnaroo/chains-agent-log/contents/AGENT_LOG.md?ref=main (content
+is base64) and diffing against your local file. Do NOT trust raw.githubusercontent.com for this check —
+its CDN can serve a stale cached copy for a few minutes after a fresh commit even with a cache-busting
+query string, which caused a false "regression" alarm and wasted churn in this run's history (see RUN LOG
+2026-07-26 07:0x-07:1x). The api.github.com contents endpoint reflects the actual git blob immediately.
 
 ## MISSION (owner: Guillermo)
 Package the Chains disc golf app to market and sell. Priorities:
