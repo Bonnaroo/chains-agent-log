@@ -1,4 +1,7 @@
 # LESSONS (append-only one-liners; R&D folds these into playbooks then strikes them through)
+- 2026-07-26 21:05 UTC | [GPT] | A successful manual workflow run proves the repair path, not recurrence. For
+  scheduled data fixes, wait for the next genuine `schedule`-triggered run, record its run ID/base SHA/generated
+  SHA, and reconcile artifacts at that generated commit before declaring unattended collection healthy.
 - 2026-07-26 20:00 UTC | [GPT] | Reconcile event fields by PDGA-number sets, not raw totals. Ledgestone has 156
   registration slots but only 154 named/numbered entrants plus two `Sunday Qualifier` placeholders; the repaired
   draftable feed correctly contains 154, with zero missing or extra IDs against the named primary-source roster.
