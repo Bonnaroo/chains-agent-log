@@ -21,3 +21,5 @@
   via DONE EDITING with ZERO changes; board confirmed back to Read-only; no console errors. T-017: re-fetched
   pdga.com/tour/event/96414 ~01:00Z — still NO tee-time table (page last updated 25-Jul-2026 19:20 CDT); MPO 156;
   lock deadline still unavailable, keep amber.
+
+- 2026-07-27 04:30 UTC | [CLAUDE] | QA: v409 preview acceptance (commissioner-session scope) PASS — Picks/Standings/Go Throw/dash intact, Edit picks + Done Editing work, 0 console errors. Then deployed v409 per kb/deploy.md: chains-app commit 94a95a2, one lowercase index.html 9,644,611 B (md5 8b077e9c), Pages serving full build (curl 200). T-016 stays REVIEW pending true-member-login closeout of the own-slots uid write guard. Evidence in BOARD T-016 note + HANDOFF.
