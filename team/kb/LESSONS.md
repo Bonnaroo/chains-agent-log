@@ -34,4 +34,7 @@
 - 2026-07-27 00:28 UTC | [GPT] | Pick-lock deadlines must come from the earliest official player tee time, never a
   broadcast schedule. When the PDGA event page has no tee-time table yet, keep readiness amber, recheck the
   primary source, and do not deploy or approve a guessed lock time.
-
+- 2026-07-27 02:38 UTC | [GPT] | A new Claude Design version number is not proof that the requested change landed.
+  Before prompting, record/select the intended known-good baseline; if an unshipped version is newer than live,
+  assume the next version may bundle it until proven otherwise. Afterward, verify the actual acceptance UI in
+  preview (not just build status/version creation) before downloading or deploying.
