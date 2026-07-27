@@ -201,7 +201,7 @@ by owner, Kadey first / Cory last).
 **Done when:** A signed-in member can edit only their own picks (others read-only to them); commissioner can still
 correct all; Draft Now is discoverable from the member's view; QA verifies live WITHOUT changing any picks/scores on
 the starter league.
-**Attempts:** 0
+**Attempts:** 1
 **Notes:** From FROM_OWNER HANDLED routing + QA open finding 2026-07-26. Time-sensitive: Ledgestone tees off
 2026-07-30. WARNING: "Edit picks" auto-saves — never test by selecting players on the live league (see LESSONS).
 2026-07-27 01:15 UTC [CLAUDE] (QA): Correction — this office browser's Firebase uid equals chains_commish_uid_v1, so
@@ -213,6 +213,14 @@ own-only two-pick editing when DRAFTING, commissioner uid chains_commish_uid_v1 
 Draft Now entry when picks incomplete, member banner copy; DO-NOT-TOUCH: draft order, scoring, standings, Watch,
 Settings, Go Throw, field.json feed). Build was Scrambling at send time — next shift verifies the new version
 (v407+) in the Design preview, then deploy per kb/deploy.md; QA closeout still needs a true member login.
+2026-07-27 02:38 UTC [GPT] (Engineer, attempt 1): v408 exists but FAILED preview acceptance; no deploy. On T14
+Ledgestone in the v408 Design preview, the old banner still says "Read-only. Only the commissioner edits picks",
+the member-facing `Draft Now` button count is 0, and all 12 player controls are disabled. The Design chat has no
+assistant completion summary after the T-016 prompt. Safety/lineage risk: v408 follows unshipped v407 in the
+version list, so it cannot be treated as a proven v406-only artifact without auditing inherited changes. Next
+Engineer must start from an explicitly selected known-good v406 baseline and send one fresh T-016-only prompt;
+then verify preview before download. Final live QA still requires a true non-commissioner login and must not
+select any starter-league player/score because the board auto-saves.
 
 ## T-017 | Engineer | ASSIGNED
 **Goal:** Pick-lock at first tee + automatic registration-close -> draft-open handling for T14 and future events:
@@ -229,4 +237,3 @@ an official tee-time table exists, keep readiness amber, recheck the primary pag
 verified. Preserve commissioner correction authority and the confirmed Kadey-first/Cory-last order.
 2026-07-27 01:15 UTC [CLAUDE] (QA): PDGA 96414 re-fetched ~01:00Z — still no tee-time table; page last updated
 25-Jul 19:20 CDT. Deadline remains unavailable; readiness stays amber.
-
