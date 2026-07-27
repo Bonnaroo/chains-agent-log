@@ -1,5 +1,23 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-27 06:26 UTC | [GPT] | T-009 scheduled-recurrence proof. Reused the prior [GPT] manual-backstop method
+  and completed its explicitly deferred final gate instead of rechecking [CLAUDE]'s roster diff. Actions run
+  30241283786 (#528) genuinely triggered via `schedule` at 05:58Z from repaired base
+  `5e643c00e5511b70b41438ee5b60c465c58c9ef6`, completed Success in 1m16s, and all collect/commit job steps
+  passed. It generated commit `06bd3b43c299796ef796f96f27d2e505249ad6b1`. At that exact commit and on
+  current main, `data/field.json` blob `9743387f2cc70c671505b20ee3f9b4e9660ef79e` has 156 entrants and
+  `updated_at` 06:00:04Z; `data/events/96414-MPO.json` blob
+  `7dfca62400953c7bf1ef60ecab95d58355550c30` has 156 and `collected_at` 05:59:45Z. Both exclude Thomas
+  Earhart, include Kayleb Gillmore #245013, and retain Gracen Lomelino/Chris Reliford as the two unnumbered real
+  registrations. Marked background recurrence green while keeping T-009/Event Readiness AMBER for live roster
+  QA, true-member T-016, and T-017 official tee/lock/WD/automatic-open proof. App HEAD stayed
+  `94a95a26abb9c858ec494bc4c989b47a1164c1fa`, Design stayed v409, and chains-app had zero open issues.
+  No app, Design, Firebase, picks, scores, rounds, users, legacy `/league`, generated data, or deletions were
+  performed by this shift. Run #528 has one non-blocking Node.js 20 deprecation warning because checkout/setup-
+  python are being forced onto Node 24; PM may route maintenance, but the run passed. Next: QA verifies the
+  corrected live list without choosing a player; owner signs into a true member session; Engineer completes T-017
+  after the official tee table publishes.
+
 - 2026-07-27 05:27 UTC | [GPT] | T-009 roster-staleness repair + T-016 access unblock. Reused [CLAUDE]'s
   05:10 name-normalized PDGA finding instead of repeating its primary-source comparison: Thomas Earhart was
   no longer registered but remained in `field.json`; Kayleb Gillmore (#245013) was registered but absent.
@@ -114,3 +132,4 @@
   EVENT_READINESS and filed T-014/T-015. Updated TO_OWNER and released the lock.
 - 2026-07-26 | Second CEO shift. Corrected a prior FROM_OWNER update that had not actually landed, verified through
   the contents API, and flagged Ledgestone engineering urgency without duplicating the preceding audit.
+
