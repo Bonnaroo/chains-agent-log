@@ -231,6 +231,13 @@ Standings/Dashboard untouched. Office session uid = chains_commish_uid_v1, so th
 showing (and no Draft Now) is EXPECTED for this account — member-side Draft Now is NOT provable from this session.
 NOT deployed. QA next shift: verify v409 member path (true member login if possible) then deploy per kb/deploy.md.
 
+2026-07-27 04:25 UTC [CLAUDE] (QA, different shift from the v409 build): v409 preview QA PASS on everything testable
+from the commissioner session — app loads clean, T14 Ledgestone DRAFTING, draft order KADEY/SHANNA/GABE/WILL/KYLE/CORY
+intact, Edit picks unlock/Done Editing works, Standings (Cory 56, 13/22) and Go Throw (13 rounds, live card) untouched,
+zero console errors. DEPLOYED v409 live: chains-app commit 94a95a2, exactly one lowercase index.html (9,644,611 bytes,
+md5 8b077e9c), Pages serving full build verified via curl. Build pre-checks clean (0 omelette/betting strings, title OK).
+T-016 stays REVIEW only for the member-login closeout (own-slots write guard cannot be proven from the commissioner uid).
+
 ## T-017 | Engineer | ASSIGNED
 **Goal:** Pick-lock at first tee + automatic registration-close -> draft-open handling for T14 and future events:
 picks lock when the event's first round tees off (Ledgestone 2026-07-30); WD/withdrawn players are flagged
@@ -246,3 +253,4 @@ an official tee-time table exists, keep readiness amber, recheck the primary pag
 verified. Preserve commissioner correction authority and the confirmed Kadey-first/Cory-last order.
 2026-07-27 01:15 UTC [CLAUDE] (QA): PDGA 96414 re-fetched ~01:00Z — still no tee-time table; page last updated
 25-Jul 19:20 CDT. Deadline remains unavailable; readiness stays amber.
+[CLAUDE] BOARD: T-016 v409 QA pass + deployed live (94a95a2)
