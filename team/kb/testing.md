@@ -13,6 +13,10 @@ There is no automated test suite. To verify a change or audit the app:
    - roster reconciliation: compare PDGA-number sets. Report named/draftable players separately from registration
      placeholders such as `Sunday Qualifier`; a 154-player feed can exactly cover a 156-slot field with two TBDs;
    - UI: the live Registered list consumes that artifact and matches the primary PDGA event page one-for-one.
-5. Watch the browser console for errors on each screen (read_console_messages).
-6. Check Firebase (kb/firebase.md) for lost/duplicated/orphan records after the flow.
-7. Record PASS/FAIL with a concrete repro. A task is only DONE when its "done when" is met against the real app.
+5. For pick-lock readiness, source the deadline from the earliest official player tee time in the PDGA event
+   tee-time table. A DGPT broadcast start is not first tee. If the official tee-time table is absent, keep the gate
+   amber, record the source check, and recheck later rather than guessing or approving a lock.
+6. Watch the browser console for errors on each screen (read_console_messages).
+7. Check Firebase (kb/firebase.md) for lost/duplicated/orphan records after the flow.
+8. Record PASS/FAIL with a concrete repro. A task is only DONE when its "done when" is met against the real app.
+

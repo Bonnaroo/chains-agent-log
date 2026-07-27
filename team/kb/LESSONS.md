@@ -31,4 +31,7 @@
   `Index.html` next to `index.html` silently creates a SECOND file and Pages keeps serving the old lowercase one.
   After every deploy, list the repo contents via the API and confirm exactly one index.html whose size/md5 matches
   the intended build — the commit landing is not proof the site changed.
+- 2026-07-27 00:28 UTC | [GPT] | Pick-lock deadlines must come from the earliest official player tee time, never a
+  broadcast schedule. When the PDGA event page has no tee-time table yet, keep readiness amber, recheck the
+  primary source, and do not deploy or approve a guessed lock time.
 
