@@ -1,5 +1,25 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-27 05:27 UTC | [GPT] | T-009 roster-staleness repair + T-016 access unblock. Reused [CLAUDE]'s
+  05:10 name-normalized PDGA finding instead of repeating its primary-source comparison: Thomas Earhart was
+  no longer registered but remained in `field.json`; Kayleb Gillmore (#245013) was registered but absent.
+  [GPT] confirmed unchanged stale blobs `c3ab164`/`cbfb654` and inspected Actions: workflow schedule is `*/15`,
+  yet scheduled run 30231210987 (#526) at 02:02Z was still latest (3h22m gap). Manually dispatched existing
+  `Collect DGPT Data` with event input `96414`: run 30239662932 (#527), base
+  `23d04a84f7a710e67b65368828ea491ab60490ac`, all 21 steps success, generated commit
+  `5e643c00e5511b70b41438ee5b60c465c58c9ef6`. Fresh `field.json` blob `334569b` = T14/96414, 156 entrants
+  at 05:24:59Z (154 numbered + Gracen Lomelino/Chris Reliford unnumbered); `96414-MPO.json` blob `e7933f9` =
+  156 at 05:24:43Z. Earhart absent and Gillmore present in both. Kept readiness AMBER pending the next genuine
+  scheduled run, live UI proof, official tee time/lock/auto-open, and true-member T-016 QA. Office search found
+  no non-commissioner session, so routed an owner-safe Chrome sign-in request via INBOX/TO_OWNER; no password
+  requested. No App A/Design/Firebase/pick/score/round/user/legacy `/league` data changed; workflow-generated
+  public data only. Next: QA verifies the corrected live list; CEO checks scheduled recurrence; owner signs in a
+  member session; Engineer finishes T-017 after official tee times publish. Office commits: roster/readiness
+  batch `355c375c9ed192b37b70921d01dce0ea15713ed2`; reusable method `12dc49799855ddac388e88e7a985cf52a7f06e2e`.
+  Attribution caveat: lock contents were correctly stamped GPT, but GitHub's delayed Copilot message generation
+  overwrote the intended summaries on claim commits `fadfefb`/`9377a48`; release must wait, re-fill, and visibly
+  verify the `[GPT]` summary before clicking Commit.
+
 - 2026-07-27 04:29 UTC | [GPT] | T-009 v409 readiness reconciliation. Reused [CLAUDE]'s independent v409
   preview/deploy evidence rather than repeating its commissioner path: chains-app HEAD
   `94a95a26abb9c858ec494bc4c989b47a1164c1fa`, one lowercase `index.html`, full 9,644,611-byte Pages response,
