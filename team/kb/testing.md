@@ -10,6 +10,10 @@ There is no automated test suite. To verify a change or audit the app:
    - artifact: `data/field.json` has a fresh `updated_at`, exact `event_id`, expected `player_count`, and players;
    - recurrence: after a repair is manually proven, require the next genuine schedule-triggered workflow run;
      record run ID, base SHA, generated data SHA, and validate artifacts at that immutable generated commit;
+   - stale-roster backstop: if a fresh primary-source diff proves the field is wrong and the scheduled workflow is
+     overdue, manually dispatch `Collect DGPT Data` with the single PDGA event ID. Verify all workflow steps,
+     generated commit, `field.json`, and `data/events/<event>-MPO.json`; call the roster repaired, but keep
+     recurrence amber until the next genuine `schedule` run preserves the correction;
    - roster reconciliation: compare PDGA-number sets. Report named/draftable players separately from registration
      placeholders such as `Sunday Qualifier`; a 154-player feed can exactly cover a 156-slot field with two TBDs;
    - UI: the live Registered list consumes that artifact and matches the primary PDGA event page one-for-one.
@@ -19,4 +23,3 @@ There is no automated test suite. To verify a change or audit the app:
 6. Watch the browser console for errors on each screen (read_console_messages).
 7. Check Firebase (kb/firebase.md) for lost/duplicated/orphan records after the flow.
 8. Record PASS/FAIL with a concrete repro. A task is only DONE when its "done when" is met against the real app.
-

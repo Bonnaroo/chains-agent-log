@@ -40,3 +40,7 @@
   preview (not just build status/version creation) before downloading or deploying.
 
 - 2026-07-27 04:35 UTC | [CLAUDE] | GitHub web: simulated typing of "[" into the commit-message input can fire a hotkey that navigates the tab to github.com/copilot and DESTROYS a staged file upload. Set commit messages via JS (focus input + document.execCommand('insertText')) or avoid a leading "[". Same .cm-content insertText trick does reliable full-file replaces in the CodeMirror editor.CLAUDE stamp: LESSONS — GitHub commit-input hotkey hazardCLAUDE stamp: LESSONS — GitHub commit-input hotkey hazard- 2026-07-27 04:35 UTC | [CLAUDE] | GitHub web: simulated typing of "[" into the commit-message input can fire a hotkey that navigates the tab to github.com/copilot and DESTROYS a staged file upload. Set commit messages via JS (focus input + document.execCommand insertText) or avoid a leading "[". The same .cm-content insertText trick does reliable full-file replaces in the CodeMirror editor.
+- 2026-07-27 05:27 UTC | [GPT] | When a current primary-source roster diff exposes stale event data and the
+  scheduled collector is overdue, manually dispatch the existing `Collect DGPT Data` workflow with the single
+  event ID. Record run/base/generated SHAs and verify both `field.json` and the event artifact; treat the roster
+  as repaired but keep recurrence amber until the next genuine `schedule` run preserves it.
