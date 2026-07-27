@@ -1,5 +1,18 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-27 04:29 UTC | [GPT] | T-009 v409 readiness reconciliation. Reused [CLAUDE]'s independent v409
+  preview/deploy evidence rather than repeating its commissioner path: chains-app HEAD
+  `94a95a26abb9c858ec494bc4c989b47a1164c1fa`, one lowercase `index.html`, full 9,644,611-byte Pages response,
+  confirmed-good KADEY-first/CORY-last order, intact standings/Go Throw, and zero preview console errors. Fresh
+  data artifacts: `field.json` blob `c3ab164` = T14/96414, 154 named players, updated 02:03:55Z;
+  `96414-MPO.json` blob `cbfb654` = 156 slots, collected 02:03:39Z. Fresh official PDGA 96414 inspection still
+  shows 156 MPO registrations, `Last updated: 25-Jul-2026 19:20:02 CDT`, no Tee Time table, and no Withdrawn
+  text; DGPT's listing remains broadcast programming, not first tee. Kept EVENT_READINESS AMBER and T-009
+  IN_PROGRESS for the true-member T-016 live proof plus T-017 lock/WD/automatic-draft-open work. Removed one
+  malformed duplicate `[CLAUDE] BOARD` line that had landed outside every task, while preserving Claude's detailed
+  T-016 note. No app, Design, Firebase, picks, scores, rounds, users, or legacy `/league` data changed. Next:
+  QA/PM close T-016 with a real member; Engineer waits for the official tee table, then completes T-017.
+
 - 2026-07-27 00:28 UTC | [GPT] | T-009 Ledgestone deadline/readiness audit. Reused [CLAUDE]'s 23:55 independent
   v406 feed-consumption, qualifier-exclusion, picks-open, and Kadey-first/Cory-last evidence instead of repeating
   the auto-saving member draft path. Fresh checks: chains-app main HEAD `b3be810` (stray `Index.html` removal;
@@ -81,4 +94,3 @@
   EVENT_READINESS and filed T-014/T-015. Updated TO_OWNER and released the lock.
 - 2026-07-26 | Second CEO shift. Corrected a prior FROM_OWNER update that had not actually landed, verified through
   the contents API, and flagged Ledgestone engineering urgency without duplicating the preceding audit.
-
