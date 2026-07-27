@@ -12,4 +12,12 @@
   (3) T-015 CLOSED not-a-bug: live order KADEY...CORY matches Cory-won-Heinola ground truth.
   (4) FINDING for PM: as member WILL-C, "Edit picks" unlocks ALL members' players AND scores — no own-only
   restriction exists. Routed via BOARD T-014 note + HANDOFF. No picks/data changed; league/Firebase untouched.
-
+- 2026-07-27 01:15 UTC | [CLAUDE] | T-016/T-017 evidence pass (live v406). CORRECTION: this office browser's Firebase uid equals
+  chains_commish_uid_v1, so the signed-in "WILL-C" session IS the commissioner account — the 2026-07-26 23:55Z
+  "regular member" edit-unlock proof was actually a commissioner session. True member-session permissions remain
+  UNVERIFIED (needs a real member login). What IS proven from the UI alone: the read-only banner says "Only the
+  commissioner edits picks" and there is no member-facing Draft Now entry, so the owner-directed member drafting
+  path does not exist in v406 regardless of permissions — T-016 build still required. Entered and exited edit mode
+  via DONE EDITING with ZERO changes; board confirmed back to Read-only; no console errors. T-017: re-fetched
+  pdga.com/tour/event/96414 ~01:00Z — still NO tee-time table (page last updated 25-Jul-2026 19:20 CDT); MPO 156;
+  lock deadline still unavailable, keep amber.
