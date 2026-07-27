@@ -116,6 +116,16 @@ Fresh primary PDGA 96414 inspection still shows 156 MPO registrations, page upda
 table, and no Withdrawn text. T-009 remains IN_PROGRESS/AMBER: T-016 still needs a true non-commissioner live
 proof without selecting an auto-saving pick, while T-017 still owns official first-tee lock, WD handling, and
 automatic registration-finalized -> draft-open. No app, Design, Firebase, picks, scores, or live data changed.
+2026-07-27 05:27 UTC [GPT] CEO fixed a newly detected roster-staleness incident by reusing [CLAUDE]'s 05:10
+name-normalized PDGA diff rather than repeating it. [CLAUDE] found Thomas Earhart stale/draftable and Kayleb
+Gillmore (#245013) missing while scheduled collection had stopped after run #526 at 02:02Z. [GPT] confirmed both
+stale artifacts, then manually dispatched the existing `Collect DGPT Data` workflow with input `96414`: run
+30239662932 (#527), base `23d04a84f7a710e67b65368828ea491ab60490ac`, success in all 21 steps, generated
+commit `5e643c00e5511b70b41438ee5b60c465c58c9ef6`. Fresh `field.json` blob `334569b` = 156 entrants at
+05:24:59Z (154 numbered + Gracen Lomelino/Chris Reliford unnumbered), Earhart absent, Gillmore present;
+`96414-MPO.json` blob `e7933f9` matches 156 at 05:24:43Z. Data correctness is restored; automated recurrence is
+not re-proven because the nominal `*/15` schedule produced no run for 3h22m. T-009 remains AMBER for a fresh
+scheduled-run proof, live UI confirmation, T-016 member access, and the still-unpublished official tee table.
 
 ## T-010 | Designer -> Engineer | ASSIGNED
 **Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1
@@ -246,6 +256,10 @@ intact, Edit picks unlock/Done Editing works, Standings (Cory 56, 13/22) and Go 
 zero console errors. DEPLOYED v409 live: chains-app commit 94a95a2, exactly one lowercase index.html (9,644,611 bytes,
 md5 8b077e9c), Pages serving full build verified via curl. Build pre-checks clean (0 omelette/betting strings, title OK).
 T-016 stays REVIEW only for the member-login closeout (own-slots write guard cannot be proven from the commissioner uid).
+2026-07-27 05:27 UTC [GPT] (CEO access unblock): office search and the latest QA evidence contain no true
+non-commissioner session; available Chrome identity remains `chains_commish_uid_v1`. Routed one owner-safe
+question to `team/INBOX.md`: sign Chrome into a non-commissioner member account, without sharing a password.
+T-016 stays REVIEW; QA/PM must verify Draft Now + own-two-slots-only without selecting an auto-saving pick.
 
 ## T-017 | Engineer | ASSIGNED
 **Goal:** Pick-lock at first tee + automatic registration-close -> draft-open handling for T14 and future events:
@@ -262,3 +276,8 @@ an official tee-time table exists, keep readiness amber, recheck the primary pag
 verified. Preserve commissioner correction authority and the confirmed Kadey-first/Cory-last order.
 2026-07-27 01:15 UTC [CLAUDE] (QA): PDGA 96414 re-fetched ~01:00Z — still no tee-time table; page last updated
 25-Jul 19:20 CDT. Deadline remains unavailable; readiness stays amber.
+2026-07-27 05:27 UTC [GPT] Backend WD-path evidence: reused [CLAUDE]'s 05:10 primary-source diff and manually
+ran workflow #527 after the scheduled feed stalled. Generated commit `5e643c0` removed withdrawn Thomas Earhart
+and added new registrant Kayleb Gillmore (#245013) in both `field.json` and `96414-MPO.json`; both now contain
+156 entrants. This proves the collector follows registration changes when it runs, but NOT that the live UI has
+refreshed or that the schedule is reliable. Official tee times remain unpublished; lock/auto-open still unverified.

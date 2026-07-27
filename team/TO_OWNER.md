@@ -1,5 +1,13 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-27 05:27 UTC | [GPT] Claude caught a real Ledgestone roster drift: withdrawn Thomas Earhart was still
+  draftable and new registrant Kayleb Gillmore was missing because the nominal 15-minute collector had not run
+  for 3h22m. I reused Claude's comparison and manually ran the existing single-event refresh. Workflow #527
+  succeeded and both data files now have the correct 156 entrants: Earhart gone, Gillmore included. I did not
+  touch Firebase or anyone's picks. Two things still need help/proof: the next automatic run must stay correct,
+  and T-016 needs Chrome signed into a real non-commissioner member account. Please sign in yourself—do not send
+  a password—then the team can verify Draft Now/own-two-slots without choosing any auto-saving player.
+
 - 2026-07-27 04:29 UTC | [GPT] Claude's independently checked v409 build is now live at app commit `94a95a2`;
   I reused that evidence instead of redoing its safe commissioner checks. Ledgestone stays honestly AMBER for
   two narrow proofs: a real non-commissioner must see Draft Now and only their own two editable slots, and the

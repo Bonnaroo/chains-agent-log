@@ -28,6 +28,9 @@ Verified source facts from the 2026-07-26 CEO passes:
     standings, and Go Throw passed with zero preview console errors. v409 adds the member path, but the available
     browser uid is still the commissioner. T-016 therefore stays REVIEW until a true non-commissioner proves
     Draft Now + own-two-slots-only on live without selecting any auto-saving pick.
+  - 2026-07-27 05:27 UTC [GPT] No non-commissioner session or credential is documented in the office; the only
+    available identity remains `chains_commish_uid_v1`. Routed an owner-safe unblock in `team/INBOX.md`: Guillermo
+    signs Chrome into a member account without sharing a password, then QA/PM runs the no-pick closeout.
 - [ ] PICK LOCK + WD handling: verify against the real first-tee deadline and the documented league rule.
   - 2026-07-27 00:28 UTC [GPT] Primary-source deadline audit: PDGA event 96414 (https://www.pdga.com/tour/event/96414)
     lists Jul 30-Aug 2, 156 MPO registrations, last updated Jul 25 19:20 CDT, but currently exposes no Tee Time
@@ -38,6 +41,10 @@ Verified source facts from the 2026-07-26 CEO passes:
     `Last updated: 25-Jul-2026 19:20:02 CDT`; there is no `Tee Time` table and no `Withdrawn` text. The DGPT
     event page still provides broadcast programming, not an official first-player tee time. T-017 remains open;
     do not invent a lock timestamp.
+  - 2026-07-27 05:27 UTC [GPT] Reused [CLAUDE]'s fresh 05:10 PDGA roster diff: Thomas Earhart had left the
+    registration while Kayleb Gillmore (#245013) had joined. Manual workflow #527 generated commit `5e643c0`;
+    both current artifacts now exclude Earhart, include Gillmore, and hold 156 entrants. Backend WD/registration
+    following passes for this change; live non-draftability still needs QA, and the official tee table is absent.
 
 ### B. Standings / Stats / Schedule / History
 - [x] Season standings rendered correctly in the prior pass: 13 events scored; Cory led with 56 points.
@@ -66,18 +73,26 @@ Verified source facts from the 2026-07-26 CEO passes:
       `c3ab164203068b55cebe685f3231f49b1a54f221` remains T14/96414 with 154 named players, updated 02:03:55Z;
       `data/events/96414-MPO.json` blob `cbfb65408e4ab319b1e0a504657ca6eb345ef23f` remains 156 slots,
       collected 02:03:39Z. No backend repair or Firebase write was needed.
+- [x] ROSTER STALENESS REPAIRED — 2026-07-27 05:27 UTC [GPT]: reused [CLAUDE]'s 05:10 PDGA diff and confirmed
+      the 02:03 artifacts still had Thomas Earhart and lacked Kayleb Gillmore. Manually dispatched workflow
+      30239662932 (#527) with event input `96414`; all 21 steps succeeded from base `23d04a8` and generated
+      commit `5e643c00e5511b70b41438ee5b60c465c58c9ef6`. `field.json` blob `334569b` is T14/96414, 156 entrants,
+      updated 05:24:59Z (154 numbered + Gracen Lomelino/Chris Reliford unnumbered); event blob `e7933f9` is 156,
+      collected 05:24:43Z. Earhart absent and Gillmore #245013 present in both.
+- [ ] RECURRENCE RECHECK — workflow schedule is configured `*/15`, but run #526 at 02:02Z was the last scheduled
+      execution before the 05:24Z manual repair (3h22m gap). Require the next genuine `schedule`-triggered run to
+      succeed and keep the corrected roster before calling background health green again.
 - [ ] Verify automatic registration-finalized -> draft-open behavior, not just this event's manual/snapshot fix.
 
 ## STATUS
-**AMBER — v409 and the data pipeline are live/healthy; two closeout gates remain.** [GPT] reused [CLAUDE]'s
-independent v409 QA/deploy evidence rather than repeating the commissioner path: app HEAD `94a95a2`, exactly one
-lowercase `index.html`, full 9,644,611-byte Pages response, confirmed-good KADEY-first/CORY-last draft order,
-standings/Go Throw intact, and zero preview console errors. Current T14/96414 artifacts remain 154 named players
-plus two non-draftable Sunday Qualifier placeholders. Remaining blockers are narrow and explicit: (1) T-016 needs
-a true non-commissioner live proof of Draft Now + own-two-slots-only without selecting an auto-saving pick; (2)
-T-017 needs the official earliest tee time, pick lock, WD handling, and automatic registration-finalized ->
-draft-open proof. PDGA has not published the tee-time table, so the safe lock deadline remains unknown; DGPT's
-3:00 PM CDT broadcast time must not be substituted. T-009 stays IN_PROGRESS.
+**AMBER — v409 is live and the roster is correct again, but recurrence and two launch gates remain.** [GPT]
+reused [CLAUDE]'s 05:10 finding and repaired the stale T14 feed via workflow #527 / generated commit `5e643c0`:
+current artifacts are 156 entrants, withdrawn Earhart absent, new registrant Gillmore present. This is a backend
+correction, not proof that the live UI refreshed or the `*/15` schedule recovered; require the next scheduled run.
+T-016 still needs a true non-commissioner proof (owner sign-in request is in INBOX). T-017 still needs the official
+earliest tee time, live WD non-draftability, pick lock, and automatic registration-finalized -> draft-open proof.
+PDGA has not published the tee-time table, so DGPT's 3:00 PM broadcast time must not be substituted. T-009 stays
+IN_PROGRESS.
 
 ## REUSABLE
 Repeat A-D for every DGPT event about five days before it starts. Do not accept a correct-looking UI fallback as
