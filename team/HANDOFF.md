@@ -1,65 +1,61 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## LAST WORKER / ROLE / UTC / TASK
-**[GPT] GPT | CEO | 2026-07-27 05:32 UTC | T-009: repair stale Ledgestone roster + unblock T-016 access**
+**[GPT] GPT | CEO | 2026-07-27 06:34 UTC | T-009: scheduled collector recurrence proof**
 
 ## WHAT CHANGED
-- [GPT] Reused [CLAUDE]'s 05:10 QA comparison instead of repeating it. Claude proved the 02:03Z T14 draft feed
-  was stale against PDGA: withdrawn Thomas Earhart remained; new registrant Kayleb Gillmore (#245013) was missing;
-  the last scheduled collector run was #526 at 02:02Z.
-- [GPT] Confirmed the stale blobs, inspected `.github/workflows/collect.yml` (`*/15` schedule), then manually
-  dispatched the existing `Collect DGPT Data` workflow with event input `96414`. Run 30239662932 (#527) completed
-  all 21 steps successfully from base `23d04a84f7a710e67b65368828ea491ab60490ac` and generated data commit
-  `5e643c00e5511b70b41438ee5b60c465c58c9ef6`.
-- [GPT] Updated `team/BOARD.md`, `EVENT_READINESS.md`, `TO_OWNER.md`, and opened the precise T-016 owner sign-in
-  question in `INBOX.md` at office commit `355c375c9ed192b37b70921d01dce0ea15713ed2`. Updated
-  `kb/LESSONS.md` + `kb/testing.md` at `12dc49799855ddac388e88e7a985cf52a7f06e2e`; logged the CEO shift at
-  `a5da34e0341dabb9fa369fb3a80e3f363f234033`; added the GitHub attribution safeguard to `kb/github.md` and
-  LESSONS at `6e9279882001398e960f687b685451f29afc4cba`.
+- [GPT] Reused the prior [GPT] manual-backstop method exactly as documented and completed its deferred recurrence
+  gate; no [CLAUDE] source comparison was repeated. Genuine scheduled `Collect DGPT Data` run 30241283786 (#528)
+  triggered via `schedule` at 05:58Z from repaired base `5e643c00e5511b70b41438ee5b60c465c58c9ef6`, completed
+  Success in 1m16s, and generated data commit `06bd3b43c299796ef796f96f27d2e505249ad6b1`.
+- [GPT] Updated `team/BOARD.md`, `EVENT_READINESS.md`, and `TO_OWNER.md` at office commit
+  `b0eab4546f48a53cb0a4c74a57edd9e227863aea`; logged the CEO shift at
+  `73e57633372c7a9cf5943e14e3a27d356240cbab`. Background recurrence is green again. T-009/Event Readiness
+  remain AMBER for the separate live/member/deadline gates.
 
 ## VERIFICATION / EVIDENCE
-- [GPT] Before run #527: `field.json` blob `c3ab164` and event blob `cbfb654`, both 02:03Z, still contained
-  Earhart and omitted Gillmore. Actions showed no scheduled run for 3h22m despite the configured `*/15` cadence.
-- [GPT] After generated commit `5e643c0`: `data/field.json` blob
-  `334569b26d56d331601e9761bea397c6877eddbf` = T14/96414, updated 05:24:59Z, 156 entrants, 154 PDGA-numbered
-  plus Gracen Lomelino and Chris Reliford unnumbered; Earhart absent; Gillmore #245013 present.
-  `data/events/96414-MPO.json` blob `e7933f96261e1a8813976720bd7d73e33ed16b7c` = 156 entrants, collected
-  05:24:43Z, with the same Earhart/Gillmore correction.
-- [GPT] The correction proves the collector follows current registration/WD state when run. It does not prove
-  the live app refreshed or that scheduled recurrence recovered. T-009 therefore remains IN_PROGRESS/AMBER.
+- [GPT] GitHub Actions UI identifies run #528 as `Scheduled`, triggered 2026-07-27 05:58Z, base
+  `5e643c00e5511b70b41438ee5b60c465c58c9ef6`, Status Success, duration 1m16s. Connected Actions evidence shows
+  job 89898860390 completed success; setup, checkout, Python, event/news/videos/highlights/player channels,
+  upcoming field, and commit steps all completed success.
+- [GPT] At generated commit `06bd3b43c299796ef796f96f27d2e505249ad6b1`, `data/field.json` blob
+  `9743387f2cc70c671505b20ee3f9b4e9660ef79e` = T14/96414, 156 entrants, updated 06:00:04Z;
+  `data/events/96414-MPO.json` blob `7dfca62400953c7bf1ef60ecab95d58355550c30` = 156 entrants, collected
+  05:59:45Z. Exact-commit and current-main reads match: Thomas Earhart absent, Kayleb Gillmore #245013 present,
+  and Gracen Lomelino/Chris Reliford are the two unnumbered real registrations.
+- [GPT] `chains-app` main HEAD remains [CLAUDE] v409 commit
+  `94a95a26abb9c858ec494bc4c989b47a1164c1fa`; the existing Design project remains v409; open chains-app issue
+  search returned zero. No newer build exists to ship.
 
 ## DATA / SAFETY
-- [GPT] Only the existing public `chains-dgpt-data` workflow wrote generated `data/field.json` and
-  `data/events/96414-MPO.json`. No manual data-file edit, Firebase node, league, pick, score, round, user,
-  `chains-fantasy /league`, App A build, or Design version changed. No deletion or backup path applies.
-- Confirmed-good KADEY-first/CORY-last order, Watch, Settings, standings, scoring, and betting-removed state were
-  not touched.
+- [GPT] This shift made no app, Design, Firebase, pick, score, round, user, legacy `chains-fantasy /league`, or
+  generated-data write. Run #528 was an unattended existing workflow write; no manual data edit, deletion, or
+  backup path applies. Confirmed-good KADEY-first/CORY-last order, Watch, Settings, standings, scoring, and
+  betting-removed behavior were not touched.
 
 ## REUSABLE METHOD FOR THE OTHER AI
-- [GPT] Improved the existing collector check: when the other AI has a fresh primary-source roster diff and the
-  scheduled job is overdue, reuse that diff, dispatch `Collect DGPT Data` with the single event ID, and record
-  run/base/generated SHAs plus both artifact blobs. Call data repaired only after the entrants change; keep
-  recurrence amber until a later genuine `schedule` run preserves it.
-- [GPT] GitHub edit dialogs may overwrite a filled commit summary after delayed Copilot generation. Wait for it
-  to settle, fill the exact worker-stamped message, wait again, visibly re-read the textbox, then commit.
+- [GPT] Reused the existing [GPT] method without modification: after a manual single-event repair, keep recurrence
+  amber until a later run is visibly `Scheduled`; pin its trigger/base/run/job/generated SHA and both artifact
+  blobs, then compare the corrected roster at the generated commit and current main. This run satisfied every
+  step, so Claude should treat recurrence as shared verified knowledge unless later data or workflow changes
+  invalidate it. No new LESSON/playbook change was necessary.
 
 ## WHAT'S NEXT AND WHO OWNS IT
 - QA: on the live Registered/Picks view, verify the dynamic list now shows the corrected 156-entry feed, Earhart
-  is absent, and Gillmore is present. Do not select any player or change any score.
-- CEO: verify the next genuine `schedule`-triggered collector run after 05:24Z succeeds and preserves the roster.
-  If the schedule stays silent, keep readiness amber and have PM route a reliability fix; do not treat #527 as
-  recurrence proof.
+  is absent, and Gillmore #245013 is present. Do not select any player or change any score.
 - Guillermo/owner: sign the existing Chrome session into a true non-commissioner Founders League account without
-  sharing a password; the precise request is OPEN in `team/INBOX.md`.
+  sharing a password; the precise request remains OPEN in `team/INBOX.md`.
 - QA/PM after owner sign-in: close T-016 only after live v409 shows Draft Now and enables only that member's two
-  slots, without selecting an auto-saving pick. Engineer still owns T-017 official first-tee lock/auto-open work.
+  slots, without selecting an auto-saving pick.
+- Engineer: complete T-017 only when the official PDGA first-tee table exists; verify WD non-draftability, pick
+  lock, and automatic registration-finalized -> draft-open. PM may separately route the non-blocking Actions
+  Node.js 20 deprecation warning to maintenance.
 
 ## WATCH OUT FOR
-- The roster is correct now, but the nominal `*/15` schedule missed at least 3h22m. Manual run #527 is a backstop,
-  not evidence the scheduler recovered.
-- Current PDGA/collector roster shape is 156 entrants = 154 numbered + two unnumbered real rows; do not reapply
-  the earlier assumption that the final two are Sunday Qualifier placeholders without fresh source evidence.
-- No official PDGA tee-time table exists yet; never substitute DGPT's 3:00 PM broadcast time for the lock.
-- The only current office app identity is commissioner uid `chains_commish_uid_v1`; it cannot prove T-016.
-- Lock content was stamped GPT, but GitHub's delayed generated message overwrote summaries on claim commits
-  `fadfefb` and `9377a48`. The release commit must be visibly rechecked for `[GPT]` before clicking Commit.
+- Run #528 carries one non-blocking warning: `actions/checkout@v4` and `actions/setup-python@v5` target Node.js 20
+  and GitHub currently forces them onto Node 24. The run passed; this is maintenance risk, not failed recurrence.
+- No official PDGA tee-time table is documented yet; never substitute DGPT's 3:00 PM broadcast time for the lock.
+- The only documented office app identity is commissioner uid `chains_commish_uid_v1`; it cannot prove T-016.
+- GitHub upload/edit commit summaries must be visibly re-read after delayed Copilot generation; every GPT commit
+  this shift was checked and verified through the connected contents/commit reads.
+
