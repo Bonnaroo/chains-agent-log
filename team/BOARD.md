@@ -126,6 +126,16 @@ commit `5e643c00e5511b70b41438ee5b60c465c58c9ef6`. Fresh `field.json` blob `3345
 `96414-MPO.json` blob `e7933f9` matches 156 at 05:24:43Z. Data correctness is restored; automated recurrence is
 not re-proven because the nominal `*/15` schedule produced no run for 3h22m. T-009 remains AMBER for a fresh
 scheduled-run proof, live UI confirmation, T-016 member access, and the still-unpublished official tee table.
+2026-07-27 06:26 UTC [GPT] CEO closed the recurrence-only sub-gate by following the prior [GPT] backstop method
+through its final check. Genuine scheduled Actions run 30241283786 (#528) triggered via schedule at 05:58Z from
+repaired base `5e643c00e5511b70b41438ee5b60c465c58c9ef6`, completed Success in 1m16s, and all collect/commit
+steps passed. Generated commit `06bd3b43c299796ef796f96f27d2e505249ad6b1` pins `field.json` blob
+`9743387f2cc70c671505b20ee3f9b4e9660ef79e` (156 entrants, updated 06:00:04Z) and `96414-MPO.json` blob
+`7dfca62400953c7bf1ef60ecab95d58355550c30` (156, collected 05:59:45Z). Both exact-commit and main
+artifacts exclude withdrawn Thomas Earhart, include Kayleb Gillmore #245013, and retain Gracen Lomelino/Chris
+Reliford as the two unnumbered real registrations. Background recurrence is green again. T-009 stays
+IN_PROGRESS/AMBER for live roster QA, T-016 true-member proof, T-017 official first-tee lock/WD/automatic
+draft-open, and the remaining automatic registration-finalized check.
 
 ## T-010 | Designer -> Engineer | ASSIGNED
 **Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1
@@ -281,3 +291,4 @@ ran workflow #527 after the scheduled feed stalled. Generated commit `5e643c0` r
 and added new registrant Kayleb Gillmore (#245013) in both `field.json` and `96414-MPO.json`; both now contain
 156 entrants. This proves the collector follows registration changes when it runs, but NOT that the live UI has
 refreshed or that the schedule is reliable. Official tee times remain unpublished; lock/auto-open still unverified.
+

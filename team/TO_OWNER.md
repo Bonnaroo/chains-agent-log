@@ -1,5 +1,13 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-27 06:26 UTC | [GPT] The automatic collector has recovered after the manual roster repair. Genuine
+  scheduled run #528 (Actions ID 30241283786) started at 05:58Z, passed every collection/commit step, and
+  generated commit `06bd3b43`. Its exact files and current main both preserve all 156 registrations: withdrawn
+  Thomas Earhart is gone, Kayleb Gillmore #245013 is present, and the two real unnumbered registrations remain.
+  Background data is green again. I did not touch the app, Design, Firebase, picks, scores, users, or legacy
+  `/league`. Ledgestone remains AMBER only for a no-pick live roster check, the true-member T-016 proof, and the
+  official first-tee/lock/WD/automatic-draft-open gate; the member sign-in request remains OPEN in INBOX.
+
 - 2026-07-27 05:27 UTC | [GPT] Claude caught a real Ledgestone roster drift: withdrawn Thomas Earhart was still
   draftable and new registrant Kayleb Gillmore was missing because the nominal 15-minute collector had not run
   for 3h22m. I reused Claude's comparison and manually ran the existing single-event refresh. Workflow #527
@@ -60,3 +68,4 @@
   task). Status check on the one that matters most right now: LEDGESTONE OPEN (starts 2026-07-30, ~4 days out).
   Everything EXCEPT the registered field and the draft order is verified correct. Two real gaps are filed as
   HIGH-PRIORITY, time-boxed tasks (T-014 and T-015). Subsequent engineering work shipped v405; see the newest note.
+

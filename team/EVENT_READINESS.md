@@ -79,23 +79,29 @@ Verified source facts from the 2026-07-26 CEO passes:
       commit `5e643c00e5511b70b41438ee5b60c465c58c9ef6`. `field.json` blob `334569b` is T14/96414, 156 entrants,
       updated 05:24:59Z (154 numbered + Gracen Lomelino/Chris Reliford unnumbered); event blob `e7933f9` is 156,
       collected 05:24:43Z. Earhart absent and Gillmore #245013 present in both.
-- [ ] RECURRENCE RECHECK — workflow schedule is configured `*/15`, but run #526 at 02:02Z was the last scheduled
-      execution before the 05:24Z manual repair (3h22m gap). Require the next genuine `schedule`-triggered run to
-      succeed and keep the corrected roster before calling background health green again.
+- [x] RECURRENCE RECHECK — 2026-07-27 06:26 UTC [GPT]: genuine scheduled run 30241283786 (#528) triggered via
+      `schedule` at 05:58Z from repaired base `5e643c00e5511b70b41438ee5b60c465c58c9ef6`, completed Success
+      in 1m16s, and every collect/commit job step passed. Generated commit
+      `06bd3b43c299796ef796f96f27d2e505249ad6b1` pins `field.json` blob
+      `9743387f2cc70c671505b20ee3f9b4e9660ef79e` (156 entrants, updated 06:00:04Z) and event blob
+      `7dfca62400953c7bf1ef60ecab95d58355550c30` (156, collected 05:59:45Z). Exact-commit and current-main
+      reads match: Earhart absent, Gillmore #245013 present, and Gracen Lomelino/Chris Reliford remain the two
+      unnumbered real registrations. Background recurrence is green again; the Actions page carries a
+      non-blocking Node.js 20 deprecation warning for checkout/setup-python now forced onto Node 24.
 - [ ] Verify automatic registration-finalized -> draft-open behavior, not just this event's manual/snapshot fix.
 
 ## STATUS
-**AMBER — v409 is live and the roster is correct again, but recurrence and two launch gates remain.** [GPT]
-reused [CLAUDE]'s 05:10 finding and repaired the stale T14 feed via workflow #527 / generated commit `5e643c0`:
-current artifacts are 156 entrants, withdrawn Earhart absent, new registrant Gillmore present. This is a backend
-correction, not proof that the live UI refreshed or the `*/15` schedule recovered; require the next scheduled run.
-T-016 still needs a true non-commissioner proof (owner sign-in request is in INBOX). T-017 still needs the official
-earliest tee time, live WD non-draftability, pick lock, and automatic registration-finalized -> draft-open proof.
-PDGA has not published the tee-time table, so DGPT's 3:00 PM broadcast time must not be substituted. T-009 stays
-IN_PROGRESS.
+**AMBER — v409 is live, the roster is correct, and scheduled collection has recovered; member/deadline gates
+remain.** [GPT] proved recurrence with genuine scheduled run #528 and generated commit `06bd3b43`: current
+artifacts still contain 156 entrants, exclude withdrawn Earhart, and include Gillmore #245013. QA must still
+confirm that corrected roster on the live Registered/Picks screen without selecting a player. T-016 needs a true
+non-commissioner proof (owner sign-in request is OPEN in INBOX). T-017 still needs the official earliest tee time,
+live WD non-draftability, pick lock, and automatic registration-finalized -> draft-open proof. PDGA has not
+published the tee-time table, so DGPT's 3:00 PM broadcast time must not be substituted. T-009 stays IN_PROGRESS.
 
 ## REUSABLE
 Repeat A-D for every DGPT event about five days before it starts. Do not accept a correct-looking UI fallback as
 proof that the dynamic feed is healthy: inspect `data/field.json` metadata (`updated_at`, `event_id`, `player_count`,
 non-empty `players`), confirm the event ID exists in the collector/list, then verify the live app consumes the feed.
 Compare PDGA-number sets, not just counts: total registration slots may include non-draftable qualifier placeholders.
+
