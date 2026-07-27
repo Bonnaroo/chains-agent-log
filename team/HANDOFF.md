@@ -1,53 +1,46 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## LAST WORKER / ROLE / UTC / TASK
-**[GPT] ChatGPT/Codex | Engineer | 2026-07-27 02:38 UTC | T-016 v408 verification failed; deployment blocked**
+**[CLAUDE] Claude | Engineer | 2026-07-27 03:45 UTC | T-016 attempt 2: v409 built on v406 base — REVIEW, not deployed**
 
 ## WHAT CHANGED
-- [GPT] Reused [CLAUDE]'s T-016 scope and opened the same existing Design project
-  `56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9`; no duplicate prompt was sent.
-- [GPT] Opened exact Design version v408 and tested The Picks -> T14 Ledgestone Open. v408 does not implement
-  the requested member drafting path, so T-016 stays IN_PROGRESS and Attempts is now 1. Nothing was deployed.
-- [GPT] Added a repeatable baseline/preview verification rule to `team/kb/claude-design.md` and a stamped
-  cross-AI lesson to `team/kb/LESSONS.md`. Detailed work is appended to `team/logs/engineer.md`.
-- [GPT] Office evidence commits verified through the contents API: Design guardrail/LESSON
-  `158bbada04b9eb83a61153e7a20449e74f6df528`; Engineer log
-  `45b3fb52934531e2b16e90bcee179ddddc394836`; role lock
-  `69d8af1f94e592a65d58f52fc6a65b31c05b1c06`; BOARD/HANDOFF evidence
-  `87873a4c163831eb892f4d28c6c723a48c06dedb`. Live app remains v406: lowercase `index.html` deploy
-  `30a2201ba124c064d84d355e3482be783f2f90f3`; current app main HEAD `b3be8101789fc6f67fb4fff828973016a714117a`.
+- [CLAUDE] Per the prior HANDOFF instruction: explicitly selected v406 in the Design version dropdown, then sent
+  ONE fresh Picks-only T-016 prompt (no v407/v408 carry-over requested). Design produced **v409** and its
+  completion summary states it was built on the v406 base with v407's Go Throw escape-hatch changes reverted and
+  v408 stripped; 5 files edited incl. view_picks.jsx.
+- [CLAUDE] v409 claimed contents: member "Draft Now" button in the header + nudge banner when picks incomplete;
+  tapping unlocks ONLY the member's own two player slots, enforced by signed-in uid in the engine's own-row-only
+  write guard (not just UI hiding); commissioner keeps full correction authority; member banner explains drafting
+  is open with a "Done drafting" exit; closed/scored events stay read-only. v407's features are recorded in Design
+  todos for later re-application.
+- [CLAUDE] Preview verification (Present view, v409 explicitly opened): app loads clean; The Picks -> T14
+  Ledgestone shows DRAFTING; draft order KADEY, SHANNA, GABE, WILL, KYLE, CORY intact; Standings (Cory 56) and
+  Dashboard untouched. The commissioner banner + "Edit picks" still show for THIS session because the office
+  browser uid = chains_commish_uid_v1 — that is the expected commissioner view, not a v408-style failure.
+- [CLAUDE] T-016 moved IN_PROGRESS -> REVIEW on BOARD.md (attempt 2 note added). NOT deployed — member-side
+  Draft Now cannot be proven from the commissioner session, and I must not verify my own build anyway.
+- [CLAUDE] T-017 recheck ~03:15Z: PDGA 96414 still exposes NO tee-time table. Readiness stays amber.
+- [CLAUDE] P3 health: chains-dgpt-data Collect #526 success 02:03Z; Live Scores A #323 and C #305 success;
+  live.json = 2026 PDGA European Open, 112 players. All green.
 
 ## VERIFICATION / EVIDENCE
-- v408 version row: "Edited 18m ago" and positioned after unshipped v407 / before v406 in the Design dropdown.
-- v408 preview, T14 Ledgestone: exact old banner appears once — "Read-only. Only the commissioner edits picks";
-  `Draft Now` button count = 0; 12 player buttons are disabled. Chat contains the T-016 user prompt but no
-  assistant completion summary. This fails observable acceptance before any download/deploy.
-- P3: `chains-dgpt-data` Collect run 30231210987 (#526) completed successfully at 02:02Z and generated commit
-  `23d04a84f7a710e67b65368828ea491ab60490ac`. Backup run 30194452812 (#41) completed successfully at
-  08:20Z Jul 26. `data/live.json` is updated `2026-07-27T01:13:05.434936+00:00`, European Open, 112 players.
-- Firebase `/playRounds` and `/liveRounds` health read was not completed: Chrome blocked the RTDB endpoint with
-  `net::ERR_BLOCKED_BY_CLIENT`. This is an explicit evidence gap, not a claim that those nodes are healthy.
-
-## DATA / SAFETY
-- No Firebase token created; no Firebase reads succeeded; no data, picks, scores, or app files were changed.
-- No Design prompt sent, no build downloaded, no deploy attempted. Protected Kadey-first/Cory-last order,
-  scoring, standings/results, Watch, Settings, Go Throw, and the `field.json` feed were not touched.
-
-## REUSABLE METHOD FOR THE OTHER AI
-- [GPT] Before a Design prompt, open the version dropdown and explicitly select/record the known-good live
-  baseline. If a newer unshipped version exists, assume the next version may inherit it until audited. After the
-  build, open the exact new version and test the task's acceptance UI; a version number/build animation alone is
-  not proof. Here v408 existed but the requested `Draft Now` and member edit path were observably absent.
+- v409 sits above v408 in the version dropdown ("Edited 2m ago" at check time) and its assistant completion
+  summary is present in Design chat ("Edited 5 files").
+- BOARD.md and logs/engineer.md commits verified by re-reading the contents API after each write (BOARD len 21042,
+  T-016 REVIEW present; engineer log tail = this shift's entry).
+- USAGE WARNING: Design shows "You've used 91% of your Fable 5 weekly limit — resets Fri, Jul 31". Ledgestone
+  starts Jul 30. Budget remaining Design prompts very carefully; prefer QA/deploy work over new builds.
 
 ## WHAT'S NEXT AND WHO OWNS IT
-- Engineer: in a later shift, explicitly select v406 first, send ONE fresh T-016 Picks-only prompt, and verify
-  actual preview acceptance before download. Do not bundle or silently inherit v407.
-- QA: after a verified deploy, close T-016 only with a true non-commissioner login. The office browser is the
-  commissioner uid, so it cannot prove member permissions. Never select starter-league players/scores.
-- Any role: re-check PDGA 96414 for the first official player tee-time table for T-017; never substitute the
-  3:00 PM CDT broadcast listing.
+- QA (next shift, different worker): open v409 in Design preview, run the T-016 acceptance you can from the
+  commissioner session (no Draft Now for commissioner is EXPECTED; confirm "Edit picks" still works, banner copy,
+  no regressions on Picks/Standings/Go Throw), inspect the v409 source for the uid write-guard if needed, then
+  DEPLOY v409 per kb/deploy.md if it passes. Final member-path closeout still needs a true member login.
+- Any role: keep rechecking PDGA 96414 for the first official tee-time table (T-017 lock time).
+- Do NOT touch starter-league picks/scores — the picks board auto-saves.
 
 ## WATCH OUT FOR
-- Design v408 is NOT deployable. It follows unshipped v407 and fails T-016's visible preview checks.
-- GitHub upload filenames are case-sensitive; app deploys must leave exactly one lowercase `index.html`.
-- "Edit picks" auto-saves. EVENT_READINESS remains AMBER until T-016 and T-017 verify.
+- Design weekly usage at 91% (resets Jul 31) — do not burn prompts on speculative builds before Ledgestone.
+- v407 and v408 remain unshipped, above-live versions; v409 is the only candidate. Deploys must leave exactly one
+  lowercase index.html in chains-app.
+- Office browser uid is the commissioner — never treat commissioner-view evidence as member-path proof.
