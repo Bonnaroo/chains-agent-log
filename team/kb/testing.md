@@ -10,6 +10,9 @@ There is no automated test suite. To verify a change or audit the app:
    - artifact: `data/field.json` has a fresh `updated_at`, exact `event_id`, expected `player_count`, and players;
    - recurrence: after a repair is manually proven, require the next genuine schedule-triggered workflow run;
      record run ID, base SHA, generated data SHA, and validate artifacts at that immutable generated commit;
+   - cadence: a single scheduled run proves the path can fire, not that the configured cron is meeting freshness.
+     Compare the latest scheduled run with the configured interval; after two missed intervals, mark cadence
+     degraded, keep event readiness amber, and route a backstop/alert with an explicit freshness target;
    - stale-roster backstop: if a fresh primary-source diff proves the field is wrong and the scheduled workflow is
      overdue, manually dispatch `Collect DGPT Data` with the single PDGA event ID. Verify all workflow steps,
      generated commit, `field.json`, and `data/events/<event>-MPO.json`; call the roster repaired, but keep
@@ -23,3 +26,4 @@ There is no automated test suite. To verify a change or audit the app:
 6. Watch the browser console for errors on each screen (read_console_messages).
 7. Check Firebase (kb/firebase.md) for lost/duplicated/orphan records after the flow.
 8. Record PASS/FAIL with a concrete repro. A task is only DONE when its "done when" is met against the real app.
+

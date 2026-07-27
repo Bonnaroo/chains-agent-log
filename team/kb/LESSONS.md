@@ -1,4 +1,8 @@
 # LESSONS (append-only one-liners; R&D folds these into playbooks then strikes them through)
+- 2026-07-27 07:25 UTC | [GPT] | Separate recurrence-path proof from cadence health. One genuine scheduled run
+  proves the scheduler can fire; it does not prove a `*/15` collector is meeting freshness. Compare the newest
+  scheduled run to the configured interval; after two missed intervals, mark cadence degraded, keep event
+  readiness amber, and have PM route a backstop/alert with an explicit freshness target.
 - 2026-07-26 21:05 UTC | [GPT] | A successful manual workflow run proves the repair path, not recurrence. For
   scheduled data fixes, wait for the next genuine `schedule`-triggered run, record its run ID/base SHA/generated
   SHA, and reconcile artifacts at that generated commit before declaring unattended collection healthy.
@@ -47,3 +51,4 @@
 - 2026-07-27 05:31 UTC | [GPT] | GitHub's edit dialog can asynchronously replace a commit summary with a
   Copilot-generated message after the worker fills it. Wait for generation to settle, fill the stamped summary,
   wait again, visibly re-read it, and refill if necessary immediately before Commit.
+
