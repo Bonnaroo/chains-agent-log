@@ -1,63 +1,65 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## LAST WORKER / ROLE / UTC / TASK
-**[GPT] GPT | CEO | 2026-07-27 07:29 UTC | T-009/T-017: collector cadence + official tee-time audit**
+**[GPT] GPT | PM | 2026-07-27 08:35 UTC | T-018: collector reliability routing**
 
 ## WHAT CHANGED
-- [GPT] Reused the prior [GPT] immutable #528 roster evidence and did not repeat [CLAUDE]'s v409 commissioner-path
-  QA. Fresh official PDGA event 96414 now reports `Last Updated: 26-Jul-2026 22:55:02 CDT` (03:55:02Z), 156 MPO
-  registrations, Kayleb Gillmore #245013 present, Thomas Earhart absent, and no Tee Time, Round 1, or Withdrawn
-  section. DGPT still lists 3:00 PM CDT only under BROADCAST SCHEDULE.
-- [GPT] Found a distinct event-critical reliability gap: `.github/workflows/collect.yml` blob `a003c23` is
-  configured `*/15`, but Actions still showed scheduled #528 at 05:58Z as the latest run at 07:24Z—a 1h26m gap
-  with five expected starts absent. One scheduled run proved the path can fire; it did not prove cadence health.
-- [GPT] Updated `team/BOARD.md`, `EVENT_READINESS.md`, and `TO_OWNER.md` at office commit
-  `4d82d054edc14f556a25c24b2182141ae83aa4cd`; added the reusable cadence distinction to `kb/LESSONS.md` and
-  `kb/testing.md` at `80b0cc10359e80fc8b90804ff667e8d2173f95d3`; logged the CEO shift at
-  `67244fa4cb147956859069382dc3994eb84bcf49`.
+- [GPT] Reused the prior [GPT] CEO cadence finding and did not repeat [CLAUDE]'s verified v409 commissioner-path
+  QA. Created HIGH-priority `T-018` and assigned it to Engineer in `team/BOARD.md`: repair the existing
+  `chains-dgpt-data` autonomous freshness path, publish source changes within 30 minutes, add an independent
+  visible >30-minute stale signal, preserve manual single-event dispatch, and prove two consecutive autonomous
+  cycles before QA closeout. Board commit: `ee5711bbf776ef1294877ef8b9d4e1156a9959e5`.
+- [GPT] Groomed obsolete `T-008` to `SUPERSEDED BY CURRENT STRATEGY`. The old July 29 hold must not be revived;
+  current `team/STRATEGY.md` already authorizes backend-first Phase 2A while protecting App A's rails.
+- [GPT] Appended the detailed PM log at commit `64a29677cc91a4a24bca47a6769275b9cc4f3aff` and added the safe
+  backstop-boundary method to `team/kb/LESSONS.md` plus `team/kb/testing.md` at commit
+  `338b3e4f16efcfb2ff294d331712714112bee1f7`.
 
 ## VERIFICATION / EVIDENCE
-- [GPT] Primary PDGA URL `https://www.pdga.com/tour/event/96414` shows Ledgestone Jul 30-Aug 2, Last Updated
-  26-Jul 22:55:02 CDT, and MPO (156); text search returned no `Tee Time`, `Round 1`, `Withdrawn`, or Thomas
-  Earhart, while Kayleb Gillmore #245013 is present. DGPT URL
-  `https://www.dgpt.com/event/2026-ledgestone-open/` labels 3:00 PM CDT as `MPO Round 1 LIVE` under
-  `BROADCAST SCHEDULE`, so it remains invalid as a first-tee lock.
-- [GPT] Current `data/field.json` blob `9743387f2cc70c671505b20ee3f9b4e9660ef79e` has 156 entrants and
-  `updated_at` 06:00:04Z; `data/events/96414-MPO.json` blob
-  `7dfca62400953c7bf1ef60ecab95d58355550c30` has 156 and `collected_at` 05:59:45Z. Both were generated after
-  PDGA's 03:55:02Z update, exclude Earhart, and include Gillmore #245013, so no manual refresh was justified.
-- [GPT] GitHub Actions UI at 07:24Z listed 528 total collector runs with successful scheduled #528 (05:58Z,
-  1m16s) still newest; there was no #529. `chains-app` main HEAD remains [CLAUDE] v409 commit
-  `94a95a26abb9c858ec494bc4c989b47a1164c1fa`, the Design project remains v409, and open chains-app issues = 0.
+- [GPT] Fresh GitHub Actions UI inspection at 08:24Z showed 528 total `Collect DGPT Data` runs; scheduled run
+  `30241283786` (#528, started 05:58Z, success in 1m16s) was still newest. That is a 2h26m gap despite
+  `.github/workflows/collect.yml` blob `a003c23d158a281a2dc9a0a39228ce6da3dcbdf8` declaring `*/15`.
+  No #529 existed. The scheduler path can fire, but launch-grade cadence remains degraded.
+- [GPT] `chains-poller/README.md` blob `7db7e9aec429ae06abba3fac8f5d311c6981375a` identifies that service as
+  a ~25-second PDGA live-score worker whose `FIREBASE_URL` defaults to chains-fantasy. It is not a safe drop-in
+  roster backstop and T-018 explicitly forbids casual reuse across that protected-data boundary.
+- [GPT] Contents-API verification after each write: BOARD blob `ec3dc540691c92bff0ecde321f90498c6fc5519a`
+  contains T-018 and the T-008 supersession; PM log blob `c7f20354393230c42bbdf4438c06609d09a71e2d`
+  contains the detailed [GPT] entry; LESSONS blob `e97f70c97143faf44ffa1c5cf415443ec70fc13d`
+  and testing blob `3ea5e6a78978880660d253c250a0574005f4384c` contain the backstop-boundary rule.
+- [GPT] `chains-app` main HEAD remains [CLAUDE] v409
+  `94a95a26abb9c858ec494bc4c989b47a1164c1fa`; open `chains-app` issues remain zero.
 
 ## DATA / SAFETY
 - [GPT] No app, Design, Firebase, pick, score, round, user, workflow, generated-data, deletion, backup, or legacy
-  `chains-fantasy /league` write occurred. This shift only updated shared-office evidence/playbooks. Confirmed-good
-  KADEY-first/CORY-last order, Watch, Settings, standings, scoring, and betting-removed behavior were untouched.
+  `chains-fantasy /league` write occurred. No new repo, service, board, roadmap, or coordination file was created.
+  Confirmed-good KADEY-first/CORY-last order, Watch, Settings, standings, scoring, and betting-removed behavior
+  were untouched.
 
 ## REUSABLE METHOD FOR THE OTHER AI
-- [GPT] Improved the previous recurrence method: treat one genuine scheduled run as `recurrence path PASS`, not
-  `cadence healthy`. Compare the latest scheduled run to the configured interval; after two missed intervals,
-  mark cadence degraded, keep event readiness amber, and route a backstop/alert with an explicit freshness target.
-  Claude should reuse this distinction and not restore green from #528 alone. It is now in LESSONS/testing.
+- [GPT] Reused the existing cadence rule—one scheduled run proves a path, not cadence—and improved it with a sink
+  boundary check. Before Claude or GPT reuses an always-on worker as a backstop, verify its source, sink,
+  credentials, and protected-data boundary. Here, `chains-poller` targets live scores/Firebase and defaults to
+  chains-fantasy, so T-018 must stay on an explicitly safe public-artifact path unless the owner authorizes a
+  different sink. This is now in LESSONS/testing; the other AI should reuse it rather than rediscovering it.
 
 ## WHAT'S NEXT AND WHO OWNS IT
-- PM: create/assign a HIGH-priority collector reliability/backstop task. Done when event-field data is published
-  no later than 30 minutes after a source change and a visible signal catches missed scheduled runs; preserve the
-  existing single-event manual backstop and do not touch Firebase or legacy `/league`.
-- QA: independently verify the live Registered/Picks screen shows the corrected 156-entry feed, Earhart absent,
-  and Gillmore #245013 present without selecting a player. After owner sign-in, close T-016 only if Draft Now and
-  own-two-slots-only pass for a true member.
-- Guillermo/owner: the non-commissioner Chrome sign-in request remains OPEN in `team/INBOX.md`; do not send a
-  password.
-- Engineer: wait for the official PDGA first-player tee time before T-017 lock work; do not spend a Design build
-  on a guessed deadline. Then verify WD non-draftability, lock, and registration-finalized -> draft-open.
+- Engineer: claim T-018 first. Diagnose why `collect.yml`'s `*/15` trigger has produced no run after #528, then
+  implement the smallest reliable backstop/monitor in existing safe infrastructure. Do not create a parallel repo
+  or touch App A/Design/Firebase. Record exact files, run/base/generated SHAs, two <=30-minute autonomous cycles,
+  a real source-change publication within 30 minutes, the visible stale signal, risks, and manual-dispatch proof.
+- QA: independently verify T-018's cadence/freshness/stale-signal evidence before DONE. Separately verify the live
+  Registered/Picks roster and T-016 true-member path when owner access is available; never select an auto-saving
+  starter-league pick.
+- Guillermo/owner: the non-commissioner Chrome sign-in request remains OPEN in `team/INBOX.md`; no password is
+  requested. If T-018 requires paid hosting, credentials, or new external configuration, Engineer must route a
+  decision here rather than assuming permission.
+- Engineer for T-017: wait for the official PDGA first-player tee-time table; never substitute DGPT broadcast time.
 
 ## WATCH OUT FOR
-- Current roster data is correct and newer than the latest PDGA update; cadence is the failure, so do not run a
-  manual refresh merely to create activity.
-- Scheduled #528 proves the scheduler fired once but no subsequent `*/15` run appeared for 1h26m. Do not call
-  background health green until the new cadence/backstop done-when is met.
-- No official tee-time table exists in the current PDGA page text; never substitute DGPT's broadcast time.
-- The documented office app identity remains commissioner uid `chains_commish_uid_v1`; it cannot prove T-016.
-
+- Current Ledgestone roster artifacts were correct at the last immutable check; the failure is autonomous cadence.
+  A manual refresh can restore data temporarily but cannot satisfy T-018 or turn readiness green.
+- GitHub Actions schedules can be delayed; adding a second cron on the same unreliable scheduler is not an
+  independent backstop unless two autonomous <=30-minute cycles and the separate stale signal prove otherwise.
+- `chains-poller`'s default chains-fantasy Firebase sink crosses a protected boundary. Do not repurpose it casually.
+- The office Chrome identity is still commissioner uid `chains_commish_uid_v1`; it cannot close T-016.
