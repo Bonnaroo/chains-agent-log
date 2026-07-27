@@ -47,7 +47,7 @@ as DRAFTS for Guillermo. Nothing published.
 **Attempts:** 0
 **Notes:** Marketing site already live at bonnaroo.github.io/chains-site; this is supporting copy + launch prep only.
 
-## T-006 | Designer -> Engineer | ASSIGNED
+## T-006 | Designer -> Engineer | MERGED INTO T-011
 **Goal:** IN THE BAG fix (owner-reported). Make managing the bag obvious: a clear way to ADD and DELETE/REMOVE a
 disc, sensible handling when there are many discs, and a way out of every state. Designer specs it first, then
 Engineer builds it via Claude Design (Go Throw / In the Bag only; DO-NOT-TOUCH applies).
@@ -55,6 +55,7 @@ Engineer builds it via Claude Design (Go Throw / In the Bag only; DO-NOT-TOUCH a
 tidy; QA verifies in the built app; no orphan discs left in Firebase.
 **Attempts:** 0
 **Notes:** From FROM_OWNER.md 2026-07-26. Anchor UX principle: every action has a clear way out + explanation.
+2026-07-27 (PM): groomed — T-006 is fully absorbed by T-011 (per T-011 notes). No separate work; do not claim T-006.
 
 ## T-007 | Engineer | ASSIGNED
 **Goal:** COUNCIL / Admin dashboard v1 (READ-ONLY). A separate small page (its own repo + GitHub Pages, e.g.
@@ -183,3 +184,26 @@ Design left the code untouched. QA: confirm the same on the LIVE site and close 
 KADEY, SHANNA, GABE, WILL, KYLE, CORY with "Heinola Open last place picks first"; T13 result panel shows CORY
 1st (-42) ... KADEY 6th (-27). Matches owner ground truth (Kadey first, Cory last). Do not re-break.
 
+## T-016 | Designer -> Engineer | ASSIGNED
+**Goal:** Member own-only drafting + discoverable "Draft Now" flow. QA (2026-07-26 23:55Z, T-014 closeout) proved that as
+regular member WILL-C, tapping "Edit picks" unlocks ALL six members' player AND score fields ("Editing unlocked — set
+members' players and scores") — no own-only restriction exists. Build: a member can set only their OWN players from the
+registered field; commissioner retains full correction authority; add a clear member-facing Draft Now entry point.
+Scoped Claude Design prompt (Picks screen only; DO-NOT-TOUCH applies; do NOT alter draft-order logic — CONFIRMED GOOD
+by owner, Kadey first / Cory last).
+**Done when:** A signed-in member can edit only their own picks (others read-only to them); commissioner can still
+correct all; Draft Now is discoverable from the member's view; QA verifies live WITHOUT changing any picks/scores on
+the starter league.
+**Attempts:** 0
+**Notes:** From FROM_OWNER HANDLED routing + QA open finding 2026-07-26. Time-sensitive: Ledgestone tees off
+2026-07-30. WARNING: "Edit picks" auto-saves — never test by selecting players on the live league (see LESSONS).
+
+## T-017 | Engineer | ASSIGNED
+**Goal:** Pick-lock at first tee + automatic registration-close -> draft-open handling for T14 and future events:
+picks lock when the event's first round tees off (Ledgestone 2026-07-30); WD/withdrawn players are flagged
+non-draftable before lock; registration close automatically opens drafting (no manual step).
+**Done when:** Picks show a clear locked state at event start; WD players non-draftable; registration-close ->
+draft-open happens automatically; QA verified; no orphan records.
+**Attempts:** 0
+**Notes:** Created by PM 2026-07-27 from FROM_OWNER HANDLED routing + HANDOFF. Coordinate with T-016 (same Picks
+screen) — bundle into one scoped Design prompt only if deliberate.
