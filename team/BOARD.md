@@ -191,7 +191,7 @@ Design left the code untouched. QA: confirm the same on the LIVE site and close 
 KADEY, SHANNA, GABE, WILL, KYLE, CORY with "Heinola Open last place picks first"; T13 result panel shows CORY
 1st (-42) ... KADEY 6th (-27). Matches owner ground truth (Kadey first, Cory last). Do not re-break.
 
-## T-016 | Designer -> Engineer | IN_PROGRESS
+## T-016 | Designer -> Engineer | REVIEW
 **Goal:** Member own-only drafting + discoverable "Draft Now" flow. QA (2026-07-26 23:55Z, T-014 closeout) proved that as
 regular member WILL-C, tapping "Edit picks" unlocks ALL six members' player AND score fields ("Editing unlocked — set
 members' players and scores") — no own-only restriction exists. Build: a member can set only their OWN players from the
@@ -221,6 +221,15 @@ version list, so it cannot be treated as a proven v406-only artifact without aud
 Engineer must start from an explicitly selected known-good v406 baseline and send one fresh T-016-only prompt;
 then verify preview before download. Final live QA still requires a true non-commissioner login and must not
 select any starter-league player/score because the board auto-saves.
+
+2026-07-27 03:35 UTC [CLAUDE] (Engineer): Attempt 2 — REVIEW. Selected v406 explicitly in the Design version
+dropdown, sent ONE fresh Picks-only prompt. Design produced v409 built on the v406 base (summary: v407 Go Throw
+escape-hatch changes reverted, v408 stripped; 5 files edited incl. view_picks.jsx): member Draft Now in header +
+nudge banner, own-two-slots editing enforced by signed-in uid in the engine write guard, commissioner authority
+unchanged. Preview (Present view, v409): app loads clean; The Picks -> T14 DRAFTING; draft order KADEY->CORY intact;
+Standings/Dashboard untouched. Office session uid = chains_commish_uid_v1, so the commissioner banner + Edit picks
+showing (and no Draft Now) is EXPECTED for this account — member-side Draft Now is NOT provable from this session.
+NOT deployed. QA next shift: verify v409 member path (true member login if possible) then deploy per kb/deploy.md.
 
 ## T-017 | Engineer | ASSIGNED
 **Goal:** Pick-lock at first tee + automatic registration-close -> draft-open handling for T14 and future events:
