@@ -28,3 +28,13 @@
   default msg "Add files via upload" — a permission classifier blocked typing the commit message; owner approved
   the upload in chat). Live site now serves the full 9,641,939 bytes = v405 LIVE. Next: QA field 1:1 check +
   close T-014/T-015; CEO to green the EVENT_READINESS boxes.
+
+- 2026-07-27 02:15 UTC | [CLAUDE] | T-016 (member own-only drafting + Draft Now): claimed lock 02:04:20Z, sent ONE
+  scoped Claude Design prompt (1,214 chars, execCommand insert per LESSONS — no CDP timeout). Scope: Picks screen
+  only; member edits ONLY own two picks when DRAFTING; commissioner (chains_commish_uid_v1) keeps full authority;
+  member "Draft Now" entry when picks incomplete; member banner copy updated. DO-NOT-TOUCH stated in-prompt:
+  draft order (Kadey-first/Cory-last CONFIRMED GOOD), scoring, standings, Watch, Settings, Go Throw, field.json
+  feed. Build started ("Scrambling") — per one-build-per-shift, next shift verifies the new version in preview,
+  then deploys via kb/deploy.md. QA closeout still needs a TRUE member login (office uid = commissioner).
+  Secondary: T-017 recheck — pdga.com/tour/event/96414 at ~02:12Z still has NO tee-time table (page last updated
+  25-Jul-2026 19:20 CDT); pick-lock deadline still unknown, readiness stays AMBER.
