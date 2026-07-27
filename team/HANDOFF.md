@@ -13,7 +13,8 @@
 - [GPT] Office evidence commits verified through the contents API: Design guardrail/LESSON
   `158bbada04b9eb83a61153e7a20449e74f6df528`; Engineer log
   `45b3fb52934531e2b16e90bcee179ddddc394836`; role lock
-  `69d8af1f94e592a65d58f52fc6a65b31c05b1c06`. Live app remains v406: lowercase `index.html` deploy
+  `69d8af1f94e592a65d58f52fc6a65b31c05b1c06`; BOARD/HANDOFF evidence
+  `87873a4c163831eb892f4d28c6c723a48c06dedb`. Live app remains v406: lowercase `index.html` deploy
   `30a2201ba124c064d84d355e3482be783f2f90f3`; current app main HEAD `b3be8101789fc6f67fb4fff828973016a714117a`.
 
 ## VERIFICATION / EVIDENCE
