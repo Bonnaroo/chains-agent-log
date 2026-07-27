@@ -8,6 +8,10 @@ All commits happen through the GitHub web upload flow using Claude in Chrome.
   GOTCHA: after a file is added, the page grows and the green "Commit changes" button MOVES DOWN — screenshot and
   click its CURRENT position, or target it by element ref. A stray click can flip the radio to "Create a new branch"
   (button then reads "Propose changes") — make sure "Commit directly to the main branch" is selected first.
+- Commit attribution: GitHub may generate or regenerate a Copilot commit message asynchronously after the dialog
+  opens. Wait until generation settles, set the exact `[GPT]`/`[CLAUDE]` summary, wait again, then visibly re-read
+  the textbox immediately before clicking Commit. If the text changed, refill and recheck; the stamped file content
+  does not excuse an unstamped commit summary.
 - Multiple files in one commit: put them all in the file input in one upload; they commit together into the folder
   the /upload URL points at.
 - NEVER use GitHub's inline text editor for markdown files with lists — it silently mangles list formatting. Always

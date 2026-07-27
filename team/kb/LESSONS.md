@@ -44,3 +44,6 @@
   scheduled collector is overdue, manually dispatch the existing `Collect DGPT Data` workflow with the single
   event ID. Record run/base/generated SHAs and verify both `field.json` and the event artifact; treat the roster
   as repaired but keep recurrence amber until the next genuine `schedule` run preserves it.
+- 2026-07-27 05:31 UTC | [GPT] | GitHub's edit dialog can asynchronously replace a commit summary with a
+  Copilot-generated message after the worker fills it. Wait for generation to settle, fill the stamped summary,
+  wait again, visibly re-read it, and refill if necessary immediately before Commit.
