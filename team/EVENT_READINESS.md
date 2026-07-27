@@ -20,6 +20,10 @@ Verified source facts from the 2026-07-26 CEO passes:
       draft is open; commissioner editing is correction authority, not the normal drafting path. Confirm the
       way to start drafting is obvious. PM must route any failure immediately.
 - [ ] PICK LOCK + WD handling: verify against the real first-tee deadline and the documented league rule.
+  - 2026-07-27 00:28 UTC [GPT] Primary-source deadline audit: PDGA event 96414 (https://www.pdga.com/tour/event/96414)
+    lists Jul 30-Aug 2, 156 MPO registrations, last updated Jul 25 19:20 CDT, but currently exposes no Tee Time
+    table/column. DGPT (https://www.dgpt.com/event/2026-ledgestone-open/) lists 3:00 PM CDT for MPO Round 1
+    broadcast, which is not the first player tee time. T-017 must not use the broadcast time as the lock.
 
 ### B. Standings / Stats / Schedule / History
 - [x] Season standings rendered correctly in the prior pass: 13 events scored; Cory led with 56 points.
@@ -47,15 +51,21 @@ Verified source facts from the 2026-07-26 CEO passes:
 - [ ] Verify automatic registration-finalized -> draft-open behavior, not just this event's manual/snapshot fix.
 
 ## STATUS
-**GREEN except member-permission check.** Field feed, live consumption, roster 154/154, draft order, and picks-open are all verified live on v406. The collector and generated artifacts now cover
-Ledgestone correctly, and v405's fallback still protects availability. T-009 remains open until QA proves the live
-app consumed the repaired feed and T-014/T-015 are closed. REMAINING (PM): member own-only drafting does NOT
-exist today — "Edit picks" as member WILL-C unlocks every member's picks and scores; plus pick-lock/WD behavior
-at the real first tee. Also note: a 21:46Z deploy landed as miscased `Index.html` and never went live; [CLAUDE]
-redeployed v406 to lowercase index.html (commit 30a2201) and removed the stray file (b3be810).
+**AMBER — data/live consumption are green; two time-critical drafting gates remain.** [CLAUDE] independently
+verified v406 live-feed consumption, the 154 named-player field, qualifier exclusion, picks-open, and the
+owner-confirmed Kadey-first/Cory-last order. [GPT] reused those verified findings instead of repeating the
+destructive drafting path. At 2026-07-27 00:28 UTC, [GPT] also rechecked the live app (title `Chains · Fantasy DGPT 2026`,
+dashboard shows Ledgestone `PICKS OPEN`) and current artifacts: `data/field.json` blob
+`ecc27a039512b43a1c4fd8ab0f251a0ca0f202e2` = T14/96414, 154 players, updated
+2026-07-26T23:54:03Z; `data/events/96414-MPO.json` blob
+`cb8c2ba4df5e0a80c7d95aa1560949d989be5752` = 156 slots, collected 23:53:51Z. Remaining blockers:
+T-016 member own-only drafting / Draft Now discoverability, and T-017 first-tee lock / WD / automatic
+registration-close-to-draft-open. PDGA has not published the official tee-time table yet, so the exact safe lock
+deadline is still unknown; DGPT's 3:00 PM CDT MPO broadcast time must not be substituted. T-009 stays IN_PROGRESS.
 
 ## REUSABLE
 Repeat A-D for every DGPT event about five days before it starts. Do not accept a correct-looking UI fallback as
 proof that the dynamic feed is healthy: inspect `data/field.json` metadata (`updated_at`, `event_id`, `player_count`,
 non-empty `players`), confirm the event ID exists in the collector/list, then verify the live app consumes the feed.
 Compare PDGA-number sets, not just counts: total registration slots may include non-draftable qualifier placeholders.
+

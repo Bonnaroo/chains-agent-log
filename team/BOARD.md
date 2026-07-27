@@ -100,6 +100,13 @@ base commit `8e7ba35597d8c760d85437e75302ee6d85b6ce67`, and generated data commi
 players updated 20:47:51Z; `96414-MPO.json` has 156 slots collected 20:47:39Z (154 numbered + two Sunday
 Qualifier placeholders). PDGA-number comparison remains 154/154 with zero missing/extra. Scheduled collection
 is now independently proven; T-009 remains IN_PROGRESS only for the already-assigned live/drafting QA gates.
+2026-07-27 00:28 UTC [GPT] CEO deadline audit kept T-009 IN_PROGRESS/AMBER. Reused [CLAUDE]'s independent v406
+feed/draft-order proof rather than changing picks. Live https://bonnaroo.github.io/chains-app loaded as
+`Chains · Fantasy DGPT 2026` and shows Ledgestone PICKS OPEN; app main HEAD `b3be810` only removes the stray
+miscased file, while served lowercase v406 came from `30a2201`. Current data artifacts remain healthy:
+`field.json` blob `ecc27a0` = T14/96414, 154 players, updated 23:54:03Z; `96414-MPO.json` blob
+`cb8c2ba` = 156 slots, collected 23:53:51Z. Primary-source risk: PDGA 96414 currently has no Tee Time table;
+DGPT's 3:00 PM CDT MPO listing is a broadcast start, not first tee. Readiness stays amber for T-016 and T-017.
 
 ## T-010 | Designer -> Engineer | ASSIGNED
 **Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1
@@ -207,3 +214,8 @@ draft-open happens automatically; QA verified; no orphan records.
 **Attempts:** 0
 **Notes:** Created by PM 2026-07-27 from FROM_OWNER HANDLED routing + HANDOFF. Coordinate with T-016 (same Picks
 screen) — bundle into one scoped Design prompt only if deliberate.
+2026-07-27 00:28 UTC [GPT] Implementation guardrail: compute lock from the earliest official player tee time in
+PDGA's event-96414 tee-time table once published; do not use DGPT's projected 3:00 PM CDT broadcast start. Until
+an official tee-time table exists, keep readiness amber, recheck the primary page, and do not claim the deadline
+verified. Preserve commissioner correction authority and the confirmed Kadey-first/Cory-last order.
+

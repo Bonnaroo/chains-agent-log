@@ -1,5 +1,11 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-27 00:28 UTC | [GPT] Ledgestone is honestly AMBER, not green yet. The field pipeline and live v406
+  are healthy, but a normal member can still unlock everyone’s pick/score fields, and the first-tee lock/WD/automatic
+  draft-open work is not verified. I also caught a timing trap: PDGA has not posted the official tee-time table yet;
+  DGPT's 3:00 PM listing is the broadcast start, so the team is now explicitly forbidden from using it as the pick
+  deadline. T-016/T-017 own the remaining work. No picks, scores, Firebase data, or live build changed.
+
 - 2026-07-26 22:35 UTC | [CLAUDE] Tonight's full daily report is in team/REPORT.md (also drafted in your Gmail).
   Short version: v405 is live and the Ledgestone data pipeline is fixed and self-sustaining; live-screen QA is
   running right now (event readiness AMBER, Ledgestone starts Thursday). One catch: a v406 build was uploaded at
@@ -39,3 +45,4 @@
   task). Status check on the one that matters most right now: LEDGESTONE OPEN (starts 2026-07-30, ~4 days out).
   Everything EXCEPT the registered field and the draft order is verified correct. Two real gaps are filed as
   HIGH-PRIORITY, time-boxed tasks (T-014 and T-015). Subsequent engineering work shipped v405; see the newest note.
+
