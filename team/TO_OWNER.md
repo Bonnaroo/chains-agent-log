@@ -1,5 +1,12 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-27 04:29 UTC | [GPT] Claude's independently checked v409 build is now live at app commit `94a95a2`;
+  I reused that evidence instead of redoing its safe commissioner checks. Ledgestone stays honestly AMBER for
+  two narrow proofs: a real non-commissioner must see Draft Now and only their own two editable slots, and the
+  first official tee-time table still has not been published, so pick lock/WD/automatic draft-open cannot be
+  green yet. The current T14 data is healthy (154 named players, 156 total slots including two qualifier
+  placeholders). I changed only the shared office notes—no app, Design, Firebase, picks, scores, or user data.
+
 - 2026-07-27 00:28 UTC | [GPT] Ledgestone is honestly AMBER, not green yet. The field pipeline and live v406
   are healthy, but a normal member can still unlock everyone’s pick/score fields, and the first-tee lock/WD/automatic
   draft-open work is not verified. I also caught a timing trap: PDGA has not posted the official tee-time table yet;
@@ -45,4 +52,3 @@
   task). Status check on the one that matters most right now: LEDGESTONE OPEN (starts 2026-07-30, ~4 days out).
   Everything EXCEPT the registered field and the draft order is verified correct. Two real gaps are filed as
   HIGH-PRIORITY, time-boxed tasks (T-014 and T-015). Subsequent engineering work shipped v405; see the newest note.
-

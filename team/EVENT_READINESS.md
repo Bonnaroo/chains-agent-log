@@ -23,12 +23,21 @@ Verified source facts from the 2026-07-26 CEO passes:
     "member WILL-C" proof was a commissioner session; member-side enforcement is UNVERIFIED. UI evidence stands:
     read-only banner says "Only the commissioner edits picks" and no member Draft Now entry exists in v406 —
     T-016 build required either way. Final verification needs a true member login.
+  - 2026-07-27 04:29 UTC [GPT] Reused [CLAUDE]'s fresh v409 QA/deploy evidence: app commit
+    `94a95a26abb9c858ec494bc4c989b47a1164c1fa` is live; commissioner edit/unlock/done, draft order,
+    standings, and Go Throw passed with zero preview console errors. v409 adds the member path, but the available
+    browser uid is still the commissioner. T-016 therefore stays REVIEW until a true non-commissioner proves
+    Draft Now + own-two-slots-only on live without selecting any auto-saving pick.
 - [ ] PICK LOCK + WD handling: verify against the real first-tee deadline and the documented league rule.
   - 2026-07-27 00:28 UTC [GPT] Primary-source deadline audit: PDGA event 96414 (https://www.pdga.com/tour/event/96414)
     lists Jul 30-Aug 2, 156 MPO registrations, last updated Jul 25 19:20 CDT, but currently exposes no Tee Time
     table/column. DGPT (https://www.dgpt.com/event/2026-ledgestone-open/) lists 3:00 PM CDT for MPO Round 1
     broadcast, which is not the first player tee time. T-017 must not use the broadcast time as the lock.
   - 2026-07-27 01:15 UTC [CLAUDE] Recheck: PDGA 96414 still shows no tee-time table (last updated 25-Jul 19:20 CDT). Amber holds.
+  - 2026-07-27 04:29 UTC [GPT] Fresh primary-page recheck: PDGA 96414 still shows 156 MPO registrations and
+    `Last updated: 25-Jul-2026 19:20:02 CDT`; there is no `Tee Time` table and no `Withdrawn` text. The DGPT
+    event page still provides broadcast programming, not an official first-player tee time. T-017 remains open;
+    do not invent a lock timestamp.
 
 ### B. Standings / Stats / Schedule / History
 - [x] Season standings rendered correctly in the prior pass: 13 events scored; Cory led with 56 points.
@@ -53,20 +62,22 @@ Verified source facts from the 2026-07-26 CEO passes:
       plus two non-draftable Sunday Qualifier placeholders.
 - [x] VERIFIED — 2026-07-26 23:55 UTC [CLAUDE]: the live page's own network log shows it fetched
       Bonnaroo/chains-dgpt-data data/field.json; rendered count/timestamp match the 22:52Z generated artifact.
+- [x] CURRENT ARTIFACT RECHECK — 2026-07-27 04:29 UTC [GPT]: `data/field.json` blob
+      `c3ab164203068b55cebe685f3231f49b1a54f221` remains T14/96414 with 154 named players, updated 02:03:55Z;
+      `data/events/96414-MPO.json` blob `cbfb65408e4ab319b1e0a504657ca6eb345ef23f` remains 156 slots,
+      collected 02:03:39Z. No backend repair or Firebase write was needed.
 - [ ] Verify automatic registration-finalized -> draft-open behavior, not just this event's manual/snapshot fix.
 
 ## STATUS
-**AMBER — data/live consumption are green; two time-critical drafting gates remain.** [CLAUDE] independently
-verified v406 live-feed consumption, the 154 named-player field, qualifier exclusion, picks-open, and the
-owner-confirmed Kadey-first/Cory-last order. [GPT] reused those verified findings instead of repeating the
-destructive drafting path. At 2026-07-27 00:28 UTC, [GPT] also rechecked the live app (title `Chains · Fantasy DGPT 2026`,
-dashboard shows Ledgestone `PICKS OPEN`) and current artifacts: `data/field.json` blob
-`ecc27a039512b43a1c4fd8ab0f251a0ca0f202e2` = T14/96414, 154 players, updated
-2026-07-26T23:54:03Z; `data/events/96414-MPO.json` blob
-`cb8c2ba4df5e0a80c7d95aa1560949d989be5752` = 156 slots, collected 23:53:51Z. Remaining blockers:
-T-016 member own-only drafting / Draft Now discoverability, and T-017 first-tee lock / WD / automatic
-registration-close-to-draft-open. PDGA has not published the official tee-time table yet, so the exact safe lock
-deadline is still unknown; DGPT's 3:00 PM CDT MPO broadcast time must not be substituted. T-009 stays IN_PROGRESS.
+**AMBER — v409 and the data pipeline are live/healthy; two closeout gates remain.** [GPT] reused [CLAUDE]'s
+independent v409 QA/deploy evidence rather than repeating the commissioner path: app HEAD `94a95a2`, exactly one
+lowercase `index.html`, full 9,644,611-byte Pages response, confirmed-good KADEY-first/CORY-last draft order,
+standings/Go Throw intact, and zero preview console errors. Current T14/96414 artifacts remain 154 named players
+plus two non-draftable Sunday Qualifier placeholders. Remaining blockers are narrow and explicit: (1) T-016 needs
+a true non-commissioner live proof of Draft Now + own-two-slots-only without selecting an auto-saving pick; (2)
+T-017 needs the official earliest tee time, pick lock, WD handling, and automatic registration-finalized ->
+draft-open proof. PDGA has not published the tee-time table, so the safe lock deadline remains unknown; DGPT's
+3:00 PM CDT broadcast time must not be substituted. T-009 stays IN_PROGRESS.
 
 ## REUSABLE
 Repeat A-D for every DGPT event about five days before it starts. Do not accept a correct-looking UI fallback as
