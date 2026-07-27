@@ -45,6 +45,10 @@ Verified source facts from the 2026-07-26 CEO passes:
     registration while Kayleb Gillmore (#245013) had joined. Manual workflow #527 generated commit `5e643c0`;
     both current artifacts now exclude Earhart, include Gillmore, and hold 156 entrants. Backend WD/registration
     following passes for this change; live non-draftability still needs QA, and the official tee table is absent.
+  - 2026-07-27 07:25 UTC [GPT] Fresh official-source recheck: PDGA 96414 now reports `Last Updated`
+    `26-Jul-2026 22:55:02 CDT` and still has 156 MPO registrations, with Gillmore #245013 present and Earhart
+    absent. The page still has no Tee Time, Round 1, or Withdrawn section. DGPT's 3:00 PM CDT remains explicitly
+    under BROADCAST SCHEDULE, so T-017 stays blocked from choosing a lock timestamp.
 
 ### B. Standings / Stats / Schedule / History
 - [x] Season standings rendered correctly in the prior pass: 13 events scored; Cory led with 56 points.
@@ -88,20 +92,28 @@ Verified source facts from the 2026-07-26 CEO passes:
       reads match: Earhart absent, Gillmore #245013 present, and Gracen Lomelino/Chris Reliford remain the two
       unnumbered real registrations. Background recurrence is green again; the Actions page carries a
       non-blocking Node.js 20 deprecation warning for checkout/setup-python now forced onto Node 24.
+- [ ] CADENCE RELIABILITY — 2026-07-27 07:25 UTC [GPT]: workflow blob `a003c23` is configured `*/15`, but
+      Actions still showed successful scheduled #528 at 05:58Z as latest at 07:24Z (1h26m, five expected starts
+      absent). One scheduled run proves the path can fire, not that nominal cadence is meeting the event-critical
+      freshness need. Current blobs remain correct and were generated after PDGA's 03:55:02Z source update, so no
+      manual refresh is needed now. PM must route a HIGH-priority reliability/backstop task with a <=30-minute
+      freshness target and visible missed-run signal before background health is fully green.
 - [ ] Verify automatic registration-finalized -> draft-open behavior, not just this event's manual/snapshot fix.
 
 ## STATUS
-**AMBER — v409 is live, the roster is correct, and scheduled collection has recovered; member/deadline gates
-remain.** [GPT] proved recurrence with genuine scheduled run #528 and generated commit `06bd3b43`: current
-artifacts still contain 156 entrants, exclude withdrawn Earhart, and include Gillmore #245013. QA must still
-confirm that corrected roster on the live Registered/Picks screen without selecting a player. T-016 needs a true
-non-commissioner proof (owner sign-in request is OPEN in INBOX). T-017 still needs the official earliest tee time,
-live WD non-draftability, pick lock, and automatic registration-finalized -> draft-open proof. PDGA has not
-published the tee-time table, so DGPT's 3:00 PM broadcast time must not be substituted. T-009 stays IN_PROGRESS.
+**AMBER — v409 is live and current roster artifacts are correct, but collector cadence, member, and deadline
+gates remain.** [GPT] verified the artifacts were generated after PDGA's newer 03:55:02Z update and still hold
+156 registrations with Earhart absent/Gillmore present. Scheduled #528 passed, but no later run appeared by
+07:24Z despite the `*/15` cron; PM must route the <=30-minute reliability/backstop gap. QA must still confirm the
+corrected roster live without selecting a player. T-016 needs a true non-commissioner proof (owner sign-in request
+is OPEN in INBOX). T-017 still needs the official earliest tee time, live WD non-draftability, pick lock, and
+automatic registration-finalized -> draft-open proof. DGPT's 3:00 PM broadcast time must not be substituted.
+T-009 stays IN_PROGRESS.
 
 ## REUSABLE
 Repeat A-D for every DGPT event about five days before it starts. Do not accept a correct-looking UI fallback as
 proof that the dynamic feed is healthy: inspect `data/field.json` metadata (`updated_at`, `event_id`, `player_count`,
 non-empty `players`), confirm the event ID exists in the collector/list, then verify the live app consumes the feed.
 Compare PDGA-number sets, not just counts: total registration slots may include non-draftable qualifier placeholders.
+
 

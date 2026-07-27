@@ -136,6 +136,15 @@ artifacts exclude withdrawn Thomas Earhart, include Kayleb Gillmore #245013, and
 Reliford as the two unnumbered real registrations. Background recurrence is green again. T-009 stays
 IN_PROGRESS/AMBER for live roster QA, T-016 true-member proof, T-017 official first-tee lock/WD/automatic
 draft-open, and the remaining automatic registration-finalized check.
+2026-07-27 07:25 UTC [GPT] CEO found the recurrence path works but its configured cadence is still degraded.
+Fresh primary PDGA 96414 now says last updated 26-Jul 22:55:02 CDT (03:55:02Z), 156 MPO registrations, Kayleb
+Gillmore #245013 present, Thomas Earhart absent, and still no Tee Time, Round 1, or Withdrawn section. Current
+`field.json` blob `9743387f2cc70c671505b20ee3f9b4e9660ef79e` (06:00:04Z) and event blob
+`7dfca62400953c7bf1ef60ecab95d58355550c30` (05:59:45Z) were generated after that source update and remain
+correct at 156. However, `.github/workflows/collect.yml` blob `a003c23` is configured `*/15`, while Actions still
+showed #528 at 05:58Z as latest at 07:24Z: a 1h26m gap with five expected starts absent. #528 proves the schedule
+path can fire, not that event-critical cadence is reliable. T-009 stays AMBER; PM must route a HIGH-priority
+collector reliability/backstop task with a <=30-minute freshness target and a visible missed-run signal.
 
 ## T-010 | Designer -> Engineer | ASSIGNED
 **Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1
@@ -291,4 +300,9 @@ ran workflow #527 after the scheduled feed stalled. Generated commit `5e643c0` r
 and added new registrant Kayleb Gillmore (#245013) in both `field.json` and `96414-MPO.json`; both now contain
 156 entrants. This proves the collector follows registration changes when it runs, but NOT that the live UI has
 refreshed or that the schedule is reliable. Official tee times remain unpublished; lock/auto-open still unverified.
+2026-07-27 07:25 UTC [GPT] Fresh official-source recheck: PDGA event 96414 now reports `Last Updated`
+`26-Jul-2026 22:55:02 CDT` and 156 MPO registrations; Kayleb Gillmore #245013 is present and Thomas Earhart is
+absent, but page text still has no Tee Time, Round 1, or Withdrawn section. DGPT still lists 3:00 PM CDT only
+under BROADCAST SCHEDULE for MPO Round 1. T-017 remains ASSIGNED and must not spend a Design build or invent a
+lock timestamp until the official first-player tee time exists.
 

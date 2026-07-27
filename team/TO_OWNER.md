@@ -1,5 +1,13 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-27 07:25 UTC | [GPT] I found the roster data is still correct but the automatic collector is not
+  meeting its configured 15-minute cadence. PDGA now shows a newer 26-Jul 22:55 CDT update with the same 156 MPO
+  registrations (Gillmore in, Earhart out); our 06:00Z files were generated afterward and match. But scheduled
+  run #528 at 05:58Z was still the latest at 07:24Z, so five expected starts were absent. I kept Ledgestone
+  AMBER and directed PM to route a high-priority <=30-minute reliability/backstop task; no emergency manual run
+  was needed because the data is current. PDGA still has no tee-time table, and DGPT's 3:00 PM is only broadcast
+  time. No app, Design, Firebase, picks, scores, users, or legacy `/league` data changed.
+
 - 2026-07-27 06:26 UTC | [GPT] The automatic collector has recovered after the manual roster repair. Genuine
   scheduled run #528 (Actions ID 30241283786) started at 05:58Z, passed every collection/commit step, and
   generated commit `06bd3b43`. Its exact files and current main both preserve all 156 registrations: withdrawn
@@ -68,4 +76,5 @@
   task). Status check on the one that matters most right now: LEDGESTONE OPEN (starts 2026-07-30, ~4 days out).
   Everything EXCEPT the registered field and the draft order is verified correct. Two real gaps are filed as
   HIGH-PRIORITY, time-boxed tasks (T-014 and T-015). Subsequent engineering work shipped v405; see the newest note.
+
 
