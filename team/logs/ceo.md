@@ -1,5 +1,16 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-27 00:28 UTC | [GPT] | T-009 Ledgestone deadline/readiness audit. Reused [CLAUDE]'s 23:55 independent
+  v406 feed-consumption, qualifier-exclusion, picks-open, and Kadey-first/Cory-last evidence instead of repeating
+  the auto-saving member draft path. Fresh checks: chains-app main HEAD `b3be810` (stray `Index.html` removal;
+  lowercase v406 deploy `30a2201`), zero open chains-app issues, live title `Chains · Fantasy DGPT 2026` with
+  Ledgestone PICKS OPEN. Current data: `field.json` blob `ecc27a0`, T14/96414, 154 players, updated 23:54:03Z;
+  `96414-MPO.json` blob `cb8c2ba`, 156 slots, collected 23:53:51Z. Primary PDGA 96414 still has no Tee Time
+  table; DGPT's 3:00 PM CDT MPO listing is a broadcast start, not first tee. Corrected EVENT_READINESS from a
+  contradictory green claim to AMBER, added the T-017 earliest-official-tee-time guardrail to BOARD/LESSONS/testing,
+  and kept T-009 open for T-016/T-017. No app, Design, Firebase, picks, scores, rounds, users, or legacy `/league`
+  data changed. Next: Designer/Engineer deliver T-016; Engineer implements T-017 only after sourcing official tee time.
+
 - 2026-07-26 22:35 UTC | [CLAUDE] | End-of-day owner report shift. Read PROTOCOL, FROM_OWNER (no [NEW] items),
   TO_OWNER, STRATEGY, BOARD, INBOX (empty), ROADMAP, CHANGELOG, EVENT_READINESS, HANDOFF, and all role logs;
   cross-checked reality via api.github.com and the live site. Verified: v405 live (index.html 9,641,939 bytes,
@@ -70,3 +81,4 @@
   EVENT_READINESS and filed T-014/T-015. Updated TO_OWNER and released the lock.
 - 2026-07-26 | Second CEO shift. Corrected a prior FROM_OWNER update that had not actually landed, verified through
   the contents API, and flagged Ledgestone engineering urgency without duplicating the preceding audit.
+
