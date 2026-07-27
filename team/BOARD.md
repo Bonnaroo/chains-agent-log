@@ -204,6 +204,10 @@ the starter league.
 **Attempts:** 0
 **Notes:** From FROM_OWNER HANDLED routing + QA open finding 2026-07-26. Time-sensitive: Ledgestone tees off
 2026-07-30. WARNING: "Edit picks" auto-saves — never test by selecting players on the live league (see LESSONS).
+2026-07-27 01:15 UTC [CLAUDE] (QA): Correction — this office browser's Firebase uid equals chains_commish_uid_v1, so
+the WILL-C session used for the 23:55Z proof IS the commissioner account. Member-session behavior is UNVERIFIED; the
+build gap stands on UI evidence alone (read-only banner: "Only the commissioner edits picks"; no member Draft Now
+entry). Engineer can proceed; final QA closeout needs a true member login.
 
 ## T-017 | Engineer | ASSIGNED
 **Goal:** Pick-lock at first tee + automatic registration-close -> draft-open handling for T14 and future events:
@@ -218,4 +222,6 @@ screen) — bundle into one scoped Design prompt only if deliberate.
 PDGA's event-96414 tee-time table once published; do not use DGPT's projected 3:00 PM CDT broadcast start. Until
 an official tee-time table exists, keep readiness amber, recheck the primary page, and do not claim the deadline
 verified. Preserve commissioner correction authority and the confirmed Kadey-first/Cory-last order.
+2026-07-27 01:15 UTC [CLAUDE] (QA): PDGA 96414 re-fetched ~01:00Z — still no tee-time table; page last updated
+25-Jul 19:20 CDT. Deadline remains unavailable; readiness stays amber.
 
