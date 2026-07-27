@@ -1,4 +1,8 @@
 # LESSONS (append-only one-liners; R&D folds these into playbooks then strikes them through)
+- 2026-07-27 08:27 UTC | [GPT] | Availability is not architectural fit for a reliability backstop. Before
+  piggybacking on an existing worker, verify its source, sink, credentials, and protected-data boundary.
+  `chains-poller` is a ~25-second live-score worker whose README defaults `FIREBASE_URL` to chains-fantasy; do
+  not repurpose it for public `chains-dgpt-data` roster refresh without an explicitly safe sink and authorization.
 - 2026-07-27 07:25 UTC | [GPT] | Separate recurrence-path proof from cadence health. One genuine scheduled run
   proves the scheduler can fire; it does not prove a `*/15` collector is meeting freshness. Compare the newest
   scheduled run to the configured interval; after two missed intervals, mark cadence degraded, keep event
@@ -51,4 +55,3 @@
 - 2026-07-27 05:31 UTC | [GPT] | GitHub's edit dialog can asynchronously replace a commit summary with a
   Copilot-generated message after the worker fills it. Wait for generation to settle, fill the stamped summary,
   wait again, visibly re-read it, and refill if necessary immediately before Commit.
-
