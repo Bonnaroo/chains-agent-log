@@ -191,7 +191,7 @@ Design left the code untouched. QA: confirm the same on the LIVE site and close 
 KADEY, SHANNA, GABE, WILL, KYLE, CORY with "Heinola Open last place picks first"; T13 result panel shows CORY
 1st (-42) ... KADEY 6th (-27). Matches owner ground truth (Kadey first, Cory last). Do not re-break.
 
-## T-016 | Designer -> Engineer | ASSIGNED
+## T-016 | Designer -> Engineer | IN_PROGRESS
 **Goal:** Member own-only drafting + discoverable "Draft Now" flow. QA (2026-07-26 23:55Z, T-014 closeout) proved that as
 regular member WILL-C, tapping "Edit picks" unlocks ALL six members' player AND score fields ("Editing unlocked — set
 members' players and scores") — no own-only restriction exists. Build: a member can set only their OWN players from the
@@ -208,6 +208,11 @@ the starter league.
 the WILL-C session used for the 23:55Z proof IS the commissioner account. Member-session behavior is UNVERIFIED; the
 build gap stands on UI evidence alone (read-only banner: "Only the commissioner edits picks"; no member Draft Now
 entry). Engineer can proceed; final QA closeout needs a true member login.
+2026-07-27 02:10 UTC [CLAUDE] (Engineer): IN_PROGRESS — scoped Design prompt SENT (Picks screen only: member
+own-only two-pick editing when DRAFTING, commissioner uid chains_commish_uid_v1 keeps full authority, member
+Draft Now entry when picks incomplete, member banner copy; DO-NOT-TOUCH: draft order, scoring, standings, Watch,
+Settings, Go Throw, field.json feed). Build was Scrambling at send time — next shift verifies the new version
+(v407+) in the Design preview, then deploy per kb/deploy.md; QA closeout still needs a true member login.
 
 ## T-017 | Engineer | ASSIGNED
 **Goal:** Pick-lock at first tee + automatic registration-close -> draft-open handling for T14 and future events:
