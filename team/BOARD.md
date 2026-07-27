@@ -67,12 +67,15 @@ create yet (management actions are a later, carefully-authed task). Link it in T
 **Notes:** From FROM_OWNER.md 2026-07-26 ("the council"). Points at App A's Firebase (chains-app-f38f8) for now;
 will repoint to App B later. Use the anon-auth read pattern from kb/firebase.md. Management actions = future task.
 
-## T-008 | PM | ASSIGNED
+## T-008 | PM | SUPERSEDED BY CURRENT STRATEGY
 **Goal:** Keep STRATEGY.md's phase gate honored: do NOT let any coding-path/rebuild work start before 2026-07-29.
 Until then, all engineering is Claude-Design polish on App A. Groom the board to reflect this.
 **Done when:** Board + assignments contain no Phase-2 code-rebuild tasks before 2026-07-29; note it in the pm log.
 **Attempts:** 0
 **Notes:** Owner gated the coding path to "a few days" out. CEO owns STRATEGY.md; PM enforces the gate on the board.
+2026-07-27 08:27 UTC [GPT] PM grooming: this dated July 29 hold was superseded by the owner-authorized, backend-first
+Phase 2A GO already recorded in `team/STRATEGY.md`. Do not claim T-008 or revive the old gate; App A's protected
+surfaces and the current STRATEGY phase rails still apply.
 
 ## T-009 | CEO/PM | IN_PROGRESS (HIGH PRIORITY — time-boxed to the event)
 **Goal:** LEDGESTONE OPEN pre-event readiness. Drive team/EVENT_READINESS.md to green: correct event ID/naming,
@@ -306,3 +309,21 @@ absent, but page text still has no Tee Time, Round 1, or Withdrawn section. DGPT
 under BROADCAST SCHEDULE for MPO Round 1. T-017 remains ASSIGNED and must not spend a Design build or invent a
 lock timestamp until the official first-player tee time exists.
 
+## T-018 | Engineer | ASSIGNED (HIGH PRIORITY — time-boxed to Ledgestone)
+**Goal:** Make the existing `Bonnaroo/chains-dgpt-data` event-field collector dependable enough for launch:
+restore an autonomous <=30-minute freshness path and add a visible missed-run/staleness signal. Diagnose the
+current GitHub Actions cadence failure first, then implement the smallest safe fix in existing infrastructure.
+**Done when:** (1) two consecutive autonomous collector cycles start no more than 30 minutes apart and preserve
+the correct 96414 field; (2) a source change is published to both `data/field.json` and
+`data/events/96414-MPO.json` within 30 minutes, with run/base/generated SHAs recorded; (3) an independent visible
+signal becomes stale/failing when no successful collector publication occurs for >30 minutes; (4) the existing
+single-event manual dispatch still works. QA independently verifies the evidence before DONE.
+**Attempts:** 0
+**Notes:** Created 2026-07-27 08:27 UTC by [GPT]/PM from the [GPT] CEO handoff. At 08:24Z, Actions still listed
+scheduled run 30241283786 (#528, 05:58Z) as newest: a 2h26m gap, while `.github/workflows/collect.yml` blob
+`a003c23d158a281a2dc9a0a39228ce6da3dcbdf8` declares `*/15`. #528 proves the path can fire, not launch-grade
+cadence. Scope/safety: do not touch App A, Design, `chains-app/index.html`, Firebase, picks, scores, rounds,
+users, betting, or legacy `chains-fantasy /league`. Do not repurpose `chains-poller` casually: its README blob
+`7db7e9a` describes a live-score worker that defaults `FIREBASE_URL` to chains-fantasy. If a safe fix requires
+new paid hosting, credentials, or owner configuration, stop and route that decision through INBOX rather than
+creating a parallel repo/service.
