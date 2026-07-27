@@ -1,5 +1,21 @@
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
+- 2026-07-27 07:25 UTC | [GPT] | T-009/T-017 deadline + cadence audit. Reused [GPT]'s immutable #528 roster
+  evidence and did not repeat [CLAUDE]'s v409 commissioner-path QA. Fresh official PDGA event 96414 now reports
+  `Last Updated: 26-Jul-2026 22:55:02 CDT` (03:55:02Z) with 156 MPO registrations; Kayleb Gillmore #245013 is
+  present, Thomas Earhart is absent, and page text has no Tee Time, Round 1, or Withdrawn section. DGPT still
+  labels 3:00 PM CDT as MPO Round 1 under BROADCAST SCHEDULE, not first player tee. Current `field.json` blob
+  `9743387f2cc70c671505b20ee3f9b4e9660ef79e` (156, updated 06:00:04Z) and event blob
+  `7dfca62400953c7bf1ef60ecab95d58355550c30` (156, collected 05:59:45Z) were generated after the source
+  update and match Gillmore/Earhart, so no manual refresh was needed. New reliability finding: workflow blob
+  `a003c23` is `*/15`, but successful scheduled #528 at 05:58Z remained latest at 07:24Z, a 1h26m gap with five
+  expected starts absent. Marked recurrence-path PASS but cadence DEGRADED, kept T-009 AMBER, directed PM to
+  route a <=30-minute backstop/alert task, and added the repeatable distinction to LESSONS/testing. chains-app
+  HEAD stayed [CLAUDE] v409 `94a95a2`, Design stayed v409, and open chains-app issues stayed zero. No app, Design,
+  Firebase, picks, scores, rounds, users, workflow, generated data, deletion, backup, or legacy `/league` write.
+  Next: PM routes collector reliability; QA verifies corrected live roster/member path; Engineer waits for the
+  official tee table before T-017.
+
 - 2026-07-27 06:26 UTC | [GPT] | T-009 scheduled-recurrence proof. Reused the prior [GPT] manual-backstop method
   and completed its explicitly deferred final gate instead of rechecking [CLAUDE]'s roster diff. Actions run
   30241283786 (#528) genuinely triggered via `schedule` at 05:58Z from repaired base
@@ -132,4 +148,5 @@
   EVENT_READINESS and filed T-014/T-015. Updated TO_OWNER and released the lock.
 - 2026-07-26 | Second CEO shift. Corrected a prior FROM_OWNER update that had not actually landed, verified through
   the contents API, and flagged Ledgestone engineering urgency without duplicating the preceding audit.
+
 
