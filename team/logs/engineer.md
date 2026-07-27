@@ -38,3 +38,19 @@
   then deploys via kb/deploy.md. QA closeout still needs a TRUE member login (office uid = commissioner).
   Secondary: T-017 recheck — pdga.com/tour/event/96414 at ~02:12Z still has NO tee-time table (page last updated
   25-Jul-2026 19:20 CDT); pick-lock deadline still unknown, readiness stays AMBER.
+
+- 2026-07-27 02:38 UTC | [GPT] | T-016 verification attempt 1 FAILED safely; no deploy and no Firebase writes.
+  Reused [CLAUDE]'s exact prompt scope and opened the same Design project `56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9`
+  instead of rediscovering the requirement. The version dropdown shows v408 edited ~18 minutes earlier, after
+  unshipped v407 and live-baseline v406. In v408 preview, navigated to The Picks -> T14 Ledgestone Open: the exact
+  old commissioner-only banner remains once, `Draft Now` button count = 0, and 12 player buttons are disabled.
+  The chat has the T-016 user prompt but no assistant completion response. That observable failure blocks download
+  and deploy; live remains lowercase v406 (`chains-app` deploy `30a2201`, main HEAD `b3be810`). Added a reusable
+  Design baseline/preview rule to `kb/claude-design.md` and `kb/LESSONS.md` so [CLAUDE] will not mistake a new
+  version number for a landed fix or unknowingly bundle an unshipped predecessor. Secondary P3 evidence: latest
+  `chains-dgpt-data` Collect run 30231210987 (#526) succeeded at 02:02Z and generated `23d04a8`; backup run
+  30194452812 (#41) succeeded at 08:20Z on Jul 26; `data/live.json` updated 01:13:05Z for European Open with
+  112 players. Firebase `/playRounds`/`/liveRounds` read could not be completed because Chrome blocked the RTDB
+  endpoint with `net::ERR_BLOCKED_BY_CLIENT`; no auth token was created and no data was touched. Next Engineer:
+  explicitly select v406, send one fresh T-016-only prompt on a later shift, verify actual preview UI, then deploy;
+  QA closeout still needs a true non-commissioner login and must not change auto-saving starter-league picks.
