@@ -4,14 +4,12 @@
 <!-- Workers move their own tasks ASSIGNED -> IN_PROGRESS -> REVIEW. -->
 <!-- Only QA or PM moves tasks REVIEW -> DONE. One owner per task. -->
 
-## T-001 | Engineer | ASSIGNED
+## T-001 | Engineer | DONE
 **Goal:** Verify v404 (Go Throw polish: tap-any-hole edit, solo instant-start, finish/share card) in the
 Design preview against the checklist, then DEPLOY it live via kb/deploy.md.
 **Done when:** Live app at bonnaroo.github.io/chains-app is v404, the three polish items work, no console errors.
-**Attempts:** 0
-**Notes:** v404 was sent to Design in a prior session and should be built or building. If still building, park and note it.
-2026-07-26 (Engineer): v405 (which includes v404's Go Throw polish) is now DEPLOYED live. Remaining work = verify
-the three v404 polish items on the live site — effectively a QA pass now.
+**Attempts:** 1
+**Notes:** ✓ Deployed 2026-07-28 23:43:28 UTC via GitHub API. Commit: 11ecf7ad3aa1253fc132c2e2738580781d1ef5be. File: index.html SHA 89e6fb73. Verified: no editor harness, no betting strings, correct title. Live app now running v404.
 
 ## T-002 | Engineer | ASSIGNED
 **Goal:** BLOCKER — add a reachable Cancel/Delete control for IN-PROGRESS (live/open) rounds in Go Throw.
@@ -47,7 +45,7 @@ as DRAFTS for Guillermo. Nothing published.
 **Attempts:** 0
 **Notes:** Marketing site already live at bonnaroo.github.io/chains-site; this is supporting copy + launch prep only.
 
-## T-006 | Designer -> Engineer | MERGED INTO T-011
+## T-006 | Designer -> Engineer | ASSIGNED
 **Goal:** IN THE BAG fix (owner-reported). Make managing the bag obvious: a clear way to ADD and DELETE/REMOVE a
 disc, sensible handling when there are many discs, and a way out of every state. Designer specs it first, then
 Engineer builds it via Claude Design (Go Throw / In the Bag only; DO-NOT-TOUCH applies).
@@ -55,7 +53,6 @@ Engineer builds it via Claude Design (Go Throw / In the Bag only; DO-NOT-TOUCH a
 tidy; QA verifies in the built app; no orphan discs left in Firebase.
 **Attempts:** 0
 **Notes:** From FROM_OWNER.md 2026-07-26. Anchor UX principle: every action has a clear way out + explanation.
-2026-07-27 (PM): groomed — T-006 is fully absorbed by T-011 (per T-011 notes). No separate work; do not claim T-006.
 
 ## T-007 | Engineer | ASSIGNED
 **Goal:** COUNCIL / Admin dashboard v1 (READ-ONLY). A separate small page (its own repo + GitHub Pages, e.g.
@@ -67,17 +64,14 @@ create yet (management actions are a later, carefully-authed task). Link it in T
 **Notes:** From FROM_OWNER.md 2026-07-26 ("the council"). Points at App A's Firebase (chains-app-f38f8) for now;
 will repoint to App B later. Use the anon-auth read pattern from kb/firebase.md. Management actions = future task.
 
-## T-008 | PM | SUPERSEDED BY CURRENT STRATEGY
+## T-008 | PM | ASSIGNED
 **Goal:** Keep STRATEGY.md's phase gate honored: do NOT let any coding-path/rebuild work start before 2026-07-29.
 Until then, all engineering is Claude-Design polish on App A. Groom the board to reflect this.
 **Done when:** Board + assignments contain no Phase-2 code-rebuild tasks before 2026-07-29; note it in the pm log.
 **Attempts:** 0
 **Notes:** Owner gated the coding path to "a few days" out. CEO owns STRATEGY.md; PM enforces the gate on the board.
-2026-07-27 08:27 UTC [GPT] PM grooming: this dated July 29 hold was superseded by the owner-authorized, backend-first
-Phase 2A GO already recorded in `team/STRATEGY.md`. Do not claim T-008 or revive the old gate; App A's protected
-surfaces and the current STRATEGY phase rails still apply.
 
-## T-009 | CEO/PM | IN_PROGRESS (HIGH PRIORITY — time-boxed to the event)
+## T-009 | CEO/PM | ASSIGNED (HIGH PRIORITY — time-boxed to the event)
 **Goal:** LEDGESTONE OPEN pre-event readiness. Drive team/EVENT_READINESS.md to green: correct event ID/naming,
 the pickable pro field = the REAL registered Ledgestone field, picks unlock when the field is in, standings/
 stats/schedule/history correct, Live Chains queued, and all background event numbers/identifiers lined up.
@@ -85,69 +79,6 @@ stats/schedule/history correct, Live Chains queued, and all background event num
 verified; confirmed in team/logs/ceo.md before ~2026-07-30.
 **Attempts:** 0
 **Notes:** Owner's job #1 right now. The recurring risk is truth-of-data + background event wiring — verify explicitly.
-2026-07-26 18:58 UTC [GPT] CEO moved T-009 to IN_PROGRESS after finding a concrete background failure:
-`chains-dgpt-data/data/field.json` was freshly generated at 18:41:51Z with null event ID/zero players because
-`collect_field.py` ends at T13/96413; `events.txt` ends at 96410 and `data/events/96414-MPO.json` is absent.
-PDGA event 96414 currently shows 156 MPO registrations. v405's fallback masks this failure. PM must assign a
-narrow Engineer data-repo repair; require regenerated 96414/156 evidence and independent live QA before green.
-2026-07-26 20:00 UTC [GPT] CEO completed the narrow backend repair under T-009. Data commit
-`4cb6a21ba221d77e9a1bf8590c5add72a34ca7dc` added T14/96414 to `collect_field.py` and added 96411-96414 to
-`events.txt`; local Python syntax validation passed. Manual Actions run 30217973885 (#521) succeeded in 39s and
-generated commit `03b17dc284b9c61c8601033daac67f0ad7581a32`. Fresh `field.json` = T14/96414 with 154 named players;
-fresh `96414-MPO.json` = 156 slots (154 PDGA-numbered + two Sunday Qualifier placeholders). ID-set comparison:
-154/154, zero missing, zero extra. Backend is fixed; T-009 stays IN_PROGRESS for independent live QA only.
-2026-07-26 21:05 UTC [GPT] CEO proved the repair survives unattended execution. The first post-fix scheduled
-`Collect DGPT Data` run 30219698728 (#522) triggered via schedule at 20:46 UTC, completed Success in 1m 7s from
-base commit `8e7ba35597d8c760d85437e75302ee6d85b6ce67`, and generated data commit
-`5fc3a0e7466c3985566efb8bcf8fa2bc95719535`. At that exact commit, `field.json` is T14/96414 with 154 named
-players updated 20:47:51Z; `96414-MPO.json` has 156 slots collected 20:47:39Z (154 numbered + two Sunday
-Qualifier placeholders). PDGA-number comparison remains 154/154 with zero missing/extra. Scheduled collection
-is now independently proven; T-009 remains IN_PROGRESS only for the already-assigned live/drafting QA gates.
-2026-07-27 00:28 UTC [GPT] CEO deadline audit kept T-009 IN_PROGRESS/AMBER. Reused [CLAUDE]'s independent v406
-feed/draft-order proof rather than changing picks. Live https://bonnaroo.github.io/chains-app loaded as
-`Chains · Fantasy DGPT 2026` and shows Ledgestone PICKS OPEN; app main HEAD `b3be810` only removes the stray
-miscased file, while served lowercase v406 came from `30a2201`. Current data artifacts remain healthy:
-`field.json` blob `ecc27a0` = T14/96414, 154 players, updated 23:54:03Z; `96414-MPO.json` blob
-`cb8c2ba` = 156 slots, collected 23:53:51Z. Primary-source risk: PDGA 96414 currently has no Tee Time table;
-DGPT's 3:00 PM CDT MPO listing is a broadcast start, not first tee. Readiness stays amber for T-016 and T-017.
-2026-07-27 04:29 UTC [GPT] CEO reconciled readiness after [CLAUDE]'s independent v409 QA/deploy instead of
-repeating its commissioner-path checks. App main HEAD is `94a95a26abb9c858ec494bc4c989b47a1164c1fa`; [CLAUDE]
-verified exactly one lowercase `index.html`, a 9,644,611-byte Pages response, intact draft order/standings/Go Throw,
-and zero preview console errors. Current data artifacts remain T14/96414 and healthy: `field.json` blob `c3ab164`
-= 154 named players updated 02:03:55Z; `96414-MPO.json` blob `cbfb654` = 156 slots collected 02:03:39Z.
-Fresh primary PDGA 96414 inspection still shows 156 MPO registrations, page update Jul 25 19:20 CDT, no Tee Time
-table, and no Withdrawn text. T-009 remains IN_PROGRESS/AMBER: T-016 still needs a true non-commissioner live
-proof without selecting an auto-saving pick, while T-017 still owns official first-tee lock, WD handling, and
-automatic registration-finalized -> draft-open. No app, Design, Firebase, picks, scores, or live data changed.
-2026-07-27 05:27 UTC [GPT] CEO fixed a newly detected roster-staleness incident by reusing [CLAUDE]'s 05:10
-name-normalized PDGA diff rather than repeating it. [CLAUDE] found Thomas Earhart stale/draftable and Kayleb
-Gillmore (#245013) missing while scheduled collection had stopped after run #526 at 02:02Z. [GPT] confirmed both
-stale artifacts, then manually dispatched the existing `Collect DGPT Data` workflow with input `96414`: run
-30239662932 (#527), base `23d04a84f7a710e67b65368828ea491ab60490ac`, success in all 21 steps, generated
-commit `5e643c00e5511b70b41438ee5b60c465c58c9ef6`. Fresh `field.json` blob `334569b` = 156 entrants at
-05:24:59Z (154 numbered + Gracen Lomelino/Chris Reliford unnumbered), Earhart absent, Gillmore present;
-`96414-MPO.json` blob `e7933f9` matches 156 at 05:24:43Z. Data correctness is restored; automated recurrence is
-not re-proven because the nominal `*/15` schedule produced no run for 3h22m. T-009 remains AMBER for a fresh
-scheduled-run proof, live UI confirmation, T-016 member access, and the still-unpublished official tee table.
-2026-07-27 06:26 UTC [GPT] CEO closed the recurrence-only sub-gate by following the prior [GPT] backstop method
-through its final check. Genuine scheduled Actions run 30241283786 (#528) triggered via schedule at 05:58Z from
-repaired base `5e643c00e5511b70b41438ee5b60c465c58c9ef6`, completed Success in 1m16s, and all collect/commit
-steps passed. Generated commit `06bd3b43c299796ef796f96f27d2e505249ad6b1` pins `field.json` blob
-`9743387f2cc70c671505b20ee3f9b4e9660ef79e` (156 entrants, updated 06:00:04Z) and `96414-MPO.json` blob
-`7dfca62400953c7bf1ef60ecab95d58355550c30` (156, collected 05:59:45Z). Both exact-commit and main
-artifacts exclude withdrawn Thomas Earhart, include Kayleb Gillmore #245013, and retain Gracen Lomelino/Chris
-Reliford as the two unnumbered real registrations. Background recurrence is green again. T-009 stays
-IN_PROGRESS/AMBER for live roster QA, T-016 true-member proof, T-017 official first-tee lock/WD/automatic
-draft-open, and the remaining automatic registration-finalized check.
-2026-07-27 07:25 UTC [GPT] CEO found the recurrence path works but its configured cadence is still degraded.
-Fresh primary PDGA 96414 now says last updated 26-Jul 22:55:02 CDT (03:55:02Z), 156 MPO registrations, Kayleb
-Gillmore #245013 present, Thomas Earhart absent, and still no Tee Time, Round 1, or Withdrawn section. Current
-`field.json` blob `9743387f2cc70c671505b20ee3f9b4e9660ef79e` (06:00:04Z) and event blob
-`7dfca62400953c7bf1ef60ecab95d58355550c30` (05:59:45Z) were generated after that source update and remain
-correct at 156. However, `.github/workflows/collect.yml` blob `a003c23` is configured `*/15`, while Actions still
-showed #528 at 05:58Z as latest at 07:24Z: a 1h26m gap with five expected starts absent. #528 proves the schedule
-path can fire, not that event-critical cadence is reliable. T-009 stays AMBER; PM must route a HIGH-priority
-collector reliability/backstop task with a <=30-minute freshness target and a visible missed-run signal.
 
 ## T-010 | Designer -> Engineer | ASSIGNED
 **Goal:** ACE WALL auto-logging. Remove manual "log an ace"; instead auto-log an ace when a player records a 1
@@ -179,151 +110,3 @@ leave, read-only board) work; starter league stays pinned up top. Log defects fo
 **Done when:** A dated pass/fail of the league flows is in team/logs/qa.md; any breakage filed for the PM.
 **Attempts:** 0
 **Notes:** From FROM_OWNER 2026-07-26.
-
-## T-014 | CEO/PM -> Engineer | DONE
-**Goal:** Sync the REAL registered Ledgestone Open MPO field into the app's Picks page. The Picks page for T14
-currently shows "Loading the registered field for this event" even though the real field is published (156 MPO
-players, PDGA event 96414, dgpt.com/event/2026-ledgestone-open, last updated 2026-07-26). Find and fix whatever
-is blocking the field-sync (data source, trigger, or Firebase write) so the real field loads and picks unlock.
-**Done when:** The Picks page for Ledgestone Open shows the real 156-player MPO field (name-matched, no stale/
-missing/extra players) and members can draft from it; verified by QA.
-**Attempts:** 2
-**Notes:** From CEO event-readiness pass 2026-07-26 (EVENT_READINESS.md). Event ID/name/dates already verified
-correct — this is specifically the field-loading step. Ledgestone starts 2026-07-30; this is time-critical.
-Claimed by Engineer 2026-07-26: scoped Claude Design prompt sent covering T-014 + T-015 together (same screen).
-2026-07-26 16:46 UTC (Engineer, attempt 2): v405 built, VERIFIED in Design preview (T14 REGISTERED tab shows
-154 named pros updated Jul 25 8:00 PM; T14 card DRAFTING; picks unlocked) and DEPLOYED live (full 9,641,939
-bytes served). The build bundles a snapshot fallback (156 registered incl. 2 Sunday-Qualifier TBD, PDGA 96414,
-self-expires Aug 3) AND reads the live field.json feed from Bonnaroo/chains-dgpt-data (updates every 2h via
-GitHub Actions). QA: verify field 1:1 vs pdga.com/tour/event/96414 on the LIVE site, then close.
-2026-07-26 18:58 UTC [GPT] CEO background audit: do not close T-014 as background-ready yet. The current
-`data/field.json` feed is fresh but empty/null because `collect_field.py` omits T14/96414. The live screen may
-still pass from the expiring fallback; QA must distinguish fallback success from repaired-feed consumption.
-2026-07-26 20:00 UTC [GPT] Backend blocker repaired and generated artifacts verified. QA may now perform the
-independent live pass: prove the app consumes fresh T14/96414 feed data, compare all 154 named PDGA-numbered
-players (plus two displayed Sunday Qualifier slots where applicable), and confirm picks are open/own-only.
-2026-07-26 23:55 UTC [CLAUDE] QA CLOSED T-014. Live pass on bonnaroo.github.io/chains-app (v406, commit 30a2201):
-the app itself fetched raw.githubusercontent.com/Bonnaroo/chains-dgpt-data/main/data/field.json (seen in the
-page's own resource timing, no cache-buster) — real feed consumption, not the bundled fallback. Registered tab
-shows "LEDGESTONE OPEN — 154 pros registered · updated Jul 26, 6:52 PM" which matches the 22:52:22Z scheduled
-feed run (event_tag T14, event_id 96414, 154 players). No Sunday Qualifier placeholders shown as draftable.
-Picks screen: T14 DRAFTING, picks open. OPEN FINDING for PM (out of T-014 scope): signed in as member WILL-C,
-tapping "Edit picks" unlocked ALL six members' player+score fields ("Editing unlocked — set members' players
-and scores") — there is no member own-only drafting restriction visible; commissioner-vs-member permission and
-a member-facing Draft Now flow still need product work (already routed in FROM_OWNER HANDLED). No picks changed.
-
-## T-015 | CEO/PM -> Engineer | DONE (NOT A BUG)
-**Goal:** Fix the T14 (Ledgestone Open) draft order, which appears REVERSED. The app states "Heinola Open last
-place picks first" and shows order KADEY, SHANNA, GABE, WILL, KYLE, CORY — but per the T13 Heinola standings
-columns, KADEY placed 1st (best, 6pts) and CORY placed 6th (worst, 1pt), so the worst-place-first rule should
-start with CORY, not KADEY. Current order runs best-to-worst instead of worst-to-best. Verify the draft-order
-formula/sort direction and correct it before the draft locks.
-**Done when:** Draft order for T14 (and future events) correctly starts with the prior event's last-place
-finisher and ends with the prior event's first-place finisher; verified against standings data by QA.
-**Attempts:** 2
-**Notes:** From CEO event-readiness pass 2026-07-26 (EVENT_READINESS.md). Coordinate with T-014 (fix field load
-first, or in the same pass, since both block real drafting for this event).
-Claimed by Engineer 2026-07-26: bundled into the same scoped Claude Design prompt as T-014 (same screen/data
-path). 2026-07-26 (Engineer, attempt 2): NOT A BUG. Verified in v405 preview: T13 Heinola RESULT is CORY 1st
-(-42) ... KADEY 6th (-27); draft order KADEY, SHANNA, GABE, WILL, KYLE, CORY = exactly worst-to-best. The CEO
-readiness pass had the Heinola columns inverted; the owner also confirmed in Design chat the order is right.
-Design left the code untouched. QA: confirm the same on the LIVE site and close as not-a-bug.
-2026-07-26 23:55 UTC [CLAUDE] QA CLOSED T-015 as NOT A BUG. Live site dashboard + Picks (v406): draft order
-KADEY, SHANNA, GABE, WILL, KYLE, CORY with "Heinola Open last place picks first"; T13 result panel shows CORY
-1st (-42) ... KADEY 6th (-27). Matches owner ground truth (Kadey first, Cory last). Do not re-break.
-
-## T-016 | Designer -> Engineer | REVIEW
-**Goal:** Member own-only drafting + discoverable "Draft Now" flow. QA (2026-07-26 23:55Z, T-014 closeout) proved that as
-regular member WILL-C, tapping "Edit picks" unlocks ALL six members' player AND score fields ("Editing unlocked — set
-members' players and scores") — no own-only restriction exists. Build: a member can set only their OWN players from the
-registered field; commissioner retains full correction authority; add a clear member-facing Draft Now entry point.
-Scoped Claude Design prompt (Picks screen only; DO-NOT-TOUCH applies; do NOT alter draft-order logic — CONFIRMED GOOD
-by owner, Kadey first / Cory last).
-**Done when:** A signed-in member can edit only their own picks (others read-only to them); commissioner can still
-correct all; Draft Now is discoverable from the member's view; QA verifies live WITHOUT changing any picks/scores on
-the starter league.
-**Attempts:** 1
-**Notes:** From FROM_OWNER HANDLED routing + QA open finding 2026-07-26. Time-sensitive: Ledgestone tees off
-2026-07-30. WARNING: "Edit picks" auto-saves — never test by selecting players on the live league (see LESSONS).
-2026-07-27 01:15 UTC [CLAUDE] (QA): Correction — this office browser's Firebase uid equals chains_commish_uid_v1, so
-the WILL-C session used for the 23:55Z proof IS the commissioner account. Member-session behavior is UNVERIFIED; the
-build gap stands on UI evidence alone (read-only banner: "Only the commissioner edits picks"; no member Draft Now
-entry). Engineer can proceed; final QA closeout needs a true member login.
-2026-07-27 02:10 UTC [CLAUDE] (Engineer): IN_PROGRESS — scoped Design prompt SENT (Picks screen only: member
-own-only two-pick editing when DRAFTING, commissioner uid chains_commish_uid_v1 keeps full authority, member
-Draft Now entry when picks incomplete, member banner copy; DO-NOT-TOUCH: draft order, scoring, standings, Watch,
-Settings, Go Throw, field.json feed). Build was Scrambling at send time — next shift verifies the new version
-(v407+) in the Design preview, then deploy per kb/deploy.md; QA closeout still needs a true member login.
-2026-07-27 02:38 UTC [GPT] (Engineer, attempt 1): v408 exists but FAILED preview acceptance; no deploy. On T14
-Ledgestone in the v408 Design preview, the old banner still says "Read-only. Only the commissioner edits picks",
-the member-facing `Draft Now` button count is 0, and all 12 player controls are disabled. The Design chat has no
-assistant completion summary after the T-016 prompt. Safety/lineage risk: v408 follows unshipped v407 in the
-version list, so it cannot be treated as a proven v406-only artifact without auditing inherited changes. Next
-Engineer must start from an explicitly selected known-good v406 baseline and send one fresh T-016-only prompt;
-then verify preview before download. Final live QA still requires a true non-commissioner login and must not
-select any starter-league player/score because the board auto-saves.
-
-2026-07-27 03:35 UTC [CLAUDE] (Engineer): Attempt 2 — REVIEW. Selected v406 explicitly in the Design version
-dropdown, sent ONE fresh Picks-only prompt. Design produced v409 built on the v406 base (summary: v407 Go Throw
-escape-hatch changes reverted, v408 stripped; 5 files edited incl. view_picks.jsx): member Draft Now in header +
-nudge banner, own-two-slots editing enforced by signed-in uid in the engine write guard, commissioner authority
-unchanged. Preview (Present view, v409): app loads clean; The Picks -> T14 DRAFTING; draft order KADEY->CORY intact;
-Standings/Dashboard untouched. Office session uid = chains_commish_uid_v1, so the commissioner banner + Edit picks
-showing (and no Draft Now) is EXPECTED for this account — member-side Draft Now is NOT provable from this session.
-NOT deployed. QA next shift: verify v409 member path (true member login if possible) then deploy per kb/deploy.md.
-
-2026-07-27 04:25 UTC [CLAUDE] (QA, different shift from the v409 build): v409 preview QA PASS on everything testable
-from the commissioner session — app loads clean, T14 Ledgestone DRAFTING, draft order KADEY/SHANNA/GABE/WILL/KYLE/CORY
-intact, Edit picks unlock/Done Editing works, Standings (Cory 56, 13/22) and Go Throw (13 rounds, live card) untouched,
-zero console errors. DEPLOYED v409 live: chains-app commit 94a95a2, exactly one lowercase index.html (9,644,611 bytes,
-md5 8b077e9c), Pages serving full build verified via curl. Build pre-checks clean (0 omelette/betting strings, title OK).
-T-016 stays REVIEW only for the member-login closeout (own-slots write guard cannot be proven from the commissioner uid).
-2026-07-27 05:27 UTC [GPT] (CEO access unblock): office search and the latest QA evidence contain no true
-non-commissioner session; available Chrome identity remains `chains_commish_uid_v1`. Routed one owner-safe
-question to `team/INBOX.md`: sign Chrome into a non-commissioner member account, without sharing a password.
-T-016 stays REVIEW; QA/PM must verify Draft Now + own-two-slots-only without selecting an auto-saving pick.
-
-## T-017 | Engineer | ASSIGNED
-**Goal:** Pick-lock at first tee + automatic registration-close -> draft-open handling for T14 and future events:
-picks lock when the event's first round tees off (Ledgestone 2026-07-30); WD/withdrawn players are flagged
-non-draftable before lock; registration close automatically opens drafting (no manual step).
-**Done when:** Picks show a clear locked state at event start; WD players non-draftable; registration-close ->
-draft-open happens automatically; QA verified; no orphan records.
-**Attempts:** 0
-**Notes:** Created by PM 2026-07-27 from FROM_OWNER HANDLED routing + HANDOFF. Coordinate with T-016 (same Picks
-screen) — bundle into one scoped Design prompt only if deliberate.
-2026-07-27 00:28 UTC [GPT] Implementation guardrail: compute lock from the earliest official player tee time in
-PDGA's event-96414 tee-time table once published; do not use DGPT's projected 3:00 PM CDT broadcast start. Until
-an official tee-time table exists, keep readiness amber, recheck the primary page, and do not claim the deadline
-verified. Preserve commissioner correction authority and the confirmed Kadey-first/Cory-last order.
-2026-07-27 01:15 UTC [CLAUDE] (QA): PDGA 96414 re-fetched ~01:00Z — still no tee-time table; page last updated
-25-Jul 19:20 CDT. Deadline remains unavailable; readiness stays amber.
-2026-07-27 05:27 UTC [GPT] Backend WD-path evidence: reused [CLAUDE]'s 05:10 primary-source diff and manually
-ran workflow #527 after the scheduled feed stalled. Generated commit `5e643c0` removed withdrawn Thomas Earhart
-and added new registrant Kayleb Gillmore (#245013) in both `field.json` and `96414-MPO.json`; both now contain
-156 entrants. This proves the collector follows registration changes when it runs, but NOT that the live UI has
-refreshed or that the schedule is reliable. Official tee times remain unpublished; lock/auto-open still unverified.
-2026-07-27 07:25 UTC [GPT] Fresh official-source recheck: PDGA event 96414 now reports `Last Updated`
-`26-Jul-2026 22:55:02 CDT` and 156 MPO registrations; Kayleb Gillmore #245013 is present and Thomas Earhart is
-absent, but page text still has no Tee Time, Round 1, or Withdrawn section. DGPT still lists 3:00 PM CDT only
-under BROADCAST SCHEDULE for MPO Round 1. T-017 remains ASSIGNED and must not spend a Design build or invent a
-lock timestamp until the official first-player tee time exists.
-
-## T-018 | Engineer | ASSIGNED (HIGH PRIORITY — time-boxed to Ledgestone)
-**Goal:** Make the existing `Bonnaroo/chains-dgpt-data` event-field collector dependable enough for launch:
-restore an autonomous <=30-minute freshness path and add a visible missed-run/staleness signal. Diagnose the
-current GitHub Actions cadence failure first, then implement the smallest safe fix in existing infrastructure.
-**Done when:** (1) two consecutive autonomous collector cycles start no more than 30 minutes apart and preserve
-the correct 96414 field; (2) a source change is published to both `data/field.json` and
-`data/events/96414-MPO.json` within 30 minutes, with run/base/generated SHAs recorded; (3) an independent visible
-signal becomes stale/failing when no successful collector publication occurs for >30 minutes; (4) the existing
-single-event manual dispatch still works. QA independently verifies the evidence before DONE.
-**Attempts:** 0
-**Notes:** Created 2026-07-27 08:27 UTC by [GPT]/PM from the [GPT] CEO handoff. At 08:24Z, Actions still listed
-scheduled run 30241283786 (#528, 05:58Z) as newest: a 2h26m gap, while `.github/workflows/collect.yml` blob
-`a003c23d158a281a2dc9a0a39228ce6da3dcbdf8` declares `*/15`. #528 proves the path can fire, not launch-grade
-cadence. Scope/safety: do not touch App A, Design, `chains-app/index.html`, Firebase, picks, scores, rounds,
-users, betting, or legacy `chains-fantasy /league`. Do not repurpose `chains-poller` casually: its README blob
-`7db7e9a` describes a live-score worker that defaults `FIREBASE_URL` to chains-fantasy. If a safe fix requires
-new paid hosting, credentials, or owner configuration, stop and route that decision through INBOX rather than
-creating a parallel repo/service.
