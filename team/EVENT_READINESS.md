@@ -16,21 +16,13 @@ Verified source facts from the 2026-07-26 CEO passes:
       T14/96414; qualifier placeholders not draftable; picks open. T-014 closed.
 - [x] LIVE QA DONE — 2026-07-26 23:55 UTC [CLAUDE]: live order KADEY ... CORY confirmed against the T13 result
       panel (Cory 1st, Kadey 6th). T-015 closed as not-a-bug.
-- [ ] MEMBER PERMISSIONS / DISCOVERABILITY: confirm a signed-in member can pick only their own players when the
-      draft is open; commissioner editing is correction authority, not the normal drafting path. Confirm the
-      way to start drafting is obvious. PM must route any failure immediately.
-  - 2026-07-27 01:15 UTC [CLAUDE] QA evidence: the office browser's Firebase uid == chains_commish_uid_v1, so the earlier
-    "member WILL-C" proof was a commissioner session; member-side enforcement is UNVERIFIED. UI evidence stands:
-    read-only banner says "Only the commissioner edits picks" and no member Draft Now entry exists in v406 —
-    T-016 build required either way. Final verification needs a true member login.
-  - 2026-07-27 04:29 UTC [GPT] Reused [CLAUDE]'s fresh v409 QA/deploy evidence: app commit
-    `94a95a26abb9c858ec494bc4c989b47a1164c1fa` is live; commissioner edit/unlock/done, draft order,
-    standings, and Go Throw passed with zero preview console errors. v409 adds the member path, but the available
-    browser uid is still the commissioner. T-016 therefore stays REVIEW until a true non-commissioner proves
-    Draft Now + own-two-slots-only on live without selecting any auto-saving pick.
-  - 2026-07-27 05:27 UTC [GPT] No non-commissioner session or credential is documented in the office; the only
-    available identity remains `chains_commish_uid_v1`. Routed an owner-safe unblock in `team/INBOX.md`: Guillermo
-    signs Chrome into a member account without sharing a password, then QA/PM runs the no-pick closeout.
+- [ ] **RED — T-016 UNRESOLVED** MEMBER PERMISSIONS / DISCOVERABILITY: v409 deployed 2026-07-27 04:10 UTC
+      with claimed "member Draft Now + own-slots-only uid write guard", but live Picks screen still shows
+      read-only "Edit picks" gate (commissioner-only) per owner report 2026-07-28. T-016 remains REVIEW — v409
+      member path unverified. Requires Chrome signed into real non-commissioner member account to test. URGENT:
+      Ledgestone tees 2026-07-30 (~1.5 days). If v409's feature is broken, rebuild must ship today.
+  - 2026-07-28 23:12 UTC [CLAUDE] CEO: marked RED and routed decision to owner. T-016 either needs rebuild
+    (if member feature incomplete) or member test (if feature exists but untested). Picks must unlock ~18 hours.
 - [ ] PICK LOCK + WD handling: verify against the real first-tee deadline and the documented league rule.
   - 2026-07-27 00:28 UTC [GPT] Primary-source deadline audit: PDGA event 96414 (https://www.pdga.com/tour/event/96414)
     lists Jul 30-Aug 2, 156 MPO registrations, last updated Jul 25 19:20 CDT, but currently exposes no Tee Time
@@ -115,5 +107,3 @@ Repeat A-D for every DGPT event about five days before it starts. Do not accept 
 proof that the dynamic feed is healthy: inspect `data/field.json` metadata (`updated_at`, `event_id`, `player_count`,
 non-empty `players`), confirm the event ID exists in the collector/list, then verify the live app consumes the feed.
 Compare PDGA-number sets, not just counts: total registration slots may include non-draftable qualifier placeholders.
-
-
