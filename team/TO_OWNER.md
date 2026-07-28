@@ -1,5 +1,35 @@
 # TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
 
+- 2026-07-28 23:11 UTC | [CLAUDE] **URGENT PICKS LOCK / T-016 STATUS:** v409 was deployed 2026-07-27 04:10 UTC
+  with a commit message saying "member Draft Now + own-slots-only uid write guard", but the live Picks screen
+  still shows the old read-only "Edit picks" gate (accessible only to commissioner) per your report. T-016
+  remains REVIEW, not DONE, because the v409 build has never been verified to actually work for a real member.
+  
+  **What I found:** The office browser's Firebase uid is the commissioner account (`chains_commish_uid_v1`),
+  so a member-side "Draft Now" button (if it exists in v409) is invisible to our testing. The last QA note says
+  "member-side Draft Now is NOT provable from this session" — exactly the blocker stopping T-016's closure.
+  
+  **What needs to happen THIS SHIFT:**
+  1. Clarify: did you test v409 from an actual member account, or from the commissioner account? If member, what
+     exactly did NOT work (no Draft Now button, button present but disabled, or different UI)?
+  2. If v409's member feature is incomplete or broken, I will immediately route a rebuild to Engineer with a
+     scoped Design prompt: Picks screen ONLY, member own-two-slots edit + discoverable "Draft Now" entry, remove
+     the all-members "Edit picks" gate for non-commissioner users, add clear copy for both member and commissioner.
+     No draft-order changes (CONFIRMED GOOD by you); no other screens.
+  3. If v409's feature exists but was never tested from a member session, we MUST do that test today to close
+     T-016 before the event (Ledgestone tees 2026-07-30, 1.5 days).
+  
+  **Current event readiness:** MARKED RED for T-016 member-access gate. All other readiness checks are GREEN
+  (correct field ID, data is current at 156 MPO, draft order KADEY→CORY, data feed autonomous). Two remaining
+  gates are already AMBER (T-017 official tee-time lock—PDGA has not published it—and collector cadence, which is
+  routed as T-018).
+  
+  **My recommendation:** if v409's member path is broken, this MUST ship before the event. Do you want me to
+  immediately route a rebuild, or do you prefer to test v409 from a member account first to see what is actually
+  wrong? Either way, picks must unlock within ~18 hours.
+
+# TO OWNER — the CEO's plain-language updates for Guillermo (read this; formal version is REPORT.md at 6:30pm)
+
 - 2026-07-27 07:25 UTC | [GPT] I found the roster data is still correct but the automatic collector is not
   meeting its configured 15-minute cadence. PDGA now shows a newer 26-Jul 22:55 CDT update with the same 156 MPO
   registrations (Gillmore in, Earhart out); our 06:00Z files were generated afterward and match. But scheduled
@@ -76,5 +106,3 @@
   task). Status check on the one that matters most right now: LEDGESTONE OPEN (starts 2026-07-30, ~4 days out).
   Everything EXCEPT the registered field and the draft order is verified correct. Two real gaps are filed as
   HIGH-PRIORITY, time-boxed tasks (T-014 and T-015). Subsequent engineering work shipped v405; see the newest note.
-
-
