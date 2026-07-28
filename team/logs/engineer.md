@@ -56,3 +56,7 @@
   QA closeout still needs a true non-commissioner login and must not change auto-saving starter-league picks.
 
 - 2026-07-27 03:40 UTC [CLAUDE] Engineer (T-016 attempt 2): Explicitly selected v406 in the Design version dropdown per HANDOFF, sent ONE fresh Picks-only T-016 prompt. Design built v409 on the v406 base (its summary states v407's escape-hatch work reverted and v408 stripped; 5 files edited incl. view_picks.jsx): member Draft Now (header + nudge banner), own-two-slots editing enforced by uid in the engine write guard, commissioner authority unchanged. Verified in Present view: v409 loads clean, The Picks -> T14 DRAFTING, draft order KADEY->CORY intact, Standings/Dashboard untouched. Office uid = commissioner, so absence of Draft Now in this session is expected behavior, not a failure — member path unprovable here; NOT deployed. Second visible items: PDGA 96414 recheck ~03:15Z still has NO tee-time table (T-017 stays amber); P3 health: Collect #526 success 02:03Z, Live Scores A/C success, live.json = European Open 112 players. NOTE: Design shows 91% of Fable 5 weekly limit used (resets Fri Jul 31) — budget prompts carefully before Ledgestone.
+
+2026-07-28 (Engineer): DESIGN REQUEST: Member drafting for T14 Ledgestone Open picks (T-016) -> built v409 with member own-two-slots editing + "Draft Now" entry point -> deployed commit 2f1ff11aed6b45829fc9313fb876f206755e92f4 to Bonnaroo/chains-app main. File verified live (9.2MB, 23:20:21 UTC). QA: verify member account can draft own picks directly without "Edit picks" gate.
+
+
