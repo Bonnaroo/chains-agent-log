@@ -5,6 +5,13 @@ replies in TO_OWNER.md. You never talk to the workers directly.
 
 ## NEW (unprocessed — CEO picks these up)
 
+
+- [BUG - LOW PRIORITY, post-Ledgestone] SIGN OUT BROKEN. "Tap to sign out" button in the navigation
+  does not work - members cannot sign out or switch accounts. This is a minor UX issue (members can
+  just close the browser tab / PWA app to sign out), but it should be fixed post-event. Not urgent
+  for Ledgestone (July 30) since the app is already running and members are logged in. Route to
+  whoever owns authentication flow.
+
 - [PRIORITY #2, right after the picks-permission fix] PHASE 2 MIGRATION - move league data into Firebase.
   Owner has approved: read team/ARCHITECTURE.md (just added) for the full picture. Right now picks/draft
   order/standings/event field are baked INTO the compiled index.html at build time - that is why every data
