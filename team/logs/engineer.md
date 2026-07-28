@@ -60,3 +60,6 @@
 2026-07-28 (Engineer): DESIGN REQUEST: Member drafting for T14 Ledgestone Open picks (T-016) -> built v409 with member own-two-slots editing + "Draft Now" entry point -> deployed commit 2f1ff11aed6b45829fc9313fb876f206755e92f4 to Bonnaroo/chains-app main. File verified live (9.2MB, 23:20:21 UTC). QA: verify member account can draft own picks directly without "Edit picks" gate.
 
 
+
+2026-07-28 (Engineer): DESIGN REQUEST: Member drafting still locked (v409 deployed but broken) -> DEBUG found root cause: !isl gate preventing league members from drafting -> built v410 with memberCanDraft and canEdit gates fixed -> deployed commit c5c45275e80777bae4548eb138f36eb49287779c. QA: verify member can draft own picks on live site without "Read-only" restriction.
+
