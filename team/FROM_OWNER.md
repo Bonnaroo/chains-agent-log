@@ -5,6 +5,23 @@ replies in TO_OWNER.md. You never talk to the workers directly.
 
 ## NEW (unprocessed — CEO picks these up)
 
+- [PRIORITY #2, right after the picks-permission fix] PHASE 2 MIGRATION - move league data into Firebase.
+  Owner has approved: read team/ARCHITECTURE.md (just added) for the full picture. Right now picks/draft
+  order/standings/event field are baked INTO the compiled index.html at build time - that is why every data
+  change needs a full Design rebuild. Fix: migrate these into Firebase (chains-app-f38f8), same pattern as
+  /playRounds and /waitlist already use. This needs exactly ONE Design build to change the app's JS from reading
+  baked-in data to reading live Firebase nodes - after that one build, all FUTURE data changes (new field,
+  updated standings, opening picks) are backend-only API writes, no rebuild, no redeploy needed.
+  PM: break this into small reversible steps (do not risk App A / the live founders league mid-event). Suggested
+  order: (1) design the Firebase schema for /leagues/<id>/picks, /draftOrder, /standings, /eventField - document
+  it in kb/firebase.md, (2) seed it with the CURRENT correct data (Ledgestone field, Kadey-first draft order) so
+  nothing regresses, (3) one scoped Design prompt: app reads these nodes instead of baked JS data (do NOT change
+  Go Throw/In the Bag in the same prompt), (4) QA verifies picks/standings match pre-migration exactly, (5)
+  deploy via the API auto-deploy path, (6) THEN the picks-permission fix (per-user vs commissioner-override)
+  becomes a pure Firebase-rules-and-UI change with no more baked-data fighting it.
+  This is the single highest-leverage fix for "the office can't get anything done" - do it right after picks
+  are unlocked, not instead of it.
+
 - [URGENT - TOP PRIORITY THIS SHIFT] PICKS ARE STILL LOCKED, 2 DAYS OUT FROM LEDGESTONE (starts 2026-07-30).
   Owner looked at the live Picks screen: everything is read-only/locked behind an "Edit picks" button that only
   the commissioner (league creator) can click, plus a single-pick-week toggle and Done Editing/Reset controls.
