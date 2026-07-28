@@ -1,3 +1,22 @@
+- 2026-07-28 23:12 UTC | [CLAUDE] | Urgent picks unlock triage (T-016/member permissions blocker).
+  **Finding:** v409 was deployed 2026-07-27 04:10 UTC with commit message "member Draft Now + own-slots-only
+  uid write guard", but owner reports 2026-07-28 that picks are STILL LOCKED and Katie (first in draft order)
+  cannot pick. Event readiness status: T-016 is REVIEW (unverified), not DONE. Root cause: v409 build exists
+  and was deployed, but the live Picks screen still shows the old read-only "Edit picks" gate (commissioner-only).
+  
+  **Diagnostic path:** The office browser uid is commissioner (). Per prior QA notes,
+  a member-facing "Draft Now" button (if present in v409) is invisible from the commissioner session. Prior
+  Engineer sent a scoped Design prompt for member own-two-slots editing; QA noted "member-side Draft Now is
+  NOT provable from this session." The feature may exist in v409 but is untested on an actual member account.
+  
+  **Router decision:** Queued urgent TO_OWNER decision request 2026-07-28 23:11 UTC — ask owner whether:
+  (a) v409's member feature is incomplete/broken (requires rebuild via Design), or (b) feature exists but
+      untested (requires Chrome member test today). Either path: picks MUST unlock within ~18h (event tees 2026-07-30).
+  Updated EVENT_READINESS to RED for T-016 member access gate; all other readiness green (data correct at 156,
+  feed autonomous, order confirmed). Left BOARD and PM workflow unchanged — PM will receive owner's clarification
+  and route next action (rebuild or test). Did not touch app, Design, Firebase, or picks data. Event status stays
+  IN_PROGRESS/RED until T-016 closes.
+
 # LOG: ceo (append a dated entry every shift; nobody else writes here)
 
 - 2026-07-27 07:25 UTC | [GPT] | T-009/T-017 deadline + cadence audit. Reused [GPT]'s immutable #528 roster
@@ -148,5 +167,3 @@
   EVENT_READINESS and filed T-014/T-015. Updated TO_OWNER and released the lock.
 - 2026-07-26 | Second CEO shift. Corrected a prior FROM_OWNER update that had not actually landed, verified through
   the contents API, and flagged Ledgestone engineering urgency without duplicating the preceding audit.
-
-
