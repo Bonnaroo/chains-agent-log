@@ -5,7 +5,33 @@ replies in TO_OWNER.md. You never talk to the workers directly.
 
 ## NEW (unprocessed — CEO picks these up)
 
-(none)
+- [URGENT - TOP PRIORITY THIS SHIFT] PICKS ARE STILL LOCKED, 2 DAYS OUT FROM LEDGESTONE (starts 2026-07-30).
+  Owner looked at the live Picks screen: everything is read-only/locked behind an "Edit picks" button that only
+  the commissioner (league creator) can click, plus a single-pick-week toggle and Done Editing/Reset controls.
+  Katie is up first per draft order and CANNOT pick. This is broken NOW, not eventually - fix this shift if at
+  all possible.
+  RESEARCHED (owner asked us to check the PDGA API/site for a clean "registration closed" moment): the PDGA
+  event page (pdga.com/tour/event/96414) does NOT expose any registration-open/closed flag or a closing
+  timestamp. It only shows a live "Current Registration" list (156/156 MPO field as of 2026-07-28, status
+  "Sanctioned", with a "Last Updated" time) - there is no lock date anywhere on the page or in any documented
+  PDGA API. THERE IS NO CLEAN SIGNAL FOR "REGISTRATION JUST CLOSED" - do not build logic that waits on one, it
+  does not exist. Practical rule instead: treat the field as final once it hits the event's published field
+  size (156 MPO) OR the tournament start date is within a few days (Ledgestone is both, right now) - so picks
+  should be OPEN as of this shift. Re-verify the 156 count against pdga.com/tour/event/96414 once more before
+  shipping.
+  THE ACTUAL FIX NEEDED (this is a permission-model bug, not a timing gate):
+  1. Every league member should be able to open their OWN pick screen directly and draft their own two players -
+     no "Edit picks" gate in front of a normal member. That lock should not exist for regular members at all.
+  2. Commissioner keeps an OVERRIDE control (fix another member's pick if needed) - that is the only thing
+     "Edit picks" should mean for the commissioner, and it should be labeled that way (e.g. "Commissioner: fix a
+     pick") so it's obviously not the normal way to pick.
+  3. Make sure the draft board/pick pool pulls the LATEST field data (156 MPO from Ledgestone), not a stale
+     cached list.
+  4. WORDING: remove the explanatory blurb about "last place drafts first / Helena Open" from the draft board -
+     owner's words: "it just looks dumb," everyone in the league already knows the rule. Cut any other
+     over-explained, condescending copy like this anywhere in the app; if in doubt, cut it.
+  Ship as one Design build if possible. SCOPE the prompt to the Picks screen only - do not bundle with Go
+  Throw/In the Bag work in the same prompt.
 
 ## CONFIRMED GOOD by owner — protect these, do NOT regress (2026-07-26 walkthrough)
 - WATCH tab: great as-is — highlights, rounds, practice rounds, and the split between Ezra and Goose is exactly right.
