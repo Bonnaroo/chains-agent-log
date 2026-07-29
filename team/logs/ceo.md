@@ -274,3 +274,31 @@ This is now a showstopper. Members WILL attempt Go Throw rounds during tournamen
 **No app/Firebase/data changes by CEO lane. All work is routing, escalation, verification (read-only).**
 
 **Next shift must:** (1) Confirm T-018 fixed or rolled back, OR escalate further to emergency decision. (2) Confirm T-014 owner decision recorded. (3) Verify Ledgestone readiness status (19 hours to event).
+
+- 2026-07-29 09:16:23 UTC | [CLAUDE] | CEO end-of-day report shift. Read PROTOCOL, FROM_OWNER (no [NEW] items), TO_OWNER, STRATEGY, BOARD, INBOX, ROADMAP, CHANGELOG, HANDOFF, and all role logs; cross-checked reality via api.github.com, live app, and GitHub Actions. 
+
+**Key findings:** 
+
+v413 deployed 01:15:41 UTC (picks unlock). QA independently verified from non-commissioner member account (WILL): Draft Now entry point works, Player 1/Player 2 direct pickers visible, pro list searchable, selection/clearing functional. T-016 (member own-only drafting) is DONE and verified working.
+
+Data collector: 13+ autonomous `Collect DGPT Data` runs on 2026-07-29 (01:07 onwards, ~1-2 hourly cadence). All successful. Roster correct: 156 MPO Ledgestone (Kayleb Gillmore #245013 present, Thomas Earhart withdrawn/absent). Draft order Kadey-first/Cory-last confirmed correct. No manual intervention needed.
+
+**CRITICAL BLOCKER — T-018 (Go Throw Discard hang) UNRESOLVED 12+ HOURS:**
+- First reported 2026-07-28 19:55 UTC
+- v412 deployed 00:49:55 UTC → hang persists
+- v413 deployed 01:15:41 UTC → hang STILL persists
+- CEO escalations sent at 04:02 UTC and 08:02 UTC (5th shift documenting same issue)
+- Current status (09:16 UTC): UNRESOLVED. Reproducible on multiple round types (Johnson Park solo, Tadpole Beach multi-player). Symptom: click Discard → 30-sec browser freeze → CDP timeout → round NOT discarded, stuck in Firebase.
+- Root cause suspected: v412 console warning "using in-browser Babel transformer, precompile for production" indicates non-production build artifact.
+- Impact: Blocks ROADMAP anchor feature (cancel/delete in-progress round) AND Ledgestone playability. Members WILL attempt Go Throw rounds during tournament. Non-functional Discard = event-critical failure.
+- Why stalled: No diagnosis, no rebuild, no rollback. Awaiting owner decision (per REPORT.md section D).
+
+**T-014 (edit picks over-broad) — 5th consecutive shift without resolution:** When commissioner clicks "Edit picks," ALL members' screens unlock (not just commissioner's). Members can modify OTHER members' picks. Flagged 07-26, 07-27 (x2), 07-28, 07-29. Per LANES.md mandatory rule, a 5-shift repeat flag is a hard-stop requiring explicit owner decision: FIX or ACCEPT. No response yet.
+
+**Routing:** Compiled comprehensive REPORT.md section D with clear decision points and timeline (owner decision required within 4 hours, by ~13:00 UTC, before Ledgestone tee-off in ~18 hours). Updated TO_OWNER.md with urgent summary. No app/Firebase/data changes by CEO. All work is routing, escalation, verification (read-only).
+
+**Ledgestone readiness:** AMBER → RED due to T-018. Pick unlock ✓ (v413 verified). Data ✓ (13+ autonomous runs). Go Throw Discard ✗ (hang unresolved). Official tee times ⏳ (PDGA has not published). T-016 DONE. T-017 READY (awaiting tee times). T-018 CRITICAL (owner decision needed now). T-014 HARD-STOP (owner decision needed).
+
+**Protected + verified good:** Kadey-first draft order, standings, Go Throw WATCH, In the Bag, Ledgestone roster (156 MPO), collector autonomy (13+ runs on 2026-07-29). No regression.
+
+**Next shift must:** Execute T-018 decision (fix or rollback) immediately. Record T-014 decision (fix or accept). Verify pre-event walkthrough if T-018 resolves. Final GO/NO-GO readiness call by tee-off.
