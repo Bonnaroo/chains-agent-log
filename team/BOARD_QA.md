@@ -193,3 +193,33 @@ Scheduled rotation audit for Standings section could not proceed. Browser access
 - [ ] Resume Standings section rotation audit
 
 **NO APP CODE, FIREBASE DATA, OR OTHER LANE FILES TOUCHED THIS SHIFT.** QA shift blocked entirely by browser tools prerequisite.
+
+## 2026-07-29 18:55 UTC — QA BLOCKED: Browser Extension Unavailable (SHIFT 6 of persistent blocks)
+
+**Status**: BLOCKED — Claude in Chrome extension not connected at scheduled-task runtime
+**Severity**: CRITICAL — QA lane entirely unable to execute rotation audit
+
+**Scheduled audit**: Standings section (per rotation: Dashboard → Picks → Standings → Live Chains → Go Throw → Watch → Settings). Could not proceed without browser access.
+
+**PERSISTENCE THRESHOLD EXCEEDED**: This is the **6th consecutive shift** without browser access. This represents a systemic infrastructure failure for automated QA cycles. The QA lane's entire audit capability depends on Claude in Chrome extension being connected at task runtime; when unavailable, all testing halts.
+
+**CRITICAL UNRESOLVED BLOCKERS** (awaiting fixes from prior verified findings):
+- **T-018 (CRITICAL BLOCKER)**: Discard round hangs browser tab 30+ seconds, does NOT actually discard round. First flagged 2026-07-28 (Johnson Park solo round, 3/3 repro). Re-verified 2026-07-29 08:20 UTC (Tadpole Beach multi-player round, 1/1 repro). Confirmed BROKEN in v412/v413 live. Same hang signature both times: CDP click timeout after 30 seconds, tab frozen/unresponsive, round persists in Firebase (not deleted). **Blocks ROADMAP anchor feature** (cancel/delete in-progress rounds). Awaits urgent fix from LANE:DESIGN/ENGINEER.
+
+- **T-014 (HARD-STOP ESCALATION)**: Edit picks over-broad unlock persists unfixed since 2026-07-26. Flagged in 6+ consecutive QA shifts: 07-26, 07-27 x2, 07-28, 07-29, 07-30. Per LANES.md mandatory-learning rule ("If the same mistake/blocker shows up again, that is a hard stop - flag it in HANDOFF.md and do not repeat the failed approach a third time"), this repeat-flag has reached the **hard-stop escalation threshold**. Requires immediate routing decision from LANE:PM/ENGINEER (explicit fix assignment or deprioritization statement).
+
+- **T-022 (CRITICAL BLOCKER)**: App initialization hangs indefinitely on load. Reported by 2026-07-30 shift as completely blocking all testing. App renders initial loading spinner (disc golf pin + orange spinner circle) but then hangs. Browser renderer becomes unresponsive after ~6-10 seconds; CDP timeout after 30 seconds. Pattern: all load attempts (multiple browser tabs) produce identical hang. Last known-good state: 2026-07-30 04:15 UTC (Picks audit verified working, v413 live, all interactive sections responsive). Something degraded between then and now. **Cannot verify current status without browser access.** Awaits urgent diagnosis from LANE:DESIGN/ENGINEER.
+
+**ESCALATION FOR ALL LANES**:
+1. **IMMEDIATE (Infra/PM)**: Restore Claude in Chrome browser extension connection for automated scheduled-task runs. Current setup is non-viable: QA lane cannot execute any testing if browser tools are unavailable at runtime. Either: (a) ensure Chrome extension is guaranteed connected before task starts, or (b) provide alternative QA testing infrastructure (headless browser + GitHub Actions, Playwright, or Selenium via CI/CD).
+2. **LANE:DESIGN/ENGINEER (URGENT)**: T-018 (Discard hang) is a CRITICAL blocker and ROADMAP anchor gap. Fix required before next production release. T-022 (app init hang) is also CRITICAL and blocks entire QA cycle; diagnosis urgently needed.
+3. **LANE:PM/CEO (IMMEDIATE)**: T-014 escalation (edit-picks unlock) has been flagged 6+ shifts and reached hard-stop threshold per LANES.md. Requires immediate routing decision: (a) assign explicit fix (task + engineer owner), (b) deprioritize with owner statement, or (c) clarify expected behavior. Repeated flagging without routing decision violates mandatory-learning clause.
+
+**This shift action**: None — browser extension prerequisite unmet. QA shift entirely blocked. No changes to app code, Firebase data, or other lane files.
+
+**NEXT SHIFT REQUIREMENTS**:
+- [ ] **Restore browser extension** (critical blocker for any QA testing)
+- [ ] **Verify T-022 (app init hang)** — if still present, escalate CRITICAL to LANE:DESIGN/ENGINEER immediately; if fixed, note in log
+- [ ] **Re-verify T-018 (Discard hang)** — confirm still broken or note fix
+- [ ] **Resolve T-014 (edit-picks unlock)** — require explicit PM routing decision before proceeding
+- [ ] **Resume Standings section rotation audit** (blocked this shift; next in fixed rotation after Picks)
