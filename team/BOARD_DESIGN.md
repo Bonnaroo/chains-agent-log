@@ -1,7 +1,14 @@
 # DESIGN/ENGINEER LANE BOARD
 <!-- Owned exclusively by this lane. Statuses: ASSIGNED -> IN_PROGRESS -> REVIEW -> DONE -->
 
-(no open tasks yet - seeded 2026-07-28)
+(seeded 2026-07-28)
+
+## T-D07 | CRITICAL BLOCKER | PRIORITY: TOP — URGENT (Ledgestone event ~22 hours away)
+**Goal:** FIX REGRESSION: "Discard round" link in Go Throw causes 30-second browser CDP timeout hang, and round is NOT actually discarded (remains stuck in Firebase). This is a critical regression from v409/v410 (prior QA passes verified "no editor harness"/production builds). v412 shows "using in-browser Babel transformer, precompile for production" warning in console — root-cause investigation required.
+**Done when:** (1) Root cause identified and fixed (likely: v412 index.html contains non-production Babel transformer instead of precompiled bundle); (2) "Discard round" control responds in <1 second and actually discards the round from Firebase; (3) QA re-verifies the fix across multiple round types; (4) Deployed live.
+**Why urgent:** ROADMAP anchor feature (escape hatch: cancel/delete in-progress round); Ledgestone starts 2026-07-30 ~22 hours (members will play Go Throw rounds mid-event; stuck rounds block the feature). This was reproduced 3/3 times in QA testing on v411 and re-confirmed broken on v412. **NOT A POLISH ISSUE — this is a complete blocker.**
+**Attempts:** 0
+**Notes:** Hints for investigation: search v412 index.html for "Babel", "transformer", or "precompile" warnings in console. Prior deploys (v406-v410) had no such warning. Compare v412 build artifacts to v409's precompiled structure.
 
 ## T-D01 | DEPLOYED v412, awaiting real-member verification | PRIORITY: TOP (owner walkthrough, 2026-07-28)
 **Goal:** GO THROW pre-round flow escape hatches. Owner walked the live app and found real dead-ends:
@@ -44,17 +51,6 @@ etc.) - use good judgment on what a disc golf player would want to see, this doe
 from the owner first.
 **Done when:** Your Game shows per-course stats (selectable) and overall stats, with a real, useful stat set.
 
-## CONFIRMED GOOD - DO NOT REGRESS (owner walkthrough 2026-07-28)
-- WATCH / "Live Now" for other people's rounds - correct as-is, do not change the broadcast/watch mechanic itself
-  (T-D03 above only changes YOUR OWN round's card, not how others' live rounds are watched).
-- IN THE BAG - owner: "I really like it. All that's really good." No changes needed - protect this.
-
-## GENERAL DIRECTIVE FOR ALL GO THROW WORK
-Owner's words: "make sure it works intuitively, so any 15-year-old could use it... I don't want you to dumb it
-down, I just want you to fix stuff." Read this as: fix real usability bugs and confusing flows, don't strip
-features or add hand-holding text/explainers. If something needs an explanation to be usable, that's a sign the
-FLOW is broken, not that it needs more instructional copy.
-
 ## T-D06 | ASSIGNED | PRIORITY: TOP (owner: phone not showing updates, 2026-07-29)
 **Goal:** Two real bugs found while investigating owner's "phone shows no updates" report. (1) index.html
 registers a service worker at /sw.js via navigator.serviceWorker.register('sw.js') but that file returns 404 -
@@ -67,3 +63,14 @@ and if so, add a visible version indicator somewhere in the mobile view too (e.g
 can always be confirmed regardless of device.
 **Done when:** No 404s for sw.js in console (either a working SW or no registration at all); version number is
 visible and confirmable on both desktop AND mobile layouts.
+
+## CONFIRMED GOOD - DO NOT REGRESS (owner walkthrough 2026-07-28)
+- WATCH / "Live Now" for other people's rounds - correct as-is, do not change the broadcast/watch mechanic itself
+  (T-D03 above only changes YOUR OWN round's card, not how others' live rounds are watched).
+- IN THE BAG - owner: "I really like it. All that's really good." No changes needed - protect this.
+
+## GENERAL DIRECTIVE FOR ALL GO THROW WORK
+Owner's words: "make sure it works intuitively, so any 15-year-old could use it... I don't want you to dumb it
+down, I just want you to fix stuff." Read this as: fix real usability bugs and confusing flows, don't strip
+features or add hand-holding text/explainers. If something needs an explanation to be usable, that's a sign the
+FLOW is broken, not that it needs more instructional copy.
