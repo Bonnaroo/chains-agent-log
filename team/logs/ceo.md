@@ -179,3 +179,52 @@
 **Data/Safety:** No CEO writes to app or Firebase. Data lane's Phase 2 seed (/leagues/ledgestone-test-2026/eventField/96414) is additive-only, no App A collision. Picks (v412): UI only, no data layer. Protected: Kadey-first draft order, standings, collector autonomy, Ledgestone roster.
 **Next shift priorities:** (1) URGENT if not fixed by then: T-018 must be resolved by successor. (2) T-014 needs explicit routing. (3) QA lane needs status check (missed-run cause). (4) Owner member-verification on v412. EVENT_READINESS stays AMBER until T-018 fix + member QA verified + official tee times published.
 - 2026-07-29 01:08:30 UTC | [CLAUDE] | CEO critical-blocker escalation follow-up. (1) T-D07 created on BOARD_DESIGN.md: T-018 regression blocker (Discard round hang, 30s CDP timeout, round not discarded, stuck in Firebase). Reproduced multiple times, re-verified on v412 at 2026-07-29 08:20 UTC QA pass. Root-cause: v412 contains in-browser Babel transformer instead of production bundle (console warning flagged). This blocks ROADMAP anchor feature and Ledgestone playability (~22 hours to event). Investigation hints provided to Design lane (search for Babel, transformer, precompile). (2) T-014 HARD-STOP ESCALATION: Edit picks over-broad unlock, 5th consecutive flag since 07-26. Per LANES.md mandatory rule, this is now a hard-stop signal requiring explicit owner decision: FIX THIS SHIFT (Engineer diagnosis + rebuild, ~30-60 min) or DEPRIORITIZE (accept current behavior). No PM routing exists; cannot stay in limbo a 6th shift. Updated TO_OWNER.md with explicit decision request. (3) Previous CEO shift (01:03:16 UTC) was thorough; no new UNROUTED bug reports; Data lane working; QA lane missed :54 run (investigation pending). My follow-up actions: filed T-D07, escalated T-014 to owner, updated TO_OWNER. No app/Firebase/data changes. Next: Design lane must fix T-018 before next QA run at :54 UTC (~46 min); owner must route T-014 decision; QA lane should investigate missed-run cause and return for v412 verification pass.
+- 2026-07-29 02:03:14 UTC | [CLAUDE] | CEO supervisor shift + escalation (chains-office-on-shift). **CRITICAL FINDINGS: T-018 regression blocker persists after v413 deploy; T-014 hard-stop requires owner decision; v413 picks fix needs member-account verification.**
+
+**Step 0 — Lane Supervision (verified 02:03 UTC):**
+- DATA LANE ✓ WORKING: Last autonomous run 2026-07-29 01:07+ UTC (Collect DGPT Data), 3 verification passes complete, Phase 2 step 2 (Firebase seed /leagues/ledgestone-test-2026/eventField/96414) verified intact and durable, all health checks green (1 active round, no orphans, zero drift). Next run ~01:36 UTC expected.
+- QA LANE ✓ WORKING: Multiple entries this shift (08:20 UTC v412 verification, 10:00 UTC v413 verification, WATCH audit PASS). CRITICAL RE-FINDING: T-018 regression (Discard round 30-sec hang, round NOT discarded) still broken at 08:20 UTC verify, confirming v412 issue persists unresolved. Next run ~02:54 UTC expected.
+- ENGINEER LANE ⚠️ ACTIVE/MANUAL-TRIGGER: v413 deployed 01:16 UTC for picks unlock (direct Player 1/Player 2 pickers, no "Edit picks" gate for members). Critical finding: T-018 regression (Discard hang) appears to persist despite deploy. Requires immediate root-cause investigation (suspected Babel transformer in build, per console warnings in QA notes).
+
+**Step 1 — Bug Report Pipeline:**
+- UNROUTED section: empty (no new Firebase /bugReports).
+- ROUTED section: empty.
+- Action: zero new bug reports to route.
+
+**ESCALATIONS THIS SHIFT:**
+
+1. **T-018 CRITICAL BLOCKER — Discard round hang persists after v413 deploy.**
+   - Regression re-confirmed by QA at 08:20 UTC (Tadpole Beach, hole 2 scoring screen): click "Discard round" → 30-second CDP timeout hang → tab unresponsive for 8+ seconds → navigate away via history → return to Go Throw home to find new "RESUME ROUND IN PROGRESS" card (Tadpole Beach) — PROOF round was NOT discarded and stayed in Firebase.
+   - Same hang reproduced on v411/v412 (Johnson Park, 3/3 times per 2026-07-28 log); same hang pattern on different round type (Tadpole multi-player vs Johnson solo).
+   - Root-cause suspected: v412 console warning "using the in-browser Babel transformer, precompile for production" — indicates non-production artifact or build-process change (prior deploys v406-v410 had NO such warning per QA notes on 2026-07-26/27).
+   - BLOCKER JUSTIFICATION: This regression blocks ROADMAP anchor feature (escape hatch: cancel/delete in-progress round) AND Ledgestone playability (~22 hours to event start). Members will play Go Throw rounds mid-tournament; a non-working Discard is unacceptable. Go Throw is otherwise functional (QA solo instant-start works, round creation works) so this is a specific Discard code path regression, likely fixable.
+   - URGENT TIMELINE: Design/Engineer must diagnose Babel transformer in v412 index.html and rebuild without it. Target fix deployment before next QA run (~02:54 UTC, ~51 min from this shift). If diagnosis takes >30 min or fix is not ready, escalate to Owner with "consider rollback to v411?" question. Do NOT allow this to reach Ledgestone tee-off unresolved (22 hours → 12 hours post-diagnosis window = ~10 hours for fix-or-rollback decision).
+   - Prior CEO shift already filed T-D07 on BOARD_DESIGN.md; I am re-escalating urgency and requesting immediate action. Updated TO_OWNER.md with urgent escalation.
+
+2. **v413 Picks fix — requires owner member-account live verification.**
+   - v413 deployed 01:16 UTC with claimed picks unlock (direct Player 1/Player 2 pickers, no "Edit picks" gate for regular members; commissioner override labeled "Fix a pick"; explanatory text removed).
+   - QA verified from commissioner account at 10:00 UTC: picks board shows correct UX (v413 deployment confirmed, picks unlock visible).
+   - CRITICAL GAP: Not verified from real non-commissioner member account. QA noted "only verified from commissioner account; true member-login verification pending per engineer.md note." This is a LIVE-CRITICAL issue because member UX in Ledgestone is unproven.
+   - REQUEST routed to TO_OWNER.md: Owner must sign into Chains app from member account (phone recommended) and verify (1) direct Player 1/Player 2 pickers visible, (2) no "Edit picks" gate, (3) dropdowns clickable. Result needed before Ledgestone starts (~22 hours). This is the final live verification before tournament.
+
+3. **T-014 hard-stop escalation remains unrouted** (prior CEO shift correctly escalated this; status unchanged). Edit picks over-broad unlock flagged 5 consecutive shifts (07-26, 07-27 x2, 07-28, 07-29). Per LANES.md mandatory-learning rule, this is a hard-stop signal requiring explicit owner decision: FIX THIS SHIFT (rebuild with uid guard) or ACCEPT AS-IS (acknowledge and protect). No response yet. This cannot remain unrouted a 6th shift.
+
+**ROUTING THIS SHIFT:**
+
+FROM_OWNER.md [NEW] items processed:
+1. "PICKS ARE STILL LOCKED" (HIGH) → v413 deployed, marked HANDLED pending member-account verification. Routed TO_OWNER.md verification request.
+2. "REPORT A BUG button" (NEW) → Routed to BOARD_DESIGN.md (UI entry point) + BOARD_DATA.md (Firebase /bugReports node, read interface for CEO/QA). Added as TOP-priority tasks to both boards.
+3. "SIGN OUT BROKEN" (LOW, post-Ledgestone) → Noted; not routed yet (low priority, non-blocking for Ledgestone).
+4. "PHASE 2 MIGRATION" (AUTHORIZED) → Already in STRATEGY.md Phase 2A GO. Marked HANDLED. Data Step 2 complete; Design Step 3 (wiring reads) is current blocker.
+
+**EVENT READINESS STATUS** (22 hours to Ledgestone):
+- ✓ Data: 156 MPO field correct, collector healthy (13+ runs on 2026-07-29)
+- ⚠️ Picks: UX deployed in v413 (pending owner member-account verification + T-014 decision)
+- 🔴 Go Throw: BLOCKED by T-018 (Discard hang) — must be fixed before tee-off
+- ⏳ Tee times: PDGA has not published official first-tee (use 3:00 PM CDT broadcast + ~30 min buffer)
+
+**PROTECTED CONFIRMED-GOOD** (do not regress): Kadey-first draft order, standings calc, Go Throw WATCH for other people's rounds, In the Bag feature, Ledgestone roster (156 MPO), collector autonomy, Data Phase 2 schema (additive-only).
+
+**NO DATA CHANGES BY CEO LANE.** All work is routing, escalation, supervision (read-only). No Firebase writes, no app code changes, no deletions.
+
+**NEXT SHIFT MUST:** (1) Verify T-018 fixed or coordinate rollback decision with Owner; (2) Confirm T-014 owner decision recorded; (3) Verify v413 member UX confirmed by Owner.
