@@ -7,12 +7,14 @@ Regular members can now pick directly for Ledgestone (no "Edit picks" gate). Com
 
 (seeded 2026-07-28)
 
-## T-D07 | CRITICAL BLOCKER | PRIORITY: TOP — URGENT (Ledgestone event ~22 hours away)
+## T-D07 | CRITICAL BLOCKER | PRIORITY: TOP — URGENT (Ledgestone event ~20 hours away)
+**[2026-07-29 04:02 UTC RE-ESCALATION by [CLAUDE]] Status remains CRITICAL: "Discard round" hang persists AFTER v413 deployment. QA verified at 03:56 UTC today that issue remains unfixed. This is NOW 4 consecutive shifts (2026-07-28 19:55 through 2026-07-29 03:56) with T-018 unresolved.**
+
 **Goal:** FIX REGRESSION: "Discard round" link in Go Throw causes 30-second browser CDP timeout hang, and round is NOT actually discarded (remains stuck in Firebase). This is a critical regression from v409/v410 (prior QA passes verified "no editor harness"/production builds). v412 shows "using in-browser Babel transformer, precompile for production" warning in console — root-cause investigation required.
 **Done when:** (1) Root cause identified and fixed (likely: v412 index.html contains non-production Babel transformer instead of precompiled bundle); (2) "Discard round" control responds in <1 second and actually discards the round from Firebase; (3) QA re-verifies the fix across multiple round types; (4) Deployed live.
-**Why urgent:** ROADMAP anchor feature (escape hatch: cancel/delete in-progress round); Ledgestone starts 2026-07-30 ~22 hours (members will play Go Throw rounds mid-event; stuck rounds block the feature). This was reproduced 3/3 times in QA testing on v411 and re-confirmed broken on v412. **NOT A POLISH ISSUE — this is a complete blocker.**
-**Attempts:** 0
-**Notes:** Hints for investigation: search v412 index.html for "Babel", "transformer", or "precompile" warnings in console. Prior deploys (v406-v410) had no such warning. Compare v412 build artifacts to v409's precompiled structure.
+**Why urgent:** ROADMAP anchor feature (escape hatch: cancel/delete in-progress round); Ledgestone starts 2026-07-30 ~20 hours (members will play Go Throw rounds mid-event; stuck rounds block the feature). This was reproduced 3/3 times in QA testing on v411 and re-confirmed broken on v412+v413. **NOT A POLISH ISSUE — this is a complete blocker.**
+**Attempts:** 1 (v413 deployed but hang persists)
+**Notes:** Hints for investigation: search v412 index.html for "Babel", "transformer", or "precompile" warnings in console. Prior deploys (v406-v410) had no such warning. Compare v412 build artifacts to v409's precompiled structure. **ESCALATION: If this cannot be fixed within the next 2 hours, consider rollback to v411 as emergency fallback (v411 has the picks UX fix; Go Throw hang may be less severe). Do NOT allow this to reach Ledgestone tee-off broken.**
 
 ## T-D01 | DEPLOYED v412, awaiting real-member verification | PRIORITY: TOP (owner walkthrough, 2026-07-28)
 **Goal:** GO THROW pre-round flow escape hatches. Owner walked the live app and found real dead-ends:
@@ -72,6 +74,13 @@ visible and confirmable on both desktop AND mobile layouts.
 **Goal:** REPORT A BUG button — create a visible, discoverable "Report a Bug" affordance for users. Owner wants a real feedback channel so users can submit bug/issue reports directly from the app. Consider Settings as default location, plus evaluate whether a small persistent icon elsewhere makes sense (e.g. Help or feedback button in nav). Affordance should include a short text field for the issue description and auto-capture context data (current screen/section, timestamp, uid).
 **Done when:** User can see and tap a "Report a Bug" or "Send Feedback" button from at least the Settings screen; tapping opens a form with a text field for the issue, screen context is auto-captured (or user can edit it), and submission stores the report (Data lane owns the Firebase side).
 **Notes:** This is the UI/Design part. Data lane (BOARD_DATA.md) owns creating the /bugReports Firebase node and a read interface (count/summary) for CEO/QA to surface reports in daily operations so they become actionable board tasks, not just stored data.
+
+## T-D09 | NEW | PRIORITY: HIGH | ROUTED from BUG_REPORTS_INBOX 2026-07-29 04:02 UTC
+**Goal:** FIX: Field roster not loading on mobile Safari. User (user-test-002) reported on 2026-07-28T17:38:20Z that the field-view screen (Picks/Draft roster display) does not render correctly in Safari on iOS/iPad.
+**Symptoms:** iOS/Safari browser hangs or displays blank/incomplete field roster when viewing the Picks screen for the active tournament.
+**Done when:** Field roster loads and displays correctly in Safari on both iPhone and iPad; no rendering gaps, no hangs, team roster is fully visible and scrollable.
+**Notes:** This is a mobile-specific rendering issue (Safari). Ledgestone event starts 2026-07-30 (~20 hours); iOS users may encounter this during live draft. HIGH priority: diagnose and fix within 6 hours if possible.
+**Context from report:** Screen=field-view, Version=1.0.0 (app version), UID=user-test-002.
 
 ## CONFIRMED GOOD - DO NOT REGRESS (owner walkthrough 2026-07-28)
 - WATCH / "Live Now" for other people's rounds - correct as-is, do not change the broadcast/watch mechanic itself
