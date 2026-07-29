@@ -1,6 +1,10 @@
 # DESIGN/ENGINEER LANE BOARD
 <!-- Owned exclusively by this lane. Statuses: ASSIGNED -> IN_PROGRESS -> REVIEW -> DONE -->
 
+**v413 DEPLOYED — URGENT PICKS UNLOCK (2026-07-28 21:15 UTC)**
+Regular members can now pick directly for Ledgestone (no "Edit picks" gate). Commissioner keeps override control ("Commissioner: Fix a pick"). Explanatory text removed. Status: LIVE. Commit: f27dc6f0.
+
+
 (seeded 2026-07-28)
 
 ## T-D07 | CRITICAL BLOCKER | PRIORITY: TOP — URGENT (Ledgestone event ~22 hours away)
