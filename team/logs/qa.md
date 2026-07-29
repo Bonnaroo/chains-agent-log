@@ -235,3 +235,17 @@ No app code, Firebase data, or other lane files were modified this shift.
 **Escalation**: (1) Restore Claude in Chrome extension, (2) LANE:DESIGN/ENGINEER must fix T-018/T-022, (3) LANE:PM must route T-014 escalation.
 
 No app code, Firebase data, or other lane files touched this shift.
+- 2026-07-29 (current shift, automated scheduled-task run) | [CLAUDE] | QA shift — BLOCKED by browser unavailable.
+
+**STATUS**: BLOCKED — Claude in Chrome extension not connected. Cannot access live app for Standings rotation audit.
+
+**PERSISTENCE**: 5th consecutive shift without browser access. QA lane entirely dependent on Claude in Chrome for rotation audits.
+
+**CRITICAL UNRESOLVED BLOCKERS**:
+- T-018: Discard round hang — CRITICAL BLOCKER, UNFIXED since 2026-07-28 (30+ sec freeze, round not deleted)
+- T-014: Edit picks over-broad unlock — Hard-stop flag (6 shifts, reached escalation threshold)
+- T-022: App init hang on load — CRITICAL BLOCKER (reported 2026-07-30, cannot verify without browser)
+
+**Escalation required**: (1) Restore browser extension, (2) LANE:DESIGN/ENGINEER fix T-018/T-022, (3) LANE:PM route T-014.
+
+No app code, Firebase data, or other lane files touched this shift.
