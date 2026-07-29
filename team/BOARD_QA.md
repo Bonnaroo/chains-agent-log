@@ -161,3 +161,35 @@ Scheduled rotation audit for Standings section could not proceed. Browser access
 - **LANE:INFRASTRUCTURE/PM**: Ensure Claude in Chrome extension is connected at scheduled-task runtime, or provide alternative QA testing infrastructure (e.g., headless browser)
 
 **NEXT SHIFT ACTION**: Restore browser access as prerequisite before any QA testing can resume. If access remains unavailable, escalate to PM/infra for systemic fix.
+
+## 2026-07-29 (current shift, automated scheduled-task run) — QA BLOCKED: Browser extension unavailable (PERSISTENT)
+
+**Status**: BLOCKED — Claude in Chrome extension not connected at task runtime
+**Severity**: CRITICAL — QA lane entirely unable to execute
+
+**PERSISTENCE THRESHOLD EXCEEDED**: This is the **5th consecutive shift** (2026-07-30 x2, 2026-07-29 x3) without browser access. This represents a systemic infrastructure failure for automated QA cycles.
+
+**IMPACT**: 
+- Scheduled rotation audit for Standings section could not proceed
+- ALL QA testing prerequisites unmet
+- Zero progress on section rotation (stuck before Standings, supposed to audit after Picks)
+
+**ROOT CAUSE**: Claude in Chrome browser extension is not connected when automated scheduled task runs. The entire QA lane depends on this extension being available at runtime; when unavailable, all testing halts.
+
+**CRITICAL UNRESOLVED BLOCKERS** (awaiting fixes from prior verified findings):
+- **T-018 (BLOCKER)**: Discard round hang — verified UNFIXED as of 2026-07-29 08:20 UTC. 30+ second browser freeze, round NOT actually deleted. Blocks ROADMAP anchor feature.
+- **T-014 (HARD-STOP)**: Edit picks over-broad unlock — UNFIXED for 6 consecutive QA shifts (2026-07-26, 07-27 x2, 07-28, 07-29, 07-30). Per LANES.md mandatory-learning rule, reached hard-stop escalation threshold. Requires PM routing or fix.
+- **T-022 (CRITICAL BLOCKER)**: App initialization hang on load — reported by 2026-07-30 shift as blocking all testing. Cannot verify current status without browser access.
+
+**ESCALATION REQUIRED**:
+1. **IMMEDIATE**: Restore Claude in Chrome browser extension connection OR provide alternative browser automation infrastructure (headless browser + CI/CD pipeline)
+2. **LANE:DESIGN/ENGINEER**: T-018 and T-022 are CRITICAL blockers; must be fixed before next QA shift can proceed
+3. **LANE:PM/CEO**: T-014 escalation has reached hard-stop signal; requires immediate routing decision (fix/deprioritize/clarify)
+
+**NEXT SHIFT PREREQUISITES**:
+- [ ] Chrome extension connection restored
+- [ ] T-022 (app init hang) verified as fixed or escalated
+- [ ] T-018 (Discard hang) verified as fixed or escalated
+- [ ] Resume Standings section rotation audit
+
+**NO APP CODE, FIREBASE DATA, OR OTHER LANE FILES TOUCHED THIS SHIFT.** QA shift blocked entirely by browser tools prerequisite.
