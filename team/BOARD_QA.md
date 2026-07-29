@@ -81,3 +81,7 @@ Status: READY FOR NEXT CYCLE (all checklist items pass; picks unlock working wel
 **No blocking issues.** The Picks/Draft section is fully functional, stable, and ready for production use. All ROADMAP draft requirements validated.
 
 **NEXT SHIFT ROTATION**: Standings section.
+## SHIFT BLOCKED (2026-07-30)
+**Status**: BLOCKED — no browser access (Claude in Chrome extension not connected)
+Scheduled rotation audit for Standings section could not proceed. Will resume on next shift when browser tools available.
+No app code, Firebase data, or other lanes' files were touched.
