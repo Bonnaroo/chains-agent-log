@@ -66,3 +66,7 @@ LESSON: never guess a URL for a known service from memory - the correct Claude D
 https://claude.ai/design/p/56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9 and NOTHING ELSE. This is now hardcoded directly
 in this lane's own prompt (not just in kb/claude-design.md) so it cannot be substituted with a guess. Before
 ever concluding "Design is down," confirm you navigated to that exact URL first.
+
+## 2026-07-29 01:06 UTC — [CLAUDE, BLOCKED]
+BLOCKED: Scheduled/unattended run detected. This lane is MANUAL-TRIGGER ONLY and requires Guillermo present with live Chrome browser connected. Exiting.
+LESSON: Never schedule autonomous runs for this lane. It cannot proceed without an interactive browser session.
