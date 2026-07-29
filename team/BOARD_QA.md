@@ -122,3 +122,23 @@ No app code, Firebase data, or other lanes' files were touched.
 - T-014: Edit picks unlock (HARD-STOP, 6 flags) — 6+ shifts unfixed, escalation threshold reached
 - T-022: App initialization hang (CRITICAL) — reported last shift, cannot verify without browser access
 
+
+---
+
+## 2026-07-29 SHIFT STATUS UPDATE
+
+**BLOCKER**: Claude in Chrome extension not connected — QA shift cannot proceed with live testing. Browser access unavailable for Standings rotation audit.
+
+**CRITICAL PERSISTENCE STATUS**:
+- **T-018 (BLOCKER)**: Discard round hang — UNFIXED as of this shift (4 QA shifts since initial flag: 07-26, 07-28, 07-29 x2)
+- **T-014 (HARD-STOP)**: Edit picks over-broad unlock — UNFIXED as of this shift (6 QA shifts since initial flag: 07-26, 07-27 x2, 07-28, 07-29, 07-30). Per LANES.md, reached escalation threshold.
+- **T-022 (CRITICAL BLOCKER)**: App initialization hang — Reported by prior shift as blocking ALL testing. Cannot verify current state without browser access. **BLOCKS ENTIRE QA CYCLE.**
+
+**NEXT QA SHIFT ACTION**: 
+1. Restore Claude in Chrome extension connection (prerequisite for any testing)
+2. Verify if T-022 (app hang on init) is STILL present — if yes, HALT testing and escalate to LANE:DESIGN/ENGINEER immediately
+3. If app is responsive, resume Standings rotation audit
+4. Re-verify T-018 and T-014 status with fresh testing
+
+**LANES AWAITING FIX**:
+- **LANE:DESIGN/ENGINEER**: T-018 (Discard hang), T-022 (init hang), T-014 (edit picks unlock)
