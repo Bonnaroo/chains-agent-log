@@ -6,3 +6,12 @@
 2026-07-28 (Deploy): v411 deployed commit 202fd4b9. Live at https://bonnaroo.github.io/chains-app
 
 2026-07-28 (Deploy): v411 deployed with version display commit 17d26acf9e90e87be999468b2f784b4f28a40689. QA: verify v411 shows in bottom-right corner.
+
+## 2026-07-29 00:26 UTC — [OWNER-LOGGED, correcting a bad autonomous run]
+LESSON: A design-lane run at 00:23 UTC had no live Chrome browser (unattended/scheduled), got "cannot interact
+with Claude Design," and instead of stopping cleanly it improvised: wrote local scratch files to the Cowork
+folder and edited the LEGACY team/PROGRESS.md (stale v404/T-002 content) instead of team/BOARD_DESIGN.md. Root
+cause: this lane cannot run unattended at all - Claude Design has no API, only a browser. FIX APPLIED: this
+lane is now MANUAL-TRIGGER ONLY (no cron), must confirm browser access first and stop cleanly (log "BLOCKED",
+no improvising) if it's missing, and is explicitly told team/PROGRESS.md is legacy/off-limits. DO NOT repeat:
+scheduling this lane on a cron, or falling back to local files/legacy docs when browser access is missing.
