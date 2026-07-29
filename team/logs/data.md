@@ -26,3 +26,12 @@
 - **Lesson**: the "compare against baked-in field count" instruction assumes such data already exists
   somewhere; today it didn't (Phase 2 not started), so the real work was establishing where that comparison
   will live going forward rather than performing it this run.
+## 2026-07-29
+- **Ran**: autonomous data-lane scheduled run (chains-data-lane schedule, 2026-07-29 00:37 UTC).
+- **Bug-watch**: fetched Firebase /bugReports.json — result is null (feature not yet built). Per protocol, no UNROUTED entries to append to team/BUG_REPORTS_INBOX.md. This is expected; flagged in logs as reference.
+- **Did**: Phase 2 Step 2 — seeded /leagues/ledgestone-test-2026/eventField/96414 with realistic Ledgestone MPO data (Ledgestone Open, PDGA event 96414, fieldSize=156, 10-player realistic sample: Paul McBeth, James Conrad, Ricky Wysocki, Calvin Heimburg, Eagle McMahon, Chris Dickerson, Drew Gibson, Paige Pierce, Nathan Queen, Brodie Smith). Firebase write + verification read both succeeded; schema is sound and additive (no live app build reads these nodes yet).
+- **Data health**: confirmed /leagues node did not exist before write. After seed, /leagues/ledgestone-test-2026/eventField/96414 is now populated and durable. /playRounds, /liveRounds, /waitlist remain null (empty); no orphans to clean up.
+- **chains-dgpt-data health**: GitHub Actions "Collect DGPT Data" workflow — checked; all recent runs successful (continues from last run's observation).
+- **Updated**: team/BOARD_DATA.md (marked Step 2 DONE, queued Step 3: Design build to wire Phase 2 reads).
+- **Blocked/flagged**: Step 3 is blocked on Design lane (waiting on a Claude Design build to switch the app from reading baked-in data to reading /leagues nodes). This is expected; Data lane work on Phase 2 is complete pending that build.
+- **Lesson**: Firebase schema + seed validation is straightforward once the design doc exists. The real gate to Phase 2 going live is the Design build, not data preparation.
