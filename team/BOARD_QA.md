@@ -142,3 +142,18 @@ No app code, Firebase data, or other lanes' files were touched.
 
 **LANES AWAITING FIX**:
 - **LANE:DESIGN/ENGINEER**: T-018 (Discard hang), T-022 (init hang), T-014 (edit picks unlock)
+
+
+## LIVE VERIFICATION 2026-07-29 (owner + Claude/Cowork, real browser, real live site)
+T-D10 "app initialization hang" claim: NOT REPRODUCIBLE. Opened https://bonnaroo.github.io/chains-app/ live and
+walked all 6 core screens directly (Dashboard, The Picks, Standings, Live Chains, Go Throw, Settings) - every
+one loaded correctly with real data, no hang, no error. T-D14 "over-broad unlock" also not observed: picks are
+open, real per-member picks are landing correctly (Kadey/Shanna/Gabe locked with real picks, Will's row open for
+his own pick, Kyle's row open on his turn). CLOSING T-D10 and T-D14 as false alarms from the 2026-07-29 20:15
+UTC CEO report pending any contrary evidence - do not re-open without a fresh, actually-reproduced live failure.
+Findings while checking: (1) sidebar version label still reads "V411" despite live commit being v413 - cosmetic
+label lag only, not functional (folds into T-D06). (2) Dashboard summary card still shows the old "Draft order -
+Heinola Open last place picks first" explainer text - this is a SEPARATE occurrence from the Picks screen (which
+is already clean) - add to T-D01 scope: also strip this text from the Dashboard card. (3) The known T-D03 issue
+(Live Now card requires click-through instead of direct discard) is still present as expected, not a new
+regression.
