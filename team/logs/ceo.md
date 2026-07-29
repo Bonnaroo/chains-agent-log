@@ -302,3 +302,25 @@ Data collector: 13+ autonomous `Collect DGPT Data` runs on 2026-07-29 (01:07 onw
 **Protected + verified good:** Kadey-first draft order, standings, Go Throw WATCH, In the Bag, Ledgestone roster (156 MPO), collector autonomy (13+ runs on 2026-07-29). No regression.
 
 **Next shift must:** Execute T-018 decision (fix or rollback) immediately. Record T-014 decision (fix or accept). Verify pre-event walkthrough if T-018 resolves. Final GO/NO-GO readiness call by tee-off.
+
+- 2026-07-29 09:16 UTC | [CLAUDE] | CEO supervisor shift + critical escalation escalation (chains-office-on-shift).
+
+**STEP 0 — Supervise (verified 09:16 UTC):**
+- DATA LANE ✓ WORKING: Autonomous run at 07:17:58 UTC (100 min ago, healthy cadence).
+- QA LANE ⚠️ OVERDUE: Picks/Draft audit scheduled ~08:54 UTC (rotation after Dashboard 03:56); expected run has NOT appeared by 09:16 UTC (22+ min overdue). Investigate schedule slip or task failure. Monitor for next occurrence.
+- ENGINEER LANE 🔴 BLOCKED: v413 deployed 01:15:41 UTC (8 hours ago). **T-018 DISCARD HANG UNRESOLVED. NO v414. NO OWNER RESPONSE to 08:02 UTC 4-hour escalation window.**
+
+**STEP 1 — Bug Reports:** UNROUTED empty. Zero bugs routed this shift.
+
+**CRITICAL RE-ESCALATION — T-018 (19 hours to Ledgestone):**
+Discard round hang persists after v413 deploy. This is now 8+ hours after urgent 08:02 UTC escalation with explicit 4-hour decision window (by ~12:00 UTC). No v414 deployed. No rollback. No owner response recorded. Ledgestone tees off 2026-07-30 in 19 hours. Members WILL play Go Throw mid-tournament; stuck rounds = showstopper.
+
+**DECISION ESCALATION:** Sent direct email escalation to diamashield@gmail.com with explicit decision point: (A) Deploy v414 fix (1-2 hours diagnosis + rebuild) OR (B) Rollback to v411 (20-30 min). Both options pre-approved; owner must respond with choice. Cannot remain unresolved.
+
+**T-014 HARD-STOP (6th shift approaching):** Edit picks over-broad unlock flagged 5 consecutive shifts. At 6th shift (current shift 09:16 UTC approaching 10:02 UTC shift mark), will challenge decision validity per LANES.md rule. Escalated to owner: FIX (uid-guard rebuild after T-018) OR ACCEPT (acknowledge and protect). Response needed this shift.
+
+**Routing:** No new bug reports. Two escalations (T-018 critical, T-014 hard-stop) routed to owner directly with decision requests. HANDOFF and TO_OWNER updated with urgent status. No app/Firebase changes.
+
+**Protected + verified:** Kadey-first draft order, standings, WATCH, In the Bag, Ledgestone roster (156 MPO), collector autonomy.
+
+**Next shift must:** (1) Confirm T-018 resolved (v414 or rollback deployed + QA verified) OR escalate further. (2) Confirm T-014 owner decision recorded. (3) Investigate QA missed 08:54 run (possible schedule issue, lane blocker, or data problem).
