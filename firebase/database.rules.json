@@ -1,0 +1,53 @@
+{
+  "rules": {
+    "leagues": {
+      "$leagueId": {
+        ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+        ".write": "false",
+        "meta": {
+          ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+          ".write": "root.child('leagues').child($leagueId).child('commissioner').val() === auth.uid",
+          ".validate": "newData.hasChildren(['name', 'season', 'commissioner'])"
+        },
+        "members": {
+          ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+          ".write": "false",
+          "$userId": {
+            ".read": "$userId === auth.uid || root.child('leagues').child($leagueId).child('commissioner').val() === auth.uid",
+            ".write": "$userId === auth.uid",
+            ".validate": "newData.hasChildren(['name', 'joinedAt'])"
+          }
+        },
+        "standings": {
+          ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+          ".write": "false",
+          ".validate": "newData.isString()"
+        },
+        "rounds": {
+          ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+          ".write": "false",
+          "$roundId": {
+            ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+            ".write": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists() && !newData.child('standings').exists()",
+            "scores": {
+              "$userId": {
+                ".write": "$userId === auth.uid"
+              }
+            }
+          }
+        }
+      }
+    },
+    "users": {
+      "$userId": {
+        ".read": "$userId === auth.uid",
+        ".write": "$userId === auth.uid",
+        ".validate": "newData.hasChildren(['email', 'displayName'])"
+      }
+    },
+    "$other": {
+      ".read": "false",
+      ".write": "false"
+    }
+  }
+}
