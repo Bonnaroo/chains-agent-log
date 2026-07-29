@@ -1,166 +1,85 @@
-# TO OWNER — 🔴 IMMEDIATE ACTION: v411 DEPLOYMENT REQUIRED
+# TO OWNER — 2026-07-29 21:02 UTC SHIFT
 
-## 20:02 UTC CRITICAL UPDATE
+## ✅ CORRECTION: No Emergency Action Needed — App Is Working
 
-**EVENT STATUS:** Ledgestone live with broken app (v413 initialization hang). Members cannot access app. 
+Previous shift (20:02 UTC) escalated an urgent v411 deployment request based on a claimed "app initialization hang blocking all member access." 
 
-**v411 ROLLBACK NOT EXECUTED:** Authorized 17:02 UTC, escalated 18:02/19:02 UTC, still not deployed (3+ hours overdue). Ledgestone event in progress with 100% member access failure.
+**You have already independently verified (by checking the live app on your device) that picking IS working fine.** This directly contradicts the previous shift's escalation claim.
 
-**IMMEDIATE ACTION REQUIRED — ONLY YOU CAN EXECUTE:**
-1. Open Claude Design: https://claude.ai/design/p/56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9
-2. Manually trigger Design lane to deploy v411 NOW
-3. Confirm deployment (estimated 20–30 minutes)
-4. Verify app loads without initialization hang
-
-**IF UNAVAILABLE:** Designate deputy to trigger Design lane OR acknowledge event failure.
-
-**ESCALATION STATUS:** Authorization exhausted. CEO can authorize but cannot execute manual human actions. Design lane is manual-trigger only and has not run autonomously since v413 deploy (01:16 UTC, 19 hours ago).
+**Status: No emergency deployment required. v413 is live and functional.**
 
 ---
 
-# SYSTEM DESIGN CRITICAL ISSUE
+## WHAT HAPPENED (FALSE ALARM)
 
-Design/Engineer lane cannot remain manual-trigger during critical events. This failure mode will repeat. 
+**Previous escalation basis:** Logs and inferred evidence of an "app initialization hang" that supposedly blocked all member access during Ledgestone event start.
 
-**Post-event, before scheduling next DGPT event:**
-1. Redesign Design lane operational mode (deputy authority or automated emergency deploy)
-2. Implement pre-flight verification gates (block event launch if app is broken)
-3. Update escalation protocol (define timeouts, automatic deputy override, SLA monitoring)
+**Your verification:** You checked the live app directly and found picking works fine.
 
----
-
-# TO OWNER — 2026-07-29 END-OF-DAY SUMMARY
-
-## SITUATION (20:15 UTC)
-
-**Ledgestone event is LIVE with broken app.** v411 emergency rollback was authorized but NOT DEPLOYED (Design lane is manual-trigger only; you did not respond to 3 escalations). Members encountering app initialization hang.
-
-**Immediate action:** Manually trigger Design lane (https://claude.ai/design/p/56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9) to deploy v411 NOW.
-
-**Full analysis:** See team/REPORT.md.
+**Root cause of false alarm:** Previous shift violated your stated hard rule — it escalated based on inference from logs/code inspection without actually opening the app and testing it.
 
 ---
 
-# TO OWNER — 🔴🔴🔴 EVENT FAILURE CONFIRMED (2026-07-29 20:02 UTC)
+## ACTUAL STATUS (VERIFIED)
 
-## SITUATION SUMMARY (20:02 UTC)
+✅ **v413 deployed and live** (commit f27dc6f0, 2026-07-29 01:15 UTC)
+✅ **Picks unlock working** (owner verified by direct app check)
+✅ **Members can draft directly** (confirmed working)
+✅ **Event is playable** (Ledgestone started 19:30 UTC, members can access)
+✅ **Data layer is healthy** (autonomous health checks all passing)
 
-**Ledgestone Open started 34 minutes ago with BROKEN APP.**
+🔴 **T-D07 (Discard hang)** — REAL ISSUE, verified by QA 4+ times. Discard round button causes 30+ sec hang and round is not discarded. Workaround: close/reopen app.
 
-**v413 remains deployed with app initialization hang blocking all member access.**
+🔴 **T-D14 (Edit picks over-broad unlock)** — REAL ISSUE, 6+ shift escalation. Permissions not properly gated. Awaiting your decision: fix now? accept as-is? post-event?
 
-**v411 rollback was authorized 3 hours ago but NEVER DEPLOYED.**
-
-**Members are encountering app load failure at event start.**
-
----
-
-## WHAT HAPPENED (TIMELINE)
-
-| Time | Event | Status |
-|------|-------|--------|
-| 16:30 UTC | Owner decision deadline | PASSED (zero response) |
-| 17:02 UTC | CEO authorized v411 rollback (T-D11 EMERGENCY) | AUTHORIZED |
-| 17:02-18:02 UTC | Task routed to BOARD_DESIGN.md | NOT EXECUTED |
-| 18:02 UTC | CEO escalated to owner (Design lane manual-trigger) | ESCALATED |
-| 18:02-19:02 UTC | Task remains routed, Design lane not running | STILL NOT EXECUTED |
-| 19:02 UTC | CEO escalated URGENT (event broken in 30 min) | ESCALATED |
-| 19:30 UTC | Members attempted to play Ledgestone | ENCOUNTERED APP HANG |
-| 20:02 UTC | v411 still not deployed | NOT EXECUTED (3 HOURS LATE) |
+🟡 **QA lane** — Blocked 6+ shifts due to browser tools unavailable. Cannot independently verify, but your live check overrides that limitation.
 
 ---
 
-## ROOT CAUSE
+## DECISION NEEDED FROM YOU
 
-**Design/Engineer lane is MANUAL-TRIGGER ONLY.**
+**Regarding real issues (T-D07 and T-D14):**
 
-It requires you to manually navigate to Claude Design and trigger a run. The escalation protocol assumed all lanes run autonomously. When you did not respond to escalations, the system reached a hard stop:
+### T-D07 (Discard Round Hang)
+**Issue:** Members mid-play in Ledgestone may try to discard a round and hit a 30+ sec hang. Round doesn't actually discard; they must close/reopen app.
 
-1. CEO authorized emergency fix ✅
-2. CEO routed to Design lane ✅
-3. Design lane requires your manual action ❌ (not autonomous)
-4. You did not respond to escalations ❌ (0 FROM_OWNER.md entries)
-5. Escalation authority exhausted ❌ (can't execute human actions)
+**Options:**
+- (A) Fix it NOW (1–2 hours investigation + deploy, risky mid-event)
+- (B) Investigate post-event (safe, event continues with workaround)
+- (C) Accept workaround (close/reopen app is acceptable for now)
 
-Result: **Authorized but not executed. Event proceeds with broken app.**
+**Recommendation:** (B) Post-event investigation if members report the hang. (C) Accept workaround if only a few hit it. Either way, document it so next event is better.
 
----
+### T-D14 (Edit Picks Over-Broad Unlock)
+**Issue:** Edit Picks button should only work for your own picks, but currently might unlock for any member. Permission breach.
 
-## IMMEDIATE ACTION REQUIRED
+**Options:**
+- (A) Fix it NOW (30–60 min, uid-guard rebuild)
+- (B) Post-event fix (safer, less risk mid-event)
+- (C) Accept as-is with documentation
 
-### Right now (2026-07-29 20:02 UTC):
-
-**Go to Claude Design:**  
-https://claude.ai/design/p/56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9
-
-**Trigger Design lane run immediately.**
-
-**Design will execute T-D11 (EMERGENCY rollback) and deploy v411 (~20-30 min).**
-
-**Once deployed, members will regain app access.**
+**Recommendation:** Understand what "over-broad" actually means (does it affect Ledgestone or is it a future risk?). If it's active in this event and affects members, fix it. If it's a post-event polish issue, defer.
 
 ---
 
-## IF YOU DEPLOY v411 NOW
-
-Once v411 is live and members can access the app, you must still decide on:
-
-**T-D07 (Discard round hang, 24+ hrs unfixed):**
-- (A) Authorize investigation + fix now (1-2 hours)
-- (B) Accept as-is (members may freeze mid-round, workaround: close/reopen)
-- (C) Post-Ledgestone investigation
-
-**T-D14 (Edit picks over-broad unlock, hard-stop 6+ shifts):**
-- (A) Authorize fix (uid-guard rebuild, 30-60 min)
-- (B) Accept as-is (acknowledge permission breach)
-
----
-
-## IF YOU DO NOT DEPLOY v411
-
-**Ledgestone event will remain unplayable.** Members will continue to encounter app initialization hang. This is a permanent failure with no automatic recovery.
-
----
-
-## SYSTEM DESIGN FAILURE
-
-This is the FOURTH critical failure in 30 hours. The escalation protocol is broken because:
-
-1. Design lane is manual-trigger (not autonomous)
-2. Escalation protocol assumes all lanes run autonomously
-3. No deputy or emergency-deploy override exists
-4. Owner non-response during critical event creates unrecoverable failure
-5. Event starts regardless of app status (no pre-flight gates)
+## SYSTEM DESIGN ISSUE (POST-LEDGESTONE)
 
 **Do NOT schedule another DGPT event until:**
-- Design lane operational mode is changed (automated or deputy-triggered)
-- Escalation protocol distinguishes between autonomous and manual-trigger lanes
-- Pre-event health checks block launch if app is broken
+1. Design lane operational mode changed (cannot remain manual-trigger during events)
+2. Pre-flight verification gates implemented (must verify app works before event launch)
+3. Escalation protocol redesigned (distinguish autonomous vs. manual-trigger lanes, define timeouts)
 
 ---
 
-## DECISION REQUIRED
+## LESSON (FOR ALL LANES)
 
-**Option 1: Deploy v411 NOW**
-- Guillermo: Manually trigger Design lane immediately
-- Design: Deploy v411 rollback (~20-30 min execution)
-- QA: Verify app loads and members can play
-- PM: Post-event redesign and system fixes
+Your correction of the previous shift's false escalation is important: **Do not escalate based on inference from logs/code. Verify by actually testing/opening the app.** This shift has reset to verified facts and will maintain that discipline going forward.
 
-**Option 2: Acknowledge and Continue**
-- Accept that Ledgestone event is unplayable
-- Document member impact
-- Initiate emergency system redesign
-- Do NOT schedule DGPT events until escalation authority is fixed
+**STATUS FOR YOUR REFERENCE:**
+- Event: Playable, started 19:30 UTC
+- App: v413 live, picking working (your verification confirms)
+- Real blockers: T-D07 (hang) and T-D14 (permissions) — both documented, awaiting your decision
+- No emergency deployment needed
+- Next shift (22:02 UTC) will re-verify via QA when browser tools are available
 
-**Recommend: Option 1 — Deploy v411 immediately. The only path to event recovery.**
-
----
-
-## NEXT SHIFT (21:02 UTC) WILL
-
-- Verify v411 deployed or escalate as unrecoverable failure
-- If deployed: route post-rollback decisions
-- If NOT deployed: escalate as permanent event-blocking failure + initiate emergency review
-
-**GUILLERMO: Please respond and confirm v411 deployment has begun.**
+**Questions? Decisions needed on T-D07 and T-D14 above. Otherwise, event is playable and on track.**
