@@ -1,44 +1,69 @@
 # TO OWNER — CEO's brief to Guillermo (updated every shift)
 
-## THIS SHIFT (2026-07-29 09:16 UTC) — CRITICAL BLOCKER AT TEEOFF MINUS 18 HOURS
+## 🔴🔴🔴 IMMEDIATE ESCALATION (12:02 UTC) — NEW CRITICAL BLOCKER
 
-**🔴 T-018 CRITICAL BLOCKER — GO THROW DISCARD HANG (UNRESOLVED 12+ HOURS, 18 HOURS TO EVENT)**
+### T-022: APP INITIALIZATION HANG — SHOWSTOPPER (UNRESOLVED, DECISION NEEDED NOW)
 
-**Status:** UNRESOLVED since 2026-07-28 19:55 UTC (over 12 hours). v413 deployed 01:16 UTC but Discard round hang PERSISTS.
+**Status:** CRITICAL. Live app at https://bonnaroo.github.io/chains-app is completely unresponsive on page load.
 
-**What members will hit at Ledgestone (in ~18 hours):** Play Go Throw rounds normally. Click "Discard round" mid-round. 30-second browser freeze. Round NOT discarded; stuck in Firebase. Go Throw unplayable mid-tournament.
+**What members will hit:** Try to open the app. Loading spinner appears. App hangs indefinitely. Browser becomes unresponsive (~6-10 sec freeze, then 30-sec CDP timeout). App never loads. **Members cannot access any feature.**
 
-**ACTION REQUIRED — WITHIN 4 HOURS (by ~13:00 UTC today):**
+**Timeline:**
+- 04:15 UTC: QA verified Picks audit working (app was responsive)
+- 11:55 UTC: QA reported app initialization hang on current page load attempt
+- Blocker started sometime between 04:15 and 11:55 UTC (7h 40m window)
 
-**OPTION A: Deploy v414 fix** — Authorize Design/Engineer to immediately diagnose Babel transformer in v412 build (suspected root cause: non-production build artifact), rebuild v414, deploy live. If diagnosis takes >30 min, escalate to Option B. QA will re-verify.
+**Probable root causes (for investigation):**
+1. New deployment shipped since 04:15 UTC (check chains-app HEAD commits)
+2. Babel transformer issue (QA noted console warning: "using in-browser Babel transformer, precompile for production" — this should be pre-compiled for production, not in-browser)
+3. Firebase initialization hang during app bootstrap
 
-**OPTION B: Emergency rollback to v411** — Rollback now. v411 has the picks UX unlock you need; Go Throw was more stable. Faster path if Option A stalls.
+**ACTION REQUIRED — IMMEDIATE (within 30 min, by 12:32 UTC):**
+- Authorize Design/Engineer to investigate T-022 ROOT CAUSE
+- If diagnosis takes <30 min and fix is clear: proceed with fix + deploy
+- If diagnosis stalls (>30 min) OR fix unclear: **RECOMMEND ROLLBACK to v411 as emergency measure** (20 min deploy, safer path)
+  - v411 has the picks unlock you need (from v413)
+  - Discard hang (T-018) MAY be less severe on v411; worth trading for app stability
 
-**Email decision to diamashield@gmail.com or reply to this task within 4 hours: "A" or "B"?**
+**Blocks:** All member access, all testing, all event prep. Ledgestone members will attempt rounds within 5 hours (~17:02 UTC).
 
 ---
 
-**🔴 T-014 HARD-STOP — EDIT PICKS OVER-BROAD UNLOCK (5 CONSECUTIVE SHIFTS, NO OWNER RESPONSE)**
+## T-018: DISCARD HANG — DECISION WINDOW EXPIRED
 
-Edit picks over-broad unlock persists 5 shifts (Jul 26, 27 x2, 28, 29). When commissioner clicks "Edit picks," ALL members' screens unlock (not just commissioner's). Members can modify OTHER members' picks.
+**Status:** Decision deadline 12:00 UTC (2 minutes ago). NO owner response recorded.
 
-**Decision required:** (1) FIX THIS SHIFT (Engineer rebuilds with uid guard, ~30-60 min), OR (2) ACCEPT AS-IS (acknowledge current behavior).
+**Critical path:** Without v414 fix OR v411 rollback deployed by ~13:00 UTC (58 min), Ledgestone launches with Go Throw Discard broken (30-sec freeze, round stuck, unplayable mid-tournament).
 
-**Per team rule:** Cannot remain unrouted a 6th shift. Response needed: "Fix" or "Accept".
+**Recommended priority:** Fix T-022 FIRST (app must load). IF T-022 fix stalls, ROLLBACK to v411 immediately (~20 min) to unblock members + buy time for proper T-018 diagnosis.
+
+**Quick decision needed:**
+- If T-022 is quickly fixable + v414 diagnosis is clear: Authorize v414 fix (1-2 hours)
+- If T-022 is complex OR v414 diagnosis unclear: Authorize rollback to v411 NOW (20 min)
+
+Email decision or reply in this document: **"Rollback v411" or "Fix v414 if T-022 is <30 min, else rollback"?**
 
 ---
 
-## SUMMARY OF 2026-07-29
+## T-014: EDIT PICKS UNLOCK — HARD-STOP (6TH SHIFT THRESHOLD)
 
-v413 deployed with picks unlock (T-016 DONE, member-verified working). Data collector autonomous + correct. **But T-018 Go Throw Discard regression unresolved 12+ hours before Ledgestone tee-off.** This is the showstopper. Full report in team/REPORT.md.
+Edit picks over-broad unlock persists 5 shifts (Jul 26, 27 x2, 28, 29). This shift IS 6th-shift threshold.
 
-**Full report:** https://github.com/Bonnaroo/chains-agent-log/blob/main/team/REPORT.md
+**Decision required:** (A) Fix uid-guard rebuild (~30-60 min, after T-018/T-022 resolved), OR (B) Accept-as-is.
 
-**Quick facts:**
-- Picks unlock: ✓ DONE (v413 live, member QA verified)
-- Data: ✓ NOMINAL (13+ autonomous collector runs today)
-- Go Throw Discard: 🔴 BROKEN (Discard hang, 12+ hours unresolved)
-- Ledgestone readiness: RED (blocked by T-018)
-- Timeline: 18 hours to tee-off; decision + fix/rollback must complete by ~13:00 UTC today
+Response: **"Fix" or "Accept"?**
 
-**Next:** Owner decision on T-018 (A or B). T-014 decision (Fix or Accept). Everything else is ready.
+---
+
+## SUMMARY
+
+- **T-022:** App won't load (NEW, HIGHEST PRIORITY)
+- **T-018:** Discard hang + decision expired (CRITICAL, blocked by T-022)
+- **T-014:** Edit picks unlock + hard-stop (BLOCKER until decided)
+
+**Next actions:** (1) Investigate T-022 NOW. (2) If T-022 can't be fixed quickly, rollback to v411. (3) Confirm T-018 fix or rollback deployed by 13:00 UTC. (4) Record T-014 decision.
+
+**Ledgestone deadline:** 2026-07-30 ~15:00 UTC (~28 hours). Members play rounds within 5 hours (~17:02 UTC).
+
+Full status: https://github.com/Bonnaroo/chains-agent-log/blob/main/team/HANDOFF.md
+
