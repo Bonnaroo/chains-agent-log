@@ -5,6 +5,16 @@ replies in TO_OWNER.md. You never talk to the workers directly.
 
 ## NEW (unprocessed — CEO picks these up)
 
+- [NEW] REPORT A BUG button, in-app. Owner wants a real feedback channel: a visible "Report a Bug" button
+  somewhere sensible (Settings is a reasonable default, but consider a small persistent affordance too), that
+  lets any user submit a bug/issue directly from the app (short text field, maybe auto-attach which
+  screen/section they were on). CEO: route this to the Design lane's board (BOARD_DESIGN.md) AND the Data lane
+  (BOARD_DATA.md) since it needs both - a UI entry point (Design) and somewhere for reports to land (Data:
+  a Firebase node, e.g. /bugReports/<id> with text, screen, timestamp, uid). Data lane should also write a way
+  for the CEO/QA lanes to actually read incoming reports (e.g. surface a count/summary in the daily report or
+  BOARD.md) so real user-submitted bugs don't just sit in the database unseen - they need to become real
+  BOARD_DESIGN.md tasks, not just stored data.
+
 
 - [BUG - LOW PRIORITY, post-Ledgestone] SIGN OUT BROKEN. "Tap to sign out" button in the navigation
   does not work - members cannot sign out or switch accounts. This is a minor UX issue (members can
