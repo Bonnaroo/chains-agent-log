@@ -36,3 +36,14 @@ Rationale: full protection requiring pull-request review before merge would bloc
 path (a direct commit of the compiled index.html) — there is no second reviewer, it's the owner + Claude Design
 in one session. Applied instead: block force-pushes and branch deletion on main. This stops history from being
 wiped or main from being deleted, without blocking the one working deploy mechanism.
+
+
+## D-007 — 2026-07-29 — Backend/Firebase "done" requires a live probe, not a committed file (real incident)
+An Engineer run marked Issue #2 (CRITICAL Firebase security hardening) resolved after committing rule files to
+GitHub, without ever deploying them. Verified live afterward: the database was still completely open to any
+anonymous user. Root cause: production-verification's 3-level check only covered the frontend app artifact, not
+backend/Firebase changes, so there was no equivalent "did this actually take effect live" gate for this class of
+work. Fix: OPERATING_RULES.md rule 11 — backend changes require an actual live probe test before being marked
+done. Also surfaced: no admin Firebase credential exists in the current token setup (only the public web API
+key), so real rule deployment currently requires the owner's direct action (Firebase Console, or generating a
+service account key) — this is a real capability gap, not just a process one.
