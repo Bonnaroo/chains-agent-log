@@ -5,3 +5,5 @@ GitHub Issue (labeled `source:owner`), writes the issue number next to the line,
 re-import an already-checked line.
 
 - [ ] (nothing pending right now — 2026-07-29 seed)
+
+- [x] Add a visible "registered players / field" tab for the current tournament -> Issue #18
