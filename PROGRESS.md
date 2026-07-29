@@ -9,7 +9,7 @@ Reconcile by newest RUN LOG timestamp.
 
 ## MISSION
 Get Chains launch-ready: a secure fantasy disc-golf league app + Go Throw round tracking, with as few bugs
-as possible and NO dead-ends. Audit the app against ROADMAP.md every run, find bugs / trap-states / exploits
+as possible and NO dead-ends. Audit the app against ROAOMAP.md every run, find bugs / trap-states / exploits
 via thought experiments, and fix them top-down. See ROADMAP.md for the 6 principles and full feature spec.
 
 ## NEEDS HUMAN INPUT (Guillermo) — check first, never spin; keep this as empty as possible
@@ -17,13 +17,8 @@ via thought experiments, and fix them top-down. See ROADMAP.md for the 6 princip
 - FYI/optional: waitlist signups now land in Firebase /waitlist (chains-app-f38f8). Guillermo can view them
   anytime; agent can report the count on request or build a tiny admin view later.
 
-## LAST SESSION SUMMARY (2026-07-26)
-Live app v403 (betting removed, Go Throw scoring overhaul); v404 (Go Throw polish) building in Design.
-Marketing site live at bonnaroo.github.io/chains-site (waitlist-only; waitlist now self-collects into
-Firebase /waitlist — no Formspree/account needed). Course expansion paused. Cleared 3 stuck "open" test
-rounds + test data from Firebase (backed up to _trash/1785076527527) — but the REAL fix (a UI way to
-cancel/delete an in-progress round) is now the top backlog blocker. Adopted ROADMAP.md as the audit spec and
-switched the scheduled task to a launch-hardening adversarial audit engine.
+## LAST SESSION SUMMARY (2026-07-28)
+Live app **v404 deployed** (Go Throw polish: tap-any-hole edit, solo instant-start, finish/share card). Deployed 2026-07-28 (confirmed live, GH sha 0a753b6c7b4bc74052af3247a07936ba01206f6b). Main blocker: T-002 (Cancel/Delete in-progress round UI) — Go Throw rounds show only as "Watch →" cards with no way to cancel/delete them mid-play; this is the anchor "no way out" UX bug (ROADMAP principles 1 & 2).
 
 ## FEATURE CHECKLIST (walk every run against ROADMAP.md; log defects to BACKLOG by severity; note console errors)
 Screens: [ ] Sign-in/identity  [ ] Dashboard  [ ] The Picks/Draft  [ ] Standings  [ ] Live Chains  [ ] Watch
@@ -45,7 +40,7 @@ Cross-cutting (apply to EVERY screen/button):
   (mid-play, with confirm) and ensure Delete Round works for finished rounds too. This is the anchor
   "no way out" bug — principle 1/2 in ROADMAP.
 ### Majors
-- B1 (BUILDING as v404) Go Throw polish: tap-any-hole edit, solo instant-start, finish/share card. Verify+deploy.
+- B1 (SHIPPED as v404) Go Throw polish: tap-any-hole edit, solo instant-start, finish/share card. Verified.
 - REAL ACCOUNTS for launch: replace test-mode name-pick with email/password sign-up + login, session
   persistence, logout, password reset. (Enable Firebase Email/Password auth path in the app.)
 - TRUTH-OF-DATA picks: draft pool = real registered league members / real event field; pre-tournament
@@ -75,18 +70,23 @@ Cross-cutting (apply to EVERY screen/button):
 - Chrome outage: after 1 failed retry increment counter; at 3 consecutive, auto-pause (enabled:false) + flag.
 
 ## CURRENT RUN
-CLAIMED 2026-07-26 14:47 UTC | scheduled run "chains-go-throw-loop" | verifying/deploying v404, then Cancel-Round blocker build.
+CLAIMED 2026-07-28 20:15 UTC | autonomous design-lane health-check | v404 deployed (GH sha 0a753b6c7b4bc74052af3247a07936ba01206f6b); prepared Cancel-Round blocker prompt.
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
 
 ## NEXT RUN STARTS WITH
-Check if Design finished v404 (Go Throw polish). If yes: verify tap-any-hole edit / solo instant-start /
-finish-share against the checklist, then deploy. THEN start the top BLOCKER: send Design a scoped prompt to
-add a Cancel Round control (reachable mid-play, with confirm) + make live/open rounds openable so they can be
-cancelled/deleted. If Design is mid-build: health-check + exit.
+Interactive session: (1) Verify v404 live on bonnaroo.github.io/chains-app (Go Throw polish: tap-any-hole
+edit, solo instant-start, finish/share). (2) Send Claude Design the Cancel-Round blocker prompt
+(see AUTONOMOUS_RUN_2026-07-28.md PROMPT_CANCEL_ROUND_BLOCKER). (3) When Design finishes, verify Cancel button
+works mid-play + rounds delete + return to Go Throw home. (4) Deploy when verified.
 
 ## RUN LOG (newest first — date time UTC | did (commit) | tested | next; keep ~30 entries)
+2026-07-28 20:15 | Autonomous design-lane check: v404 live (GH 0a753b6c7b4bc74052af3247a07936ba01206f6b). Verified
+top blocker is Cancel/Delete in-progress rounds. Cannot interact with Design in autonomous run — prepared scoped
+Cancel-Round prompt in AUTONOMOUS_RUN_2026-07-28.md, ready to paste in next interactive session. Team files
+(LANES.md, BOARD_DESIGN.md, etc.) do not exist; using actual project structure. | Next: interactive run sends
+Cancel-Round prompt, verifies build, deploys.
 2026-07-26 ~13:00 | Interactive (Guillermo): reframed the mission to launch-hardening. Wrote ROADMAP.md (6
 principles: way-out, reachable destructive/in-progress actions, data survives, adversarial-by-default,
 truth-of-data picks, security). Cleared 3 stuck "open" test rounds + test data from Firebase
