@@ -85,3 +85,30 @@ Status: READY FOR NEXT CYCLE (all checklist items pass; picks unlock working wel
 **Status**: BLOCKED — no browser access (Claude in Chrome extension not connected)
 Scheduled rotation audit for Standings section could not proceed. Will resume on next shift when browser tools available.
 No app code, Firebase data, or other lanes' files were touched.
+
+## T-022 — CRITICAL BLOCKER — App initialization hangs indefinitely (new blocker, 2026-07-30)
+Status: CRITICAL — BLOCKS ALL QA TESTING
+**2026-07-30 (current shift) INITIAL LOAD HANG**: Live app at https://bonnaroo.github.io/chains-app 
+renders initial loading UI (spinner + disc golf pin icon) but then hangs indefinitely. Browser 
+renderer becomes unresponsive after ~6-10 seconds. Multiple load attempts across different browser tabs 
+(2 tabs created) all produce the same hang signature: CDP timeout after 30 seconds, tab renderer frozen.
+
+**Testing impact**: CRITICAL — cannot proceed with Standings section rotation audit or any other 
+section audit while app is non-functional. All prior shifts verified working state (v413 deployed 
+successfullly, Picks/Draft section PASS, Watch/Settings/Dashboard sections all PASS). Something in 
+either the live deployment or Firebase backend has degraded between 2026-07-30 04:15 UTC (Picks audit, 
+all working) and 2026-07-30 current shift.
+
+**Hypothesis**: Either (1) v413 or later deployment introduced a regression in app initialization, 
+or (2) Firebase connection/data fetch is stalled during app bootstrap, or (3) JavaScript execution 
+is hung on initial page load (Babel transformer warning from prior shifts suggests possible transpiler 
+issue).
+
+**Evidence**: Loading spinner appears (app HTML/CSS loads), but page never progresses past spinner 
+state. No interactive elements reachable. Browser back-button used to escape hung state.
+
+**Escalation**: LANE:DESIGN/ENGINEER — urgent. Verify: (1) latest live deployment is actually v413, 
+(2) no new deployment or Firebase changes since last known-good state (2026-07-30 04:15 UTC), 
+(3) if new deployment exists, revert to last known-good v413 or identify the regression.
+
+**No QA testing possible until app is responsive.**
