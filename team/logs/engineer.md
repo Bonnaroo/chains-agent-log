@@ -15,3 +15,7 @@ cause: this lane cannot run unattended at all - Claude Design has no API, only a
 lane is now MANUAL-TRIGGER ONLY (no cron), must confirm browser access first and stop cleanly (log "BLOCKED",
 no improvising) if it's missing, and is explicitly told team/PROGRESS.md is legacy/off-limits. DO NOT repeat:
 scheduling this lane on a cron, or falling back to local files/legacy docs when browser access is missing.
+
+2026-07-29 ~01:15 UTC — [ENGINEER LANE — BLOCKED]
+Browser available (Chrome confirmed active), live app verified at v411. Attempted to access Claude Design (https://design.claude.ai) but received error page (unreadable frame). Cannot proceed with design/build workflow without access to Design.
+LESSON: Claude Design accessibility is a hard blocker for this lane. If Design is down/unreachable, any design work is blocked until service restored. Next run: check Design accessibility early before attempting task work.
