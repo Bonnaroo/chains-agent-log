@@ -156,3 +156,14 @@ Checklist results:
 
 **NEXT SHIFT ROTATION**: Standings section.
 - 2026-07-30 (current shift) | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: Claude in Chrome extension not connected. Cannot access live app to run verification. Skipping this rotation cycle. No changes to app code, Firebase, or other lane files.
+- 2026-07-30 (current shift) | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: app initialization hang. 
+
+FINDING (CRITICAL BLOCKER T-022): Live app at https://bonnaroo.github.io/chains-app is completely unresponsive on initial load. Initial loading spinner (disc golf pin icon + orange spinner circle) renders correctly, then app hangs indefinitely. Browser renderer becomes unresponsive after ~6-10 seconds. Multiple fresh load attempts across 2 different browser tabs produce identical hang: CDP timeout after 30 seconds, renderer frozen, no interactive elements reachable. Prior successful audits (Picks at 2026-07-30 04:15 UTC, Watch/Settings/Dashboard earlier) all showed working state with v413 deployed. Something has degraded between then and now.
+
+IMPACT: CRITICAL — cannot proceed with rotation audit or any other QA testing while app does not render. This is a complete blocker on all QA lanes' work.
+
+ESCALATION FOR LANE:DESIGN/ENGINEER: Verify (1) current live deployment version (is v413 still live, or did a new deployment ship and introduce regression?), (2) Firebase connection/data health during initialization, (3) whether Babel transpiler warning from prior shifts (noted: "using in-browser Babel transformer, precompile for production") is now causing runtime hang on initial page load. Last known-good state: 2026-07-30 04:15 UTC (Picks audit verified working, all interactive sections responsive).
+
+No changes to app code, Firebase data, or other lane files. All prior findings (T-018 Discard hang, T-014 edit-picks unlock, T-022 new init hang) remain UNRESOLVED and escalated for LANE:DESIGN/ENGINEER.
+
+NEXT SHIFT: Cannot proceed with Standings audit until app is responsive. PM/Engineer must resolve T-022 blocker before next QA shift can resume testing.
