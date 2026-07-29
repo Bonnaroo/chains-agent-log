@@ -510,3 +510,70 @@ Edit picks over-broad unlock flagged 6 consecutive shifts. Owner decision needed
 6. Confirm app is live and responsive before Ledgestone members begin rounds
 
 **LESSON:** Owner non-response to multiple critical escalations within hours of a major event creates a critical supervision failure. Recommendation: Consider deputy authority protocols (Design/QA lane can execute emergency rollback without owner approval if event is <4 hours away and app is completely broken).
+
+- 2026-07-29 16:02 UTC | [CLAUDE] | CEO supervisor shift (chains-office-on-shift).
+
+**CRITICAL ESCALATION — OWNER DECISION FAILURE AT EVENT THRESHOLD**
+
+**STEP 0 — LANE SUPERVISION (verified 16:02 UTC):**
+- DATA LANE ✅ WORKING: Autonomous run 15:38 UTC. Health-check pass. Phase 2 PDGA-verified. On cadence. Zero blockers.
+- QA LANE 🔴 BLOCKED: Claude in Chrome extension disconnected (5+ consecutive shifts). Cannot execute rotation audits. Cannot verify critical blockers (T-018, T-014, T-022). Last confirmed 08:20 UTC (7h 42m ago).
+- ENGINEER LANE 🔴 BLOCKED: v413 live (14h 47m old, deployed 01:15:41 UTC). Zero new commits. Awaiting owner decision on three critical blockers. All three decision windows have EXPIRED with ZERO owner response.
+
+**STEP 1 — BUG REPORTS:** UNROUTED empty. Zero bugs routed this shift.
+
+**🔴🔴🔴 THREE CRITICAL BLOCKERS, ALL UNRESOLVED, ALL AWAITING EXPIRED OWNER DECISIONS:**
+
+1. **T-022 (APP INITIALIZATION HANG)** — COMPLETE SHOWSTOPPER
+   - App won't load (spinner renders, then hangs indefinitely, 30-sec timeout, renderer frozen)
+   - Members cannot access ANY feature at all
+   - First reported: ~11:55 UTC, 2026-07-29 (4h 7m ago)
+   - Status: UNFIXED
+
+2. **T-018 (DISCARD HANG)** — CRITICAL BLOCKER (24+ HOURS UNFIXED)
+   - Go Throw "Discard round" link causes 30-second app freeze. Round is NOT discarded; it stays stuck in Firebase. Member is trapped mid-round.
+   - First reported: 2026-07-28 19:55 UTC (24h 7m ago)
+   - Persists in v412 (21:15 UTC) → v413 (01:16 UTC) → STILL BROKEN
+   - Decision deadline EXPIRED at 12:00 UTC (4h 2m ago). NO owner response.
+   - Status: UNFIXED
+
+3. **T-014 (HARD-STOP AT 6TH SHIFT)** — MANDATORY ESCALATION THRESHOLD REACHED
+   - Edit picks over-broad unlock. When one member clicks "Edit picks," ALL members' pick screens unlock (members can modify other members' picks).
+   - Flagged 6 consecutive shifts: Jul 26, 27×2, 28, 29×2
+   - Hard-stop threshold REACHED THIS SHIFT (16:02 UTC) per LANES.md mandatory-escalation rule
+   - Owner has never responded
+   - Status: UNRESOLVED
+
+**DECISION TIMELINE FAILURE:**
+- 08:02 UTC: CEO escalated T-018 + T-014 with decision windows (4-hour window, immediate deadline)
+- 09:16 UTC: Prior shift reaffirmed, narrowed to 09:30 UTC decision point
+- 12:00 UTC: T-018 decision window EXPIRED (no response)
+- 14:02 UTC: CEO shift flagged "launching with critical blocker" if unresolved by 14:32 UTC
+- 15:02 UTC: CEO shift documented owner non-response as "escalation failure"
+- 16:02 UTC (NOW): This shift. T-014 hard-stop threshold REACHED. Owner still SILENT.
+
+**EVENT CONTEXT:**
+- Ledgestone Open starts 2026-07-30 ~15:00 UTC (23 hours away)
+- Members will attempt Go Throw rounds within 1 hour (~17:02 UTC)
+- EVENT_READINESS: AMBER (roster correct, but permissions T-016 + lock T-017 unverified)
+- If blockers unresolved: Event launches with app that won't load + Go Throw that freezes. Members will encounter showstopper bugs mid-tournament.
+
+**WHAT I DID THIS SHIFT:**
+1. ✅ Verified lane status: Data working, QA blocked, Engineer blocked
+2. ✅ Confirmed bug report pipeline empty (zero new bugs to route)
+3. ✅ Updated TO_OWNER.md with FINAL urgent escalation (three-option decision framework + hard-stop deadline)
+4. ✅ Updated HANDOFF.md with complete critical status and owner non-response documentation
+5. ✅ Logged this shift with full escalation context and timeline
+
+**ESCALATION PROTOCOL ACTIVATED:**
+- TO_OWNER.md now contains three explicit decision options (A: Emergency Rollback / B: Design Session / C: Acknowledge & Launch)
+- T-014 hard-stop requires owner decision (A: Fix uid-guard / B: Accept-as-is)
+- Decision deadline: 16:30 UTC (28 minutes from now, 2026-07-29 16:02 UTC)
+- If no owner response by 16:30 UTC: CEO will invoke mandatory-escalation protocol and recommend emergency rollback to v411
+
+**RECOMMENDED PATH:**
+Emergency rollback to v411 (~20-30 min deploy) can restore member access if owner authorizes immediately. This is the safest choice for event day given T-022 investigation uncertainty.
+
+**PROTECTED + VERIFIED:** Kadey draft order, standings, WATCH, In the Bag, Ledgestone 156-MPO roster (PDGA-verified by Data lane 15:38 UTC), collector autonomy (100% green), Phase 2 data (intact, additive-only).
+
+**NEXT SHIFT (17:02 UTC) MUST:** Verify owner decision received. If Option A (rollback): coordinate Design lane deployment by 17:30 UTC, QA verify by 17:45 UTC (members play ~17:02 UTC). If Option B (Design session): verify investigation begun. If Option C or no response: implement escalation protocol and document event launch with known critical blockers.
