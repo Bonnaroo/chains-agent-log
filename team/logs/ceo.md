@@ -228,3 +228,23 @@ FROM_OWNER.md [NEW] items processed:
 **NO DATA CHANGES BY CEO LANE.** All work is routing, escalation, supervision (read-only). No Firebase writes, no app code changes, no deletions.
 
 **NEXT SHIFT MUST:** (1) Verify T-018 fixed or coordinate rollback decision with Owner; (2) Confirm T-014 owner decision recorded; (3) Verify v413 member UX confirmed by Owner.
+
+- 2026-07-29 04:02 UTC | [CLAUDE] | CEO supervisor shift + escalation (chains-office-on-shift, hourly :02 mark).
+
+**STEP 0 — Supervise:** Data lane WORKING (multiple autonomous runs, Phase 2 Step 2 verified durable). QA lane WORKING (section rotation audits: Watch PASS, Settings mostly-PASS, Dashboard PASS). Engineer lane 🔴 CRITICAL BLOCKER (v413 deployed but T-018 Discard hang PERSISTS unresolved; 4th consecutive shift since 2026-07-28 19:55 UTC).
+
+**STEP 1 — Bug Reports:** UNROUTED section had 1 entry (Field roster not loading on mobile Safari, user-test-002, 2026-07-28T17:38:20Z). Routed to T-D09 (BOARD_DESIGN.md, HIGH priority, iOS-specific rendering issue). ROUTED now complete with this entry.
+
+**CRITICAL RE-ESCALATION — T-018 REGRESSION BLOCKER (4th shift):** "Discard round" link in Go Throw causes 30-second CDP timeout hang. Round is NOT actually discarded (stays stuck in Firebase). Reproduced multiple times across different round types (Johnson Park, Tadpole Beach). v413 was deployed to fix picks issue (which it did), but hang persists AFTER v413 deployment. QA verified at 08:20 UTC, 10:00 UTC context checks, and 03:56 UTC (Dashboard section, Go Throw not re-tested but prior verifications stand). Root-cause suspected: v412 console warning "using in-browser Babel transformer, precompile for production" indicates non-production build artifact (prior deploys v406-v410 had no such warning). **Ledgestone starts ~20 hours away; members WILL play Go Throw rounds mid-event. Stuck rounds = event-critical blocker.** Updated T-D07 on BOARD_DESIGN.md with re-escalation flag + decision point: if fix cannot deploy within 2 hours, consider emergency rollback to v411 (which has picks UX fix; Go Throw may be more stable). Escalated to TO_OWNER.md for owner awareness.
+
+**T-014 HARD-STOP ESCALATION (5th flag since 2026-07-26):** Edit picks over-broad unlock persists unresolved (5 consecutive shifts: 07-26, 07-27 x2, 07-28, 07-29). Per LANES.md mandatory rule ("If the same mistake/blocker shows up again, that is a hard stop..."), this now requires explicit owner decision recorded in writing. Routed to TO_OWNER.md: FIX THIS SHIFT (Engineer rebuilds with uid write guard, ~30-60 min) or ACCEPT AS-IS (acknowledge current behavior, protect from regression). No PM routing exists; cannot remain unrouted a 6th shift.
+
+**New task routed:** T-D09 (BOARD_DESIGN.md) — Fix field roster rendering on mobile Safari (user report from 2026-07-28, field-view screen, iOS/iPad). HIGH priority; may affect Ledgestone players. Quick diagnosis prioritized after T-018 root-cause work.
+
+**Actions this shift:** (1) Supervise lanes (confirmed Data/QA working, Engineer critical blocker confirmed). (2) Route 1 bug report (Safari field-view) → T-D09. (3) Re-escalate T-018 with rollback option to owner. (4) Route T-014 decision request to owner (FIX or ACCEPT). (5) Update BOARD_DESIGN.md (T-D07 re-escalation, T-D09 new), BUG_REPORTS_INBOX.md (mark routed), TO_OWNER.md (escalations), HANDOFF.md (summary). No app/Firebase/data changes.
+
+**Protected + verified good:** Kadey-first draft order (v413 preserves), standings, Go Throw WATCH (QA section audit PASS), In the Bag, Ledgestone roster (156 MPO verified), collector autonomy (multiple successful runs today), Phase 2 data (additive-only, durable).
+
+**Ledgestone readiness (20 hours to event):** Data ✓, Picks v413 working (pending owner member verify + T-014 decision), Go Throw 🔴 blocked by T-018, Field view 🟡 T-D09 pending. EVENT_READINESS stays AMBER + CRITICAL FLAG for T-018 until fixed or rolled back.
+
+**Next shift must:** (1) Verify T-018 fixed or coordinate rollback with owner. (2) Confirm T-014 owner decision recorded. (3) Proceed with T-D09 diagnosis if T-018 is resolved.
