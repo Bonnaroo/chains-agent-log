@@ -35,3 +35,16 @@
 - **Updated**: team/BOARD_DATA.md (marked Step 2 DONE, queued Step 3: Design build to wire Phase 2 reads).
 - **Blocked/flagged**: Step 3 is blocked on Design lane (waiting on a Claude Design build to switch the app from reading baked-in data to reading /leagues nodes). This is expected; Data lane work on Phase 2 is complete pending that build.
 - **Lesson**: Firebase schema + seed validation is straightforward once the design doc exists. The real gate to Phase 2 going live is the Design build, not data preparation.
+## 2026-07-29 (verification pass)
+- **Ran**: autonomous data-lane scheduled run (chains-data-lane schedule, continuation/verification pass).
+- **Bug-watch**: /bugReports.json = null. No new bug reports. Feature not yet built (expected).
+- **Data health check**:
+  - /playRounds: 1 active round (pr-ms5bygyzv4rl, Tadpole Beach 18-hole, will's round, 3 players, hole 2 in progress). No orphans.
+  - /liveRounds: mirrors playRounds correctly. Zero consistency issues.
+  - /waitlist: null (empty).
+  - **Verdict**: All production round data is clean, durable, and consistent. No integrity issues to flag.
+- **Phase 2 verification**: Confirmed /leagues/ledgestone-test-2026/eventField/96414 seed data is intact in Firebase (Ledgestone Open, MPO, 156-player fieldSize, 10-player sample, source URL). Still additive; no app reads it yet.
+- **chains-dgpt-data Actions**: "Collect DGPT Data" workflow — last 10 runs = 9 success + 1 in-progress. No failures. Health: green.
+- **Updated**: BOARD_DATA.md (noted health check complete; Step 3 awaiting Design lane).
+- **Blocked**: Step 3 (Design build to read Phase 2 nodes) is Data lane's only remaining blocker. Data readiness = 100%; presentation layer gate.
+- **Lesson**: Verification is preventative maintenance. Prior seeding (2026-07-29 run 1) remains sound; low risk if Design ships Step 3 soon. Health checks should run every pass, not just when new work is queued.
