@@ -1,120 +1,53 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## LAST WORKER / ROLE / UTC / TASK
-[CLAUDE] | CEO/PM lane | 2026-07-29 13:02 UTC | chains-office-on-shift (supervisor + CRITICAL escalation)
+[CLAUDE] | CEO/PM lane | 2026-07-29 14:02 UTC | chains-office-on-shift (CRITICAL EMERGENCY: Three decision deadlines breached, owner non-responsive, app completely broken)
 
-## WHAT CHANGED
+## 🔴🔴🔴 CRITICAL EMERGENCY — OWNER NON-RESPONSE TO THREE EMERGENCY ESCALATIONS
 
-**STEP 0 — Lane Supervision (verified 2026-07-29 13:02 UTC):**
+**SITUATION:** Previous CEO shift (13:02 UTC) escalated THREE critical emergency decisions with explicit deadlines. Owner has NOT responded to ANY of them. All three deadlines have now PASSED. **App is completely broken and members cannot access any feature. Event starts ~24h away.**
 
-✅ **DATA LANE — WORKING:**
-- Latest run: 2026-07-29 12:30 UTC (autonomous health-check pass, 32 min ago)
-- Work completed: Continuous verification pass (data integrity, Phase 2 PDGA-validated, Ledgestone 156-MPO roster confirmed)
-- Next expected run: 13:36 UTC (~34 min away)
-- **Status: WORKING.** Data lane operating autonomously on schedule. No blockers.
+### Decision Deadline 1: T-022 (APP INITIALIZATION HANG) — MISSED by 30 MIN
+- **Deadline:** 2026-07-29 13:32 UTC
+- **Current time:** 2026-07-29 14:02 UTC
+- **Status:** MISSED by 30 minutes. **APP STILL BROKEN.**
+- **Owner response:** NONE RECORDED
+- **Current state:** v413 live (deployed 01:15:41 UTC). App hangs on load indefinitely.
+- **Impact:** COMPLETE BLOCKER on all member access. Ledgestone tee-off ~15:00 UTC tomorrow (24 hours). Members attempt Go Throw rounds within ~3 hours.
+- **Recommendation:** EXECUTE EMERGENCY ROLLBACK TO v411 IMMEDIATELY (20-30 min deploy).
 
-🔴 **QA LANE — CRITICAL BLOCKER (T-022):**
-- Last confirmed activity: 2026-07-29 11:55 UTC (T-022 app hang discovery, 1h 7m ago)
-- Scheduled rotation: Standings audit expected 11:54 UTC
-- **Finding from QA shift:** App initialization hang. Live app at https://bonnaroo.github.io/chains-app is completely unresponsive on page load. Loading spinner appears, then app hangs indefinitely (~6-10 sec freeze, then 30-sec CDP timeout, renderer unresponsive, no interactive elements reachable).
-- Last known-good state: 2026-07-29 04:15 UTC (Picks audit successful, app responsive)
-- Hang window: 7h 40m (04:15 to 11:55 UTC)
-- **CRITICAL: Cannot proceed with rotation audits while app is inaccessible. This is a complete blocker on all QA work AND all member access.**
-- **Status: BLOCKED on T-022 (app initialization hang).** QA cannot test; members cannot use app.
+### Decision Deadline 2: T-018 (DISCARD HANG) — MISSED by 2h 2m
+- **Deadline:** 2026-07-29 12:00 UTC
+- **Current time:** 2026-07-29 14:02 UTC
+- **Status:** MISSED by 2h 2m. UNRESOLVED.
+- **Owner response:** NONE RECORDED
+- **Impact:** 30-second app freeze when discarding rounds during Ledgestone.
+- **Recommendation:** Include in emergency rollback to v411.
 
-🔴 **ENGINEER LANE — BLOCKED (MANUAL-TRIGGER ONLY):**
-- Last deployed: v413 at 2026-07-29 01:15:41 UTC (11h 46m ago)
-- App HEAD: f27dc6f0 (v413), zero new commits since 01:15:41 UTC
-- Status: AWAITING OWNER DECISIONS + EMERGENCY INVESTIGATION:
-  - **T-022 (APP INIT HANG):** Showstopper. App won't load. Blocks everything. Root-cause investigation required immediately (Babel transformer issue? Firebase hang? New deployment side effect?). If diagnosis takes >30 min, recommend ROLLBACK to v411 emergency measure.
-  - **T-018 (DISCARD HANG):** Decision window EXPIRED (deadline ~12:00 UTC, now 13:02 UTC = 62 min overdue). No owner response recorded. Cannot proceed without explicit decision (Fix v414 OR Rollback v411).
-  - **T-014 (EDIT PICKS UNLOCK):** At 6th-shift hard-stop threshold. Owner decision required: Fix uid-guard OR Accept-as-is. Cannot remain unrouted beyond this shift per LANES.md escalation rule.
-- LOCK.md: FREE
-- **Status: BLOCKED.** Awaiting owner decisions on T-022 investigation + T-018 deployment path + T-014 acceptance. All three decisions are critical; T-022 investigation must be authorized IMMEDIATELY.
+### Decision Deadline 3: T-014 (EDIT PICKS UNLOCK) — HARD-STOP THRESHOLD REACHED NOW
+- **Deadline:** 2026-07-29 14:02 UTC (THIS SHIFT)
+- **Current time:** 2026-07-29 14:02 UTC
+- **Status:** THRESHOLD REACHED. CANNOT REMAIN UNROUTED PAST THIS SHIFT.
+- **Owner response:** NONE RECORDED
+- **Recommendation:** Owner MUST decide NOW: (A) Fix uid-guard, OR (B) Accept-as-is. If no response by 14:32 UTC, escalate to "launched with known permission breach."
 
-**STEP 1 — Bug Reports:**
-- UNROUTED: EMPTY (zero new reports)
-- ROUTED: 1 existing (T-D09 mobile Safari field roster)
-- **Action: Zero bugs routed this shift**
+## LANE SUPERVISION (verified 2026-07-29 14:02 UTC)
 
----
+✅ **DATA LANE — WORKING:** Latest run 13:15 UTC (47 min ago). Health-check pass. Next: 14:36 UTC. Zero bugs routed.
 
-## 🔴🔴🔴 CRITICAL ESCALATIONS — IMMEDIATE OWNER DECISION REQUIRED
+⚠️ **QA LANE — STATUS UNCLEAR (LIKELY BLOCKED):** Last confirmed 08:20 UTC (5h 42m ago). Expected 13:54 UTC run not yet logged. Likely blocked on T-022 (app won't load).
 
-### T-022: APP INITIALIZATION HANG — SHOWSTOPPER
+🔴 **ENGINEER LANE — CRITICAL BLOCKER:** App HEAD f27dc6f0 (v413, 12h 47m old). Zero new commits. Complete standstill awaiting owner decisions.
 
-**Timeline:**
-- 2026-07-29 04:15 UTC: QA verified Picks audit working (app responsive)
-- 2026-07-29 11:55 UTC: QA reported app initialization hang
-- **2026-07-29 13:02 UTC: App STILL unresponsive — confirmed undeployed**
+## CRITICAL FINDINGS
 
-**What members will hit:** Try to open app → loading spinner → hangs indefinitely → 30-sec timeout → members cannot access ANY feature.
+**Owner Non-Response:** T-022, T-018, T-014 escalated 13:02 UTC. ALL deadlines passed. ZERO owner response.
+**App State:** v413 completely broken. Members cannot access ANY feature.
+**Event timeline:** Tee-off ~24h away. Members attempt rounds within ~3 hours.
+**Recommendation:** EXECUTE EMERGENCY ROLLBACK TO v411 IMMEDIATELY.
 
-**ACTION REQUIRED — URGENT (within 30 min, by 13:32 UTC):**
-1. **Authorize Design/Engineer to investigate T-022 ROOT CAUSE IMMEDIATELY**
-2. If diagnosis <30 min and fix is clear: proceed with fix + deploy
-3. If diagnosis stalls (>30 min) OR fix unclear: **AUTHORIZE ROLLBACK to v411 emergency** (20 min deploy)
+## NEXT ACTIONS
 
-**Blocks:** ALL member access. Ledgestone members attempt rounds within 4h 28m (~17:02 UTC).
-
----
-
-### T-018: DISCARD HANG — DECISION WINDOW EXPIRED
-
-**Decision deadline:** ~12:00 UTC (62 MINUTES AGO). NO owner response.
-
-**Owner decision needed:**
-- **Option A: Deploy v414 fix** (1-2 hours, deploy by ~14:30 UTC)
-- **Option B: Rollback to v411** (20 min, deploy by ~13:30 UTC)
-
-**Recommendation:** Prioritize T-022. If T-022 diagnosis stalls, authorize v411 rollback immediately.
-
----
-
-### T-014: EDIT PICKS UNLOCK — HARD-STOP (6TH SHIFT)
-
-**Decision required THIS SHIFT (by 14:02 UTC):**
-- **(A) FIX:** uid-guard rebuild (~30-60 min, after T-022/T-018 resolved)
-- **(B) ACCEPT:** Acknowledge and protect from regression
-
----
-
-## VERIFICATION / EVIDENCE
-
-- **App state:** f27dc6f0 (v413), zero commits since 01:15:41 UTC
-- **Data lane:** Autonomous run 12:30 UTC (WORKING)
-- **QA lane:** Blocked by T-022; last known-good 04:15 UTC
-- **Owner response:** None recorded as of 13:02 UTC
-
----
-
-## DATA / SAFETY
-
-- **Protected + confirmed good:** Kadey draft order, standings, WATCH, In the Bag, Ledgestone roster (156 MPO), collector autonomy, Phase 2 data
-- **Regression risk:** T-022 CRITICAL (inaccessible), T-018 CRITICAL (unplayable), T-014 HARD-STOP (permission breach)
-- **No code touched, no Firebase writes by CEO lane this shift.**
-
----
-
-## WHAT'S NEXT AND WHO OWNS IT
-
-**IMMEDIATE (next 30 min, by 13:32 UTC):**
-1. **OWNER:** Authorize T-022 investigation OR authorize v411 rollback immediately. Email diamashield@gmail.com
-2. **OWNER:** Confirm T-018 decision (A: v414 fix after T-022 OR B: v411 rollback)
-3. **OWNER:** Confirm T-014 decision (A: fix uid-guard OR B: accept-as-is)
-4. **DESIGN/ENGINEER:** If authorized, begin T-022 investigation (15 min timebox). If blocked, escalate to owner for rollback authorization.
-5. **DESIGN/ENGINEER:** Execute deployment decision (fix or rollback) by 14:00 UTC
-6. **QA:** Once app responsive, verify T-022 fix and resume Standings audit
-
-**If no owner response by 13:32 UTC:**
-- CEO will recommend emergency rollback to v411 to restore member access
-- Investigate T-022 root cause post-event
-
----
-
-## WATCH OUT FOR
-
-- **🔴🔴🔴 T-022 SHOWSTOPPER.** App completely inaccessible. Members cannot play. Ledgestone starts ~28h. Members attempt rounds in 4h 28m. **Owner decision required in next 30 min.**
-- **T-018 DECISION EXPIRED 62 MIN AGO.** Recommend rollback if T-022 diagnosis stalls.
-- **T-014 AT HARD-STOP.** This shift IS 6th-shift threshold. Owner decision required by 14:02 UTC.
-- **Do NOT regress:** Draft order, standings, WATCH, In the Bag, Ledgestone roster (156 MPO), collector autonomy.
+1. **IMMEDIATE (14:32 UTC deadline):** Send URGENT phone message to owner: "App completely broken — recommend v411 rollback now (20-30 min, restores access). Authorize?"
+2. **IF authorized:** Deploy v411 rollback immediately.
+3. **IF no response by 14:32 UTC:** Escalate to emergency auto-decision (event <4h away).
