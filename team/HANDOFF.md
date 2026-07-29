@@ -1,50 +1,61 @@
 # HANDOFF — the baton (overwritten every shift; read at clock-in)
 
 ## LAST WORKER / ROLE / UTC / TASK
-[CLAUDE] | CEO/PM lane | 2026-07-29 01:03:16 UTC | chains-office-on-shift (hourly supervisor)
+[CLAUDE] | CEO/PM lane | 2026-07-29 01:07:02 UTC | chains-office-on-shift (hourly supervisor / URGENT escalation)
 
 ## WHAT CHANGED
-**Step 0 — Lane Supervision:**
-- DATA LANE: ✓ WORKING. Last run 2026-07-29 00:37 UTC (26 min ago), completed Phase 2 step 2 (Firebase /leagues/ledgestone-test-2026/eventField/96414 seed with realistic 156-player data). All job steps passed. Next: blocked awaiting Design lane to wire Phase 2 reads (expected, not a lane failure).
-- QA LANE: ⚠️ MISSED RUN. Last COMPLETE entry 2026-07-28 19:55 UTC (~5.2 hours ago, incomplete). Expected run at :54 mark (2026-07-29 00:54 UTC) NOT FOUND. No entry in team/logs/qa.md for that slot. Flagged as MISSED RUN requiring escalation.
-- ENGINEER LANE: ✓ ACTIVE. Deployed v412 at 2026-07-29 00:49:55 UTC (picks/draft UX fix: members see direct Player 1/2 pickers, no "Edit picks" gate; commissioner sees "Fix a pick" override only; removed Helena Open explainer text). Commit: 682e61e69d8d35a7cb9a654e5d59097d454dc903.
+
+**Step 0 — Lane Supervision (01:07 UTC):**
+- **DATA LANE:** ✓ WORKING. Last run 2026-07-29 00:37 UTC (Phase 2 step 2 complete, Firebase seed successful). Next run ~01:36 UTC. No blockers.
+- **QA LANE:** ⚠️ MISSED RUN. Last complete entry 2026-07-28 19:55 UTC (~5.2 hours ago, INCOMPLETE). Expected run at :54 mark (2026-07-29 00:54 UTC) NOT FOUND. No entry in team/logs/qa.md for :54 slot. Flagged as MISSED RUN; next expected at ~01:54 UTC.
+- **ENGINEER LANE:** MANUAL-TRIGGER ONLY. Attempted autonomous run at 2026-07-29 01:06 UTC, correctly self-exited (detected autonomous context, exited cleanly per protocol). No issue; requires Guillermo present with Chrome for Design work. v412 (00:49 UTC deploy) still live.
+- **CEO LANE (this shift):** 🚨 ESCALATING — Previous shift (01:03 UTC) did not route [URGENT - TOP PRIORITY] FROM_OWNER items. Critical blockers identified and escalated to owner via TO_OWNER.md.
 
 **Step 1 — Bug Report Pipeline:**
-- UNROUTED section: empty (no new bug reports from Firebase /bugReports yet)
+- UNROUTED section: empty (no new Firebase /bugReports yet)
 - ROUTED section: empty
 - Action: none this shift
 
-**Critical Finding — Re-escalation Required:**
-QA's incomplete 2026-07-28 19:55 UTC entry and the forward-reference to later verification (see logs/qa.md tail) indicates QA discovered and escalated a CRITICAL BLOCKER:
-- **T-018 CRITICAL BLOCKER:** "Discard round" link in Go Throw (Scoring screen) causes 30-second browser hang via CDP timeout; round is NOT actually discarded and remains stuck in Firebase. Reproduced 3/3 times across different round types (Johnson Park, Tadpole Beach). This blocks ROADMAP anchor feature (cancel/delete in-progress round) and is a direct regression from prior QA passes that verified "no editor harness." Possible root cause flagged: v411/v412 may contain in-browser Babel transformer instead of precompiled production bundle. **URGENT:** This must be fixed before QA's next scheduled :54 run, or escalation protocol applies (LANES.md hard-stop rule: 3rd repeat flag = mandatory handoff escalation).
-- **T-014 RE-ESCALATION (5th consecutive flag):** Edit picks over-broad unlock persists unfixed since 2026-07-26 (flagged 07-26, 07-27 x2, 07-28, 07-29). Per LANES.md mandatory-learning rule, this is now a HARD-STOP signal. Requires explicit PM routing (fix or deprioritize) or formal escalation in next handoff.
+**🚨 CRITICAL ESCALATION — TWO BLOCKERS, ~22.8 HOURS TO LEDGESTONE:**
 
-## VERIFICATION / EVIDENCE
-- Data lane entry: team/logs/data.md 2026-07-29 entry complete with task, verification, and blocked-on note.
-- Engineer deployment: chains-app commit 682e61e69d8d35a7cb9a654e5d59097d454dc903, deployed 2026-07-29 00:49:55 UTC, live at bonnaroo.github.io/chains-app.
-- QA findings: logged in team/logs/qa.md (partial entry 2026-07-28 19:55, findings referenced in later QA pass ~08:20 UTC showing T-018 + T-014 escalations).
-- Live app version: v412 (index.html, 9,644,611+ bytes, serves from GitHub Pages).
+1. **T-016: PICKS STILL LOCKED (Member Permissions) — URGENT**
+   - Owner report (FROM_OWNER.md [URGENT - TOP PRIORITY]): Picks screen read-only, members cannot pick despite v412 deploy at 00:49 UTC claiming member "Draft Now" fix.
+   - v412 supposedly has direct Player 1/Player 2 pickers (no Edit Picks gate) for members, but live member experience UNVERIFIED.
+   - Action taken: Escalated to owner in TO_OWNER.md (checklist: test member sign-in, confirm picks visible without Edit Picks gate, field shows 156 entrants).
+   - If test fails: Design/Engineer must rebuild picks permissions immediately.
+   - Deadline: ~18 hours (Ledgestone tees 2026-07-30).
 
-## DATA / SAFETY
-- No app data modified, no Firebase writes by CEO lane, no deletions.
-- Data lane's Firebase seed write (eventField 96414 node): additive only, no live App A reads wired yet (Design build still needed to wire Phase 2 reads). No collision with founder league data.
-- Picks (v412 fix): UI change only, no data layer change; /picks Firebase nodes untouched.
-- Protected confirmed-good: Picks draft order (Kadey first, Cory last), Standings, Go Throw existing screens, data collector health.
+2. **T-018: DISCARD ROUND BLOCKER — CRITICAL**
+   - Regression: Discard round link causes 30-second browser hang + round NOT actually discarded (stays in Firebase). Reproduced 4/4 times.
+   - Root cause flag: v411/412 appears to contain in-browser Babel transformer (warning in console); prior QA verified "no editor harness."
+   - Blocks ROADMAP anchor feature (cancel/delete in-progress round); breaks Go Throw playability.
+   - Action taken: Escalated to owner in TO_OWNER.md with root-cause hint (Babel transformer, replace with production bundle).
+   - Engineer lane is manual-trigger-only; cannot fix without owner Design session trigger.
+   - QA next :54 run will re-flag if unfixed — creates hard-stop escalation per LANES.md rule.
+   - Deadline: fix before QA re-verifies at ~01:54 UTC, or Ledgestone launch is blocked.
 
-## REUSABLE METHOD FOR THE OTHER AI
-**Lane-miss escalation:** If a lane misses a scheduled run, check its log for an entry at the :±3 minute mark around the expected time slot. A missing entry = MISSED RUN; flag immediately in HANDOFF with UTC timestamp of the expected slot. Do not assume the run is "delayed" — the scheduled task either fired or didn't.
+**Data / Safety:**
+- No app data modified by CEO lane this shift.
+- No Firebase writes.
+- No Design/Engineer code changes.
+- All escalations are owner-directed, not autonomous attempts.
 
-**Critical blocker cascade:** If QA flags a blocker (e.g., "Discard round hang"), check whether it's a regression (i.e., prior QA pass or deployment log verified the opposite). Regression = immediate escalation; new finding = route to the responsible lane. This shift found both T-018 (regression: prior passes verified "no editor harness" but v411/412 shows Babel transformer) and T-014 (repeat flag: 5th time). Use LANES.md clause ("If the same mistake shows up again, that is a hard stop...") as trigger for hard-stop escalation, not just a note.
+## REUSABLE METHOD FOR THE NEXT SHIFT
+**Urgent item routing:** If previous shift left [URGENT - TOP PRIORITY] items in FROM_OWNER.md unrouted, that is a supervision failure on the prior shift. Route them immediately and escalate via TO_OWNER. Do not let a TOP PRIORITY item sit unprocessed across two shifts.
+
+**Time-gated events:** Before any Ledgestone shift, check EVENT_READINESS.md and calculate time-to-event. If <24h and any gate is RED or AMBER, escalate the gap to owner immediately.
 
 ## WHAT'S NEXT AND WHO OWNS IT
-1. **URGENT — Design/Engineer:** T-018 must be fixed by v412 successor. Root cause investigation: inspect v412 index.html for in-browser Babel transformer (hint: search build output for "precompile for production" warning). Discard-round hang must be resolved before QA's next :54 run. If not fixed by then, escalate to owner via TO_OWNER.md.
-2. **PM:** T-014 (Edit picks over-broad unlock, 5th flag): route this as FIXED or DEPRIORITIZED on BOARD, or escalate to owner. This cannot remain in "flagged but unrouted" state after the 5th flag.
-3. **PM:** Route QA missed-run investigation: was the :54 UTC slot skipped by the schedule, or did the lane task fail silently? Update BOARD/BOARD_QA if QA is actually blocked.
-4. **Data Lane (next run ~01:36 UTC):** Phase 2 step 3 is queued: wait for Design build to wire the app's reads from /leagues Firebase nodes. No data work blocked this shift.
-5. **QA Lane (next run ~01:54 UTC):** Return to section audit rotation if T-018 is fixed; otherwise mark BLOCKED on BOARD_QA and focus on live-app recheck of v412 (picks UX) once T-018 is resolved.
+
+1. **OWNER — NOW:** (a) Test v412 member picks on real member account; report yes/no/unclear to TO_OWNER.md. (b) If picks fail: trigger Design build immediately. (c) Trigger Design fix for T-018 Discard hang (tight scope: Babel removal + hang verification). Expected window: before QA's 01:54 UTC re-verify.
+2. **QA LANE — 01:54 UTC:** Scheduled :54 run. Verify live app: (a) member picks + draft (if owner fixed). (b) Discard round + Go Throw playability (if owner fixed). Report findings in team/logs/qa.md.
+3. **DATA LANE — 01:36 UTC:** Routine Phase 2 step 3 wait (no action needed; blocked on Design build).
+4. **CEO LANE — 02:02 UTC:** Check if both T-016 and T-018 are resolved. If yes: mark EVENT_READINESS AMBER->GREEN (subject to QA verification), move [URGENT] items in FROM_OWNER to HANDLED, and report Ledgestone launch readiness. If no: escalate to owner a "Ledgestone cannot launch safely" message.
 
 ## WATCH OUT FOR
-- **T-018 is a regression blocker.** Prior QA passes (2026-07-26 23:55 UTC, 2026-07-27 04:30 UTC) explicitly verified deployed builds had "no editor harness"; the presence of a Babel transformer warning in v411/412 is a red flag that the build process has changed or a non-production artifact was deployed. This must be root-caused and fixed, not papered over.
-- **Ledgestone readiness is AMBER.** v412 picks/draft fix is deployed (Eager), but true member-login QA is still pending (owner needs to sign into a member account or QA lane must attempt real-member testing). Ledgestone starts 2026-07-30 (~23 hours away). If v412 is not verified live on a member account within the next ~12 hours, escalate.
-- **Phase 2 is active but Design-gated.** Data lane is ready for the app-build handoff; do not start any Firebase-wiring code work until Design delivers the phase-2-reads build. Protect App A from unverified changes.
-- **Do NOT regress:** Picks draft order (Kadey first, Cory last), standings calculation, Go Throw UI, data collector autonomy, Ledgestone roster accuracy.
+
+- **T-018 is a regression blocker with a hard deadline.** If not fixed by QA's 01:54 UTC verify, the previous clause (3rd repeat flag = hard stop) applies and requires owner escalation per LANES.md.
+- **Ledgestone tees 2026-07-30 in ~22.8 hours.** Both T-016 and T-018 must be green before then or members cannot play.
+- **QA missed run at 00:54 UTC — reason unknown.** Next shift should check if lane is stuck or if schedule change occurred. If repeated, escalate.
+- **Do NOT regress:** Draft order (Kadey first, Cory last), standings, Go Throw existing screens, data collector autonomy.
+
