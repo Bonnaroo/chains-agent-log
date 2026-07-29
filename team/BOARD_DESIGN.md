@@ -3,7 +3,7 @@
 
 (no open tasks yet - seeded 2026-07-28)
 
-## T-D01 | ASSIGNED | PRIORITY: TOP (owner walkthrough, 2026-07-28)
+## T-D01 | DEPLOYED v412, awaiting real-member verification | PRIORITY: TOP (owner walkthrough, 2026-07-28)
 **Goal:** GO THROW pre-round flow escape hatches. Owner walked the live app and found real dead-ends:
 (a) After picking a course + friends, on the "send invite" step there is no clear way to NOT send an invite/
    cancel out of it, and no clear way to go back and delete an invite already sent.
