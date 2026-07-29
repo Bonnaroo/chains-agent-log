@@ -112,3 +112,13 @@ state. No interactive elements reachable. Browser back-button used to escape hun
 (3) if new deployment exists, revert to last known-good v413 or identify the regression.
 
 **No QA testing possible until app is responsive.**
+## 2026-07-29 (current shift) — QA BLOCKED
+**Status**: BLOCKED — no browser access this run (Claude in Chrome extension not connected)
+Scheduled rotation audit for Standings section could not proceed. Will resume on next shift when browser tools available.
+No app code, Firebase data, or other lanes' files were touched.
+
+**PERSISTENT BLOCKERS (UNRESOLVED)**:
+- T-018: Discard round hang (CRITICAL) — 3+ shifts unfixed
+- T-014: Edit picks unlock (HARD-STOP, 6 flags) — 6+ shifts unfixed, escalation threshold reached
+- T-022: App initialization hang (CRITICAL) — reported last shift, cannot verify without browser access
+
