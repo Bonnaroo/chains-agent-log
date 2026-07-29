@@ -411,3 +411,50 @@ Edit picks over-broad unlock flagged 6 consecutive shifts. Owner decision needed
 **Protected + verified:** Draft, standings, WATCH, In the Bag, Ledgestone 156-MPO roster (PDGA-validated), autonomy.
 
 **Next shift (13:02 UTC):** Verify T-022 status (app loading?). Confirm T-018 decision executed (deployment complete?). Record T-014 owner decision. If T-022 or T-018 unresolved, escalate to 'launching with critical blocker' + investigate offline owner communication.
+
+- 2026-07-29 13:02 UTC | [CLAUDE] | CEO supervisor shift (chains-office-on-shift).
+
+**STEP 0 — Supervise (verified 13:02 UTC):**
+- DATA LANE ✅ WORKING: Latest autonomous run 12:30 UTC (health-check pass). Next: 13:36 UTC. Zero blockers.
+- QA LANE 🔴 CRITICAL BLOCKER T-022: App initialization hang (since ~11:55 UTC). App won't load. Last known-good 04:15 UTC. Cannot proceed with rotation audits while app inaccessible. Members cannot access any feature.
+- ENGINEER LANE 🔴 BLOCKED: v413 (01:15:41 UTC), zero new commits. Awaiting owner decisions on T-022 investigation authorization, T-018 deployment path (decision expired 62 min ago), and T-014 acceptance (6th-shift hard-stop threshold).
+
+**STEP 1 — Bug Reports:** UNROUTED empty. Zero bugs routed this shift.
+
+**🔴🔴🔴 CRITICAL ESCALATIONS (IMMEDIATE OWNER DECISION REQUIRED):**
+
+(1) **T-022 (APP INITIALIZATION HANG) — SHOWSTOPPER**
+   - App at https://bonnaroo.github.io/chains-app completely unresponsive on page load (spinner renders, hangs indefinitely, 30-sec timeout, renderer frozen)
+   - Last known-good: 04:15 UTC (Picks audit worked)
+   - Hang started 04:15-11:55 UTC (7h 40m window)
+   - Blocks ALL member access. Ledgestone tee-off ~28h away. Members attempt rounds in ~4h 30m.
+   - ACTION REQUIRED BY 13:32 UTC (30 min): Authorize T-022 investigation (15 min timebox) OR authorize v411 rollback (~20 min deploy) to restore member access.
+   - Probable causes: Babel transformer (console warning noted), Firebase init hang, sw.js 404.
+
+(2) **T-018 (DISCARD HANG) — DECISION WINDOW EXPIRED 62 MIN AGO**
+   - Decision deadline ~12:00 UTC. NO owner response recorded.
+   - Owner decision needed: (A) Deploy v414 fix (1-2h) OR (B) Deploy v411 rollback (20 min)
+   - Recommendation: Prioritize T-022. If T-022 diagnosis stalls >30 min, authorize v411 rollback immediately (unblocks members + buys time for T-018 diagnosis).
+
+(3) **T-014 (EDIT PICKS UNLOCK) — HARD-STOP AT 6TH SHIFT**
+   - Edit picks over-broad unlock flagged 5 consecutive shifts (Jul 26-29). This shift IS 6th-shift threshold.
+   - Per LANES.md mandatory-escalation rule, cannot remain unrouted beyond 6 shifts.
+   - Owner decision required BY 14:02 UTC: (A) Fix uid-guard (~30-60 min, after T-022/T-018 resolved) OR (B) Accept-as-is.
+
+**Findings:**
+- App HEAD: f27dc6f0 (v413, deployed 01:15:41 UTC)
+- No new commits since deployment
+- Data lane: Autonomous cadence working (12:30 UTC health-check pass, PDGA field verified, Phase 2 schema healthy)
+- QA lane: Blocked by T-022; last successful audit 04:15 UTC (Picks section)
+- Owner response: None recorded to prior escalations (T-018 decision expired, T-014 hard-stop threshold)
+- Bug reports: UNROUTED empty; zero routed this shift
+- Protected + verified: Kadey draft order, standings, WATCH, In the Bag, Ledgestone 156-MPO roster, collector autonomy, Phase 2 data
+
+**Escalation path (next actions):**
+1. Email owner immediately: authorize T-022 investigation (15 min) OR authorize v411 rollback (20 min). Deadline 13:32 UTC.
+2. Confirm T-018 decision (A/B) and T-014 decision (A/B) by 14:02 UTC.
+3. If decisions received: Design/Engineer executes deployment by 14:00 UTC.
+4. QA verifies fix/rollback once app responsive.
+5. If no owner response by 13:32 UTC: Recommend emergency v411 rollback to restore member access.
+
+**Next CEO shift (14:02 UTC) must:** Verify T-022 status (app loading?) + confirm T-018 deployment + record T-014 decision + investigate why two critical escalations (T-018, T-022) hit in rapid succession (~1-4h apart).
