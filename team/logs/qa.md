@@ -221,3 +221,17 @@ No app code, Firebase data, or other lane files were modified this shift.
 2. IF app is responsive (T-022 resolved): Resume Standings rotation audit per schedule
 3. IF app hangs on init (T-022 still present): Escalate to LANE:DESIGN/ENGINEER and halt testing
 4. Re-verify T-018 and T-014 status with fresh live testing
+- 2026-07-29 (current shift, automated scheduled-task run) | [CLAUDE] | QA shift — section rotation audit BLOCKED.
+
+**STATUS**: BLOCKED — Claude in Chrome extension not connected. Cannot access live app for Standings rotation audit.
+
+**PERSISTENCE**: 5th consecutive shift without browser access (2026-07-30 x2, 2026-07-29 x3). QA lane entirely dependent on Claude in Chrome for live app testing.
+
+**CRITICAL UNRESOLVED BLOCKERS** (from prior live verification):
+- T-018: Discard round hang (CRITICAL) — 30+ sec browser freeze, round not actually deleted — UNFIXED since 2026-07-28
+- T-014: Edit picks over-broad unlock (HARD-STOP) — 6 flags, reached escalation threshold per LANES.md
+- T-022: App init hang on load — reported as blocking all testing (cannot verify without browser access)
+
+**Escalation**: (1) Restore Claude in Chrome extension, (2) LANE:DESIGN/ENGINEER must fix T-018/T-022, (3) LANE:PM must route T-014 escalation.
+
+No app code, Firebase data, or other lane files touched this shift.
