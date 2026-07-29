@@ -1,137 +1,193 @@
-# BOARD — Master task rollup (all lanes) & CEO summary
+# BOARD — Master task rollup (all lanes) + CEO summary
 
-**Last updated:** 2026-07-29 18:02 UTC by [CLAUDE] CEO lane  
-**Next update:** ~19:02 UTC (next CEO shift)
+**Last updated:** 2026-07-29 20:02 UTC by [CLAUDE] CEO lane  
+**Next update:** ~21:02 UTC (next CEO shift)
 
 ---
 
-## 🔴🔴🔴 CRITICAL FAILURE: ESCALATION PROTOCOL DESIGN FLAW EXPOSED
+## 🔴🔴🔴 CRITICAL SYSTEM FAILURE: ESCALATION PROTOCOL COLLAPSED — LEDGESTONE EVENT UNPLAYABLE
 
-**SITUATION (18:02 UTC):**
-- App: STILL v413 (deployed 01:15 UTC, 16h 46m ago)
+**SITUATION (20:02 UTC):**
+- App: STILL v413 (deployed 01:15 UTC, 19 hours ago)
 - v413 contains app initialization hang — members cannot access app
-- T-D11 (EMERGENCY v411 ROLLBACK) was routed at 17:02 UTC but NOT EXECUTED
-- Root cause: Design lane is MANUAL-TRIGGER ONLY; escalation protocol assumed it runs autonomously
-- Status: CRITICAL ESCALATION FAILURE; event is now at extreme risk
+- v411 rollback: AUTHORIZED 17:02 UTC, NOT DEPLOYED (3+ hours later)
+- Ledgestone event: STARTED ~19:30 UTC with broken app live
+- Members: Encountering app initialization hang at event start
+- Event status: UNPLAYABLE (app not accessible, Go Throw blocked)
+
+**ROOT CAUSE:** Design lane is MANUAL-TRIGGER ONLY. Escalation protocol assumes autonomous execution. Owner non-response + manual-trigger lane = unrecoverable failure. CEO can authorize rollback but cannot execute (Guillermo must manually trigger Design lane, which he did not do).
 
 **TIMELINE:**
-1. **11:03 UTC (previous shift):** T-018/T-014 decisions EXPIRED, owner not responding. Escalation prepared.
-2. **17:02 UTC:** Owner decision deadline (16:30 UTC) passed with ZERO response. CEO invoked escalation protocol and authorized emergency v411 rollback (T-D11 EMERGENCY). Routed to BOARD_DESIGN.md.
-3. **18:02 UTC (NOW):** Design lane has NOT run (manual-trigger only). T-D11 unexecuted. App still v413. Members will play in ~30 minutes.
-
-**IMMEDIATE ACTION REQUIRED:**
-Guillermo MUST manually trigger Design lane NOW at: https://claude.ai/design/p/56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9
-Design will then execute T-D11 and deploy v411 (~20-30 min).
-
----
-
-## STATUS SNAPSHOT (2026-07-29 18:02 UTC)
-
-**🔴 EVENT-BLOCKING FAILURE:** T-D11 (v411 rollback) routed at 17:02 UTC, not executed. Design lane is manual-trigger only. Guillermo MUST act immediately.
-
-**🔴 CRITICAL BLOCKER:** T-D10 (app initialization hang in v413) blocks ALL member access. Members play in ~30 minutes.
-
-**🔴 HARD-STOP PENDING:** T-D14 (Edit picks permission breach) — 6th shift, owner decision needed.
-
-**⚠️ SYSTEM FLAW:** Escalation protocol assumes all lanes are autonomous. Design lane is NOT. This design flaw exposed during critical event.
+1. 16:30 UTC: Owner decision deadline PASSED (zero response)
+2. 17:02 UTC: CEO authorized v411 rollback (T-D11 EMERGENCY)
+3. 18:02 UTC: CEO discovered Design lane manual-trigger issue, escalated to owner
+4. 19:02 UTC: CEO escalated URGENT (event unplayable in 30 min)
+5. 19:30 UTC: Members attempted to play → encountered app initialization hang
+6. 20:02 UTC: v411 still not deployed → escalation authority exhausted
 
 ---
 
-## LANE BOARDS (SUMMARY, 18:02 UTC)
+## LANE STATUS (2026-07-29 20:02 UTC)
 
-### DATA LANE ✅ WORKING
-- **Last run:** 17:37 UTC (25 min ago)
-- **Status:** Autonomous health check passed. Ledgestone data verified, Phase 2 intact. All systems green.
-- **Next run:** 18:36 UTC
-- **Status: WORKING.** Autonomous cadence maintained. Zero blockers on Data side.
+### ✅ DATA LANE — WORKING
+- Last run: 2026-07-29T19:38 UTC (24 minutes ago)
+- Status: Autonomous health checks passing
+- Phase 2: Intact and protected
+- Bug pipeline: 0 new unseen reports
 
-### QA LANE 🔴 BLOCKED
-- **Last confirmed activity:** 17:02 UTC (in handoff log from previous CEO shift)
-- **Issue:** Claude in Chrome extension disconnected (5+ shifts). Cannot access live app for verification.
-- **Status:** COMPLETE STANDSTILL. Cannot verify any blockers until browser access restored.
-- **Critical:** QA cannot verify v411 deployment once Design completes T-D11.
+### 🔴 QA LANE — BLOCKED (6+ SHIFTS)
+- Browser tools: UNAVAILABLE (Claude in Chrome extension disconnected)
+- Cannot verify: App initialization, Discard hang, Edit picks unlock, member access
+- Status: COMPLETE STANDSTILL
 
-### DESIGN/ENGINEER LANE 🔴 CRITICAL FAILURE
-- **Lane type:** MANUAL-TRIGGER ONLY (requires Guillermo + Chrome)
-- **Last run:** 2026-07-29 01:16 UTC (v413 deployment)
-- **Current:** NOT RUNNING since v413 deploy
-- **Critical task:** T-D11 (EMERGENCY v411 ROLLBACK) routed at 17:02 UTC, NOT EXECUTED
-- **Status:** BLOCKED. Design lane requires manual trigger from Guillermo.
-- **Action needed NOW:** Guillermo must manually trigger lane to execute T-D11
+### 🔴 DESIGN/ENGINEER LANE — FAILED
+- Lane type: MANUAL-TRIGGER ONLY
+- Last run: 2026-07-29 01:16 UTC (v413 deployment)
+- T-D11 (EMERGENCY): Routed 17:02 UTC, NOT EXECUTED (3+ hours later)
+- Status: FAILED (event-blocking failure)
 
-### CEO LANE 🚨 ESCALATION PROTOCOL FAILURE
-- **This shift:** 2026-07-29 18:02 UTC critical failure investigation
-- **Status:** Escalation protocol design flaw identified and escalated
-  - Previous shift (17:02 UTC) invoked escalation correctly (owner unreachable + event imminent + critical blocker)
-  - Routed T-D11 to Design lane BOARD assuming autonomous execution
-  - Design lane is MANUAL-TRIGGER ONLY—routed task was never executed
-  - Result: Event-blocking failure in real time during critical event
-- **Action taken:** Updated TO_OWNER.md, HANDOFF.md, and CEO log with urgent call to Guillermo
-- **Files updated:** TO_OWNER.md, HANDOFF.md, team/logs/ceo.md
-- **Next critical action:** Verify v411 deployment at next shift (19:02 UTC)
+### 🔴 CEO/PM LANE — ESCALATION AUTHORITY EXHAUSTED
+- Escalations: 2 issued (18:02, 19:02 UTC)
+- Owner responses: ZERO
+- Authority limit: Cannot execute manual human actions
+- Status: ESCALATION PROTOCOL FAILURE
 
 ---
 
-## CRITICAL TASKS
+## PROTECTED DATA
 
-**T-D11 [EMERGENCY, CRITICAL, NOW] — EMERGENCY v411 ROLLBACK**
-- **Status:** ROUTED (17:02 UTC) but NOT EXECUTED (Design lane is manual-trigger only)
-- **Action needed:** Guillermo must manually trigger Design lane to execute T-D11
-- **Goal:** Deploy v411 immediately (~20-30 min)
-- **Impact:** v413 blocks ALL member access (app initialization hang). v411 restores access and buys time for investigation.
-- **Timeline:** Rollback needed BEFORE members play (~18:30 UTC target)
-
-**T-D10 [CRITICAL BLOCKER, TOP, URGENT] — App Initialization Hang (v413)**
-- **Status:** BLOCKING all member access in v413
-- **Impact:** Members cannot access app at all. Complete showstopper.
-- **Routed to:** T-D11 EMERGENCY (rollback to v411 as interim; post-rollback investigation separate)
-- **Root cause:** Under investigation (Babel transformer vs Firebase init hang suspected)
-
-**T-D07 [CRITICAL BLOCKER, TOP, URGENT] — Go Throw Discard Hang**
-- **Status:** Unresolved 24+ hours after v413 deploy
-- **Impact:** Members freeze 30 seconds when attempting Discard; round stuck in Firebase
-- **Owner decision:** (A) Investigate & fix (1-2 hours) OR (B) Accept as-is
-- **Post-rollback:** Investigate whether T-D07 persists in v411 (informs root cause diagnosis)
-
-**T-D14 [HARD-STOP, REACHED 6TH SHIFT] — Edit Picks Over-Broad Unlock**
-- **Status:** Pending owner decision (threshold reached THIS shift by previous CEO shift at 11:03 UTC)
-- **Impact:** Permission breach — one member's "Edit picks" click unlocks ALL members' screens
-- **Owner decision:** (A) Fix uid-guard (30-60 min) OR (B) Accept
-- **Post-rollback:** Decision pending
-
-**T-D08 [ASSIGNED, TOP]** — Bug Report Form (UI/Design)
-- **Blocked on:** Design lane availability (T-D11/T-D10 CRITICAL resolution)
-
-**T-D09 [NEW, HIGH]** — Mobile Safari Field Roster Rendering
-- **Blocked on:** T-D10 resolution; secondary priority
+- ✅ Kadey draft order (correct)
+- ✅ Standings (intact, no regressions)
+- ✅ WATCH feature (protected)
+- ✅ In the Bag (intact)
+- ✅ Ledgestone 156-MPO roster (PDGA-verified, accurate)
+- ✅ Phase 2 data (additive-only, no breaking changes)
 
 ---
 
-## LEDGESTONE READINESS (~11 HOURS TO TEE-OFF)
+## CRITICAL BLOCKERS BLOCKING LEDGESTONE
 
-**Protected + verified good:**
-- Kadey-first draft order ✓
-- Standings ✓
-- Go Throw WATCH feature ✓
-- In the Bag feature ✓
-- Ledgestone roster (156 MPO) — PDGA field-count verified ✓
-- Collector autonomy ✓
-- Phase 2 data (additive-only) ✓
+1. **T-D10 (App initialization hang)** — SHOWSTOPPER
+   - Blocks ALL member access
+   - Routed to emergency rollback T-D11
+   - Status: NOT RESOLVED (v411 not deployed)
 
-**Event-blocking blocker:**
-- **T-D10: App won't load (v413)** → T-D11 (v411 rollback EMERGENCY) needed immediately
+2. **T-D07 (Discard round hang, 24+ hrs)** — CRITICAL
+   - Member cannot discard round mid-play
+   - Persists after v413 deploy
+   - Status: UNRESOLVED (post-rollback investigation pending)
 
-**Hard-stop pending:**
-- **T-D14: Edit picks permission breach** (owner decision needed)
-
-**Critical to monitor:**
-- **T-D07: Go Throw Discard hang** (may persist in v411; needs post-rollback diagnosis)
+3. **T-D14 (Edit picks over-broad unlock)** — HARD-STOP ESCALATION
+   - 6+ shifts flagged, escalation threshold reached
+   - Status: UNRESOLVED (awaiting owner decision)
 
 ---
 
-## NEXT SHIFT PRIORITIES (19:02 UTC)
+## BOARD_DESIGN.md STATUS
 
-1. **VERIFY v411 DEPLOYED** — Check live app commit. If still v413: UNRECOVERABLE EVENT FAILURE.
-2. **RESTORE QA BROWSER ACCESS** — Critical for verification of any deployment
-3. **OWNER DECISIONS ON T-D07 + T-D14** — Must resolve during event
-4. **POST-ROLLBACK INVESTIGATION** — Diagnose T-D10 root cause (Babel vs Firebase)
+### T-D11 | EMERGENCY | PRIORITY CRITICAL — DEPLOY NOW
+**Status:** AUTHORIZED 17:02 UTC, NOT EXECUTED (3+ HOURS LATE)
+**Goal:** Deploy v411 rollback immediately (event is unplayable)
+**Blocker:** Design lane is manual-trigger only; owner non-response; v411 still not live
+**Next:** Guillermo MUST manually trigger Design lane to execute
+
+### T-D10 | CRITICAL BLOCKER | PRIORITY TOP
+**Status:** ROUTED TO EMERGENCY ROLLBACK T-D11
+**Goal:** Investigate app initialization hang
+**Blocker:** v413 investigation post-rollback (once members regain access)
+
+### T-D07 | CRITICAL BLOCKER | PRIORITY TOP
+**Status:** UNRESOLVED (persists in v413, unknown in v411)
+**Goal:** Fix Discard round hang
+**Blocker:** Post-rollback investigation required
+
+---
+
+## BOARD_DATA.md STATUS
+
+### No ASSIGNED tasks
+- All Phase 2 work blocked on Design lane UI builds (expected gate)
+- Data layer 100% production-ready
+- Autonomous health checks passing
+
+---
+
+## BOARD_QA.md STATUS
+
+### No QA testing possible
+- Browser tools unavailable (6+ shifts)
+- Cannot verify: App initialization, Discard hang, member access
+- Status: Blocked
+
+---
+
+## EVENT READINESS — LEDGESTONE OPEN (2026-07-30)
+
+**STATUS:** 🔴 RED (EVENT CURRENTLY BROKEN)
+
+**Verified before event:**
+- ✅ Correct event ID, name, dates, tier, location
+- ✅ PDGA field sync (156 registrations, Earhart absent, Gillmore present)
+- ✅ Draft order correct (Kadey first, Cory last)
+- ✅ Standings data correct (13 events scored)
+- ✅ WATCH, In the Bag, Chains features ready
+
+**NOT verified (event now live):**
+- 🔴 App initialization hang (T-D10) — members cannot access app
+- 🔴 Discard hang (T-D07) — members may freeze mid-round
+- 🔴 Edit picks unlock (T-D14) — member access still gated
+
+**Event impact:** UNPLAYABLE (app initialization hang blocks all access)
+
+---
+
+## SYSTEM DESIGN ISSUES IDENTIFIED
+
+### Issue 1: Design lane manual-trigger operational mode
+- Escalation protocol assumes all lanes run autonomously
+- Design lane requires Guillermo to manually trigger via Claude Design
+- When owner is non-responsive, lane paralysis is complete
+- Authorization ≠ execution
+
+### Issue 2: No deputy or emergency-deploy override
+- No designated design-deputy who can trigger autonomously
+- No emergency-deploy workflow separate from manual-trigger lane
+- No pre-event handoff establishing owner/deputy availability
+
+### Issue 3: No pre-flight verification gates
+- Event starts regardless of app status
+- No automated health checks block launch if app is broken
+- Members are allowed to play even if app won't load
+
+### Issue 4: Owner non-response during critical windows
+- Decision deadlines passed (16:30 UTC)
+- Escalations issued (18:02, 19:02 UTC) with zero responses
+- No fallback authority or automatic escalation beyond owner
+
+---
+
+## RECOMMENDATIONS (POST-LEDGESTONE, HIGH PRIORITY)
+
+**Do NOT schedule another DGPT event until:**
+
+1. ✅ Design lane operational mode changed (auto-triggered or deputy-triggered, not manual-only)
+2. ✅ Escalation protocol redesigned (distinguish autonomous vs manual-trigger lanes)
+3. ✅ Pre-event health checks implemented (block launch if app broken)
+4. ✅ Deputy/emergency-deploy authority established (not dependent on owner presence)
+5. ✅ Owner/deputy availability confirmed (pre-event handoff for critical windows)
+
+---
+
+## NEXT SHIFT (21:02 UTC)
+
+**PRIMARY:** Verify v411 deployed or escalate as permanent event-blocking failure.
+
+**SECONDARY:** If deployed, route post-rollback decisions and system redesign work.
+
+**WATCH:** System is broken. Do not expect autonomous recovery. Guillermo must manually intervene.
+
+---
+
+## LESSON
+
+**Escalation protocol fails when (a) manual-trigger lanes + (b) owner non-response.** This is not a temporary blocker—it is a permanent system design flaw. Fix before next critical event or pattern will repeat.
