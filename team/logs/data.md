@@ -47,4 +47,17 @@
 - **chains-dgpt-data Actions**: "Collect DGPT Data" workflow — last 10 runs = 9 success + 1 in-progress. No failures. Health: green.
 - **Updated**: BOARD_DATA.md (noted health check complete; Step 3 awaiting Design lane).
 - **Blocked**: Step 3 (Design build to read Phase 2 nodes) is Data lane's only remaining blocker. Data readiness = 100%; presentation layer gate.
-- **Lesson**: Verification is preventative maintenance. Prior seeding (2026-07-29 run 1) remains sound; low risk if Design ships Step 3 soon. Health checks should run every pass, not just when new work is queued.
+- **Lesson**: Verification is preventative maintenance. Prior seeding (2026-07-29 run 1) remains sound; low risk if Design ships Step 3 soon. Health checks should run every pass, not just when new work is queued.## 2026-07-29 (2nd verification pass, autonomous run)
+- **Ran**: chains-data-lane schedule (autonomous, no human present).
+- **Bug-watch**: /bugReports.json = null. No new bug reports to route.
+- **Work**: Spot-check data-health verification pass (Phase 2 steps 1-2 complete and stable, step 3 awaiting Design build).
+- **Data health**: Confirmed status from prior verification pass persists:
+  - /playRounds: 1 active round (pr-ms5bygyzv4rl). No orphans or stuck records.
+  - /liveRounds: 1 entry, mirrors playRounds correctly. Consistency check: pass.
+  - /waitlist: null (empty). No stranded signups.
+  - Verdict: All round-and-waist production data is durable, no drift since last pass.
+- **Phase 2 verification**: /leagues/ledgestone-test-2026/eventField/96414 (Ledgestone Open, MPO, fieldSize=156) intact and unchanged. Still additive (no app reads it yet).
+- **chains-dgpt-data Actions health**: "Collect DGPT Data" workflow — last 5 runs all completed successfully (100% green). Most recent: 2026-07-29T01:07:36Z. No failures or in-progress runs.
+- **Updated**: team/BOARD_DATA.md (logged 2nd verification pass; still awaiting Design lane Step 3).
+- **Blocked**: Phase 2 Step 3 remains blocked on Design lane build (wiring app to read Phase 2 nodes instead of baked-in data). This is expected and is the only remaining gate to Phase 2 going live.
+- **Lesson**: Regular spot-check passes (even without new work) catch drift early and confirm stability. Data layer is ready; presentation layer is the gate.
