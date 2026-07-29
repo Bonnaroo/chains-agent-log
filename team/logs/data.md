@@ -61,3 +61,16 @@
 - **Updated**: team/BOARD_DATA.md (logged 2nd verification pass; still awaiting Design lane Step 3).
 - **Blocked**: Phase 2 Step 3 remains blocked on Design lane build (wiring app to read Phase 2 nodes instead of baked-in data). This is expected and is the only remaining gate to Phase 2 going live.
 - **Lesson**: Regular spot-check passes (even without new work) catch drift early and confirm stability. Data layer is ready; presentation layer is the gate.
+## 2026-07-30 (T-D08: Firebase bug report pipeline)
+- **Ran**: autonomous data-lane scheduled run (chains-data-lane schedule, 2026-07-30 02:47 UTC).
+- **Bug-watch**: /bugReports.json = null. No unseen bug reports yet (feature not yet used by app; Design lane UI form still pending).
+- **Work**: T-D08 — Firebase infrastructure for user-submitted bug reports. Autonomous work completed.
+  - Designed /bugReports/<id> schema: text, screen, timestamp, uid, version, seen (6 fields).
+  - Created 2 test reports via Firebase REST API POST; verified writes succeed.
+  - Implemented seen workflow: marked 1 report seen via PATCH, verified unseen filter excludes it.
+  - Provided 3 read interfaces for CEO/QA: count unseen, list unseen summaries, mark-seen method.
+  - Documented schema + usage in team/kb/firebase.md for REPORT.md integration.
+  - Updated BOARD_DATA.md to mark T-D08 IN_PROGRESS with status snapshot.
+- **Data health**: /playRounds, /liveRounds, /waitlist remain stable (no new rounds/signups since last run). Zero drift.
+- **Blocked/flagged**: T-D08 Data lane work is COMPLETE. Task is now blocked on Design lane (owns UI form that will submit reports to /bugReports). Once Design ships, real user reports will land and Data lane will process them via the BUG_REPORTS_INBOX.md protocol (append unseen + mark seen).
+- **Lesson**: Schema + pipeline readiness = straightforward when requirements are clear. The gate to production is UI delivery + real data flow. Data layer is ready to process reports the moment users can submit them.
