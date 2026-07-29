@@ -110,3 +110,23 @@ Owner's words: "make sure it works intuitively, so any 15-year-old could use it.
 down, I just want you to fix stuff." Read this as: fix real usability bugs and confusing flows, don't strip
 features or add hand-holding text/explainers. If something needs an explanation to be usable, that's a sign the
 FLOW is broken, not that it needs more instructional copy.
+## T-D08 | ASSIGNED | PRIORITY: TOP (owner: auto-picked without input, 2026-07-29)
+**Goal:** REAL BUG - owner reports the app kept picking "Paul McBeth" for him automatically, without him
+selecting it. This looks like a default/placeholder player value getting saved as a real pick instead of staying
+empty until the user actually chooses someone (possibly an autosave firing on an unselected/default dropdown
+value, or a stale default carried over from a prior build). Find and fix the root cause - do not let ANY pick
+save unless the user explicitly selected a player. Check the autosave logic on the Picks screen specifically.
+**Done when:** A member's pick slot stays genuinely empty until they pick someone themselves; no default/ghost
+player ever gets saved as a pick without explicit user action. Verify by loading Will's row fresh and confirming
+Player slots are NOT pre-filled with any player unless previously and intentionally picked.
+
+## T-D09 | ASSIGNED | PRIORITY: HIGH (owner: bring back countdown timer, 2026-07-29)
+**Goal:** Add a countdown timer back to The Picks screen (owner says one used to exist and is now missing).
+Two things to show: (1) countdown to the picks deadline (when picks must be submitted by), (2) countdown to the
+tournament start (T14 Ledgestone Open start Jul 30). Use the event's real start date/time as the source of
+truth (already available in the event data - Peoria, IL, Jul 30-Aug 2). If there's no separately defined
+"picks lock" timestamp yet distinct from tournament start, use tournament start as the picks-due countdown for
+now and flag to Data lane if a real separate PDGA tee-time-based lock timestamp becomes available later (see
+kb/LESSONS.md note on pick-lock deadlines needing to come from official tee times, not a guess).
+**Done when:** The Picks screen shows a live countdown (e.g. "Picks close in Xd Xh Xm" or similar) that
+reflects the real event date, visible without needing to scroll or dig for it.
