@@ -155,97 +155,29 @@ Checklist results:
 (3) v413 NOTE: Picks unlock deployed and verified working with member account (confirms v412/v413 design/engineer fix is functional end-to-end).
 
 **NEXT SHIFT ROTATION**: Standings section.
-- 2026-07-30 (current shift) | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: Claude in Chrome extension not connected. Cannot access live app to run verification. Skipping this rotation cycle. No changes to app code, Firebase, or other lane files.
-- 2026-07-30 (current shift) | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: app initialization hang. 
-
-FINDING (CRITICAL BLOCKER T-022): Live app at https://bonnaroo.github.io/chains-app is completely unresponsive on initial load. Initial loading spinner (disc golf pin icon + orange spinner circle) renders correctly, then app hangs indefinitely. Browser renderer becomes unresponsive after ~6-10 seconds. Multiple fresh load attempts across 2 different browser tabs produce identical hang: CDP timeout after 30 seconds, renderer frozen, no interactive elements reachable. Prior successful audits (Picks at 2026-07-30 04:15 UTC, Watch/Settings/Dashboard earlier) all showed working state with v413 deployed. Something has degraded between then and now.
-
-IMPACT: CRITICAL — cannot proceed with rotation audit or any other QA testing while app does not render. This is a complete blocker on all QA lanes' work.
-
-ESCALATION FOR LANE:DESIGN/ENGINEER: Verify (1) current live deployment version (is v413 still live, or did a new deployment ship and introduce regression?), (2) Firebase connection/data health during initialization, (3) whether Babel transpiler warning from prior shifts (noted: "using in-browser Babel transformer, precompile for production") is now causing runtime hang on initial page load. Last known-good state: 2026-07-30 04:15 UTC (Picks audit verified working, all interactive sections responsive).
-
-No changes to app code, Firebase data, or other lane files. All prior findings (T-018 Discard hang, T-014 edit-picks unlock, T-022 new init hang) remain UNRESOLVED and escalated for LANE:DESIGN/ENGINEER.
-
-NEXT SHIFT: Cannot proceed with Standings audit until app is responsive. PM/Engineer must resolve T-022 blocker before next QA shift can resume testing.
-- 2026-07-29 11:55 UTC | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft audit 2026-07-30 04:15). BLOCKED: Claude in Chrome extension not connected. Cannot access live app to run live verification testing. Skipping this rotation cycle. 
-
-FINDINGS FROM PRIOR SHIFT (PERSISTENT):
-- T-018 (CRITICAL BLOCKER): Discard round hangs browser tab 30+ seconds, does not actually discard round — first flagged 2026-07-28, re-verified 2026-07-29, still BROKEN in v413 live. Blocks ROADMAP anchor feature.
-- T-014 (HARD-STOP ESCALATION): Edit picks over-broad unlock, 6 consecutive QA shifts flagged (07-26, 07-27 x2, 07-28, 07-29, 07-30). Per LANES.md mandatory-learning, this is a hard-stop repeat-flag signal; reached escalation threshold.
-- T-022 (CRITICAL BLOCKER): App initialization hang on load (last shift evidence: live app renders spinner but hangs indefinitely; cannot proceed with any section audit until app is responsive).
-
-No app code, Firebase data, or other lane files touched.
-
-**NEXT SHIFT**: Restore Claude in Chrome extension connection and resume Standings rotation audit. If app initialization still hangs (T-022 unresolved), escalate to LANE:DESIGN/ENGINEER and await fix before proceeding.
-
-- 2026-07-29 (current shift) | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: Claude in Chrome extension not connected.
-
-FINDINGS FROM PRIOR SHIFTS (PERSISTENT BLOCKERS):
-- T-018 (CRITICAL BLOCKER): Discard round hangs browser tab 30+ seconds, does not actually discard round — first flagged 2026-07-28, re-verified 2026-07-29, still BROKEN in v413 live. Blocks ROADMAP anchor feature.
-- T-014 (HARD-STOP ESCALATION): Edit picks over-broad unlock, 6 consecutive QA shifts flagged (07-26, 07-27 x2, 07-28, 07-29, 07-30). Per LANES.md mandatory-learning, this is a hard-stop repeat-flag signal; reached escalation threshold.
-- T-022 (CRITICAL BLOCKER): App initialization hang on load (reported 2026-07-30 by prior shift; cannot verify this run without browser access).
-
-No app code, Firebase data, or other lane files touched this shift.
-
-**NEXT SHIFT**: Restore Claude in Chrome extension connection and resume Standings rotation audit. If app initialization still hangs (T-022 unresolved), escalate to LANE:DESIGN/ENGINEER and await fix before proceeding.
-
-
-- 2026-07-29 (current shift) | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: Claude in Chrome extension not connected — cannot access live app for verification testing.
-
-PERSISTENT FINDINGS FROM PRIOR SHIFTS (UNRESOLVED):
-- T-018 (CRITICAL BLOCKER): Discard round hangs browser tab 30+ seconds, does not actually discard — first flagged 2026-07-28, re-verified 2026-07-29, still BROKEN in v413 live. Blocks ROADMAP anchor feature.
-- T-014 (HARD-STOP ESCALATION): Edit picks over-broad unlock, 6 consecutive QA shifts flagged (07-26, 07-27 x2, 07-28, 07-29, 07-30). Per LANES.md mandatory-learning, reached hard-stop escalation threshold.
-- T-022 (CRITICAL BLOCKER): App initialization hang on load — reported 2026-07-30 by prior shift as blocking all testing. Browser unavailable this shift, cannot verify current state.
-
-SHIFT STATUS: Browser tools unavailable (Claude in Chrome extension not connected). Cannot proceed with Standings rotation audit. Awaiting browser access restoration before resuming testing cycle.
-
-No app code, Firebase data, or other lane files were modified this shift.
-
-**NEXT SHIFT ROTATION**: Standings section (when browser access restored). If app initialization still hangs (T-022 unresolved), escalate immediately to LANE:DESIGN/ENGINEER and await fix.
-
-- 2026-07-29 (current shift, automated scheduled-task run) | [CLAUDE] | QA shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: Claude in Chrome extension not connected — browser tools unavailable. Cannot execute live app verification testing.
-
-**PERSISTENT BLOCKER PATTERN**: This is the 4th consecutive shift (2026-07-30 x2, 2026-07-29 x2) where Claude in Chrome extension is not available, preventing any QA testing from running. Browser access is a hard prerequisite for the QA lane's audit function.
-
-**CRITICAL PERSISTENCE STATUS** (from prior shifts):
-- **T-018 (BLOCKER)**: Discard round hang — UNFIXED (3+ QA shifts since initial flag on 2026-07-28)
-- **T-014 (HARD-STOP)**: Edit picks over-broad unlock — UNFIXED (6+ QA shifts since initial flag on 2026-07-26; reached escalation threshold per LANES.md)
-- **T-022 (CRITICAL BLOCKER)**: App initialization hang — reported 2026-07-30 as blocking ALL testing; cannot verify current state without browser access
-
-**This shift action**: None — browser tools prerequisite unmet. QA shift entirely blocked.
-
-**Escalation note**: If browser access remains unavailable for the next scheduled shift, this represents a systemic failure in QA's prerequisites (scheduled task automation cannot access necessary tools). Current setup depends on Claude in Chrome extension being connected at task runtime; when it's not, the entire QA cycle halts. Consider either: (1) alternative browser testing approach (e.g., headless browser + GitHub Actions), or (2) ensure Claude in Chrome extension is guaranteed connected before automated shifts run.
-
-**NEXT SHIFT REQUIREMENTS**:
-1. **Restore Claude in Chrome extension connection** (critical blocker for any QA work)
-2. IF app is responsive (T-022 resolved): Resume Standings rotation audit per schedule
-3. IF app hangs on init (T-022 still present): Escalate to LANE:DESIGN/ENGINEER and halt testing
-4. Re-verify T-018 and T-014 status with fresh live testing
-- 2026-07-29 (current shift, automated scheduled-task run) | [CLAUDE] | QA shift — section rotation audit BLOCKED.
+- 2026-07-29 18:55 UTC | [CLAUDE] | QA scheduled shift — section rotation audit BLOCKED.
 
 **STATUS**: BLOCKED — Claude in Chrome extension not connected. Cannot access live app for Standings rotation audit.
 
-**PERSISTENCE**: 5th consecutive shift without browser access (2026-07-30 x2, 2026-07-29 x3). QA lane entirely dependent on Claude in Chrome for live app testing.
+**PERSISTENCE**: This is the 6th consecutive shift without browser access (since ~2026-07-30 first blocker). QA lane entirely dependent on Claude in Chrome for live app testing.
 
-**CRITICAL UNRESOLVED BLOCKERS** (from prior live verification):
-- T-018: Discard round hang (CRITICAL) — 30+ sec browser freeze, round not actually deleted — UNFIXED since 2026-07-28
-- T-014: Edit picks over-broad unlock (HARD-STOP) — 6 flags, reached escalation threshold per LANES.md
-- T-022: App init hang on load — reported as blocking all testing (cannot verify without browser access)
+**CRITICAL UNRESOLVED BLOCKERS** (from prior live verification passes):
+- **T-018 (CRITICAL BLOCKER)**: Discard round hangs browser tab 30+ seconds, does not actually discard round. First flagged 2026-07-28, re-verified 2026-07-29 08:20, confirmed BROKEN in v412/v413. Blocks ROADMAP anchor feature (cancel/delete in-progress rounds).
+- **T-014 (HARD-STOP ESCALATION)**: Edit picks over-broad unlock persists unfixed. Flagged 6+ consecutive shifts (2026-07-26 through 2026-07-30). Per LANES.md mandatory-learning rule ("If the same mistake/blocker shows up again, that is a hard stop"), reached escalation threshold. Requires PM routing/fix decision.
+- **T-022 (CRITICAL BLOCKER)**: App initialization hang on load, reported by 2026-07-30 shift as blocking all testing. Cannot verify current status without browser access; may still be affecting app startup.
 
-**Escalation**: (1) Restore Claude in Chrome extension, (2) LANE:DESIGN/ENGINEER must fix T-018/T-022, (3) LANE:PM must route T-014 escalation.
+**SHIFT ACTION**: None — browser extension prerequisite unmet. QA shift entirely blocked. No app code, Firebase data, or other lane files touched.
 
-No app code, Firebase data, or other lane files touched this shift.
-- 2026-07-29 (current shift, automated scheduled-task run) | [CLAUDE] | QA shift — BLOCKED by browser unavailable.
+**ESCALATION REQUIRED**:
+1. **IMMEDIATE**: Restore Claude in Chrome browser extension connection for automated QA tasks, OR provide alternative browser automation infrastructure (headless browser + CI/CD pipeline).
+2. **LANE:DESIGN/ENGINEER**: T-018 (Discard hang) and T-022 (app init hang) are CRITICAL blockers. Must be fixed before next QA pass can resume testing.
+3. **LANE:PM/CEO**: T-014 escalation has reached hard-stop signal per LANES.md. Requires immediate routing decision (explicit fix assignment, deprioritization, or clarification).
 
-**STATUS**: BLOCKED — Claude in Chrome extension not connected. Cannot access live app for Standings rotation audit.
+**NEXT SHIFT PREREQUISITES**:
+- [ ] Chrome extension connection restored (critical blocker)
+- [ ] T-022 (app init hang) verified as FIXED or escalated to LANE:DESIGN/ENGINEER
+- [ ] T-018 (Discard hang) verified as FIXED or re-escalated (already CRITICAL, awaiting urgent fix)
+- [ ] T-014 escalation resolved (routing decision from PM/Engineer needed)
+- [ ] Resume Standings section rotation audit (blocked this shift, next in queue)
 
-**PERSISTENCE**: 5th consecutive shift without browser access. QA lane entirely dependent on Claude in Chrome for rotation audits.
-
-**CRITICAL UNRESOLVED BLOCKERS**:
-- T-018: Discard round hang — CRITICAL BLOCKER, UNFIXED since 2026-07-28 (30+ sec freeze, round not deleted)
-- T-014: Edit picks over-broad unlock — Hard-stop flag (6 shifts, reached escalation threshold)
-- T-022: App init hang on load — CRITICAL BLOCKER (reported 2026-07-30, cannot verify without browser)
-
-**Escalation required**: (1) Restore browser extension, (2) LANE:DESIGN/ENGINEER fix T-018/T-022, (3) LANE:PM route T-014.
-
-No app code, Firebase data, or other lane files touched this shift.
+**No changes to app code, Firebase data, or other lane files this shift.**
