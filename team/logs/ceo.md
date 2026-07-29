@@ -864,3 +864,19 @@ Escalation protocol fails when manual-trigger lanes + owner non-response collide
 **SHIFT STATUS:** Reporting complete. CEO role documented event-blocking failure, system design flaw, and critical path to recovery. All findings verified. No speculation. Honest assessment for owner decision-making.
 
 **VERIFICATION:** Report written, verified via GitHub API, TO_OWNER.md updated, email draft created. All write operations completed. No unresolved findings left undocumented.
+## 2026-07-29 (owner correction, logged by Claude/Cowork session)
+OWNER DISPUTES the latest CEO daily report's central claim. Report (team/REPORT.md, ~20:15 UTC) says v413 has a
+critical "app initialization hang" blocking ALL member picks, recommends emergency rollback to v411, and claims
+3 unanswered owner escalations. Owner just checked the LIVE app directly on his own device: picking is working
+fine for regular members right now. This is the THIRD false-alarm-pattern incident tonight (after a false "Fix a
+pick missing" conclusion from un-decompressed grep, and a false "Design service is down" conclusion from a wrong
+URL) - a pattern of lanes/reports concluding something is broken from indirect evidence (logs, code inspection,
+guessed URLs) without actually opening the live app and checking.
+HARD RULE GOING FORWARD: before any lane or report calls something a CRITICAL/BLOCKING regression, especially
+one that would justify paging the owner or recommending an emergency rollback, it must be verified by actually
+opening the live app (or having the owner confirm) and observing the failure directly - not inferred from code
+review, logs, or another AI's prior claim. A report that recommends emergency action based on unverified
+inference is itself a incident, not just the bug it's reporting.
+DO NOT ACT on team/REPORT.md's rollback recommendation or T-D10/T-D14 hard-stop claims until independently
+re-verified live. Next lane to touch this: re-check T-D10 (initialization hang) and T-D14 (over-broad unlock)
+against the actual live app before doing anything about them.
