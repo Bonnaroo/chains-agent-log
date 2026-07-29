@@ -75,7 +75,7 @@ etc.) - use good judgment on what a disc golf player would want to see, this doe
 from the owner first.
 **Done when:** Your Game shows per-course stats (selectable) and overall stats, with a real, useful stat set.
 
-## T-D06 | ASSIGNED | PRIORITY: TOP (owner: phone not showing updates, 2026-07-29)
+## T-D06 | ASSIGNED | PRIORITY: TOP (owner: phone not showing updates + version label unreliable, 2026-07-29)
 **Goal:** Two real bugs found while investigating owner's "phone shows no updates" report. (1) index.html
 registers a service worker at /sw.js via navigator.serviceWorker.register('sw.js') but that file returns 404 -
 it's dead/broken code that could cause unpredictable caching on some phones. Either build a real, correct
@@ -86,7 +86,9 @@ v411, in the sidebar) is likely invisible on mobile if the sidebar isn't part of
 and if so, add a visible version indicator somewhere in the mobile view too (e.g. Settings screen) so version
 can always be confirmed regardless of device.
 **Done when:** No 404s for sw.js in console (either a working SW or no registration at all); version number is
-visible and confirmable on both desktop AND mobile layouts.
+visible and confirmable on both desktop AND mobile layouts, and it RELIABLY reflects the actual deployed build
+(owner reported it stuck showing an old version number - it must be wired to update every real deploy, not a
+static/hardcoded string that lags behind).
 
 ## T-D08 | ASSIGNED | PRIORITY: TOP (2026-07-29 02:03 UTC routed by CEO)
 **Goal:** REPORT A BUG button — create a visible, discoverable "Report a Bug" affordance for users. Owner wants a real feedback channel so users can submit bug/issue reports directly from the app. Consider Settings as default location, plus evaluate whether a small persistent icon elsewhere makes sense (e.g. Help or feedback button in nav). Affordance should include a short text field for the issue description and auto-capture context data (current screen/section, timestamp, uid).
