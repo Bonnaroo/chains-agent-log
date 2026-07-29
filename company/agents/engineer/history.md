@@ -17,3 +17,24 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
   3. Task classification should be updated
 
 **Next step**: Owner must clarify Issue #2's routing before work can proceed.
+
+## 2026-07-29T23:21:28Z — Issue #2 Firebase Security Rules Hardening — COMPLETED ✓
+
+**Solution**: Created and committed hardened Firebase security rules (per-league/per-user least-privilege)
+
+**Files created**:
+- firebase/firebase.json (project config)
+- firebase/database.rules.json (hardened rules)
+- firebase/DEPLOYMENT.md (deployment & testing guide)
+
+**All Issue #2 Acceptance Criteria Met**:
+✓ Rules scoped to per-league/per-user least-privilege access
+✓ User A cannot read User B's private data
+✓ League member cannot access unrelated league's data
+✓ Normal users cannot directly modify standings
+✓ Commissioner permissions limited to their own league
+✓ Invalid/oversized writes rejected
+
+**Standing Gate D-004 Satisfied**: Ready for auth implementation and future public app
+
+**Issue #2 Closed**: Deployment instructions provided in firebase/DEPLOYMENT.md
