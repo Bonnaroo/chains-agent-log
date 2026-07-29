@@ -54,3 +54,16 @@ Owner's words: "make sure it works intuitively, so any 15-year-old could use it.
 down, I just want you to fix stuff." Read this as: fix real usability bugs and confusing flows, don't strip
 features or add hand-holding text/explainers. If something needs an explanation to be usable, that's a sign the
 FLOW is broken, not that it needs more instructional copy.
+
+## T-D06 | ASSIGNED | PRIORITY: TOP (owner: phone not showing updates, 2026-07-29)
+**Goal:** Two real bugs found while investigating owner's "phone shows no updates" report. (1) index.html
+registers a service worker at /sw.js via navigator.serviceWorker.register('sw.js') but that file returns 404 -
+it's dead/broken code that could cause unpredictable caching on some phones. Either build a real, correct
+service worker with proper update/activate logic (skipWaiting + clients.claim, cache versioned by app version so
+old caches get purged on new deploys) OR remove the registration entirely if offline support isn't a near-term
+goal - do not leave a broken registration in place either way. (2) The new version-number indicator (shipped in
+v411, in the sidebar) is likely invisible on mobile if the sidebar isn't part of the mobile layout - confirm,
+and if so, add a visible version indicator somewhere in the mobile view too (e.g. Settings screen) so version
+can always be confirmed regardless of device.
+**Done when:** No 404s for sw.js in console (either a working SW or no registration at all); version number is
+visible and confirmable on both desktop AND mobile layouts.
