@@ -44,3 +44,17 @@ Status: READY FOR NEXT CYCLE (no blocking issues; minor feature gaps noted per r
 **No blocking issues.** Section is usable and stable. Minor: lack of explicit reset/delete controls for personalizations is a UX nicety (users can still edit all values), not a blocker. Feature gaps are roadmap-to-do items, not regressions.
 
 Next cycle rotation: Dashboard section.
+
+## T-020 (no escalation) — Dashboard section audit (DASHBOARD rotation, 2026-07-29 03:56:54 UTC shift)
+Status: READY FOR NEXT CYCLE (all checklist items pass)
+
+**Checklist pass/fail:**
+1. WAY OUT ✓: Clear 7-section sidebar navigation; league selector discoverable; no dead-ends.
+2. RECORDS N/A: Read-only section (expected).
+3. NO CLUTTER ✓: Clean hierarchy; standings visualization + event cards; no orphaned UI.
+4. DATA SURVIVES ✓: Refresh tested (F5); all league standings and event data persisted identically.
+5. IT MAKES SENSE ✓: Purpose immediately clear ('standings at a glance'); visual design intuitive; no instruction text needed; first-time user can understand instantly.
+
+**No blocking issues.** Dashboard is well-designed, stable, and ready for use.
+
+Next cycle rotation: The Picks/Draft section.
