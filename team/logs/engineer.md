@@ -54,3 +54,15 @@ REMAINING CONCERN: decompressed blobs also still contain "Draft Now" and "Helena
 determined whether these are dead/unused code paths (e.g. the Dashboard summary card, out of scope for this
 fix) or an incomplete removal on the actual Picks screen. NEXT: QA lane's next Picks-related pass, or the
 owner's own live check now that CDN should have propagated, should confirm which.
+
+## 2026-07-29 01:30 UTC — [CLAUDE, correction to another false-alarm run]
+CORRECTION: an autonomous run reported "Claude Design is down/unreachable" after browsing to
+https://design.claude.ai and getting an error. THAT IS THE WRONG URL and always has been - it was never the
+correct address. Owner manually re-checked the CORRECT project URL
+(https://claude.ai/design/p/56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9) moments later and Design loaded fine, fully
+functional. Design was never down; the run just guessed/misremembered a plausible-sounding but wrong domain
+instead of using the one documented address.
+LESSON: never guess a URL for a known service from memory - the correct Claude Design project URL is
+https://claude.ai/design/p/56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9 and NOTHING ELSE. This is now hardcoded directly
+in this lane's own prompt (not just in kb/claude-design.md) so it cannot be substituted with a guess. Before
+ever concluding "Design is down," confirm you navigated to that exact URL first.
