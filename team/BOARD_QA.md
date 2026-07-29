@@ -27,4 +27,20 @@ mandatory-learning rule, this is a HARD-STOP signal, not a routine note.
 
 ## T-009/T-017 (carried) — PDGA tee-time table still unavailable; Ledgestone lock deadline unresolved
 Status: WATCH — no new information this shift. Data lane to confirm collector health independently.
+## T-019 (no escalation) — Settings section audit (SETTINGS rotation, 2026-07-29 10:30 UTC shift)
+Status: READY FOR NEXT CYCLE (no blocking issues; minor feature gaps noted per roadmap)
 
+**Checklist pass/fail:**
+1. WAY OUT ✓: Clear sidebar navigation; no dead-ends; all states escapable.
+2. RECORDS ⚠ PARTIAL: Display name & theme/color/texture/icon all customizable & auto-save; NO explicit delete/reset controls for customizations (minor UX gap).
+3. NO CLUTTER ✓: Clean section layout (My Leagues / Your Profile / Trophy Case); clear labels; logical flow.
+4. DATA SURVIVES ✓: Auto-save confirmed on display name & theme selection; changes persist across navigation & app reload.
+5. IT MAKES SENSE ✓: Visual choices self-explanatory; trophy case gamification engaging; no instruction text needed.
+
+**Feature gap findings (vs ROADMAP spec):**
+- Units selector (ft/m for distances) — NOT IMPLEMENTED (roadmap specifies as part of Settings)
+- Delete account/data button — NOT IMPLEMENTED (roadmap specifies with confirm step)
+
+**No blocking issues.** Section is usable and stable. Minor: lack of explicit reset/delete controls for personalizations is a UX nicety (users can still edit all values), not a blocker. Feature gaps are roadmap-to-do items, not regressions.
+
+Next cycle rotation: Dashboard section.
