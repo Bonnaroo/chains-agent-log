@@ -248,3 +248,29 @@ FROM_OWNER.md [NEW] items processed:
 **Ledgestone readiness (20 hours to event):** Data ✓, Picks v413 working (pending owner member verify + T-014 decision), Go Throw 🔴 blocked by T-018, Field view 🟡 T-D09 pending. EVENT_READINESS stays AMBER + CRITICAL FLAG for T-018 until fixed or rolled back.
 
 **Next shift must:** (1) Verify T-018 fixed or coordinate rollback with owner. (2) Confirm T-014 owner decision recorded. (3) Proceed with T-D09 diagnosis if T-018 is resolved.
+
+- 2026-07-29 08:02 UTC | [CLAUDE] | CEO supervisor shift + escalation (chains-office-on-shift, hourly :02 mark).
+
+**STEP 0 — Supervise:** Data lane WORKING (run at 07:17:58 UTC, 45 min ago). QA lane WORKING (last audit Dashboard at 03:56 UTC, ~4 hours ago; next Picks/Draft audit scheduled ~08:54 UTC). Engineer lane 🔴 CRITICAL BLOCKER: v413 deployed 01:16 UTC (7 hours ago) but T-018 Discard hang PERSISTS UNRESOLVED. This is now 4+ shifts / 12+ hours (since 2026-07-28 19:55 UTC) without diagnosis, fix, or rollback decision. Ledgestone starts ~19 hours away.
+
+**STEP 1 — Bug Reports:** UNROUTED section empty (no new reports since 04:02 UTC). No new bugs to route this shift.
+
+**CRITICAL ESCALATION — T-018 RE-RE-ESCALATION (12+ hours persistent):**
+Discard round hang in Go Throw remains unresolved after 4+ CEO shifts:
+- 2026-07-28 19:55 UTC: First QA report (verified hang, CDP timeout 30s, round stuck in Firebase)
+- 2026-07-28 21:15 UTC: v412 deployed with picks fix; Go Throw hang persists
+- 2026-07-29 01:16 UTC: v413 deployed (picks unlock); hang STILL persists
+- 2026-07-29 04:02 UTC: CEO escalation with rollback option to owner; T-D07 re-escalated
+- **2026-07-29 08:02 UTC (NOW): T-018 STILL UNRESOLVED. 4 hours have passed. Go Throw Discard is broken 19 hours before Ledgestone tee-off.**
+
+This is now a showstopper. Members WILL attempt Go Throw rounds during tournament play. A non-functional "Discard" button blocks the escape-hatch ROADMAP anchor feature. **OWNER MUST DECIDE IMMEDIATELY:** (1) Authorize Design/Engineer to diagnose + rebuild v414 fix (Babel transformer in v412 build suspected, precompilation needed), OR (2) Authorize emergency rollback to v411 (v411 has picks UX fix; Go Throw suspected more stable). If neither is deployed within next 4 hours (by ~12:00 UTC), Ledgestone has a broken feature at tee-off. Updated TO_OWNER.md with decision point and timeline.
+
+**T-014 HARD-STOP (5th consecutive flag):** Edit picks over-broad unlock persists unresolved. Owner decision still required: FIX or ACCEPT. No PM routing exists. Escalation repeated this shift; no response yet. Per LANES.md mandatory rule, if unrouted a 6th shift, will challenge decision validity.
+
+**New routing:** 0 bugs (UNROUTED empty).
+
+**Protected + verified good:** Kadey-first draft order, standings, Go Throw WATCH, In the Bag, Ledgestone roster (156 MPO), collector autonomy, Phase 2 data (additive-only).
+
+**No app/Firebase/data changes by CEO lane. All work is routing, escalation, verification (read-only).**
+
+**Next shift must:** (1) Confirm T-018 fixed or rolled back, OR escalate further to emergency decision. (2) Confirm T-014 owner decision recorded. (3) Verify Ledgestone readiness status (19 hours to event).
