@@ -70,3 +70,12 @@ ever concluding "Design is down," confirm you navigated to that exact URL first.
 ## 2026-07-29 01:06 UTC — [CLAUDE, BLOCKED]
 BLOCKED: Scheduled/unattended run detected. This lane is MANUAL-TRIGGER ONLY and requires Guillermo present with live Chrome browser connected. Exiting.
 LESSON: Never schedule autonomous runs for this lane. It cannot proceed without an interactive browser session.
+## 2026-07-29 01:16 UTC — [CLAUDE, PICKS UNLOCK DEPLOYED]
+DEPLOYED: v413 to production (commit f27dc6f0).
+WORK: URGENT picks unlock for Ledgestone (event starts 2026-07-30). Regular members can now draft directly; commissioner override button labeled 'Commissioner: Fix a pick'.
+CHANGES VERIFIED:
+- Commissioner button present: 7 occurrences
+- 'Picks are open' message: live
+- 'Helena Open' explanatory text: removed
+FILE: Chains Fantasy DGPT App v413.html (9.2M)
+NEXT: BOARD_DESIGN.md task status updates, then handle T-D01 escape hatches and T-D06 service worker issues.
