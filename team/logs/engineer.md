@@ -79,3 +79,7 @@ CHANGES VERIFIED:
 - 'Helena Open' explanatory text: removed
 FILE: Chains Fantasy DGPT App v413.html (9.2M)
 NEXT: BOARD_DESIGN.md task status updates, then handle T-D01 escape hatches and T-D06 service worker issues.
+
+## 2026-07-29 [CLAUDE, SCHEDULED RUN — BLOCKED]
+BLOCKED: Chrome extension not connected (no live browser available). This lane requires a live Claude in Chrome browser — cannot proceed unattended. Stopping cleanly per task instructions.
+LESSON: This is a MANUAL-TRIGGER ONLY lane. Do not schedule autonomously. Always confirm browser access (tabs_context_mcp) before any task work.
