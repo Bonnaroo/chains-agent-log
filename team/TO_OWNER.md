@@ -1,3 +1,15 @@
+# TO OWNER — 2026-07-29 END-OF-DAY SUMMARY
+
+## SITUATION (20:15 UTC)
+
+**Ledgestone event is LIVE with broken app.** v411 emergency rollback was authorized but NOT DEPLOYED (Design lane is manual-trigger only; you did not respond to 3 escalations). Members encountering app initialization hang.
+
+**Immediate action:** Manually trigger Design lane (https://claude.ai/design/p/56b805f6-d4d3-4ee4-b8ab-c51ed711a3b9) to deploy v411 NOW.
+
+**Full analysis:** See team/REPORT.md.
+
+---
+
 # TO OWNER — 🔴🔴🔴 EVENT FAILURE CONFIRMED (2026-07-29 20:02 UTC)
 
 ## SITUATION SUMMARY (20:02 UTC)
