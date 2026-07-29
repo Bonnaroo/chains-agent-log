@@ -8,4 +8,5 @@
 - [NEXT] Step 3 (future run): wire the Design build to read from Phase 2 nodes instead of baked-in data. Once Design completes that build and deploys it, all data changes (field roster, draft order, standings) become backend-only (no rebuild needed).
 
 - [VERIFICATION 2026-07-29] Health check: playRounds/liveRounds/waitlist all clean (1 active round, no orphans); Phase 2 ledgestone-test-2026 seed data verified intact; chains-dgpt-data Actions green. Data readiness = 100% — awaiting Design lane Step 3 build.
+- [VERIFICATION 2026-07-29 (2nd pass)] Spot-check re-run: playRounds=1 active, liveRounds=1 (mirrored), waitlist=null; Phase 2 seed (eventId 96414, Ledgestone Open, fieldSize=156) intact; Collect DGPT Data workflow 5/5 success (most recent 2026-07-29T01:07:36Z). Zero drift or degradation since prior pass.
 (no other open tasks)
