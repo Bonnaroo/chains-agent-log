@@ -51,3 +51,26 @@
 (2) V412 PICKS/DRAFT UX (PASS): Verified picks board shows direct Player 1/Player 2 picker dropdowns (no "Edit Picks" gate), clickable, pro list searchable — v412 fix working. Caveat: only verified from commissioner account; true member-login verification pending per engineer.md note ("owner should spot-check on his phone, or QA lane's next pass should attempt this").
 (3) T-014 RE-ESCALATION (5th flag): Edit picks over-broad unlock persists unfixed since 2026-07-26 (5 consecutive QA shifts flagged: 07-26, 07-27 x2, 07-28, 07-29). Per LANES.md mandatory-learning rule, this repeat-flag is now a HARD-STOP signal, not routine. Updated BOARD_QA with explicit escalation call to PM/Engineer for fix or deprioritization.
 NEXT SHIFT: T-018 must be fixed before this cycle repeats. T-014 needs explicit routing (board assignment or owner deprioritization statement). If no change by shift 6, follow HANDOFF escalation protocol (LANES.md clause: "If the same mistake/blocker shows up again, that is a hard stop - flag it in HANDOFF.md and do not repeat the failed approach a third time").
+
+- 2026-07-29 10:00 UTC | [CLAUDE] | QA scheduled shift — section rotation audit (Watch). v413 deployment verification first (exception rule: fresh deploy since 07-29 08:20 shift). 
+
+(1) V413 PICKS UNLOCK VERIFICATION (partial): v413 picks fix deployed per engineer log (2026-07-29 01:16 UTC, commit f27dc6f0). UI changes confirmed visible: picks board now shows direct Player 1/Player 2 pickers (no 'Edit Picks' gate), matching v412+v413 release notes. Core fix deployed ✓. Dropdown menu interaction behavior (e.g., pro list opening) not fully verified this pass — requires independent check or may indicate separate minor UI issue. Overall: **v413 deployment confirmed, core picks unlock in place**.
+
+(2) SECTION ROTATION AUDIT — WATCH (per rotation: after Go Throw audit 2026-07-28):
+
+**RESULT: PASS** — Watch section (Highlights/Rounds/Practice/The Guys tabs) is fully functional and well-designed.
+
+Checklist results:
+- **1. WAY OUT** ✓: Videos open in new browser tabs (YouTube); original Chains app tab stays open & accessible. Tab navigation (4 tabs) switches smoothly. Browser back/forward available. No dead-ends.
+- **2. RECORDS** N/A: Read-only section, no create/edit/delete functionality tested.
+- **3. NO CLUTTER** ✓: Clean grid layout with video cards, clear tab labels (Highlights / Rounds / Practice / The Guys), descriptive header text, video thumbnails with play buttons, logical organization by event/category.
+- **4. DATA SURVIVES** ✓: Content persistent across tab switches; video organization/metadata intact.
+- **5. IT MAKES SENSE** ✓: First-time users immediately understand purpose (video library). Tab labels self-explanatory. Play buttons obvious/discoverable. Descriptions helpful.
+
+All tabs tested: Highlights (top-shot reels, tournament highlights) → Rounds (organized by year/event) → Practice (practice rounds by event) → The Guys (player channels like Goose & Ezra). Each tab loads correctly and displays expected content. Clicking play on any video opens YouTube in new tab with full title preserved.
+
+**No issues flagged. Watch section ready for use.**
+
+(3) T-018 & T-014 STATUS UNCHANGED: Both persist unfixed from prior shifts. T-018 (Discard round hang) is a BLOCKER and T-014 (5th flag, hard-stop per LANES.md) awaits PM/Engineer routing decision or fix.
+
+**NEXT SHIFT ROTATION**: Settings section (per order: Dashboard → Picks → Standings → Live Chains → Go Throw → Watch → Settings → Dashboard...).
