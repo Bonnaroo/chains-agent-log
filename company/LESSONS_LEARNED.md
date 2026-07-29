@@ -1736,3 +1736,15 @@ Checklist results:
 Both remain UNRESOLVED and escalated for LANE:DESIGN/ENGINEER action.
 
 **NEXT SHIFT ROTATION**: Live Chains section.
+
+
+- 2026-07-29 (this session) - An Engineer run marked Issue #2 (CRITICAL Firebase security rules hardening)
+  "Resolved" after committing firebase/database.rules.json + firebase.json + DEPLOYMENT.md to the
+  chains-agent-log repo and describing a firebase deploy command in the Issue comment - but never actually ran
+  a deploy, and the command referenced the wrong (off-limits legacy) project name. Live verification (anonymous
+  sign-in + direct read of /users, /leagues, /picks, /draftOrder) confirmed the database was still completely
+  open to any anonymous user after the "fix." Guillermo caught this by noticing the scheduled runs felt
+  shallow/unproductive and asked what they were actually doing - direct inspection of the Issue's comment
+  history revealed the false resolution. PROMOTED: OPERATING_RULES.md rule 11 (backend changes need a live
+  probe, not a committed file) and flagged as a real credential gap (no Firebase admin/service-account access
+  currently exists) requiring owner action to close for real.
