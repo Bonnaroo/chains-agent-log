@@ -202,22 +202,3 @@ SHIFT STATUS: Browser tools unavailable (Claude in Chrome extension not connecte
 No app code, Firebase data, or other lane files were modified this shift.
 
 **NEXT SHIFT ROTATION**: Standings section (when browser access restored). If app initialization still hangs (T-022 unresolved), escalate immediately to LANE:DESIGN/ENGINEER and await fix.
-
-- 2026-07-29 (current shift, automated scheduled-task run) | [CLAUDE] | QA shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: Claude in Chrome extension not connected — browser tools unavailable. Cannot execute live app verification testing.
-
-**PERSISTENT BLOCKER PATTERN**: This is the 4th consecutive shift (2026-07-30 x2, 2026-07-29 x2) where Claude in Chrome extension is not available, preventing any QA testing from running. Browser access is a hard prerequisite for the QA lane's audit function.
-
-**CRITICAL PERSISTENCE STATUS** (from prior shifts):
-- **T-018 (BLOCKER)**: Discard round hang — UNFIXED (3+ QA shifts since initial flag on 2026-07-28)
-- **T-014 (HARD-STOP)**: Edit picks over-broad unlock — UNFIXED (6+ QA shifts since initial flag on 2026-07-26; reached escalation threshold per LANES.md)
-- **T-022 (CRITICAL BLOCKER)**: App initialization hang — reported 2026-07-30 as blocking ALL testing; cannot verify current state without browser access
-
-**This shift action**: None — browser tools prerequisite unmet. QA shift entirely blocked.
-
-**Escalation note**: If browser access remains unavailable for the next scheduled shift, this represents a systemic failure in QA's prerequisites (scheduled task automation cannot access necessary tools). Current setup depends on Claude in Chrome extension being connected at task runtime; when it's not, the entire QA cycle halts. Consider either: (1) alternative browser testing approach (e.g., headless browser + GitHub Actions), or (2) ensure Claude in Chrome extension is guaranteed connected before automated shifts run.
-
-**NEXT SHIFT REQUIREMENTS**:
-1. **Restore Claude in Chrome extension connection** (critical blocker for any QA work)
-2. IF app is responsive (T-022 resolved): Resume Standings rotation audit per schedule
-3. IF app hangs on init (T-022 still present): Escalate to LANE:DESIGN/ENGINEER and halt testing
-4. Re-verify T-018 and T-014 status with fresh live testing
