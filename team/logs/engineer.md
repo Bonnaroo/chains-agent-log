@@ -36,3 +36,21 @@ carefully until reset.
 NOT YET VERIFIED: cannot confirm from this session whether a true non-commissioner member account sees this
 correctly (no member login available) - owner should spot-check on his phone, or QA lane's next pass should
 attempt this if it can access a member view.
+
+## 2026-07-29 01:15 UTC — [CLAUDE, correction to prior log entry]
+CORRECTION: earlier this session I flagged "Fix a pick" as missing from the deployed build after re-downloading
+and grepping the file 3x, all returning 0 matches. That was a FALSE ALARM caused by my own verification method:
+this app's content lives in gzip-compressed base64 blobs inside index.html (documented lesson: "plaintext grep
+for app data finds nothing... decompress the base64 blobs"). I ignored our own documented lesson. After actually
+decompressing and searching, "Fix a pick" IS present in the live committed file (raw.githubusercontent.com,
+verified via git contents API, bypassing any CDN cache). The live browser checks that showed it missing were
+almost certainly hitting a stale Fastly/GitHub-Pages CDN edge - the owner's phone (different network) showed it
+correctly while my desktop browser tab didn't, at the same real time.
+LESSON (reinforcing the existing one): when verifying deployed content, ALWAYS decompress the base64 blobs
+before grepping - a plaintext miss is not proof of absence. ALSO: prefer raw.githubusercontent.com content
+fetched via the git contents API (bypasses Pages CDN) over live browser checks for a "did it deploy" question -
+CDN propagation lag can make a correct deploy look broken in a browser for several minutes.
+REMAINING CONCERN: decompressed blobs also still contain "Draft Now" and "Helena Open" strings. Not yet
+determined whether these are dead/unused code paths (e.g. the Dashboard summary card, out of scope for this
+fix) or an incomplete removal on the actual Picks screen. NEXT: QA lane's next Picks-related pass, or the
+owner's own live check now that CDN should have propagated, should confirm which.
