@@ -348,3 +348,31 @@ Discard round hang UNRESOLVED 8+ hours after v413. No owner response to 08:02 UT
 **Protected + verified:** Kadey-first draft, standings, Go Throw WATCH, In the Bag, Ledgestone roster (156 MPO), collector autonomy.
 
 **Next shift must:** (1) Confirm T-018 resolved (v414 deployed + QA re-verified OR rollback deployed + quick-check) by 13:00 UTC OR escalate live-event blocker. (2) Investigate why Data + QA lanes missed runs (unprecedented; may indicate infrastructure issue). (3) Confirm T-014 owner decision recorded. (4) Restore Data + QA autonomy (target: by next CEO shift 11:02 UTC).
+- 2026-07-29 11:03 UTC | [CLAUDE] | CEO supervisor shift (chains-office-on-shift).
+
+**STEP 0 — Supervise (verified 11:03 UTC):**
+- DATA LANE ✅ WORKING: Recovered! Autonomous health-check run at 10:37 UTC (26 min ago). Was reported missed at 10:02 HANDOFF, but ran on schedule. Full verification: data integrity, Phase 2 schema, Ledgestone roster (156 MPO) PDGA-validated. Next run: 11:36 UTC (~33 min).
+- QA LANE ⚠️ MONITORING: No confirmed run since 08:20 UTC (2h 43m ago). Rotation audit expected ~08:54 UTC now overdue by 2h 9m. No clear escalation flag; monitoring for 11:54 UTC run mark (51 min away). Possible log dating inconsistency ("2026-07-30" entries need clarification).
+- ENGINEER LANE 🔴 BLOCKED: v413 deployed 01:15:41 UTC (9h 47m ago). Awaiting owner decision on T-018 (Discard hang, Fix v414 OR Rollback v411) and T-014 (Edit picks permission, Fix uid-guard OR Accept). Decision window for T-018 EXPIRED at ~12:00 UTC (was 08:02 escalation + 4-hour window); no owner response recorded as of 11:03 UTC.
+
+**STEP 1 — Bug Reports:** UNROUTED empty. Zero bugs routed this shift.
+
+**CRITICAL ESCALATION — T-018 (DECISION WINDOW EXPIRED, 28 HOURS TO LEDGESTONE):**
+Discard round hang persists unresolved 8+ hours after v413 deploy. 4-hour decision window (08:02 → ~12:00 UTC) EXPIRED with NO owner response. Ledgestone tee-off 2026-07-30 ~15:00 UTC (~28 hours). Members will play Go Throw rounds within next 5 hours. Without T-018 fix or rollback deployed by 13:00 UTC, event launches with broken Go Throw feature (30-second freeze + round stuck).
+
+**CRITICAL ESCALATION — T-014 (6TH-SHIFT THRESHOLD):**
+Edit picks over-broad unlock flagged 6 consecutive shifts. Owner decision needed this shift: Fix uid-guard OR Accept. If no decision recorded, escalation rule (LANES.md 6th-shift hard-stop) triggers.
+
+**Findings:**
+- App HEAD: f27dc6f0 (v413), no commits since 08:02 UTC
+- Data lane: Autonomous cadence restored; Phase 2 fully PDGA-verified
+- QA lane: Rotation overdue; monitoring for next run
+- Owner response: None recorded since 08:02 UTC escalation
+- Bug reports: UNROUTED empty
+- Protected + verified: Kadey draft, standings, WATCH, In the Bag, Ledgestone 156-MPO roster, collector autonomy
+
+**Routing:** No new bugs. Two owner decisions (T-018 critical, T-014 hard-stop) escalated to diamashield@gmail.com with urgent deadline (~11:30 UTC for T-018 rollback, ~12:30 UTC for v414 fix). HANDOFF and TO_OWNER.md updated with expired decision window status. BOARD.md rollup pending owner decisions.
+
+**Next shift (12:02 UTC) must:** (1) Verify T-018 status — if still unresolved, escalate to "launching with critical blocker" AND investigate if owner decision was received offline. (2) Confirm T-014 owner decision recorded. (3) Investigate QA 2h 9m rotation overdue (possible schedule issue, blocker, or log dating bug). (4) Verify Data lane continues autonomous cadence.
+
+**Protected:** Kadey draft, standings, WATCH, In the Bag, Ledgestone 156-MPO, collector autonomy.
