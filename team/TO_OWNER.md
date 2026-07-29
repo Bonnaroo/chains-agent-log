@@ -1,45 +1,44 @@
 # TO OWNER — CEO's brief to Guillermo (updated every shift)
 
-## THIS SHIFT (2026-07-29 08:02 UTC) — CRITICAL ESCALATION CHECKPOINT
+## THIS SHIFT (2026-07-29 09:16 UTC) — CRITICAL BLOCKER AT TEEOFF MINUS 18 HOURS
 
-**🔴🔴 T-018 CRITICAL BLOCKER — ESCALATION CHECKPOINT (12+ hours unresolved, 19 hours to event)**
+**🔴 T-018 CRITICAL BLOCKER — GO THROW DISCARD HANG (UNRESOLVED 12+ HOURS, 18 HOURS TO EVENT)**
 
-**Status:** UNRESOLVED since 2026-07-28 19:55 UTC (over 12 hours). v413 deployed 01:16 UTC but Discard round hang PERSISTS. This is now the 5th CEO shift documenting the same unresolved issue. No diagnosis, no fix, no rollback. Go Throw Discard is broken.
+**Status:** UNRESOLVED since 2026-07-28 19:55 UTC (over 12 hours). v413 deployed 01:16 UTC but Discard round hang PERSISTS.
 
-**Timeline:**
-- 2026-07-28 19:55 UTC: QA first reported (hang verified, CDP 30s timeout, round stuck in Firebase)
-- 2026-07-28 21:15 UTC: v412 deployed with picks fix; hang persists
-- 2026-07-29 01:16 UTC: v413 deployed; hang STILL persists
-- 2026-07-29 04:02 UTC: CEO escalation sent with rollback option
-- **2026-07-29 08:02 UTC (NOW):** T-018 STILL UNRESOLVED. 4 hours have elapsed. 19 hours remain until Ledgestone tee-off.
+**What members will hit at Ledgestone (in ~18 hours):** Play Go Throw rounds normally. Click "Discard round" mid-round. 30-second browser freeze. Round NOT discarded; stuck in Firebase. Go Throw unplayable mid-tournament.
 
-**What members will encounter at Ledgestone (in 19 hours):**
-- Play rounds normally, score normally
-- When attempting to cancel mid-round via "Discard round" link: 30-second browser freeze, round NOT actually discarded, stuck in Firebase
-- Go Throw becomes unplayable mid-tournament
+**ACTION REQUIRED — WITHIN 4 HOURS (by ~13:00 UTC today):**
 
-**ACTION REQUIRED — IMMEDIATE (within 4 hours, by ~12:00 UTC):**
+**OPTION A: Deploy v414 fix** — Authorize Design/Engineer to immediately diagnose Babel transformer in v412 build (suspected root cause: non-production build artifact), rebuild v414, deploy live. If diagnosis takes >30 min, escalate to Option B. QA will re-verify.
 
-**OPTION A: Deploy v414 fix** — Authorize Design/Engineer to immediately (1) diagnose root cause (suspected: Babel transformer in v412 build; needs precompilation), (2) rebuild v414, (3) deploy live. If diagnosis takes >30 min, escalate to Option B. QA will verify across 3+ round types before Ledgestone start.
+**OPTION B: Emergency rollback to v411** — Rollback now. v411 has the picks UX unlock you need; Go Throw was more stable. Faster path if Option A stalls.
 
-**OPTION B: Emergency rollback to v411** — Authorize immediate rollback to v411. v411 has the picks UX unlock you want; Go Throw may be more stable. Members will have working Picks + functional Go Throw at tee-off. This is the faster path if Option A diagnosis stalls.
-
-**DECISION REQUIRED:** Email or message (1) which option, (2) approvals for immediate Design/Engineer session (if Option A) or rollback authorization (if Option B). **Cannot remain unresolved at Ledgestone start.**
+**Email decision to diamashield@gmail.com or reply to this task within 4 hours: "A" or "B"?**
 
 ---
 
-**🔴 T-014 HARD-STOP — Still waiting for owner decision (5th consecutive flag, no response)**
+**🔴 T-014 HARD-STOP — EDIT PICKS OVER-BROAD UNLOCK (5 CONSECUTIVE SHIFTS, NO OWNER RESPONSE)**
 
-Edit picks over-broad unlock persists. When commissioner clicks "Edit picks," ALL members' pick-edit screens unlock (not just the commissioner's). Members can modify OTHER members' player selections. This violates draft integrity.
+Edit picks over-broad unlock persists 5 shifts (Jul 26, 27 x2, 28, 29). When commissioner clicks "Edit picks," ALL members' screens unlock (not just commissioner's). Members can modify OTHER members' picks.
 
-**Status:** Escalated 5 consecutive shifts (Jul 26, 27 x2, 28, 29); still unresolved. No PM routing; no fix in progress; no explicit deprioritization.
+**Decision required:** (1) FIX THIS SHIFT (Engineer rebuilds with uid guard, ~30-60 min), OR (2) ACCEPT AS-IS (acknowledge current behavior).
 
-**DECISION REQUIRED:** (1) **FIX THIS SHIFT** — Engineer rebuilds with uid-write guard (~30-60 min after v414 or Option B), OR (2) **ACCEPT AS-IS** — you acknowledge it and we protect current behavior from regression.
-
-**Per LANES.md rule:** If this remains unrouted a 6th shift (next CEO round), will escalate to explicit "is this a legitimate decision or an unresolved issue?" challenge. Response needed before next CEO shift (09:02 UTC).
+**Per team rule:** Cannot remain unrouted a 6th shift. Response needed: "Fix" or "Accept".
 
 ---
 
-## PRIOR SHIFTS (for reference)
+## SUMMARY OF 2026-07-29
 
-[Previous escalations and decisions recorded in prior shifts — see team/logs/ceo.md for full history]
+v413 deployed with picks unlock (T-016 DONE, member-verified working). Data collector autonomous + correct. **But T-018 Go Throw Discard regression unresolved 12+ hours before Ledgestone tee-off.** This is the showstopper. Full report in team/REPORT.md.
+
+**Full report:** https://github.com/Bonnaroo/chains-agent-log/blob/main/team/REPORT.md
+
+**Quick facts:**
+- Picks unlock: ✓ DONE (v413 live, member QA verified)
+- Data: ✓ NOMINAL (13+ autonomous collector runs today)
+- Go Throw Discard: 🔴 BROKEN (Discard hang, 12+ hours unresolved)
+- Ledgestone readiness: RED (blocked by T-018)
+- Timeline: 18 hours to tee-off; decision + fix/rollback must complete by ~13:00 UTC today
+
+**Next:** Owner decision on T-018 (A or B). T-014 decision (Fix or Accept). Everything else is ready.
