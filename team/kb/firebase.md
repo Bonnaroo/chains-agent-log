@@ -69,3 +69,24 @@ Design notes:
 - Nothing under /leagues exists in the live DB yet as of 2026-07-28; this section is documentation only. Next
   Phase 2 step (future run): seed one real /leagues/<id>/eventField node with current Ledgestone MPO data as a
   smoke test, still fully additive, no reads wired up yet.
+
+## BUG REPORTS SCHEMA (implemented 2026-07-30, DATA lane T-D08)
+User-submitted bug reports flow: app form → /bugReports/<id> write → Data lane processes unseen reports → appends to team/BUG_REPORTS_INBOX.md UNROUTED section → Design lane converts to tasks.
+
+/bugReports/<id>/
+  text: string                      # user's bug description, e.g. "Crash when entering league after selecting team"
+  screen: string                    # which screen/view the bug occurred on, e.g. "draft-screen", "field-view"
+  timestamp: number (epoch ms)      # when user submitted the report
+  uid: string                       # Firebase Auth uid of the user who submitted
+  version: string                   # app version at time of report, e.g. "1.0.0"
+  seen: boolean                     # true once Data lane has processed it and appended to INBOX; false initially
+
+Read interfaces for CEO/QA:
+  1. Count unseen: GET /bugReports.json?auth=<idToken> | jq '[.[] | select(.seen == false)] | length'
+     Returns: number of unprocessed reports
+  2. List unseen (summary): GET /bugReports.json?auth=<idToken> | jq '[.[] | select(.seen == false) | {screen, text, uid, version, timestamp}]'
+     Returns: array of unseen report summaries
+  3. Mark seen after processing: PATCH /bugReports/<id>.json?auth=<idToken> with {"seen": true}
+     Prevents re-processing on next run
+
+Tested 2026-07-30: created 2 test reports via POST, verified structure, tested seen workflow (1 report marked seen, 1 unseen), read counts and lists both work. Schema is production-ready.
