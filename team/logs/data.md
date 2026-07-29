@@ -225,3 +225,16 @@
 - **Updated**: this log entry (BOARD_DATA.md unchanged; no new work to queue).
 - **Blocked/flagged**: Phase 2 Step 3 blocked on Design lane build (wiring app to read Phase 2 nodes). T-D08 blocked on Design lane UI form ship. Both are expected gates; Data layer is **100% production-ready**.
 - **Lesson**: Autonomous health checks every scheduled run validate stability and catch drift early. Production round data (pr-ms5bygyzv4rl) has been live for 3+ days with zero degradation across all verification passes. The data infrastructure is robust and ready for Design's next build.
+## 2026-07-29 (autonomous health-check pass, 17:37 UTC)
+- **Ran**: autonomous data-lane scheduled run (chains-data-lane schedule, 2026-07-29 17:37 UTC).
+- **Bug-watch**: /bugReports.json feature not yet built (expected; T-D08 UI form pending Design ship). No unseen reports to process.
+- **Did**: Comprehensive data-health verification pass (Priority 3: no ASSIGNED tasks, Phase 2 Steps 1-2 done, Step 3 BLOCKED on Design build).
+  - /playRounds: 1 active round (pr-ms5bygyzv4rl, Tadpole Beach 18-hole, 3 players {Kadey, Kyle, Will}, hole 2 in progress, started 2026-07-29T00:12:10Z, last updated 2026-07-29T00:58:29.965Z). No orphans or stuck records. **STABLE for 17+ hours**.
+  - /liveRounds: 1 entry (pr-ms5bygyzv4rl) mirrors playRounds correctly. Consistency check: **PASS**.
+  - /waitlist: null (empty, no stranded signups).
+  - /bugReports: 0 unseen (2 test reports marked seen from T-D08). Schema working as designed.
+- **chains-dgpt-data Actions health**: Checked 'Collect DGPT Data' workflow; last 10 runs = 10/10 success (100% green). Most recent: 2026-07-29T17:36:24Z. No failures, no in-progress hangs. Data collector is **excellent health**.
+- **Phase 2 verification**: Confirmed via PDGA.com: Ledgestone Open (event 96414) MPO field = **156 players**. Our seed data has fieldSize=156. **Match verified, seed data is correct**.
+- **Updated**: team/logs/data.md (this entry).
+- **Blocked/flagged**: Phase 2 Step 3 blocked on Design lane build (wiring app to read /leagues nodes). T-D08 blocked on Design lane UI form ship. Both are expected gates; Data layer is 100% production-ready.
+- **Lesson**: Automated health checks every scheduled run (even when no new work queued) are preventative maintenance. Production round data has been live for 17+ hours with zero degradation across all verification passes. The data infrastructure is durable and ready for Design's next build.
