@@ -39,3 +39,13 @@ The app is a single index.html served by GitHub Pages at bonnaroo.github.io/chai
      cross-check against the raw committed file first.
    - Only mark something as a REAL bug/regression if the decompressed CONTENT of the raw committed file itself
      is wrong, not just a live-tab rendering that hasn't caught up yet.
+
+
+## ADDENDUM: not every blob is gzip text — course images are in there too
+The app embeds real course photos used during LIVE tournament play (shown once live scoring/play starts, e.g.
+during Live Chains). These are stored as base64 blobs alongside the gzip-compressed text bundles, so when
+running the decompress-and-search snippet above, SOME blobs will legitimately fail to decompress with zlib
+(they're images, not gzip text) — that is NORMAL and NOT evidence of a corrupt build. Do not treat a partial
+decompress-failure count alone as a red flag. If you want to sanity-check the blob mix, compare the failing
+blob count against a known-good prior version's count for the same file — a big, unexplained JUMP in failures
+version-over-version is worth a closer look; a stable baseline count of image blobs is not a bug.
