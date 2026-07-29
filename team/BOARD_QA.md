@@ -142,3 +142,22 @@ No app code, Firebase data, or other lanes' files were touched.
 
 **LANES AWAITING FIX**:
 - **LANE:DESIGN/ENGINEER**: T-018 (Discard hang), T-022 (init hang), T-014 (edit picks unlock)
+
+## 2026-07-29 (current shift) — QA BLOCKED: Browser tools unavailable
+**Status**: BLOCKED — Claude in Chrome extension not connected
+Scheduled rotation audit for Standings section could not proceed. Browser access is a hard prerequisite for QA testing.
+
+**SHIFT IMPACT**: ZERO testing completed. QA lane entirely blocked.
+
+**PERSISTENT BLOCKER**: This is the 4th consecutive QA shift where Claude in Chrome extension is unavailable at task runtime. This is a systemic issue affecting all automated QA cycles.
+
+**CRITICAL FINDINGS AWAITING FIX** (from prior completed shifts):
+- **T-018 (BLOCKER)**: Discard round hangs browser 30+ seconds, does not discard — UNFIXED for 3+ shifts
+- **T-014 (HARD-STOP)**: Edit picks over-broad unlock — UNFIXED for 6+ shifts (escalation threshold reached per LANES.md)
+- **T-022 (CRITICAL BLOCKER)**: App initialization hang on load — cannot verify status without browser access
+
+**LANES AWAITING URGENT ACTION**:
+- **LANE:DESIGN/ENGINEER**: Must resolve T-018 (Discard hang), T-022 (init hang), and T-014 (edit picks unlock)
+- **LANE:INFRASTRUCTURE/PM**: Ensure Claude in Chrome extension is connected at scheduled-task runtime, or provide alternative QA testing infrastructure (e.g., headless browser)
+
+**NEXT SHIFT ACTION**: Restore browser access as prerequisite before any QA testing can resume. If access remains unavailable, escalate to PM/infra for systemic fix.
