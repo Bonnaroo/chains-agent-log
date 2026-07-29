@@ -68,6 +68,11 @@ can always be confirmed regardless of device.
 **Done when:** No 404s for sw.js in console (either a working SW or no registration at all); version number is
 visible and confirmable on both desktop AND mobile layouts.
 
+## T-D08 | ASSIGNED | PRIORITY: TOP (2026-07-29 02:03 UTC routed by CEO)
+**Goal:** REPORT A BUG button — create a visible, discoverable "Report a Bug" affordance for users. Owner wants a real feedback channel so users can submit bug/issue reports directly from the app. Consider Settings as default location, plus evaluate whether a small persistent icon elsewhere makes sense (e.g. Help or feedback button in nav). Affordance should include a short text field for the issue description and auto-capture context data (current screen/section, timestamp, uid).
+**Done when:** User can see and tap a "Report a Bug" or "Send Feedback" button from at least the Settings screen; tapping opens a form with a text field for the issue, screen context is auto-captured (or user can edit it), and submission stores the report (Data lane owns the Firebase side).
+**Notes:** This is the UI/Design part. Data lane (BOARD_DATA.md) owns creating the /bugReports Firebase node and a read interface (count/summary) for CEO/QA to surface reports in daily operations so they become actionable board tasks, not just stored data.
+
 ## CONFIRMED GOOD - DO NOT REGRESS (owner walkthrough 2026-07-28)
 - WATCH / "Live Now" for other people's rounds - correct as-is, do not change the broadcast/watch mechanic itself
   (T-D03 above only changes YOUR OWN round's card, not how others' live rounds are watched).
