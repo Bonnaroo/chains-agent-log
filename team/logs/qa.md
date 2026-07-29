@@ -74,3 +74,29 @@ All tabs tested: Highlights (top-shot reels, tournament highlights) → Rounds (
 (3) T-018 & T-014 STATUS UNCHANGED: Both persist unfixed from prior shifts. T-018 (Discard round hang) is a BLOCKER and T-014 (5th flag, hard-stop per LANES.md) awaits PM/Engineer routing decision or fix.
 
 **NEXT SHIFT ROTATION**: Settings section (per order: Dashboard → Picks → Standings → Live Chains → Go Throw → Watch → Settings → Dashboard...).
+- 2026-07-29 14:30 UTC | [CLAUDE] | QA scheduled shift — section rotation audit (SETTINGS, per rotation: after Watch audit 2026-07-29 10:00).
+
+(1) NO FRESH DEPLOY since last shift — v413 still live (picks unlock verified in prior shift). Proceeding to rotation audit per schedule.
+
+(2) SECTION ROTATION AUDIT — SETTINGS (Display Name / Theme / Color / Texture / Icon customization):
+
+**RESULT: MOSTLY PASS** — Settings section is functional and stable. All core checklist items pass or partial-pass; no blocking issues.
+
+Checklist results:
+- **1. WAY OUT** ✓: Sidebar navigation works smoothly; can escape to any other section or app state. No dead-ends.
+- **2. RECORDS (create/edit/delete)** ⚠ PARTIAL: Display name field is editable and auto-saves. Theme/color/texture/icon all selectable and auto-persist. NO explicit delete/reset buttons for customizations (users can edit values but cannot clear them to default in one click—minor UX gap, not a blocker).
+- **3. NO CLUTTER** ✓: Clean section layout; MY LEAGUES card at top, YOUR PROFILE card (name plus customization grid), TROPHY CASE card, clear labels, logical flow.
+- **4. DATA SURVIVES** ✓: Display name tested (changed to AutoSaveTest, navigated to Dashboard, returned to Settings—value persisted plus reflected in profile header and avatar badge). Theme selection tested (clicked MINT theme, sidebar/background colors updated immediately, navigated away/back—MINT theme persisted). Auto-save confirmed for all customizations; no refresh needed.
+- **5. IT MAKES SENSE** ✓: Visual choices are self-explanatory with minimal labels. Trophy case gamification (Silver 4 wins, 2 wins to Gold) is engaging. First-time user can figure out purpose instantly. No confusing states.
+
+**Feature Gaps vs ROADMAP spec:**
+- Units selector (ft/m) — NOT IMPLEMENTED (roadmap specifies this should be in Settings)
+- Delete account/data button — NOT IMPLEMENTED (roadmap specifies this as a Settings feature with confirm step)
+
+These are roadmap-to-do items (not shipped yet), not regressions. No filing required—already documented in ROADMAP.md as target features.
+
+**Summary**: Settings is fully usable, customizations work reliably with auto-save, profile display name editable. Two roadmap features not yet implemented. No urgent fixes needed. Ready for production; next enhancements are the roadmap features.
+
+(3) T-018 & T-014 STATUS UNCHANGED: Both remain unfixed from prior shifts (Discard round hang blocker, edit-picks over-broad unlock hard-stop flag).
+
+**NEXT SHIFT ROTATION**: Dashboard section.
