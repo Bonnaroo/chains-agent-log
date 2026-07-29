@@ -155,3 +155,4 @@ Checklist results:
 (3) v413 NOTE: Picks unlock deployed and verified working with member account (confirms v412/v413 design/engineer fix is functional end-to-end).
 
 **NEXT SHIFT ROTATION**: Standings section.
+- 2026-07-30 (current shift) | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: Claude in Chrome extension not connected. Cannot access live app to run verification. Skipping this rotation cycle. No changes to app code, Firebase, or other lane files.
