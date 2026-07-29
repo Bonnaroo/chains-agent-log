@@ -5,6 +5,25 @@ replies in TO_OWNER.md. You never talk to the workers directly.
 
 ## NEW (unprocessed — CEO picks these up)
 
+- [NEW] BACKUPS + SCALE FOR REAL GROWTH. Owner wants two things, treat as connected: (1) REGULAR BACKUPS -
+  both the app code (already improving via staging/GitHub history) AND the Firebase data itself (leagues,
+  members, picks, standings, rounds) need automated, retrievable backups Guillermo can actually restore from if
+  something breaks - not just the ad-hoc _trash-before-delete pattern that already exists, a real recurring
+  snapshot. Route to Data lane: add a scheduled backup step that snapshots key Firebase nodes to a dated JSON
+  file committed in chains-dgpt-data (or similar), on a real cadence (e.g. daily), kept for some rolling window.
+  (2) SCALE PLANNING - owner is thinking ahead to potentially many leagues/many users (his words: "let's say this
+  app blows up and we have a million people using it... a ton of different leagues, some people in multiple
+  leagues"). This is a real architecture question (per-league data isolation, Firebase security rules that scale
+  to many leagues without cross-league leakage, whether Realtime DB stays the right choice at that scale vs.
+  Firestore, cost at scale) and deserves an honest PLANNING pass, not a rushed mid-tournament hack. Route to
+  CEO/STRATEGY: add this as a tracked future phase (does not block Ledgestone-week work), and have R&D produce a
+  short, honest options writeup (not a build) on what "ready for many leagues" would actually require.
+  (3) STOP STOPPING. Owner is frustrated that lanes report "blocked" and just stop instead of finding other real
+  work. Reinforce NEVER-IDLE across every lane: being blocked on task A is never a reason to produce nothing -
+  there is always a second real, useful thing to do (see each lane's own NEVER-IDLE fallback list). A lane that
+  logs "blocked" with no attempted fallback work this shift should be treated as a supervision failure by CEO,
+  same severity as a missed run.
+
 (none yet)
 
 ## HANDLED (CEO moves items here with a status once routed/answered)
