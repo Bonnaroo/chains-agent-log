@@ -1,0 +1,12 @@
+{
+  "database": [
+    {
+      "target": "chains-fantasy-dgpt",
+      "rules": "database.rules.json"
+    }
+  ],
+  "hosting": {
+    "public": ".",
+    "ignore": [".git", "firebase.json", ".firebaserc", "database.rules.json"]
+  }
+}
