@@ -23,3 +23,17 @@
 9. Deletes of production data always go to `_trash/<timestamp>` first. Never a hard delete.
 10. If the same mistake, blocker, or false alarm shows up twice in company/LESSONS_LEARNED.md, that's a
     standing signal the relevant playbook is wrong or missing — fix the playbook, don't just log it a third time.
+
+
+11. BACKEND/FIREBASE CHANGES ARE NOT "DONE" JUST BECAUSE A FILE WAS COMMITTED. Committing a rules file, a schema
+    doc, or a config file to a GitHub repo changes nothing live — Firebase rules only take effect once actually
+    published to the real project (via Firebase CLI + admin credentials, or pasted into the Firebase Console by
+    a human). Before ANY backend/security Issue is marked done, run an actual live probe: sign in anonymously
+    with the public API key (the same way a real attacker could) and confirm reads that should be blocked
+    actually return 401/403. This incident happened for real on 2026-07-29 — Issue #2 (Firebase security
+    hardening) was marked resolved after only committing files, while the live database remained completely
+    open to any anonymous user. See company/LESSONS_LEARNED.md and Issue #2's comment history for the full
+    incident. No current token/credential setup can actually publish Firebase rules (only a public web API key
+    exists, not an admin service account) — until that's resolved, backend/Firebase changes of this kind require
+    the owner to either generate a service account key or manually publish rules in the Firebase Console
+    themselves. Retag such Issues "[needs-owner-decision]" rather than "[ready-for-build]" until that's true.
