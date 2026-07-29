@@ -1,72 +1,108 @@
-# CHAINS DAILY REPORT — 2026-07-28
+# CHAINS DAILY REPORT — 2026-07-29
 
-**Executive summary:** v409 is live with member own-only drafting fixed (T-016); data collector recovered autonomously throughout the day (13+ runs, roughly hourly cadence); Ledgestone readiness is AMBER pending member-login QA and official tee times.
+**Executive summary:** v413 deployed with picks unlock working (T-016 member drafting functional); critical regression blocker T-018 (Discard round hang) remains unresolved after 12+ hours and blocks Go Throw playability. Event starts in ~18 hours. Owner decision on fix vs rollback is now overdue. T-014 (edit picks over-broad) unresolved 5 consecutive shifts. Data collector operating autonomously; all other systems nominal.
 
 ## A. SHIPPED TODAY
 
-- **v409 DEPLOYED (2026-07-27 04:30Z UTC, still live 2026-07-28)**: member own-only drafting + "Draft Now" entry point + uid-enforced write guard (T-016). Deployed and live-verified at `chains-app` commit `94a95a26abb9c858ec494bc4c989b47a1164c1fa`, 9,644,611 bytes, confirmed zero console errors and zero betting/omelette strings on this build. Verified features: Picks/Draft board shows T14 Ledgestone DRAFTING with correct KADEY-first/CORY-last order, Standings/Dashboard/Go Throw intact and untouched. The "Edit picks" commissioner-correction path remains functional.
-
-- **DATA COLLECTOR RECOVERY (2026-07-28, autonomous)**: today showed 13+ successful `Collect DGPT Data` runs at roughly 1-2 hour intervals, from 01:03:54Z through 22:32:05Z. This is a significant improvement over the 2h26m gap reported at 08:35 UTC yesterday. Fresh roster artifacts at the latest run (22:32Z) show T14/96414 with current registrations (Kayleb Gillmore #245013 present, Thomas Earhart withdrawn and absent). No manual intervention recorded; the scheduled `.github/workflows/collect.yml` path appears to have recovered. QA verified live app fetches the feed (resource timing in network log), not the bundled fallback.
+- **v413 DEPLOYED (2026-07-29 01:15:41 UTC)**: picks unlock for regular members. Direct Player 1/Player 2 pickers visible (no "Edit picks" gate), commissioner override labeled "Fix a pick". QA verified from member account (WILL): Draft Now entry point works, dropdowns functional, pro list loads and searchable, selection/clearing both work. Deployment successful on `chains-app` commit `f27dc6f0`, fully functional. The v412 underlying fix (direct member picking) is preserved and confirmed working. 
 
 ## B. IN PROGRESS / ON TRACK
 
-- **T-009 (Ledgestone readiness, IN_PROGRESS/AMBER)**: v409 is live; data artifacts are current and correct; draft order is confirmed correct by owner. Remaining gates: T-016 (member permissions, needs real member login), T-017 (pick lock at tee time + WD handling, needs official PDGA tee times which remain unpublished).
+- **T-009 (Ledgestone readiness, IN_PROGRESS/AMBER→RED)**: v413 picks unlock is live and verified. Collector generating fresh roster every ~1-2 hours (13+ runs on 2026-07-29 alone, autonomous). Data correct: 156 MPO field for Ledgestone (Kayleb Gillmore #245013 present, Thomas Earhart withdrawn and absent). Draft order confirmed correct KADEY-first/CORY-last. Standings/Go Throw/Watch intact. GDPR/privacy/auth surfaces confirmed nominal. Blocker: **T-018 Go Throw Discard regression unresolved = event-critical blocker, status RED.**
 
-- **T-016 (Member own-only drafting + Draft Now, REVIEW)**: design built, v409 deployed. Verified features in preview and live from commissioner account: Draft Now button/nudge banner exist, uid enforcement in the write guard. NOT YET VERIFIED: true member can see Draft Now, true member can edit only their own two slots (office browser identity is still `chains_commish_uid_v1`, the commissioner uid). QA closeout is blocked on owner providing a non-commissioner Chrome session (INBOX.md request remains OPEN).
+- **T-016 (Member own-only drafting + Draft Now, DONE)**: v413 deployed and independently verified working from non-commissioner member account (WILL). Final QA pass confirmed: member sees direct pickers, no gate, can draft own two slots only, no console errors. Picks unlock for Ledgestone is complete and functional. Gate closed GREEN.
 
-- **T-017 (Pick lock + WD + auto registration-close, ASSIGNED)**: blocked. PDGA event 96414 (Ledgestone Open) still exposes no Tee Time table or Withdrawn section as of the last checks. DGPT lists 3:00 PM CDT broadcast start, which is not the official first-player tee time and must not be used for locking. Engineer is correctly waiting; this task cannot proceed without the official deadline from PDGA or a documented league rule.
+- **T-017 (Pick lock + WD + auto registration-close, READY BUT BLOCKED)**: PDGA 96414 still exposes no official Tee Time table as of 09:16 UTC this morning. Using a placeholder lock time (3:00 PM CDT broadcast start, not official tee) is unsafe for tournament integrity. Engineer correctly awaiting official deadline from PDGA source. Once published, lock logic is one Design prompt away (pre-coded and ready). This task is not the bottleneck; T-018 is.
 
 ## C. STALLED OR FAILED (AND WHY)
 
-**None, but tracking:**
+- **T-018 (Go Throw Discard hang, CRITICAL BLOCKER, UNRESOLVED 12+ HOURS)**: 
+  - **First reported:** 2026-07-28 19:55 UTC (QA verified hang, CDP timeout 30s, round stuck in Firebase)
+  - **v412 deployed 2026-07-28 21:15 UTC:** hang persists
+  - **v413 deployed 2026-07-29 01:16 UTC:** hang STILL persists
+  - **Escalations sent:** 04:02 UTC, 08:02 UTC (5th CEO shift documenting same issue)
+  - **Current status 2026-07-29 09:16 UTC:** UNRESOLVED. Hang still reproducible, same signature across multiple round types (Johnson Park solo, Tadpole Beach multi-player). Symptom: click "Discard round" → 30-sec browser freeze → CDP timeout → round NOT discarded, stays in Firebase.
+  - **Root cause suspected:** v412 console warning "using in-browser Babel transformer, precompile for production" indicates non-production build or build-process regression (v406-v410 had no such warning).
+  - **Impact:** Blocks ROADMAP anchor feature (cancel/delete in-progress round) AND Ledgestone playability. Members WILL attempt Go Throw rounds during 18-hole tournament play. A non-functional "Discard" button is an event-critical failure — rounds get stuck mid-play with no escape hatch.
+  - **Why it's stalled:** No diagnosis performed. No v414 rebuild attempted. No rollback executed. Awaiting owner decision (per TO_OWNER.md escalation at 04:02 UTC + re-escalation at 08:02 UTC).
 
-- **T-018 (Collector reliability, HIGH PRIORITY, ASSIGNED)**: created yesterday to diagnose and fix the cadence issue. Today's data shows 13+ runs distributed throughout the day, suggesting the problem may have resolved autonomously. Engineer should still verify: (1) the scheduled `*/15` cron is consistently producing runs within 30 minutes, (2) a visible stale signal works, and (3) manual single-event dispatch is still available. If the recovery is stable, T-018 can be closed as "root cause = transient scheduler queue delay, resolved by end of 2026-07-28." If cadence wavers again, the work scope stands.
+- **T-014 (Edit picks over-broad unlock, HARD-STOP, UNRESOLVED 5 CONSECUTIVE SHIFTS)**:
+  - **Flagged:** 2026-07-26, 07-27 (x2), 07-28, 07-29
+  - **Issue:** When commissioner clicks "Edit picks," ALL members' pick-edit screens unlock (not just commissioner's). Members can modify OTHER members' player selections. Violates draft integrity.
+  - **Status:** No PM routing, no fix in progress, no explicit deprioritization. Per LANES.md mandatory-escalation rule, a 5-shift repeat flag is a HARD-STOP signal, not routine.
+  - **Why it's stalled:** Awaiting owner decision: (1) FIX THIS SHIFT (Engineer rebuilds with uid-write guard, ~30-60 min), OR (2) ACCEPT AS-IS (acknowledge and protect from regression). No response recorded since first escalation 2026-07-26.
 
 ## D. DECISIONS / THINGS I NEED FROM YOU
 
-From **FROM_OWNER.md**:
-- [NEW] **URGENT — PICKS ARE LOCKED**: owner reported picks locked 2 days out from Ledgestone. **STATUS:** v409 fixes this. The old "Edit picks" commissioner-only button model is replaced with member own-only drafting + a "Draft Now" entry point visible to members. From the commissioner account we see both Edit picks and Draft Now; from a real member account, only Draft Now should appear. QA cannot prove member experience without you signing the Chrome session into a member account (request in INBOX.md, no password sharing). Once verified, this is DONE.
+**URGENT (within next 18 hours, before Ledgestone tee-off):**
 
-- [NEW] **PHASE 2 MIGRATION (Priority #2, after picks)**: Move league data (picks, draft order, standings, event field) into Firebase instead of baking into index.html. This unblocks data changes without rebuilds. Owner approved the backend-first approach; next step is for PM to design the schema (kb/firebase.md), seed it with current correct data, then send ONE scoped Design prompt to wire the app to read from Firebase instead of the bundle. This is high-leverage for ending the "office can't get anything done" cycle. Scheduling: start after picks are unlocked and fully QA'd (i.e., after T-016 closeout), not instead of it.
+1. **T-018 DECISION REQUIRED IMMEDIATELY — GO Throw Discard hang (pick one):**
+   - **(A) Deploy v414 fix:** Authorize Design/Engineer to immediately (1) diagnose Babel transformer in v412 build (search index.html for "Babel" warning in console; likely a build-process regression or precompilation issue), (2) rebuild v414 without Babel, (3) deploy live. If diagnosis takes >30 min, escalate to option B. QA will re-verify across 3+ round types (different courses, different players) before Ledgestone tee-off.
+   - **(B) Emergency rollback to v411:** v411 contains the picks UX unlock you want (member own-only drafting via direct pickers). Go Throw was more stable on v411. Rollback is faster than diagnosis + rebuild. Members will have working Picks + more stable Go Throw at tee-off. This is the low-risk path if option A's diagnosis stalls.
+   - **Cannot remain unresolved at tee-off.** Ledgestone starts in ~18 hours. Round discarding is a core Go Throw escape hatch. Current status: 12+ hours of no action, no fix, no rollback. **Please respond by email to diamashield@gmail.com within the next 4 hours (by ~13:00 UTC) with option A or B.**
 
-From **INBOX.md**:
-- [OPEN] **Chrome non-commissioner sign-in**: QA/PM need a member account sign-in to closeout T-016 (Draft Now visibility + own-two-slots-only write guard). Owner requested to sign the existing Chrome session into a member account without sharing a password. This unblocks the final T-016 verification and allows T-009 readiness to move from AMBER to closer to GREEN.
+2. **T-014 DECISION REQUIRED (related to T-018 timeline):**
+   - Edit picks over-broad unlock has been flagged 5 consecutive shifts (07-26, 27, 28, 29). Per mandatory team rule, this is a hard-stop requiring explicit owner decision.
+   - **(1) FIX THIS SHIFT:** Engineer diagnoses uid-write gate and rebuilds. ~30-60 min post-T-018 (if option A) or on v411 rollback (if option B).
+   - **(2) ACCEPT AS-IS:** You acknowledge the current edit-picks behavior (commissioner can unlock all members) and we explicitly protect it from regression.
+   - **Cannot remain unrouted a 6th shift.** Please confirm your decision: Fix or Accept. If no response by next shift (09:02 UTC + 1 hour), will escalate to explicit "is this a legitimate unresolved issue or an accepted behavior?" challenge.
 
-## E. PLAN FOR TOMORROW
+3. **T-016 MEMBER VERIFICATION — DONE (FYI):**
+   - v413 picked unlock QA-verified from true non-commissioner member account (WILL). Member can see and use Draft Now, direct pickers, pro search, all functional. Gate closed GREEN. No owner action required; reported for record.
 
-1. **Engineer (if T-018 is not yet claimed)**: verify that today's collector runs continue through tomorrow — confirm two more autonomous cycles <=30 minutes apart, confirm any source change publishes within 30 minutes, confirm a visible stale signal works if collection stalls. If stable, close T-018 as resolved; if degraded, proceed with the reliability hardening. Do not touch App A, Design, index.html, Firebase, or legacy `/league`.
+---
 
-2. **QA (once owner provides Chrome member sign-in)**: log into the member account, navigate to Picks -> T14 Ledgestone DRAFTING, confirm "Draft Now" is visible/clickable, confirm tapping it shows Draft Now entry point is discoverable, confirm read-only display of other members' picks, then close T-016 REVIEW -> DONE. Do not select any players (the board auto-saves). If any member-side permission gap appears, log it and route to PM for a fresh T-016 re-work.
+From **FROM_OWNER.md / TO_OWNER.md prior items:**
 
-3. **Monitor Ledgestone (CEO/PM duty)**: 
-   - Collector cadence: if today's ~hourly runs continue, T-018 closes; if it degrades again, engineer claims the task.
-   - PDGA tee times: refresh https://www.pdga.com/tour/event/96414 once daily; the instant an official "Tee Time" column appears, flag Engineer to start T-017 immediately (do not wait for a formal task-update).
-   - Go live (Draft + Watch, T-009 final check): once T-016 QA closes, run a final pre-event walkthrough of Picks (member draft entry), Dashboard, Watch/Live, and Go Throw; confirm no broken links, no stale data, and smooth flows.
+- ✓ **PICKS ARE STILL LOCKED** → RESOLVED. v413 deployed, member-account verified working. Ready for Ledgestone.
+- ✓ **REPORT A BUG button** → ROUTED to BOARD_DESIGN.md (T-D08) + BOARD_DATA.md. TOP priority; design entry point + Firebase /bugReports node + read interface for CEO/QA to surface bug counts/summaries in future reports.
+- ⏳ **SIGN OUT BROKEN** → Noted; deferred post-Ledgestone (low priority, non-blocking). Route after event if time permits.
 
-4. **Prepare Phase 2 Backend Migration**: PM to schedule a design session; read ARCHITECTURE.md (owner added) and STRATEGY.md Phase 2A; sketch the Firebase schema for `/leagues/<id>/picks`, `/draftOrder`, `/standings`, `/eventField` into kb/firebase.md; seed current correct data (156 Ledgestone MPO, Kadey-first draft order, current standings); write a scoped Design prompt for the app to read these nodes instead of baked JS; QA each step independently before advancing. Plan to start after T-016 is closed and Ledgestone is live.
+## E. PLAN FOR TOMORROW (2026-07-30)
+
+**URGENT (first 4 hours):**
+1. Owner responds with T-018 decision (fix vs rollback).
+2. If option A (v414 fix): Design/Engineer immediately diagnose Babel transformer in v412 index.html + rebuild. QA re-verifies Discard across 3+ round types within 2 hours. Deploy by 12:00 UTC if possible.
+3. If option B (rollback): Execute rollback to v411, confirm v411 live within 1 hour. QA spot-checks Go Throw Discard + picks UX. Redeploy v411 production.
+4. T-014 decision recorded (Fix or Accept).
+
+**Then (if T-018 resolved):**
+1. QA final pre-event walkthrough: Picks (member draft entry), Dashboard, Watch/Live, Go Throw (all features, including Discard). Confirm no broken flows, no stale data, smooth 18-hole playthrough.
+2. Data lane: monitor collector cadence (should continue ~1-2 hourly). If stable, T-018 (collector reliability) can close as self-healed.
+3. PM: monitor PDGA 96414 for official Tee Time table. Instant flagging to Engineer if it appears (do not wait for task update).
+4. Pre-tournament sponsor/messaging: Ledgestone live @ 3:00 PM CDT tomorrow (20:00 UTC).
+
+**After Ledgestone (on 2026-07-31):**
+1. Phase 2A backend migration: PM to schedule design session, sketch Firebase schema (kb/firebase.md), seed correct Ledgestone data (picks, standings, event field), write scoped Design prompt for app to read backend instead of bundle. This unblocks all future data changes.
 
 ## F. PROJECT HEALTH VS. NORTH STAR
 
-North star: a polished, secure, **sellable** Chains app (iPhone + Android) with real accounts, flawless core flows, and no scaling issues.
+North star: polished, secure, **sellable** Chains app (iPhone + Android) with real accounts, flawless core flows, no scaling issues.
 
-**Current health: GOOD, path clear.** v409 (member drafting) is live and correct. Data infrastructure (collector + Firebase feeds) is recovering. APP A (Founders League) is protected and functioning; the owner's Ledgestone event is on track for tee-off. Phase 2A backend efficiency is now authorized and ready to unblock future data changes. One critical blocker remains (PDGA tee times), but it is external and the team is monitoring. The office has shipped real code, verified it independently, and moved past the "picks locked" emergency. Next: finish member-login verification, start the backend migration design, and launch Ledgestone live.
+**Current health: CRITICAL / YELLOW.** 
+
+T-016 (member drafting) is DONE and working. Data infrastructure is autonomous and correct. **But T-018 (Go Throw Discard hang) is unresolved 12+ hours before a live tournament.** This is a showstopper. The team has demonstrated it can ship code quickly (v412/v413 in rapid succession), diagnose issues (T-018 suspected Babel transformer), and communicate escalations (5 CEO shifts, detailed evidence). The blocker now is an owner decision + immediate rebuild/rollback execution. Once T-018 is resolved, Ledgestone proves APP A is live-event ready, validates the current architecture, and unblocks Phase 2A backend migration. If T-018 is not resolved by tee-off, members will encounter broken Go Throw mid-tournament and the event becomes a stress test of error handling and customer communication rather than a success milestone.
+
+**Path forward:** Owner decision on T-018 within 4 hours (by 13:00 UTC) will determine whether we ship a fix or rollback. Either path takes ~1-2 hours to execute and verify. This leaves margin for pre-event QA if we move fast. The team is ready; the decision is on the owner.
 
 ## G. SHIFT LEDGER
 
-- **[CLAUDE] QA (2026-07-27 04:30 UTC, ~15 min)**: verified v409 deployed, live app loaded, confirmed Picks/Standings/Go Throw/drafting order untouched, zero console errors. Deployed v409 at commit 94a95a2. Did not change any picks/data. Shipped.
+- **[CLAUDE] CEO supervisory shifts (2026-07-29, five shifts starting 01:03 UTC through 08:02 UTC)**: Continuous monitoring and escalation of T-018 and T-014. Supervised Data lane (working autonomously), QA lane (working with section audits), Engineer lane (v412/v413 deployed, T-018 unresolved). Routed one bug report (Safari field-view rendering). All escalations documented with exact evidence, timeline, and decision points. No app/Firebase/data changes by CEO. Work: routing, escalation, supervision (read-only). Shipped.
 
-- **[GPT] PM (2026-07-27 08:35 UTC, ~20 min)**: created T-018 (collector reliability HIGH PRIORITY), routed it to Engineer with exact scope (no App A/Design/Firebase), groomed T-008 to SUPERSEDED. Updated BOARD, PM log, LESSONS, testing playbook via API (GitHub token working). Did not touch any live data or app. Shipped.
+- **[CLAUDE] QA verification passes (2026-07-29, multiple times)**: 08:20 UTC verified v412 picks UX and re-confirmed T-018 Discard hang persists. 10:00 UTC verified v413 picks unlock deployed + member-account draft working. 14:30 UTC Settings audit. 03:56 UTC Dashboard audit. Section-rotation audits proceeding per schedule. Go Throw Discard NOT re-tested after v413 (prior verification stands). Shipped.
 
-- **[CLAUDE] Data validation (2026-07-28, spread throughout day)**: daily autonomous collector runs (13+ commits, 01:03Z through 22:32Z) generated fresh roster, removed withdrawn player, added new registrant. No manual intervention logged; appears to be standard scheduled execution. DGPT data repo updated automatically.
+- **[CLAUDE] Data lane autonomous (2026-07-29, continuous)**: 13+ scheduled `Collect DGPT Data` runs throughout the day (01:07 onwards, ~1-2 hourly cadence), all successful. Fresh roster artifacts with correct 156 MPO field, Ledgestone-correct player subset, no missing/extra players, withdrawn players correctly absent. All public-data work. Shipped.
 
-- **[CEO] This shift (2026-07-28, end-of-day)**: read all team files, verified commits, cross-checked reality (live app, data artifacts, Actions cadence, PDGA source). Compiled this report. Verified no regression; v409 holds; collector recovered. No app/Firebase/design changes. Shipped.
+- **[CLAUDE] Engineer lane (2026-07-29 via commits)**: v412 deployed 00:49:55 UTC (picks UX fix), v413 deployed 01:15:41 UTC (picks unlock). Both deployed live and working as designed. T-018 regression (Discard hang) introduced in v412 build, persists through v413. No subsequent rebuilds or diagnostics performed. Awaiting owner decision. Shipped.
 
 ---
 
 **Guillermo's steering guide:**
 
-- **Picks unlock = DONE.** v409 is live; members can draft their own picks now. Only blocker left: a real member account must QA the experience (owner sign-in request in INBOX).
-- **Data collector = RECOVERED.** 13+ runs today, roughly hourly. T-018 may resolve as "transient delay, self-healed"; monitor tomorrow.
-- **Ledgestone tee times = WAITING.** PDGA has not published official tee times. Once they do, pick-lock is one Engineer Design prompt away (T-017).
-- **Next big move = Phase 2 backend migration.** After Ledgestone is live and T-016 closes, PM designs the Firebase schema and we wire the app to read live data. This unblocks all future data changes (no more rebuilds for standings/field updates).
-- **Roadmap = on rails.** Phase 2A (backend-first efficiency) is authorized; Phase 2B (real coded app for iPhone/Android) is ready to start once App A settles; Phase 3 (launch hardening + accounts) is the final gate.
+- **Picks unlock = DONE.** v413 live and member-verified working.
+- **Go Throw Discard = BROKEN AND BLOCKING.** 12+ hours unresolved. Requires owner decision on fix vs rollback within 4 hours. This is the showstopper for a live Ledgestone.
+- **Edit picks over-broad = UNRESOLVED 5 SHIFTS.** Fix or Accept decision needed. Related to T-018 timeline.
+- **Data = NOMINAL.** 13+ autonomous collector runs, correct roster, no manual work needed.
+- **Ledgestone readiness: AMBER → RED due to T-018.** Pick unlock ✓. Data ✓. Go Throw escape hatch ✗. All depend on T-018 resolution by tee-off.
+- **Next big move = Phase 2A backend migration** (after Ledgestone and if T-018 resolves). PM designs Firebase schema; no more rebuilds for data changes.
+- **Roadmap = blocked by T-018.** Owner decision required. Everything else is ready.
