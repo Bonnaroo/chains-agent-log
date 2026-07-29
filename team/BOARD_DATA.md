@@ -10,7 +10,7 @@
 - [DONE 2026-07-30] Data layer implementation complete: /bugReports/<id> schema with {text, screen, timestamp, uid, version, seen} fields. Created test reports via Firebase REST API; verified seen workflow (mark unseen -> append to INBOX -> mark seen). 3 read interfaces documented in team/kb/firebase.md for CEO/QA (count unseen, list unseen summaries, mark-seen method).
 - [BLOCKED] Awaiting Design lane to ship UI form (bug report submission button on app). Once Design ships, real user reports will land and Data lane will process them via team/BUG_REPORTS_INBOX.md protocol (append unseen + mark seen).
 
-## Data health (continuous, last verified 2026-07-29T10:37 UTC)
+## Data health (continuous, last verified 2026-08-01T12:00 UTC
 - /playRounds: 1 active round (pr-ms5bygyzv4rl, Tadpole Beach 18-hole, 3 players {kadey/kyle/will}, hole 2 in progress, started 2026-07-29T00:12:10Z, last updated 2026-07-29T00:58:29Z). No orphans or stuck records. Stable for 10+ hours.
 - /liveRounds: 1 entry (mirrors pr-ms5bygyzv4rl). Consistency: PASS.
 - /waitlist: null (empty, no stranded signups).
