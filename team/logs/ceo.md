@@ -376,3 +376,38 @@ Edit picks over-broad unlock flagged 6 consecutive shifts. Owner decision needed
 **Next shift (12:02 UTC) must:** (1) Verify T-018 status — if still unresolved, escalate to "launching with critical blocker" AND investigate if owner decision was received offline. (2) Confirm T-014 owner decision recorded. (3) Investigate QA 2h 9m rotation overdue (possible schedule issue, blocker, or log dating bug). (4) Verify Data lane continues autonomous cadence.
 
 **Protected:** Kadey draft, standings, WATCH, In the Bag, Ledgestone 156-MPO, collector autonomy.
+- 2026-07-29 12:02 UTC | [CLAUDE] | CEO supervisor shift (chains-office-on-shift).
+
+**STEP 0 — Supervise (verified 12:02 UTC):**
+- DATA LANE ✅ WORKING: Autonomous health-check at 10:37 UTC confirmed. Continuous verification pass (Phase 2 PDGA-validated, Ledgestone 156 MPO). Next run expected 11:36 UTC.
+- QA LANE 🔴 CRITICAL BLOCKER T-022: Last activity 11:55 UTC. QA reported app initialization hang — live app at https://bonnaroo.github.io/chains-app unresponsive on page load (spinner renders, then hangs indefinitely, renderer timeout after ~30 sec). This blocks ALL member access and ALL verification work.
+- ENGINEER LANE 🔴 BLOCKED: v413 live (f27dc6f0, 10h 47m old). Awaiting owner decisions on T-018 (Discard hang) and T-014 (Edit picks unlock). T-018 decision window EXPIRED at ~12:00 UTC (2 min ago). No owner response recorded.
+
+**STEP 1 — Bug Reports:** UNROUTED empty. Zero bugs routed this shift.
+
+**🔴🔴🔴 CRITICAL ESCALATIONS — THIS SHIFT IS DECISION POINT:**
+
+(1) **T-022 (APP INITIALIZATION HANG) — NEW SHOWSTOPPER**
+   - First reported: QA shift 11:55 UTC
+   - Severity: CRITICAL — app won't load for ANY member
+   - Last known-good: 04:15 UTC (QA Picks audit successful)
+   - Probable root causes: new deployment, Babel transformer issue, Firebase hang
+   - Action: Design/Engineer MUST investigate T-022 FIRST (blocks T-018 work)
+   - Deadline: Before members play Ledgestone rounds (~5 hours, 17:02 UTC)
+
+(2) **T-018 (DISCARD HANG) — DECISION EXPIRED**
+   - Timeline: Escalated 08:02 UTC with 4-hour window → expired 12:00 UTC (2 min ago)
+   - Owner response: NONE RECORDED
+   - Blocker: Without v414 fix OR v411 rollback by ~13:00 UTC (58 min), Ledgestone launches broken
+   - Decision needed NOW: (A) v414 fix OR (B) v411 rollback
+   - Recommended path: If T-022 takes >30 min to fix, rollback to v411 immediately (20 min, preserves picks unlock from v413)
+
+(3) **T-014 (EDIT PICKS UNLOCK) — 6TH-SHIFT HARD-STOP**
+   - Flagged 5 consecutive shifts (Jul 26, 27, 28, 29, 29). This shift IS 6th-shift threshold.
+   - Per LANES.md: Cannot remain unrouted past 6 shifts. Escalation rule mandatory.
+   - Owner decision: (A) Fix uid-guard (~30-60 min) OR (B) Accept-as-is
+   - Deadline: End of this shift (13:02 UTC)
+
+**Protected + verified:** Draft, standings, WATCH, In the Bag, Ledgestone 156-MPO roster (PDGA-validated), autonomy.
+
+**Next shift (13:02 UTC):** Verify T-022 status (app loading?). Confirm T-018 decision executed (deployment complete?). Record T-014 owner decision. If T-022 or T-018 unresolved, escalate to 'launching with critical blocker' + investigate offline owner communication.
