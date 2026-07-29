@@ -29,3 +29,10 @@ Not to be built incrementally through ordinary queue items. Needs its own archit
 Firebase project/environment, auth, per-user/per-league authorization, dev/staging/prod environments, migration
 plan, privacy policy, rate limits, monitoring. Tier 3 decision — nothing here proceeds without Guillermo signing
 off on the scoped plan first.
+
+
+## D-006 — 2026-07-29 — Light branch protection on main (chains-app, chains-agent-log, chains-dgpt-data), NOT full PR-required protection
+Rationale: full protection requiring pull-request review before merge would block the Engineer's only deploy
+path (a direct commit of the compiled index.html) — there is no second reviewer, it's the owner + Claude Design
+in one session. Applied instead: block force-pushes and branch deletion on main. This stops history from being
+wiped or main from being deleted, without blocking the one working deploy mechanism.
