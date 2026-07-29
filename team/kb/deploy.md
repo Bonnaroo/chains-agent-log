@@ -49,3 +49,15 @@ running the decompress-and-search snippet above, SOME blobs will legitimately fa
 decompress-failure count alone as a red flag. If you want to sanity-check the blob mix, compare the failing
 blob count against a known-good prior version's count for the same file — a big, unexplained JUMP in failures
 version-over-version is worth a closer look; a stable baseline count of image blobs is not a bug.
+
+
+## STAGING WORKFLOW (added 2026-07-29 — use this for every deploy from now on)
+Bonnaroo/chains-app already has a `test.html` file sitting alongside `index.html` — use it as the staging copy.
+1. Deploy every new build to `test.html` FIRST (same PUT method as index.html, just target path "test.html").
+   It's live and testable at https://bonnaroo.github.io/chains-app/test.html — a real, separate URL, same repo.
+2. Verify it there using the full verify method above (decompress-check the content, actually click through the
+   live staging URL in a browser) — a broken build only affects the staging URL, never the real live app.
+3. ONLY once verified good on staging: PUT the exact same file to `index.html` to promote it to the real live
+   site that Guillermo and the league actually use.
+4. Never skip straight to index.html for anything beyond a trivial, already-proven-safe change. During a live
+   DGPT event especially, staging-first is mandatory, not optional.
