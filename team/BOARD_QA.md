@@ -157,3 +157,23 @@ Heinola Open last place picks first" explainer text - this is a SEPARATE occurre
 is already clean) - add to T-D01 scope: also strip this text from the Dashboard card. (3) The known T-D03 issue
 (Live Now card requires click-through instead of direct discard) is still present as expected, not a new
 regression.
+
+## T-023 (no escalation) — Standings section audit (STANDINGS rotation, 2026-07-29 current shift)
+Status: READY FOR NEXT CYCLE (all checklist items pass)
+
+**Checklist pass/fail:**
+1. WAY OUT ✓: Clear sidebar navigation always accessible; seamless navigation to all other sections. Tested navigation away to Go Throw and back — no dead-ends or trap states.
+2. RECORDS N/A: Read-only section (expected).
+3. NO CLUTTER ✓: Clean section layout (title, description, tab navigation, standings table, color-coded legend, latest result card). No orphaned UI.
+4. DATA SURVIVES ✓: Refresh tested (F5); all league standings, tournament scores, and member data persisted identically. No loss or duplication.
+5. IT MAKES SENSE ✓: Purpose immediately clear ('season standings'). Visual design intuitive (member avatars + scores, color-coded performance). Tab labels self-explanatory (STATS, SCHEDULE, HISTORY). No instruction text needed; first-time user understands instantly.
+
+**Tab Navigation Test:**
+- STANDINGS: ✓ Table view with 6 members, T1-T13 events, color-coded scores
+- STATS: ✓ Category champions + member stats (birdies/eagles/bogeys)
+- SCHEDULE: ✓ 22 DGPT events with year selector (2018-2026)
+- HISTORY: ✓ Tour history view; smooth tab switching across all views
+
+**No blocking issues.** Standings section is fully functional, well-designed, and production-ready.
+
+**NEXT SHIFT ROTATION**: Live Chains section.
