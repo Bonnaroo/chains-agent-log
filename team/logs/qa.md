@@ -177,3 +177,15 @@ FINDINGS FROM PRIOR SHIFT (PERSISTENT):
 No app code, Firebase data, or other lane files touched.
 
 **NEXT SHIFT**: Restore Claude in Chrome extension connection and resume Standings rotation audit. If app initialization still hangs (T-022 unresolved), escalate to LANE:DESIGN/ENGINEER and await fix before proceeding.
+
+- 2026-07-29 (current shift) | [CLAUDE] | QA scheduled shift — section rotation audit (STANDINGS, per rotation: after The Picks/Draft). BLOCKED: Claude in Chrome extension not connected.
+
+FINDINGS FROM PRIOR SHIFTS (PERSISTENT BLOCKERS):
+- T-018 (CRITICAL BLOCKER): Discard round hangs browser tab 30+ seconds, does not actually discard round — first flagged 2026-07-28, re-verified 2026-07-29, still BROKEN in v413 live. Blocks ROADMAP anchor feature.
+- T-014 (HARD-STOP ESCALATION): Edit picks over-broad unlock, 6 consecutive QA shifts flagged (07-26, 07-27 x2, 07-28, 07-29, 07-30). Per LANES.md mandatory-learning, this is a hard-stop repeat-flag signal; reached escalation threshold.
+- T-022 (CRITICAL BLOCKER): App initialization hang on load (reported 2026-07-30 by prior shift; cannot verify this run without browser access).
+
+No app code, Firebase data, or other lane files touched this shift.
+
+**NEXT SHIFT**: Restore Claude in Chrome extension connection and resume Standings rotation audit. If app initialization still hangs (T-022 unresolved), escalate to LANE:DESIGN/ENGINEER and await fix before proceeding.
+
