@@ -86,3 +86,15 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 0 new
 - Status: Production nominal, all systems healthy, no action needed
 - Next: Routine monitoring continues, no blockers
+
+**2026-07-30 20:18:46 UTC** — Watcher run #8 (automated, 5-min cadence)
+- Pick Watch: ✓ No changes since run #7 (19h 2m); T1-T14 all consistent
+- Backups: ✓ Refreshed last_known_picks.json and latest.json (matching Firebase state)
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports auth requires service account for chains-app-f38f8)
+- Firebase Backup: Skipped (already completed on 2026-07-29; weekly restore test pending Wednesday)
+- Production Health: ✓ App reachable (HTTP 200), GitHub Actions healthy (3 recent runs all success), Firebase accessible (200 — no 401 errors)
+- Data Integrity: ✓ All 14 tournaments present, T1-T13 complete with scores, T14 ready (picks finalized, scores pending)
+- Cross-Check: ✓ All members have consistent picks/players for current event
+- Issues filed: 0 new
+- Status: Production nominal, all systems healthy, no action needed
+- Next: Routine monitoring continues, no blockers
