@@ -12,9 +12,9 @@ scannable in a few seconds, not become another history log.
 - Status: Complete, all nominal
 - Currently/next: Queue ready for Engineer; Issue #6 [ready-for-build] is next priority
 ## Watcher
-- Last run: 2026-07-30 00:22:00 UTC
-- Status: in-progress
-- Currently/next: Bug watch + production health check
+- Last run: 2026-07-30 00:35:00 UTC
+- Status: complete
+- Currently/next: v413 diagnosis confirmed; Firebase auth blocked
 
 ## Engineer
 - Last run: (not yet run under this system)

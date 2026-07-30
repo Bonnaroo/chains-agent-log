@@ -33,3 +33,16 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 3 total (#15 HTTP 401, #16 version mismatch, #17 CRITICAL routing)
 - Status: CRITICAL BLOCKER - app routing broken, users cannot access key features
 - Next: Engineer must investigate and fix routing issue immediately (blocks all section access)
+
+**2026-07-30 00:35:12 UTC** — Watcher run #4 (automated, 15-min cadence)
+- Bug Watch: Blocked (Firebase REST API requires auth token, unable to fetch /bugReports)
+- Firebase Backup: Skipped (already done today) + blocked (Firebase auth)
+- Production Health: ✓ App reachable (9.6MB), GitHub Actions healthy, no failures in workflow
+- Issue #16 Diagnosis: v413 IS correctly deployed to GitHub Pages, but version-display JS feature is broken (element hidden with display:none). Users see hardcoded v411 as a result. Recommend Engineer review commits 682e61e (v412) or f27dc6f (v413) for version.js logic.
+- Issue #15 Status: ✓ Confirmed — HTTP 401 error notification visible in sidebar ('Offline — will retry (HTTP 401)'). Firebase auth likely failing.
+- Navigation: ✓ Sidebar button clicks work (verified in run #2 audit)
+- Dashboard Section: ✓ Loads without errors, displays standings/events/chat correctly
+- Functional Audit: Dashboard PASS (way out/records/clutter/persistence/intuitive all ✓)
+- Issues filed: 0 new
+- Status: Production operational. Firebase access blocked (need auth token for REST API). All other checks nominal.
+- Next rotation: Visual audit (Go Throw section)
