@@ -74,3 +74,15 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 0 new
 - Status: Production nominal, Firebase auth restored, all data syncs working
 - Next: Visual audit (Picks/Standings sections) when system is less busy
+
+**2026-07-30 20:16:23 UTC** — Watcher run #7 (automated, 5-min cadence)
+- Pick Watch: ✓ No changes since run #6 (19 hours); all picks consistent (T1-T14 complete)
+- Backups: ✓ Refreshed last_known_picks.json and latest.json (no pick changes)
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports auth still requires service account)
+- Firebase Backup: Skipped (already completed on 2026-07-29; weekly restore test pending Wednesday)
+- Production Health: ✓ App reachable (200), GitHub Actions healthy, Firebase accessible (200 — no 401 errors)
+- Data Integrity: ✓ All 14 tournaments present, T1-T13 complete, T14 ready for scores
+- Cross-Check: ✓ All members have correct picks/players for current event
+- Issues filed: 0 new
+- Status: Production nominal, all systems healthy, no action needed
+- Next: Routine monitoring continues, no blockers
