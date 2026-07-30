@@ -37,3 +37,11 @@
     exists, not an admin service account) — until that's resolved, backend/Firebase changes of this kind require
     the owner to either generate a service account key or manually publish rules in the Firebase Console
     themselves. Retag such Issues "[needs-owner-decision]" rather than "[ready-for-build]" until that's true.
+
+
+12. WHEN TESTING SPA NAVIGATION, CLICK LINKS — DON'T TYPE URL HASH FRAGMENTS. This app's router responds to
+    real in-app clicks; typing a different #hash directly into the browser address bar does not reliably trigger
+    the same navigation and can make working routes look broken. A real incident: a Watcher run typed
+    #standings, #go-throw, etc. directly into the URL bar, saw stale content, and filed a false CRITICAL
+    "all routing broken" Issue. Always click the actual sidebar/nav element (via computer/find tools) to test
+    navigation, never rely on manually changing the URL fragment as a substitute for a real click.
