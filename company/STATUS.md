@@ -12,9 +12,9 @@ scannable in a few seconds, not become another history log.
 - Status: Complete, priority reassessment done
 - Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
 ## Watcher
-- Last run: 2026-07-30 00:35:00 UTC
+- Last run: 2026-07-30 01:30:00 UTC
 - Status: complete
-- Currently/next: v413 diagnosis confirmed; Firebase auth blocked
+- Currently/next: T11 & T14 picks synced; Firebase auth ✓; app health ✓; next: visual audit
 
 ## Engineer
 - Last run: (not yet run under this system)
