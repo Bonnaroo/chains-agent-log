@@ -46,3 +46,19 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 0 new
 - Status: Production operational. Firebase access blocked (need auth token for REST API). All other checks nominal.
 - Next rotation: Visual audit (Go Throw section)
+
+**2026-07-30 00:21-00:24 UTC** — Watcher run #5 (automated, 15-min cadence)
+- Bug Watch: ✗ BLOCKED (Firebase REST API requires auth, unable to fetch /bugReports)
+- Firebase Backup: ✗ BLOCKED (Firebase auth prevents verification; backup from 2026-07-29 exists per run #4)
+- Production Health: ✓ App reachable (9.6MB), GitHub Actions all passing, zero workflow failures
+- App Verification (visual audit): 
+  - ✓ Dashboard loads without errors, displays league standings/events/chat correctly
+  - ✓ Navigation buttons present (Dashboard, Picks, Standings, Live Chains, Go Throw, Watch, Settings)
+  - ✓ Hash routing working (#dashboard in URL)
+  - ✗ Version display shows "v411" (Issue #16 — element hidden with display:none)
+  - ✗ HTTP 401 notification visible ("Offline — will retry") (Issue #15)
+- Console: ✓ No errors detected on initial page load
+- Issues filed: 0 new
+- Critical observation: Issue #20 (data only in localStorage, zero backend backup) blocks Firebase auth resolution
+- Status: Production operational. Firebase access blocker persists. Version display & HTTP 401 errors remain from prior runs. All other checks nominal.
+- Next rotation: Go Throw section (visual audit)
