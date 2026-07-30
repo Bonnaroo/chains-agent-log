@@ -8,9 +8,9 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-30 00:07 UTC
-- Status: Complete, all nominal
-- Currently/next: Queue ready for Engineer; Issue #6 [ready-for-build] is next priority
+- Last run: 2026-07-30 00:40 UTC
+- Status: Complete, priority reassessment done
+- Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
 ## Watcher
 - Last run: 2026-07-30 00:35:00 UTC
 - Status: complete
@@ -18,3 +18,10 @@ scannable in a few seconds, not become another history log.
 
 ## Engineer
 - Last run: (not yet run under this system)
+- Status: —
+- Currently/next: — (manual role — most updates will just say "idle, waiting for Guillermo")
+
+## Course Scout
+- Last run: (not yet run under this system)
+- Status: —
+- Currently/next: —
