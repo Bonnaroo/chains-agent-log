@@ -12,9 +12,9 @@ scannable in a few seconds, not become another history log.
 - Status: Complete, priority reassessment done
 - Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
 ## Watcher
-- Last run: 2026-07-30 01:30:00 UTC
-- Status: complete
-- Currently/next: T11 & T14 picks synced; Firebase auth ✓; app health ✓; next: visual audit
+- Last run: 2026-07-30 20:16:11 UTC
+- Status: complete, no pick changes, production nominal
+- Currently/next: T14 ready for scores; Firebase auth working; next: daily permanent backup
 
 ## Engineer
 - Last run: (not yet run under this system)
