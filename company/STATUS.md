@@ -18,29 +18,3 @@ scannable in a few seconds, not become another history log.
 
 ## Engineer
 - Last run: (not yet run under this system)
-- Status: —
-- Currently/next: — (manual role — most updates will just say "idle, waiting for Guillermo")
-
-## Course Scout
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: —
-
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: —
-
-## Watcher
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: —
-
-## Engineer
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: — (manual role — most updates will just say "idle, waiting for Guillermo")
-
-## Course Scout
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: —
