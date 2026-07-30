@@ -62,3 +62,15 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Critical observation: Issue #20 (data only in localStorage, zero backend backup) blocks Firebase auth resolution
 - Status: Production operational. Firebase access blocker persists. Version display & HTTP 401 errors remain from prior runs. All other checks nominal.
 - Next rotation: Go Throw section (visual audit)
+
+**2026-07-30 01:30:00 UTC** — Watcher run #6 (automated, 5-min cadence)
+- Pick Watch: ✓ Detected 6 changes (T11 s2 scores: Cory→20, Kyle→-23, Shanna→-23; T14 p2 players: Kadey→Simon Lizotte, Shanna→Aaron Gossage, Gabe→Ezra Aderhold). All logged to picks_history.jsonl.
+- Last Known State: ✓ Updated to current Firebase snapshot (rev 1785441822836)
+- Latest Backup: ✓ Refreshed (no age drift)
+- Bug Watch: ✗ BLOCKED (Firebase REST API auth requires additional service account for chains-app-f38f8)
+- Firebase Backup: Skipped (already completed on 2026-07-29)
+- Production Health: ✓ App reachable (200), GitHub Actions healthy, Firebase accessible (200 — **NO 401 ERRORS**). Auth issue from prior run resolved.
+- Picks/Standings Consistency: ✓ All tournaments 1–13 complete with scores; T14 ready (scores pending)
+- Issues filed: 0 new
+- Status: Production nominal, Firebase auth restored, all data syncs working
+- Next: Visual audit (Picks/Standings sections) when system is less busy
