@@ -244,3 +244,13 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 0 new
 - Status: Production nominal, all systems healthy, Ledgestone T14 live and monitoring active
 - Next: Routine monitoring continues, no blockers
+
+**2026-07-31T16:47:00.000Z UTC** — Watcher run #11 (automated, 5-min cadence)
+- Pick Watch: ✓ No changes since run #10 (1h 17m); all 14 tournaments consistent (T1-T13 final, T14 ready)
+- Backups: ✓ latest.json and last_known_picks.json refreshed; no new entries to picks_history.jsonl
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports requires service account auth)
+- Production Health: ✓ App HTTP 200, GitHub Actions healthy, Firebase accessible (no 401 errors)
+- Data Integrity: ✓ All 14 tournaments present, 6 members each, all draft picks in place
+- Issues filed: 0 new
+- Status: Production nominal, all systems healthy, T14 live monitoring continues
+- Next: Routine monitoring continues (5-min cadence)
