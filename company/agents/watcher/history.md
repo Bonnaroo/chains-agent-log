@@ -121,3 +121,14 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 0 new
 - Status: Production nominal, all systems healthy, Ledgestone T14 live and monitoring active
 - Next: Routine monitoring continues, no blockers
+**2026-07-31 00:52:23** — Watcher run #12 (automated, 5-min cadence)
+- Pick Watch: ✓ No changes since run #11 (~12.5h); all 14 tournaments consistent with Firebase state
+- Backups: ✓ Refreshed latest.json and last_known_picks.json (no changes, already current)
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports auth still requires service account for chains-app-f38f8)
+- Firebase Backup: Skipped (daily backup completed 2026-07-29; weekly restore test pending Wednesday 2026-08-06)
+- Production Health: ✓ App reachable (HTTP 200), GitHub Actions healthy (all success), Firebase chains-fantasy accessible (200 — no 401 errors)
+- Data Integrity: ✓ All 14 tournaments present, T1-T13 complete with scores, T14 live (picks finalized, scores pending for Ledgestone)
+- Cross-Check: ✓ All members have consistent picks/players; no anomalies
+- Issues filed: 0 new
+- Status: Production nominal, all systems healthy, Ledgestone T14 live and monitoring active
+- Next: Routine monitoring continues, no blockers
