@@ -246,4 +246,14 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - **Status**: Production nominal during Ledgestone T14 live event
 - **Comment posted to Issue #14**: No (quiet cycle, no anomalies)
 - **Next**: Continue 5-min cadence; expect next pick changes after T14 scores finalize
-
+**2026-07-31T19:58:00 UTC** — Watcher run #32 (automated, 5-min cadence)
+- Pick Watch: ✓ No changes since run #31 (~1h 5m); all 14 tournaments consistent with Firebase state (rev 1785441822836 from 2026-07-30T20:03:42 UTC)
+- Backups: ✓ Refreshed latest.json and last_known_picks.json (no changes detected, already current)
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports auth still requires service account for chains-app-f38f8)
+- Firebase Backup: Skipped (daily backup completed 2026-07-31; weekly restore test pending Wednesday 2026-08-06)
+- Production Health: ✓ App reachable (HTTP 200, 9.6MB), GitHub Actions healthy (all success), Firebase chains-fantasy accessible (HTTP 200 on /league.json — no blocking 401 errors)
+- Data Integrity: ✓ All 14 tournaments present (T1-T13 complete with final scores, T14 LIVE with all 6 members drafted, scores null — Ledgestone R2 in progress)
+- Cross-Check: ✓ All members [cory, gabe, kadey, kyle, shanna, will] consistent across all tournaments
+- Issues filed: 0 new
+- Status: Production nominal during Ledgestone T14 live event
+- Next: Continue 5-min cadence; expect next pick changes after T14 scores finalize
