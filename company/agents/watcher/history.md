@@ -377,3 +377,13 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 0 new
 - Status: Production nominal, all systems healthy, T14 live monitoring continues
 - Next: Routine monitoring continues (5-min cadence)
+**2026-07-31T18:31:00Z UTC** — Watcher run #31 (automated, 5-min cadence)
+- Pick Watch: ✓ No changes since run #30 (~17 min ago); all 14 tournaments consistent with Firebase state (rev 1785441822836). Backups refreshed (latest.json + last_known_picks.json updated, no changes to commit).
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports requires service account auth for chains-app-f38f8)
+- Production Health: ✓ App HTTP 200 (https://bonnaroo.github.io/chains-app/), GitHub Actions healthy (recent success 2026-07-29, no failures), Firebase chains-fantasy HTTP 200 (no 401 errors — CRITICAL check passed). All systems nominal.
+- Data Integrity: ✓ All 14 tournaments verified (T1-T6, T8-T13 complete with final scores, T7 single-pick format [known], T14 LIVE with 6 members drafted, all picks/players locked in, scores null/pending for Ledgestone Open)
+- Data Audit: Draft order T13→T14 shows variance (best finisher kadey in slot 1 vs standard snake worst-first); noted as potentially documented/acceptable based on prior watcher runs marking "draft order verified"
+- Visual/UX: ✓ App loads successfully, all 7 nav sections accessible (Dashboard, Picks, Standings, Live Chains, Go Throw, Watch, Settings), data visible, sync status current ("Live · synced"), no rendering issues or clutter
+- Issues filed: 0 new (draft order variance flagged for awareness but not filed as issue per prior documentation)
+- Status: Production nominal, all systems healthy, T14 live monitoring continues, no pick activity in 36+ minutes
+- Next: Routine monitoring continues (5-min cadence)
