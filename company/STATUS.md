@@ -3,24 +3,24 @@
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-07-31 18:24 UTC (Run #18) |
-| Status | Nominal — no pick changes detected, production healthy |
-| Currently | Monitoring T14 (Ledgestone Open) live scoring |
+| Last Run | 2026-07-31 18:35 UTC (Run #19) |
+| Status | Nominal — no pick changes, production healthy |
+| Currently | T14 (Ledgestone Open) live in progress |
 | Next Check | ~5 minutes (5-min automated cadence) |
 
 ## Production Health
 | Component | Status | Last Verified |
 |-----------|--------|---------------|
-| Live App (GitHub Pages) | ✓ 200 OK (9.6MB, v460) | 2026-07-31 18:09 UTC |
-| Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-07-31 18:09 UTC |
+| Live App (GitHub Pages) | ✓ 200 OK (v411 display, deployed v460) | 2026-07-31 18:35 UTC |
+| Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-07-31 18:35 UTC |
 | GitHub Actions | ✓ All passing | 2026-07-31 |
-| Backups | ✓ Daily backup created (firebase-2026-07-31.json) | 2026-07-31 12:49 UTC |
+| Backups | ✓ Latest.json refreshed | 2026-07-31 18:35 UTC |
 
 ## Data Status
 | Tournament | State | Last Update |
 |------------|-------|-------------|
 | T1-T13 | ✓ Complete (final scores) | 2026-07-29 onward |
-| T14 (Ledgestone) | 🔴 Live — picks finalized, scores awaiting | In progress |
+| T14 (Ledgestone) | 🔴 Live — picks finalized, scores in progress (R2) | 2026-07-31 18:35 UTC |
 
 ## Known Issues
 | Issue | Status | Impact |
@@ -30,4 +30,4 @@
 | #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer |
 
 ---
-_Last updated: 2026-07-31 18:24 UTC (Watcher Run #18)_
+_Last updated: 2026-07-31 18:35 UTC (Watcher Run #19)_
