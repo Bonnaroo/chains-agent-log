@@ -13,9 +13,9 @@ scannable in a few seconds, not become another history log.
 - Currently/next: Issues #19/#22/#23 [IMMEDIATE] live blockers, Issue #6 [ready-for-build] next, continue monitoring
 
 ## Watcher
-- Last run: 2026-07-31T21:25:07 UTC (Run #34)
-- Status: Complete — no pick changes, production healthy, Ledgestone T14 live
-- Currently/next: Continue 5-min cadence; monitor for T14 scores (R7+R14 pending)
+- Last run: 2026-07-31T22:53:53 UTC (Run #35)
+- Status: Complete — no pick changes, production healthy, T14 live pending scores
+- Currently/next: Continue 5-min cadence; monitor for Ledgestone score updates
 
 ## Engineer
 - Last run: (not yet run under this system)
