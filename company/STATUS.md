@@ -11,9 +11,9 @@
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-07-31 18:50 UTC (Run #21) |
+| Last Run | 2026-07-31 18:53 UTC (Run #31) |
 | Status | Nominal — no pick changes, production healthy |
-| Currently | T14 (Ledgestone Open) live in progress, R2 scoring active |
+| Currently | T14 (Ledgestone Open) live in progress, R2+ scoring active |
 | Next Check | ~5 minutes (5-min automated cadence) |
 
 ## Production Health
@@ -38,4 +38,4 @@
 | #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer |
 
 ---
-_Last updated: 2026-07-31 18:50 UTC (Watcher Run #21)_
+_Last updated: 2026-07-31 18:53 UTC (Watcher Run #31)_
