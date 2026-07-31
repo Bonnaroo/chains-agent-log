@@ -12,12 +12,9 @@ scannable in a few seconds, not become another history log.
 - Status: Complete, all systems nominal, Ledgestone live monitoring active
 - Currently/next: STANDBY; Issues #19, #22, #23 IMMEDIATE if Engineer available; Issue #6 [ready-for-build] NEXT
 ## Watcher
-- Last run: 2026-07-31 12:49:04 UTC
-- Status: Complete, no pick changes, daily backup done, production nominal
-- Currently/next: Monitoring Ledgestone T14 live; routine checks continuing; weekly restore test pending
-- Last run: 2026-07-31 12:44:16 UTC
-- Status: Complete, no pick changes, production nominal
-- Currently/next: Monitoring Ledgestone T14 live; routine checks continuing; weekly restore test pending
+- Last run: 2026-07-31 12:54 UTC
+- Status: Complete, no pick changes, production nominal, Ledgestone T14 monitoring active
+- Currently/next: Routine monitoring continues; daily backup on schedule (done); weekly restore test pending Wed
 
 ## Engineer
 - Last run: (not yet run under this system)
