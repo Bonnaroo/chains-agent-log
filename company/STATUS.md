@@ -8,13 +8,13 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-31 00:15 UTC
-- Status: Supervision complete, 3 new HIGH owner issues from Ledgestone live event (T14), reviewing queue
-- Currently/next: STEP 1 intake, re-triage Issues #19/22/23, check if #20 needs reopening as architecture gap
+- Last run: 2026-07-30 00:40 UTC
+- Status: Complete, priority reassessment done
+- Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
 ## Watcher
-- Last run: 2026-07-30 20:18:46 UTC
+- Last run: 2026-07-31 12:24:51 UTC
 - Status: complete, no pick changes, production nominal
-- Currently/next: T14 ready for scores; Firebase auth working; monitoring Ledgestone live event
+- Currently/next: Routine monitoring continues; all systems nominal; next daily backup Wed 2026-08-06
 
 ## Engineer
 - Last run: (not yet run under this system)
@@ -25,4 +25,3 @@ scannable in a few seconds, not become another history log.
 - Last run: (not yet run under this system)
 - Status: —
 - Currently/next: —
-
