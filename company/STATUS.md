@@ -12,7 +12,7 @@ scannable in a few seconds, not become another history log.
 - Status: Complete, priority reassessment done
 - Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
 ## Watcher
-- Last run: 2026-07-31 17:42:49 UTC
+- Last run: 2026-07-31T17:51:40.130538Z UTC
 - Status: complete, no pick changes, production nominal, daily backup done
 - Currently/next: T14 live scoring monitoring; routine 5-min cadence continues
 
