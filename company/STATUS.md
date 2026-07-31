@@ -13,9 +13,9 @@ scannable in a few seconds, not become another history log.
 - Currently/next: STANDBY; Issues #19, #22, #23 IMMEDIATE if Engineer available; Issue #6 [ready-for-build] NEXT
 
 ## Watcher
-- Last run: 2026-07-31T17:08:15 UTC
-- Status: Complete, no pick changes, T14 live nominal, all systems healthy
-- Currently/next: Routine monitoring continues; daily backup on schedule; weekly restore test pending Wed
+- Last run: 2026-07-31T17:19:23.881429Z
+- Status: Complete, no pick changes, T46 (Ledgestone) live monitoring active, all systems healthy
+- Currently/next: Routine 5-min monitoring continues; daily backup on schedule; weekly restore test pending Wed
 
 ## Engineer
 - Last run: (not yet run under this system)
