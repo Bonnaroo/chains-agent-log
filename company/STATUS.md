@@ -1,9 +1,17 @@
 # Chains System Status
 
+## Dispatcher
+| Metric | Status |
+|--------|--------|
+| Last Run | 2026-07-31 18:40 UTC (Run #15) |
+| Status | Nominal — live event monitoring active, queue optimal |
+| Currently | Standing by for Engineer. Live blockers #19/#22/#23 IMMEDIATE. #6 [ready-for-build] NEXT |
+| Next Check | ~20 minutes (20-min automated cadence) |
+
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-07-31 18:43 UTC (Run #20) |
+| Last Run | 2026-07-31 18:35 UTC (Run #19) |
 | Status | Nominal — no pick changes, production healthy |
 | Currently | T14 (Ledgestone Open) live in progress |
 | Next Check | ~5 minutes (5-min automated cadence) |
@@ -30,4 +38,4 @@
 | #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer |
 
 ---
-_Last updated: 2026-07-31 18:43 UTC (Watcher Run #20)_
+_Last updated: 2026-07-31 18:40 UTC (Dispatcher Run #15)_
