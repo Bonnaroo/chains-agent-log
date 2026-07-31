@@ -8,9 +8,9 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-31 00:40 UTC
-- Status: Complete, priority reassessment done
-- Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
+- Last run: 2026-07-31 22:53 UTC (Run #18)
+- Status: Nominal, all systems healthy during live Ledgestone T14 event
+- Currently/next: Issues #19/#22/#23 [IMMEDIATE] live blockers, Issue #6 [ready-for-build] next, continue monitoring
 
 ## Watcher
 - Last run: 2026-07-31T21:25:07 UTC (Run #34)
