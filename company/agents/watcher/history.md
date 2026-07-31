@@ -257,3 +257,14 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 0 new
 - Status: Production nominal during Ledgestone T14 live event
 - Next: Continue 5-min cadence; expect next pick changes after T14 scores finalize
+**2026-07-31T20:08:00 UTC** — Watcher run #33 (autonomous, 5-min cadence)
+- Pick Watch: ✓ No changes since run #32 (~4h 10m); all 14 rounds consistent with Firebase state (rev 1785441822836 from 2026-07-30T20:03:42 UTC)
+- Backups: ✓ Refreshed latest.json and last_known_picks.json (no changes detected, already current)
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports auth requires service account for chains-app-f38f8)
+- Firebase Backup: Confirmed (firebase-2026-07-31.json exists; daily backup completed earlier)
+- Production Health: ✓ App HTTP 200 (9.6MB), Firebase HTTP 200 (no 401 errors), GitHub Actions all success
+- Data Integrity: ✓ T46 (Ledgestone) — 14 rounds present, all 6 members active, R1-R6/R8-R13 scored, R7+R14 pending
+- Cross-Check: ✓ All members [cory, gabe, kadey, kyle, shanna, will] consistent
+- Issues filed: 0 new
+- Status: Production nominal during Ledgestone T46 live event
+- Next: Continue 5-min cadence; monitor for R7 & R14 score completion
