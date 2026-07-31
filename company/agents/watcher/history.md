@@ -254,3 +254,14 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - Issues filed: 0 new
 - Status: Production nominal, all systems healthy, T14 live monitoring continues
 - Next: Routine monitoring continues (5-min cadence)
+
+**2026-07-31T16:53:54.000Z UTC** — Watcher run #21+ (automated, 5-min cadence)
+- Pick Watch: ✓ No changes since prior run; all 14 tournaments consistent with Firebase state (revision 1785441822836)
+- Backups: ✓ Refreshed latest.json and last_known_picks.json (both committed to GitHub); daily backup 2026-07-31 already completed
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports requires service account auth for chains-app-f38f8)
+- Production Health: ✓ App HTTP 200, GitHub Actions healthy (pages build success), Firebase chains-fantasy HTTP 200 (no 401 errors)
+- Data Integrity: ✓ All 14 tournaments verified (T1-T13 complete with scores, T14 live with 6 members drafted, all picks locked in, scores null/pending for Ledgestone)
+- Member verification: ✓ All 6 members present with valid p1/p2 picks in T14 [cory, gabe, kadey, kyle, shanna, will]
+- Issues filed: 0 new
+- Status: Production nominal, all systems healthy, T14 live monitoring continues
+- Next: Routine monitoring continues (5-min cadence)
