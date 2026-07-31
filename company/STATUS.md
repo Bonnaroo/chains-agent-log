@@ -8,13 +8,14 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-30 00:40 UTC
-- Status: Complete, priority reassessment done
-- Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
+- Last run: 2026-07-31 17:43 UTC (run #12, automated 20-min cadence)
+- Status: Routine monitoring, all nominal
+- Currently/next: Live Ledgestone T14 blockers (#19/#22/#23) addressed, Issue #6 [ready-for-build] NEXT, standing by for Engineer
+
 ## Watcher
-- Last run: 2026-07-30 20:16:11 UTC
-- Status: complete, no pick changes, production nominal
-- Currently/next: T14 ready for scores; Firebase auth working; next: daily permanent backup
+- Last run: 2026-07-31 ~17:19-17:37 UTC (runs #9+, automated background)
+- Status: complete, no pick changes since run #8 (15h+), production nominal
+- Currently/next: Continuous monitoring; T14 ready for scores; next: daily permanent backup on schedule
 
 ## Engineer
 - Last run: (not yet run under this system)
