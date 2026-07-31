@@ -1,3 +1,15 @@
+**2026-07-31T17:19:48.309486Z** — Watcher run #25 (automated, 5-min cadence)
+- Pick Watch: ✓ No changes; all picks consistent with Firebase state (rev 1785441822836)
+- Backups: ✓ Refreshed latest.json and last_known_picks.json (both committed to GitHub)
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports auth requires service account for chains-app-f38f8)
+- Firebase Backup: Skipped (daily backup completed 2026-07-31; weekly restore test pending Wednesday 2026-08-06)
+- Production Health: ✓ App HTTP 200, GitHub Actions healthy (all success), Firebase chains-fantasy HTTP 200 (no 401 errors)
+- Data Integrity: ✓ T46 (Ledgestone) verified (14 legs, 6 members each, all picks locked in, scores in flight)
+- Cross-Check: ✓ All members [cory, gabe, kadey, kyle, shanna, will] present with valid picks
+- Issues filed: 0 new
+- Status: Production nominal, all systems healthy, Ledgestone T46 live and monitoring active
+- Next: Routine monitoring continues, no blockers
+
 **2026-07-31T16:24:00.000Z UTC** — Watcher run #17 (automated, 5-min cadence)
 - Pick Watch: ✓ No changes since run #16 (~5 min); all 14 tournaments consistent
 - Backups: ✓ Latest data fresh; will refresh latest.json
