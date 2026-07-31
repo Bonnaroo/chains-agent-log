@@ -1,3 +1,15 @@
+**2026-07-31T16:24:00.000Z UTC** — Watcher run #17 (automated, 5-min cadence)
+- Pick Watch: ✓ No changes since run #16 (~5 min); all 14 tournaments consistent
+- Backups: ✓ Latest data fresh; will refresh latest.json
+- Bug Watch: ✗ BLOCKED (Firebase /bugReports requires service account)
+- Firebase Backup: Scheduled (daily completed; weekly restore test Wed 2026-08-06)
+- Production Health: ✓ App HTTP 200 (9.6MB), GitHub Actions healthy, Firebase accessible (no 401 errors)
+- Data Integrity: ✓ All 14 tournaments complete, 6 members each, draft order valid
+- Cross-Check: ✓ All members [cory, gabe, kadey, kyle, shanna, will] present in all tournaments
+- Issues filed: 0 new
+- Status: Production nominal, all systems healthy, T14 live monitoring active
+- Next: Routine monitoring continues (5-min cadence)
+
 # Watcher — History (this project only; append one short entry per run)
 
 Format: date/time, what happened, evidence (Issue #/commit sha), next responsible role.
