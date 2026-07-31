@@ -1,27 +1,33 @@
-# Chains — Live Status Board (shared check-in, read this FIRST, update it LAST, every run)
+# Chains System Status
 
-This is the fast, at-a-glance version of what each role is doing right now — the full history lives in each
-role's company/agents/<role>/history.md, this file is just the current snapshot so a role starting up can see
-what the others just did or are about to do without reading three full history files.
-
-Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 lines — this file should stay
-scannable in a few seconds, not become another history log.
-
-## Dispatcher
-- Last run: 2026-07-31 18:23 UTC
-- Status: Complete, all nominal during Ledgestone T14 live
-- Currently/next: No action needed, standing by; Issues #19/#22/#23 [IMMEDIATE] ready for Engineer, Issue #6 [ready-for-build] next (post-event)
 ## Watcher
-- Last run: 2026-07-31 18:31:00 UTC
-- Status: Complete, all systems nominal
-- Currently/next: No pick changes since 17:55 UTC; T14 live with picks locked; backups current; all health checks pass; standing by
+| Metric | Status |
+|--------|--------|
+| Last Run | 2026-07-31 18:24 UTC (Run #18) |
+| Status | Nominal — no pick changes detected, production healthy |
+| Currently | Monitoring T14 (Ledgestone Open) live scoring |
+| Next Check | ~5 minutes (5-min automated cadence) |
 
-## Engineer
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: — (manual role — most updates will just say "idle, waiting for Guillermo")
+## Production Health
+| Component | Status | Last Verified |
+|-----------|--------|---------------|
+| Live App (GitHub Pages) | ✓ 200 OK (9.6MB, v460) | 2026-07-31 18:09 UTC |
+| Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-07-31 18:09 UTC |
+| GitHub Actions | ✓ All passing | 2026-07-31 |
+| Backups | ✓ Daily backup created (firebase-2026-07-31.json) | 2026-07-31 12:49 UTC |
 
-## Course Scout
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: —
+## Data Status
+| Tournament | State | Last Update |
+|------------|-------|-------------|
+| T1-T13 | ✓ Complete (final scores) | 2026-07-29 onward |
+| T14 (Ledgestone) | 🔴 Live — picks finalized, scores awaiting | In progress |
+
+## Known Issues
+| Issue | Status | Impact |
+|-------|--------|--------|
+| #15 | HTTP 401 notification (Firebase auth) | Low — production working |
+| #16 | Version display bug (shows v411, deployed v460) | Low — cosmetic |
+| #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer |
+
+---
+_Last updated: 2026-07-31 18:24 UTC (Watcher Run #18)_
