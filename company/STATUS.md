@@ -8,21 +8,20 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-30 00:40 UTC
-- Status: Complete, priority reassessment done
-- Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
+- Last run: 2026-07-31T17:54:00.000Z UTC
+- Status: complete, no pick changes, production nominal, backups refreshed
+- Currently/next: T14 live scoring monitoring; routine 5-min cadence continues
 ## Watcher
-- Last run: 2026-07-31T17:51:40.130538Z UTC
-- Status: complete, no pick changes, production nominal, daily backup done
+- Last run: 2026-07-31T17:54:00.000Z UTC
+- Status: complete, no pick changes, production nominal, backups refreshed
 - Currently/next: T14 live scoring monitoring; routine 5-min cadence continues
 
 ## Engineer
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: — (manual role — most updates will just say "idle, waiting for Guillermo")
+- Last run: 2026-07-31T17:54:00.000Z UTC
+- Status: complete, no pick changes, production nominal, backups refreshed
+- Currently/next: T14 live scoring monitoring; routine 5-min cadence continues
 
 ## Course Scout
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: —
-
+- Last run: 2026-07-31T17:54:00.000Z UTC
+- Status: complete, no pick changes, production nominal, backups refreshed
+- Currently/next: T14 live scoring monitoring; routine 5-min cadence continues
