@@ -8,9 +8,9 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-31T17:54:00.000Z UTC
-- Status: complete, no pick changes, production nominal, backups refreshed
-- Currently/next: T14 live scoring monitoring; routine 5-min cadence continues
+- Last run: 2026-07-31T18:03:00.000Z UTC
+- Status: complete, no intake items, production nominal, Ledgestone T14 live stable
+- Currently/next: monitoring queue, standing by for Engineer; routine 20-min cadence continues
 
 ## Watcher
 - Last run: 2026-07-31T17:57:55Z UTC
