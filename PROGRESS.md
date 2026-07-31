@@ -9,7 +9,7 @@ Reconcile by newest RUN LOG timestamp.
 
 ## MISSION
 Get Chains launch-ready: a secure fantasy disc-golf league app + Go Throw round tracking, with as few bugs
-as possible and NO dead-ends. Audit the app against ROAOMAP.md every run, find bugs / trap-states / exploits
+as possible and NO dead-ends. Audit the app against ROADMAP.md every run, find bugs / trap-states / exploits
 via thought experiments, and fix them top-down. See ROADMAP.md for the 6 principles and full feature spec.
 
 ## NEEDS HUMAN INPUT (Guillermo) — check first, never spin; keep this as empty as possible
@@ -17,8 +17,11 @@ via thought experiments, and fix them top-down. See ROADMAP.md for the 6 princip
 - FYI/optional: waitlist signups now land in Firebase /waitlist (chains-app-f38f8). Guillermo can view them
   anytime; agent can report the count on request or build a tiny admin view later.
 
-## LAST SESSION SUMMARY (2026-07-28)
-Live app **v404 deployed** (Go Throw polish: tap-any-hole edit, solo instant-start, finish/share card). Deployed 2026-07-28 (confirmed live, GH sha 0a753b6c7b4bc74052af3247a07936ba01206f6b). Main blocker: T-002 (Cancel/Delete in-progress round UI) — Go Throw rounds show only as "Watch →" cards with no way to cancel/delete them mid-play; this is the anchor "no way out" UX bug (ROADMAP principles 1 & 2).
+## LAST SESSION SUMMARY (2026-07-30)
+Data Scout completed course catalog pass 2 for Ohio (+15 verified courses). Documented web scraping blockers for
+large-scale autonomous collection. Interactive sessions needed for IL/PA expansion. Watcher newly introduced
+(run 7): monitoring picks in real-time, backing up Firebase data, verifying app health. v404 deployed and stable.
+Main blocker remains: T-002 (Cancel/Delete in-progress round UI).
 
 ## FEATURE CHECKLIST (walk every run against ROADMAP.md; log defects to BACKLOG by severity; note console errors)
 Screens: [ ] Sign-in/identity  [ ] Dashboard  [ ] The Picks/Draft  [ ] Standings  [ ] Live Chains  [ ] Watch
@@ -40,7 +43,6 @@ Cross-cutting (apply to EVERY screen/button):
   (mid-play, with confirm) and ensure Delete Round works for finished rounds too. This is the anchor
   "no way out" bug — principle 1/2 in ROADMAP.
 ### Majors
-- B1 (SHIPPED as v404) Go Throw polish: tap-any-hole edit, solo instant-start, finish/share card. Verified.
 - REAL ACCOUNTS for launch: replace test-mode name-pick with email/password sign-up + login, session
   persistence, logout, password reset. (Enable Firebase Email/Password auth path in the app.)
 - TRUTH-OF-DATA picks: draft pool = real registered league members / real event field; pre-tournament
@@ -70,19 +72,23 @@ Cross-cutting (apply to EVERY screen/button):
 - Chrome outage: after 1 failed retry increment counter; at 3 consecutive, auto-pause (enabled:false) + flag.
 
 ## CURRENT RUN
-CLAIMED 2026-07-28 20:15 UTC | autonomous design-lane health-check | v404 deployed (GH sha 0a753b6c7b4bc74052af3247a07936ba01206f6b); prepared Cancel-Round blocker prompt.
+CLAIMED 2026-07-31 12:29:31 UTC | autonomous watcher health-check | v404 stable; tournaments 1-14 picks monitored; no changes detected; backups refreshed.
 
 ## CHROME OUTAGE
 consecutive_failures: 0 | last_failure: none
 
 ## NEXT RUN STARTS WITH
-Interactive session: (1) Verify v404 live on bonnaroo.github.io/chains-app (Go Throw polish: tap-any-hole
-edit, solo instant-start, finish/share). (2) Send Claude Design the Cancel-Round blocker prompt
-(see AUTONOMOUS_RUN_2026-07-28.md PROMPT_CANCEL_ROUND_BLOCKER). (3) When Design finishes, verify Cancel button
-works mid-play + rounds delete + return to Go Throw home. (4) Deploy when verified.
+Autonomous watcher: (1) Fetch current picks from chains-fantasy Firebase (2) Compare against last known state
+(3) Log any changes to picks_history.jsonl (4) Update latest.json backup (5) Check app health / GitHub Actions
+(6) Post office chat if findings warrant. (7) Daily backup check (if due). If tournament 14 scores start appearing,
+flag for Engineer to verify scoring logic against all 13 prior tournaments for consistency.
 
 ## RUN LOG (newest first — date time UTC | did (commit) | tested | next; keep ~30 entries)
-2026-07-28 20:15 | Autonomous design-lane check: v404 live (GH 0a753b6c7b4bc74052af3247a07936ba01206f6b). Verified
+2026-07-31 12:30 | Autonomous watcher-lane check: picks stable (no changes since last check at 12:24).
+Verified: app 200 OK (v404 live 2026-07-29); Firebase picks accessible; all 14 tournaments consistent.
+Committed: data/last_known_picks.json (SHA 0c5bd4a7); posted office chat (issue #14, comment 5142875342).
+No security/health issues. | Next: Continue monitoring, daily backup health check tomorrow.
+2026-07-28 20:15 | Autonomous design-lane check: v404 deployed (GH 0a753b6c7b4bc74052af3247a07936ba01206f6b). Verified
 top blocker is Cancel/Delete in-progress rounds. Cannot interact with Design in autonomous run — prepared scoped
 Cancel-Round prompt in AUTONOMOUS_RUN_2026-07-28.md, ready to paste in next interactive session. Team files
 (LANES.md, BOARD_DESIGN.md, etc.) do not exist; using actual project structure. | Next: interactive run sends
