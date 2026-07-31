@@ -8,20 +8,21 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-30 00:40 UTC
-- Status: Complete, priority reassessment done
-- Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
+- Last run: 2026-07-31 00:15 UTC
+- Status: Complete, live event alert issued, queue re-triaged
+- Currently/next: STANDBY for Engineer; Issues #19, #22, #23 (Ledgestone blockers) IMMEDIATE priority; Issue #6 [ready-for-build] NEXT
 ## Watcher
-- Last run: 2026-07-31 12:24:51 UTC
+- Last run: 2026-07-30 20:18:46 UTC
 - Status: complete, no pick changes, production nominal
-- Currently/next: Routine monitoring continues; all systems nominal; next daily backup Wed 2026-08-06
+- Currently/next: Monitoring Ledgestone T14 live; routine checks continuing; weekly restore test pending
 
 ## Engineer
 - Last run: (not yet run under this system)
 - Status: —
-- Currently/next: — (manual role — most updates will just say "idle, waiting for Guillermo")
+- Currently/next: — (Ledgestone open; Issues #19, #22, #23 are user-blocking IMMEDIATE priorities if available)
 
 ## Course Scout
 - Last run: (not yet run under this system)
 - Status: —
 - Currently/next: —
+
