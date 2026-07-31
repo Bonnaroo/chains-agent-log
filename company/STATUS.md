@@ -8,14 +8,14 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-31 20:03 UTC
-- Status: Complete, all systems nominal, live event monitoring active
-- Currently/next: IMMEDIATE blockers #19/#22/#23 (Ledgestone T14 user-facing), Issue #6 [ready-for-build] queued post-event
+- Last run: 2026-07-30 00:40 UTC
+- Status: Complete, priority reassessment done
+- Currently/next: Issue #6 [ready-for-build] (scoring) → Issue #20 [CRITICAL] (data loss emergency)
 
 ## Watcher
-- Last run: 2026-07-31 19:58 UTC (Run #32)
-- Status: Complete — no pick changes, production healthy, T14 live
-- Currently/next: T14 (Ledgestone) R2+ scoring in progress; all backups current; continue 5-min cadence
+- Last run: 2026-07-31 20:08 UTC (Run #33)
+- Status: Complete — no pick changes, production healthy, Ledgestone T46 R7+R14 scoring pending
+- Currently/next: Continue 5-min cadence; expect score updates as rounds finalize
 
 ## Engineer
 - Last run: (not yet run under this system)
