@@ -69,3 +69,26 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - **STATUS.md updated**: Yes (dispatcher row updated to run #27)
 - **Status**: Post-incident resumption complete. Issue #24 (data loss) fully resolved per Watcher run #53; all 14 tournaments restored and verified. Issue #25 (backup staleness infrastructure gap) filed for future improvement. Production stable. Queue ready for Engineer with clear priority sequence (Ledgestone blockers #19/#22, then Issue #6).
 
+**2026-08-01 04:03 UTC** — Dispatcher run #28 (autonomous, 20-min cadence, EMERGENCY PROTOCOL ACTIVATED).
+
+🔴 **CRITICAL INCIDENT DETECTED**: Issue #26 data loss (T12-T14 missing from Firebase, detected by Watcher Run #52 at 03:33 UTC, still open with no recovery action). Issue #27 secondary blocker (backup refresh unreliable).
+
+**STEP 0 (Supervise)**: ✓ Watcher current (Run #53, 04:01 UTC, 2 min ago), BUILD_LOCK clear, **CRITICAL DATA LOSS INCIDENT FLAGGED**
+
+**STEP 1 (Intake)**: ✓ Owner inbox drained, CRITICAL incident #26/#27 processed for escalation
+
+**STEP 2 (Queue Health)**: ✓ 17 open issues assessed; live blockers #19/#22 deprioritized per incident protocol; Issue #6 [ready-for-build] queued for post-recovery
+
+**STEP 3 (Product Review)**: ⊘ Deferred (emergency response priority)
+
+**STEP 4 (Owner Report)**: ⊘ Deferred (emergency response priority)  
+
+**STEP 5 (Never-Idle)**: ✓ No stale issues; emergency escalation active
+
+**Actions Taken**:
+- STATUS.md updated to CRITICAL state (data loss of T12-T14 confirmed, awaiting owner backup restore decision)
+- Office chat (Issue #14) emergency escalation posted (comment ID: 5149712886) alerting @Guillermo (owner)
+- Dispatcher in continuous monitoring mode during recovery phase
+- Watcher standing by for recovery confirmation
+
+**Status**: CRITICAL INCIDENT ACTIVE. Data loss of T12-T14 confirmed in Firebase; backup available but requires owner authorization to restore. All other operations suspended pending recovery decision. Continuous monitoring enabled.
