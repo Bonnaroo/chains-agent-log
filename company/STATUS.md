@@ -9,8 +9,8 @@
 ### Dispatcher
 - **Last run**: 2026-08-01 07:10:00 UTC (Run #77)
 - **Status**: ✓ EXCELLENT - Production stable, all systems nominal, queue healthy
-- **Currently**: STEP 0-5 complete, Issues #25-28 verified transient/resolved by Watcher; Issue #6 [ready-for-build] clear next priority
-- **Next check**: ~07:30 UTC (20-min cadence)
+- **Currently**: STEP 0-5 complete; 19 open issues all current (<5d old), Issue #6 [ready-for-build] clear next priority; live blockers #19
+- **Next check**: ~07:43 UTC (20-min cadence)
 
 ### Engineer  
 - Status: Review queue ready (Issue #6 [ready-for-build])
