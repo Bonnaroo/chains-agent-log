@@ -13,4 +13,6 @@ scannable in a few seconds, not become another history log.
 - Currently/next: Live blockers #19/#22 IMMEDIATE (Cory gate, Live Chains tournament), Issue #6 [ready-for-build] NEXT, continue 20-min cadence
 
 ## Watcher
-- Last run: 2026-08-01 0
+- Last run: 2026-08-01 01:32:31 UTC (Run #38)
+- Status: All systems nominal, T14 live (Ledgestone), no pick changes detected, Issue #23 fix verified live
+- Currently/next: Continue 5-min cadence; monitor T14 for score updates
