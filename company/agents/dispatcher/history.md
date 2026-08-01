@@ -273,3 +273,29 @@ _Note: Data loss incidents from overnight (August 1, 03:00-07:00 UTC) fully reco
 - **Next**: Continue 20-min dispatcher cadence; monitor Watcher cadence during Engineer build session
 
 _Note: Watcher running 40 minutes behind expected 5-min cadence. No production impact during quiet event monitoring period. All systems verified nominal. Continue routine monitoring._
+
+## Run #91 — 2026-08-01 18:23:36 UTC
+- **Duration**: ~1 min
+- **Checks**: All 5 STEPS + never-idle sweep
+- **Findings**:
+  - ✅ Watcher status: Last run #87 at 17:23:34 UTC (~60 min ago) — gap grown from 40 min to 60+ min
+    - Expected cadence: 5 minutes; actual: 60+ minutes
+    - Production impact: None (all systems nominal per last Watcher run)
+    - Context: Engineer actively building Issue #6 (BUILD_LOCK held ~59 min); T14 Ledgestone live event ongoing
+  - ✅ BUILD_LOCK held by Engineer for Issue #6 since 17:24:34 UTC (~59 min active) — reasonable session duration
+  - ✅ No stale locks, all production systems nominal
+  - ✅ Production: Firebase 200 OK (no 401), app 200 OK (9.6MB v430), Actions passing (per last Watcher run 17:23 UTC)
+  - ✅ Data status: T1-T13 complete with final scores; T14 (Ledgestone) live with all 6 members' picks finalized, scores pending
+  - ✅ Backups current: latest.json + last_known_picks.json verified in sync
+  - ✅ Queue: 16 open issues all current; Issue #6 [ready-for-build] actively building; TOP blockers #19/#22 well-scoped for post-Event
+  - ✅ Daily report current (2026-08-01.md written 04:23 UTC)
+  - ✅ OWNER_INBOX drained (0 items)
+  - ⚠️ **WATCH**: Watcher cadence gap expanded from 40 min (last run) to 60+ min — no production impact yet but trend warrants monitoring
+- **Issues filed/updated**: 0 new
+- **Comment posted to Issue #14**: Yes (run summary + Watcher cadence alert)
+- **STATUS.md updated**: Yes (run #91, 18:23:36 UTC)
+- **Status**: ✅ All systems nominal; queue healthy; Engineer building Issue #6; Watcher monitoring gap growing but no production impact
+- **Next**: Continue 20-min dispatcher cadence; monitor Watcher cadence timing on next run — escalate if gap extends further
+
+_Note: Watcher cadence gap continues to grow (40 min → 60 min). All systems verified nominal. Engineer actively building Issue #6 with Guillermo. Ledgestone T14 live event proceeding smoothly._
+
