@@ -3,17 +3,17 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | pending next cycle |
-| Status | Reset after audit - false-alarm cascade (#26-28) corrected, see LESSONS_LEARNED.md |
-| Currently | Standby during Ledgestone (T14) live event |
+| Last Run | 2026-08-01 17:24:48 UTC (Run #88) |
+| Status | All systems nominal — Queue healthy, backups current, live Ledgestone T14 event proceeding |
+| Currently | Standby during Ledgestone live event (T14), monitoring queue health |
 
-## Production Health (verified directly by owner-level check, 2026-08-01 17:06 UTC)
-| Component | Status |
-|-----------|--------|
-| Live App (GitHub Pages) | OK, v430 deployed |
-| Firebase (chains-fantasy /league) | OK - T11-T14 all confirmed intact with real data |
-| GitHub Actions | passing |
-| Backups | in sync |
+## Production Health
+| Component | Status | Last Verified |
+|-----------|--------|---------------|
+| Live App (GitHub Pages) | ✓ 200 OK (9.6MB, v430) | 2026-08-01 17:23 UTC (Watcher Run #87) |
+| Firebase (chains-fantasy) | ✓ 200 OK (all 14 rounds present, no 401 errors) | 2026-08-01 17:23 UTC |
+| GitHub Actions | ✓ All passing | 2026-08-01 17:23 UTC |
+| Backups | ✓ Current (latest.json + last_known_picks.json in sync) | 2026-08-01 17:23 UTC |
 
 ## Data Status
 | Tournament | State |
@@ -32,15 +32,16 @@
 | #11 | Report a Bug button | TOP |
 | #10 | sw.js 404 + version label visibility | TOP |
 | #9, #8, #7, #6, #5, #4, #3 | see chains-agent-log issue list | various |
+| #25, #27 | Backup staleness and refresh logic | HIGH |
 
 ## Recently resolved
 | # | Title |
 |---|-------|
 | #23 | Blank mid-round score - fixed & verified live |
-| #26, #27, #28 | False-alarm data-loss cascade — corrected, root cause fixed in Watcher prompt |
+| #26, #28 | False-alarm data-loss cascade - corrected |
 
 ---
-_Last reset: 2026-08-01 17:06 UTC after full scheduling audit_
+_Last updated: 2026-08-01 17:24:48 UTC by Dispatcher Run #88_
 
 ## Watcher
 | Metric | Status |
@@ -54,6 +55,3 @@ _Last reset: 2026-08-01 17:06 UTC after full scheduling audit_
 |------------|-------|
 | T1-T13 | Complete, final scores in |
 | T14 (Ledgestone Open) | Live - all 6 members' picks in, scores pending |
-
----
-_Last updated: 2026-08-01 17:23:34 UTC by Watcher Run #87_
