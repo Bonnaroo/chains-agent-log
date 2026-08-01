@@ -1,5 +1,20 @@
+# Chains Season 46 — Status Dashboard
 
+## Watcher
+- **Last run**: 2026-08-01 01:54 UTC (Watcher Run #40)
+- **Status**: ✓ All-Clear — Data loss recovery confirmed
+- **Currently**: All 14 tournaments accessible and verified
+- **Next check**: +5 minutes (01:59 UTC)
 
----
-**CRITICAL ALERT APPENDED (Run #36, 2026-07-31 23:50 UTC):**
-[CRITICAL] Data loss detected: picks~46~12/13/14 deleted from Firebase. See Issue #24 for full details. Backup intact. Awaiting Engineer response.
+## Fire Hazards  
+⚠️ **RESOLVED** — Data loss incident (Issue #24):
+- Pick data (T12/T13/T14) restored from backup
+- All 14 tournaments now accessible in Firebase
+- Backup integrity verified
+- GitHub tracking files updated (all 14 tournaments synchronized)
+- Production systems healthy (app 200 OK, Firebase 200 OK, Actions passing)
+
+## Latest Activity
+- T14 (Ledgestone): LIVE — all picks finalized, scores pending
+- T1-T13: COMPLETE with final scores
+- 6 active members: cory/will/kyle/shanna/gabe/kadey
