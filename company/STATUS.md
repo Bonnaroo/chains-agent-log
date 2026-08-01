@@ -11,30 +11,30 @@
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 04:10 UTC (Run #55) |
+| Last Run | 2026-08-01 04:15 UTC (Run #56) |
 | Status | ✓ All systems nominal—no issues detected |
 | Currently | T46 Ledgestone Open (14 rounds: R1-R13 complete with scores, R14 ready) |
 | Next Check | ~5 minutes (5-min automated cadence) |
 ## Production Health
 | Component | Status | Last Verified |
 |-----------|--------|---------------|
-| Live App (GitHub Pages) | ✓ 200 OK (9.6MB+, v430) | 2026-08-01 04:10 UTC |
-| Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-08-01 04:10 UTC |
-| GitHub Actions | ✓ All passing (pages build & deploy) | 2026-08-01 04:10 UTC |
-| Backups | ✓ Latest & daily (2026-08-01) refreshed | 2026-08-01 04:10 UTC |
+| Live App (GitHub Pages) | ✓ 200 OK (9.4MB, v430+) | 2026-08-01 04:15 UTC |
+| Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-08-01 04:15 UTC |
+| GitHub Actions | ✓ All passing (pages build & deploy) | 2026-08-01 04:15 UTC |
+| Backups | ✓ Latest & daily (2026-08-01) refreshed | 2026-08-01 04:15 UTC |
 ## Data Status
 | Tournament | State | Last Update |
 |------------|-------|-------------|
 | T1-T13 | ✓ Complete (final scores) | 2026-07-29 onward |
-| T46 (Ledgestone) | 🔴 Live — 14 rounds complete, round 14 scoring pending | In progress |
+| T14 (Ledgestone) | 🔴 Live — 14 rounds complete, round 14 scoring pending | In progress |
 
 ## Known Issues
 | Issue | Status | Impact |
 |-------|--------|--------|
 | #15 | HTTP 401 notification (Firebase auth) | Low — production working |
-| #16 | Version display bug (shows v411, deployed v460) | Low — cosmetic |
+| #16 | Version display bug (shows v411, deployed v430+) | Low — cosmetic |
 | #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer |
 | #47 | BACKUP STALENESS | ✓ RESOLVED — last_known_picks.json recovered to 14 rounds (Run #50) |
 
 ---
-_Last updated: 2026-08-01 04:05 UTC (Watcher Run #54)_
+_Last updated: 2026-08-01 04:15 UTC (Watcher Run #56)_
