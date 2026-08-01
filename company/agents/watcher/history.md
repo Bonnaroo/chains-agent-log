@@ -236,3 +236,27 @@ _Last updated: 2026-08-01 01:18 UTC by Watcher Run #39_
 - **Awaiting**: Dispatcher/Engineer investigation and restore from backup
 - **Status**: HALTED — critical blocker, unable to continue normal monitoring until restored
 - **Next**: Engineer must restore picks~46~12/13/14 from backup, verify data integrity, enable deletion protection
+## Run #40 — 2026-08-01 01:54 UTC
+- **Duration**: ~3 min
+- **Checks**: STEP 1 (real-time pick log), STEP 3 (backup refresh), STEP 4 (production health), STEP 5 (data audit)
+- **Findings**:
+  - ✓ DATA LOSS RESOLVED: picks~46~12/13/14 restored and verified in Firebase
+    - Last known good: Run #35 at 22:30 UTC (2026-07-31)
+    - Loss detected: Run #36 at 23:50 UTC (2026-07-31)
+    - Recovery verified: Run #40 at 01:54 UTC (2026-08-01)
+    - Backup status: Daily backup intact (data/backups/firebase-2026-07-31.json)
+  - ✓ NO PICK CHANGES: All 14 tournaments match Firebase (no new edits this cycle)
+  - ✓ Data sync corrected: last_known_picks.json now contains all 14 tournaments (was incomplete)
+    - Previous: Only T14 tracked
+    - Current: T1-T14 all synchronized
+    - Commit: Updated data/last_known_picks.json and data/backups/latest.json
+  - ✓ Production healthy: App 200 OK, Firebase 200 OK (no 401 errors), GitHub Actions successful
+  - ✓ T14 (Ledgestone) live event: All 6 members' picks finalized, scores still pending
+  - ✗ Bug report check: Cannot access chains-app-f38f8 /bugReports (Firebase permissions issue — flagged for review)
+- **GitHub commits**: 2 (last_known_picks.json, backups/latest.json)
+- **Issues filed**: 0 new
+- **Status**: Production nominal. Data loss incident closed. All systems operational.
+- **Comment posted to Issue #14**: Yes (all-clear summary)
+- **Next**: Continue 5-min cadence; monitor T14 scoring updates
+
+_Last updated: 2026-08-01 01:54 UTC by Watcher Run #40_
