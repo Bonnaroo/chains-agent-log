@@ -260,3 +260,21 @@ _Last updated: 2026-08-01 01:18 UTC by Watcher Run #39_
 - **Next**: Continue 5-min cadence; monitor T14 scoring updates
 
 _Last updated: 2026-08-01 01:54 UTC by Watcher Run #40_
+
+## Run #41 — 2026-08-01T02:04:56. UTC
+- **Duration**: ~2 min
+- **Checks**: STEP 1 (pick log), STEP 3 (backup refresh), STEP 4 (production health)
+- **Findings**:
+  - ✓ NO PICK CHANGES: All 14 tournaments consistent with last_known state
+  - ✓ Backup refreshed: data/backups/latest.json updated with current Firebase snapshot
+  - ✓ App health: HTTP 200, serving ~9MB (v404)
+  - ✓ Firebase: HTTP 200, no 401 errors (ready for live scoring)
+  - ✓ GitHub Actions: All recent deployments successful
+  - ✓ T14 (Ledgestone) LIVE: All 6 members' picks finalized, scores pending
+- **GitHub commits**: 1 (latest.json refresh)
+- **Issues filed**: 0 new
+- **Status**: Production nominal. All systems ready for live event. No anomalies.
+- **Comment posted to Issue #14**: No (routine cycle, no changes/anomalies)
+- **Next**: Continue 5-min cadence; monitor T14 scoring updates
+
+_Last updated: 2026-08-01T02:04:56. UTC by Watcher Run #41_
