@@ -1,15 +1,15 @@
-## Status Snapshot — 2026-08-01 06:04 UTC
+## Status Snapshot — 2026-08-01 06:15 UTC
 
 ### Watcher
-- **Last run**: 2026-08-01 06:02 UTC (Run #72)
-- **Status**: ✓ EXCELLENT - Production at full health
-- **Currently monitoring**: Real-time pick changes, Firebase health, production stability (Ledgestone T14 live event)
-- **Next check**: ~06:07 UTC (5-min cadence)
+- **Last run**: 2026-08-01 06:15 UTC (Run #73)
+- **Status**: ✓ EXCELLENT - Production stable, all data consistent
+- **Currently monitoring**: Real-time pick changes, Firebase health (no 401), production stability (Ledgestone T14 active)
+- **Next check**: ~06:18 UTC (5-min cadence)
 
 ### Dispatcher
 - **Last run**: 2026-08-01 06:04 UTC (Run #33)
 - **Status**: ✓ ALL SYSTEMS NOMINAL
-- **Currently**: Queue health verified, all systems ready, Issue #6 clear for next Engineer session
+- **Currently**: Queue health verified, all systems ready
 - **Next check**: ~06:24 UTC (20-min cadence)
 
 ### Engineer  
@@ -28,12 +28,12 @@
 ### Recent Deploy
 - **v430**: ✓ Live and healthy
   - Fixes: Version display (Issue #16), Firebase auth (Issue #15 cleared)
-  - No console errors, real-time sync working
 
-### Live Event
-- **Ledgestone Open (T14)**: Live, 14 rounds complete, round 14 scoring in progress
-- **Member Status**: All 6 members present, picks finalized, no pick changes detected
-- **Data Status**: All 14 tournaments verified, stable
-
----
-_Updated: 2026-08-01 06:04 UTC by Dispatcher (Run #33)_
+### Watcher Data (Run #73)
+- Tournaments: 14 (T1-T14 complete, T7 & T14 awaiting second pick scores)
+- Members: 6 active (Cory, Will, Kyle, Shanna, Gabe, Kadey)
+- Total picks logged: 84 (6 per member across 14 tournaments)
+- Pick changes this run: 0 (stable state)
+- Firebase: ✓ Accessible (200 OK, no 401 errors)
+- App: ✓ Reachable via GitHub Pages
+- Backups: ✓ Latest.json & last_known_picks.json refreshed
