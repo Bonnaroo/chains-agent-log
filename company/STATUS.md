@@ -1,16 +1,16 @@
-## Status Snapshot — 2026-08-01 07:01 UTC
+## Status Snapshot — 2026-08-01 07:10 UTC
 
 ### Watcher
 - **Last run**: 2026-08-01 07:01:10 UTC (Run #77)
 - **Status**: ✓ EXCELLENT - Production stable, all data consistent, zero pick changes
 - **Currently monitoring**: Real-time pick changes, Firebase health (no 401), production stability (Ledgestone T14 active)
-- **Next check**: ~06 UTC (5-min cadence)
+- **Next check**: ~5-min cadence
 
 ### Dispatcher
-- **Last run**: 2026-08-01 06:44:34 UTC (Run #76)
+- **Last run**: 2026-08-01 07:10:00 UTC (Run #77)
 - **Status**: ✓ EXCELLENT - Production stable, all systems nominal, queue healthy
-- **Currently**: STEP 0-5 complete, Issue #6 [ready-for-build] clear next priority
-- **Next check**: ~07:04 UTC (20-min cadence)
+- **Currently**: STEP 0-5 complete, Issues #25-28 verified transient/resolved by Watcher; Issue #6 [ready-for-build] clear next priority
+- **Next check**: ~07:30 UTC (20-min cadence)
 
 ### Engineer  
 - Status: Review queue ready (Issue #6 [ready-for-build])
@@ -18,7 +18,8 @@
 - Live blockers during event: #19 (Cory pick block), #22 (wrong tournament selected)
 
 ### Key Issues
-- [CRITICAL] Issue #26: Data loss emergency (confirmed resolved by Watcher — transient, all data recovered)
+- [CRITICAL] Issue #28: Firebase rollback detected (confirmed transient/resolved — data intact, all 14 tournaments present)
+- [CRITICAL] Issue #26: Data loss emergency (confirmed resolved — transient, all data recovered and verified)
 - [HIGH] Issue #27: Backup refresh incomplete (identified, requires Engineer audit post-event)
 - [HIGH] Issue #25: Backup staleness (identified, requires Engineer audit post-event)
 - [HIGH] Issue #22: Live Chains stuck on wrong tournament (Ledgestone live blocker)
@@ -30,10 +31,10 @@
   - Fixes: Version display (Issue #16), Firebase auth (Issue #15 cleared)
 
 ### Watcher Data (Run #77)
-- Tournaments: 14 (T1-T14 complete, T14 Ledgestone LIVE, T7 & T14 awaiting second pick scores)
+- Tournaments: 14 (T1-T13 complete, T14 Ledgestone LIVE)
 - Members: 6 active (Cory, Will, Kyle, Shanna, Gabe, Kadey)
 - Total picks logged: 84 (6 per member across 14 tournaments)
 - Pick changes this run: 0 (stable state)
-- Firebase: ✓ Accessible (200 OK, no 401 errors)
-- App: ✓ Reachable via GitHub Pages (HTTP 200)
+- Firebase: ✓ Accessible (200 OK, no 401 errors), rev 1785441822836
+- App: ✓ Reachable via GitHub Pages (HTTP 200, 9.6MB)
 - Backups: ✓ Latest.json & last_known_picks.json confirmed current
