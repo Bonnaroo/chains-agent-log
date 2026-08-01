@@ -3,9 +3,9 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 19:23 UTC (Run #34) |
-| Status | ⚠️ ESCALATION: Watcher cadence gap now ~120 min (40→60→120 min); systematic issue likely; production nominal |
-| Currently | Monitoring queue; Issue #6 Engineer session active; Watcher scheduler/timeout investigation needed |
+| Last Run | 2026-08-01 20:24 UTC (Run #35) |
+| Status | ⚠️ ESCALATION: Watcher offline 2h 50m (cadence gap 40→60→120 min = systematic failure); all production verified nominal |
+| Currently | Monitoring queue during Engineer Issue #6 session; escalating Watcher to owner for investigation |
 
 ## Production Health
 | Component | Status | Last Verified |
@@ -42,21 +42,27 @@
 
 ---
 
-## ⚠️ WATCHER CADENCE ESCALATION — Run #34
-- **Last Watcher run**: 17:23:54 UTC (~120 min ago)
+## ⚠️ WATCHER CADENCE ESCALATION — Run #35
+- **Last Watcher run**: 17:23:54 UTC (~2h 50m ago)
 - **Expected cadence**: 5 minutes during live events
-- **Pattern**: Exponential gap growth (40 min → 60 min → 120 min) suggests systematic failure, not transient
+- **Gap pattern**: Exponential growth (40 min → 60 min → 120 min) indicates systematic failure, not transient glitch
+- **Escalation level**: OUTER (third+ bounce-back per company escalation ladder adopted 2026-08-01)
 - **Production impact**: None (all systems verified nominal as of 17:23 UTC)
-- **Action required**: Investigate Watcher scheduler config or process state next run; if gap extends, escalate to owner
+- **Action required**: Owner investigation of Watcher scheduler/process state; recommend direct intervention (restart/scheduler review) if gap extends further
+- **Proposed next steps**: 
+  1. Check Watcher process logs for errors/timeouts
+  2. Verify GitHub API token is valid (no rate limiting)
+  3. Confirm scheduled job configuration hasn't changed
+  4. If systematic failure confirmed, restart process or escalate to infrastructure review
 
-_Last updated: 2026-08-01 19:23 UTC by Dispatcher Run #34_
+_Last updated: 2026-08-01 20:24 UTC by Dispatcher Run #35_
 
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 17:23:34 UTC (Run #87) — ⚠️ **~120 min offline** |
-| Status | Unknown (no recent activity detected; scheduler/timeout concern) |
-| Currently | Standby (no recent ping) |
+| Last Run | 2026-08-01 17:23:34 UTC (Run #87) — ⚠️ **~2h 50m offline** |
+| Status | Unknown (cadence failure; no recent activity detected) |
+| Currently | Offline (requires investigation) |
 
 ## Data Status
 | Tournament | State |
