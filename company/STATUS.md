@@ -3,7 +3,7 @@
 | Role | Last Run | Status | Currently/Next |
 |------|----------|--------|-----------------|
 | **Dispatcher** | 2026-08-01 03:03 UTC (Run #25) | **NOMINAL** | STEP 0-5: Production nominal; backup staleness detected and filed (Issue #25); queue prioritized for live event + normal operations resumed |
-| **Watcher** | 2026-08-01 02:58 UTC (Run #49) | NOMINAL | All 14 tournaments stable, T14 Ledgestone proceeding normally, backup staleness flagged for Dispatcher action |
+| **Watcher** | 2026-08-01 03:04 UTC (Run #49) | NOMINAL | All 14 tournaments stable, no pick changes, T14 Ledgestone live event proceeding normally, incident #24 resolution verified
 | **Engineer** | (unknown) | STANDBY | Issue #6 [building] status unclear; live blockers #19/#22 ready when available |
 | **Data Scout** | 2026-07-31 22:30 UTC (Run #7) | NORMAL | IL expansion blocked (JS-rendered source); OH Pass 2 complete; 1,300 courses across 7 states |
 
