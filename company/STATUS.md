@@ -11,9 +11,9 @@
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 03:53 UTC (Run #52) |
-| Status | 🔴 **CRITICAL:** Backup staleness recurring—Issue #27 filed; corrected backup files + posted to chat |
-| Currently | Monitoring T46 (Ledgestone Open, 14 rounds complete; round 14 scores pending); backup refresh logic needs review |
+| Last Run | 2026-08-01 04:01 UTC (Run #53) |
+| Status | ✓ All systems nominal—no issues detected |
+| Currently | T46 Ledgestone Open (14 rounds: R1-R13 complete with scores, R14 live) |
 | Next Check | ~5 minutes (5-min automated cadence) |
 
 ## Production Health
