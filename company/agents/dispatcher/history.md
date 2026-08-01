@@ -188,4 +188,25 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 - **STEP 5 (Never-Idle)**: ✓ No stale issues, no [needs-owner-decision] pending, inbox drained
 - **STATUS.md updated**: Yes (run #77, 07:23:41 UTC)
 - **Comment posted to Issue #14**: Yes (ID: 5150398780)
-- **Status**: All systems nominal. Production healthy (v430 live, Firebase responsive, GitHub Actions passing). Ledgestone T14 live event proceeding normally (14 rounds complete, round 14 scoring in progress, all 6 members consistent). Backups verified current. Queue ready for Engineer (Issue #6 clear for next session, live blockers #19/#22 available if needed). No blocking issues or owner decisions required.
+- **Status**: All systems nominal. Production healthy (v430 live, Firebase responsive, GitHub Actions passing). Ledgestone T14 live event proceeding normally (14 rounds complete, round 14 scoring in progress, all 6 members consistent). Backups verified current. Queue ready for Engineer (Issue #6 clear for next session, live blockers #19/#22 available if needed). No blocking issues or owner decisions required.## Run #86 — 2026-08-01 17:30 UTC (Scheduled autonomous run)
+- **Duration**: ~5 min
+- **Cycle**: Regular 20-min dispatcher cadence
+- **Checks**: All 5 STEPS + never-idle sweep
+- **Findings**:
+  - ✅ Data loss incidents from 03:00-07:00 UTC FULLY RECOVERED
+  - ✅ Watcher Run #85 (16:52 UTC) confirms all 14 tournaments in sync with Firebase
+  - ✅ No pick changes since 07:58 UTC (~9 hours ago)
+  - ✅ Production health nominal: Firebase 200 OK (no 401 errors), backups current
+  - ⚠️ 3 live event blockers noted: #19 (Cory gate), #22 (wrong tournament), #23 (blank score)
+  - ℹ️ Issue #20 identified as CRITICAL architecture issue (league data only in localStorage)
+- **Queue assessment**: 28 issues total; 4 data loss issues (#25-28) need closure/updates (recovery confirmed); 3 live blockers active; 1 ready-for-build (#6)
+- **Actions taken**:
+  - Updated STATUS.md with recovery confirmation and current queue assessment
+  - Posted Office Chat summary to Issue #14
+  - Noted that issues #25-28 should be closed with recovery confirmation comments
+- **Issues filed**: 0 new
+- **Status**: ✅ All systems nominal; data integrity restored; queue ready for Engineer
+- **Comment posted to Issue #14**: Yes (run summary with data recovery confirmation)
+- **Next**: Continue 20-min dispatcher cadence; Watcher to continue 5-min monitoring
+
+_Incident Summary: Critical data loss detected this morning (Firebase rollback, backup issues) was investigated and fully recovered by mid-day. All systems verified in sync. Root cause analysis of backup logic (#27) and Firebase health (#26/#28) recommended post-event._
