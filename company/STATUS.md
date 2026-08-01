@@ -1,5 +1,11 @@
 # Chains Season 46 — Status Dashboard
 
+## Dispatcher
+- **Last run**: 2026-08-01 02:03 UTC (Dispatcher Run #23)
+- **Status**: ✓ All-Clear — Queue healthy, live event nominal
+- **Currently**: 16 open issues queued, live blockers #19/#22 IMMEDIATE, #6 [ready-for-build] next
+- **Next check**: +20 minutes (02:23 UTC)
+
 ## Watcher
 - **Last run**: 2026-08-01 01:54 UTC (Watcher Run #40)
 - **Status**: ✓ All-Clear — Data loss recovery confirmed
@@ -18,3 +24,4 @@
 - T14 (Ledgestone): LIVE — all picks finalized, scores pending
 - T1-T13: COMPLETE with final scores
 - 6 active members: cory/will/kyle/shanna/gabe/kadey
+
