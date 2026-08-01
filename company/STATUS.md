@@ -3,9 +3,9 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 17:24:48 UTC (Run #88) |
-| Status | All systems nominal — Queue healthy, backups current, live Ledgestone T14 event proceeding |
-| Currently | Standby during Ledgestone live event (T14), monitoring queue health |
+| Last Run | 2026-08-01 18:03:35 UTC (Run #90) |
+| Status | All systems nominal — Queue healthy, backups current, Engineer actively building Issue #6, Ledgestone T14 live event proceeding |
+| Currently | Monitoring queue during Issue #6 build session; Watcher cadence noted at 40-min lag but no production impact |
 
 ## Production Health
 | Component | Status | Last Verified |
