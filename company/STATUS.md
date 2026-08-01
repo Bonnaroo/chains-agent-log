@@ -1,5 +1,4 @@
 # Chains System Status
-
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
@@ -11,22 +10,22 @@
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 04:44 UTC (Run #61) |
-| Status | ✓ Production nominal — no changes detected, backups refreshed |
+| Last Run | 2026-08-01 04:50 UTC (Run #62) |
+| Status | ✓ Production nominal — no changes detected, backups verified |
 | Currently | Monitoring T46 (Ledgestone Open, 14 rounds complete; round 14 scores pending) |
-| Next Check | ~5 minutes (04:49 UTC) |
+| Next Check | ~5 minutes (04:55 UTC) |
 
 ## Production Health
 | Component | Status | Last Verified |
-|-----------|--------|---------------|
-| Live App (GitHub Pages) | ✓ 200 OK (9.6MB+, v430) | 2026-08-01 04:35 UTC |
-| Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-08-01 04:35 UTC |
+|-----------|--------|-----------------|
+| Live App (GitHub Pages) | ✓ 200 OK (9.6MB, v430) | 2026-08-01 04:50 UTC |
+| Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-08-01 04:50 UTC |
 | GitHub Actions | ✓ All passing (pages build & deploy) | 2026-08-01 00:32 UTC |
-| Backups | ✓ Latest & last_known_picks refreshed at 04:44:01Z | 2026-08-01 04:44 UTC |
+| Backups | ✓ Latest & last_known_picks verified current at 04:44Z | 2026-08-01 04:50 UTC |
 
 ## Data Status
 | Tournament | State | Last Update |
-|------------|-------|-------------|
+|------------|--------|------------|
 | T1-T13 | ✓ Complete (final scores) | 2026-07-29 onward |
 | T46 (Ledgestone) | 🟡 Live — 14 rounds complete, round 14 scoring pending | In progress |
 
@@ -39,4 +38,4 @@
 | #47 | BACKUP STALENESS | ✓ RESOLVED — backups current (Run #53) |
 
 ---
-_Last updated: 2026-08-01 04:35 UTC (Watcher Run #53)_
+_Last updated: 2026-08-01 04:50 UTC (Watcher Run #62)_
