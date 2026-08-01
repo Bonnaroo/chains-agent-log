@@ -8,12 +8,12 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-07-31 22:53 UTC (Run #18)
-- Status: Nominal, all systems healthy during live Ledgestone T14 event
-- Currently/next: Issues #19/#22/#23 [IMMEDIATE] live blockers, Issue #6 [ready-for-build] next, continue monitoring
+- Last run: 2026-08-01 00:43 UTC (Run #19)
+- Status: All systems nominal, Ledgestone T14 live continues, Watcher current (1h 13m ago but steady state)
+- Currently/next: Live blockers #19/#22/#23 IMMEDIATE, Issue #6 [ready-for-build] next, continue monitoring
 
 ## Watcher
-- Last run: 2026-07-31T22:53:53 UTC (Run #35)
+- Last run: 2026-07-31T22:30:00 UTC (Run #35)
 - Status: Complete — no pick changes, production healthy, T14 live pending scores
 - Currently/next: Continue 5-min cadence; monitor for Ledgestone score updates
 
