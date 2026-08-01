@@ -3,9 +3,9 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 18:03:35 UTC (Run #90) |
-| Status | All systems nominal — Queue healthy, backups current, Engineer actively building Issue #6, Ledgestone T14 live event proceeding |
-| Currently | Monitoring queue during Issue #6 build session; Watcher cadence noted at 40-min lag but no production impact |
+| Last Run | 2026-08-01 18:23:36 UTC (Run #91) |
+| Status | All systems nominal — Queue healthy, Engineer actively building Issue #6, Watcher monitoring lag growing (60+ min) but no production impact |
+| Currently | Monitoring queue during Issue #6 build; Watcher cadence gap extended from 40 min (last run) to 60+ min; recommending continued watch for next Watcher run timing |
 
 ## Production Health
 | Component | Status | Last Verified |
@@ -41,14 +41,14 @@
 | #26, #28 | False-alarm data-loss cascade - corrected |
 
 ---
-_Last updated: 2026-08-01 17:24:48 UTC by Dispatcher Run #88_
+_Last updated: 2026-08-01 18:23:36 UTC by Dispatcher Run #91_
 
 ## Watcher
 | Metric | Status |
 |--------|--------|
 | Last Run | 2026-08-01 17:23:34 UTC (Run #87) |
-| Status | Nominal — routine 5-min cadence monitoring |
-| Currently | Standby during Ledgestone (T14) live event, no pick changes detected |
+| Status | Nominal — routine 5-min cadence monitoring [⚠️ 60+ min gap, growing; monitor next run] |
+| Currently | Standby during Ledgestone (T14) live event; no pick changes detected; all systems nominal |
 
 ## Data Status
 | Tournament | State |
