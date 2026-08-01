@@ -7,10 +7,10 @@
 - **Next check**: +20 minutes (02:23 UTC)
 
 ## Watcher
-- **Last run**: 2026-08-01 01:54 UTC (Watcher Run #40)
+- **Last run**: 2026-08-01 02:05 UTC (Watcher Run #41)
 - **Status**: ✓ All-Clear — Data loss recovery confirmed
 - **Currently**: All 14 tournaments accessible and verified
-- **Next check**: +5 minutes (01:59 UTC)
+- **Next check**: +5 minutes (02:10 UTC) (01:59 UTC)
 
 ## Fire Hazards  
 ⚠️ **RESOLVED** — Data loss incident (Issue #24):
