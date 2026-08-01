@@ -1748,3 +1748,26 @@ Both remain UNRESOLVED and escalated for LANE:DESIGN/ENGINEER action.
   history revealed the false resolution. PROMOTED: OPERATING_RULES.md rule 11 (backend changes need a live
   probe, not a committed file) and flagged as a real credential gap (no Firebase admin/service-account access
   currently exists) requiring owner action to close for real.
+
+
+## 2026-08-01 — Watcher hallucinated a "T46" tournament and filed false CRITICAL data-loss issues
+
+Firebase RTDB key names can't contain literal dots, so the sync layer encodes them: "picks.14" becomes
+"picks~46~14" (46 = char code for "."). Watcher runs repeatedly misread this as a real tournament number ("T46",
+"14 rounds of one event") instead of "tournament 14, one of 14 separate tournaments." This bad mental model
+compounded across multiple runs and produced a cascade of false [CRITICAL] data-loss/rollback issues (#26, #27,
+#28) based on a misunderstanding, not real data loss — verified via direct owner-level Firebase read that all
+data was intact the whole time.
+
+Also found: Dispatcher and Watcher had both written IDENTICAL text into their own STATUS.md sections (a
+copy-paste bug), and Issue #14 (the permanent Office Chat thread) had been closed by a run that mistook it for
+a resolvable bug ticket instead of a standing shared channel.
+
+Fixes applied: Watcher's prompt now explicitly explains the ~N~ key-encoding scheme, requires two independent
+fresh reads before ever filing a CRITICAL data-loss issue, explicitly forbids copying another role's STATUS.md
+text, and instructs reopening Issue #14 if ever found closed. STATUS.md was reset to remove the corrupted
+content.
+
+Lesson: when a scheduled role's own history shows a naming/number it never encountered before ("T46" appearing
+out of nowhere), that's a strong signal of a misread, not a new real thing — should always be sanity-checked
+against a fresh direct read before escalating.
