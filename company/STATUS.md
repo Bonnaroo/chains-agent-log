@@ -1,7 +1,7 @@
-## Status Snapshot — 2026-08-01 07:10 UTC
+## Status Snapshot — 2026-08-01 07:14 UTC
 
 ### Watcher
-- **Last run**: 2026-08-01 07:01:10 UTC (Run #77)
+- **Last run**: 2026-08-01 07:14:00 UTC (Run #78)
 - **Status**: ✓ EXCELLENT - Production stable, all data consistent, zero pick changes
 - **Currently monitoring**: Real-time pick changes, Firebase health (no 401), production stability (Ledgestone T14 active)
 - **Next check**: ~5-min cadence
@@ -30,11 +30,11 @@
 - **v430**: ✓ Live and healthy
   - Fixes: Version display (Issue #16), Firebase auth (Issue #15 cleared)
 
-### Watcher Data (Run #77)
-- Tournaments: 14 (T1-T13 complete, T14 Ledgestone LIVE)
+### Watcher Data (Run #78)
+- Tournaments: 14 (T1-T13 complete, T7/T14 with pending scores)
 - Members: 6 active (Cory, Will, Kyle, Shanna, Gabe, Kadey)
 - Total picks logged: 84 (6 per member across 14 tournaments)
-- Pick changes this run: 0 (stable state)
+- Pick changes this run: 0 (stable state, rev 1785441822836 unchanged)
 - Firebase: ✓ Accessible (200 OK, no 401 errors), rev 1785441822836
 - App: ✓ Reachable via GitHub Pages (HTTP 200, 9.6MB)
-- Backups: ✓ Latest.json & last_known_picks.json confirmed current
+- Backups: ✓ Latest.json & last_known_picks.json committed current
