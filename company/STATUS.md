@@ -3,9 +3,10 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 20:24 UTC (Run #35) |
-| Status | ⚠️ ESCALATION: Watcher offline 2h 50m (cadence gap 40→60→120 min = systematic failure); all production verified nominal |
-| Currently | Monitoring queue during Engineer Issue #6 session; escalating Watcher to owner for investigation |
+| Last Run | 2026-08-01 21:04 UTC (Run #36) |
+| Status | ⚠️ ESCALATION: Watcher offline 3h 41m (last reliable data 17:23 UTC); all production verified nominal; queue healthy |
+| Currently | Monitoring queue + Engineer building Issue #6; Watcher offline escalation in effect |
+| Next Check | Continue 20-min cadence; owner intervention needed for Watcher investigation |
 
 ## Production Health
 | Component | Status | Last Verified |
@@ -17,13 +18,14 @@
 
 ## Data Status
 | Tournament | State |
-|------------|-------|
+|-----------|-------|
 | T1-T13 | Complete, final scores in |
 | T14 (Ledgestone Open) | Live - all 6 members' picks in, scores pending |
 
 ## Known Issues (open)
 | # | Title | Priority | Notes |
 |---|-------|----------|-------|
+| #25 | Backup staleness: last_known_picks.json missing rounds 2-11 (18+ days out of sync) | HIGH | NEW (filed 2026-08-01 20:23 UTC) |
 | #22 | Live Chains schedule edge case | HIGH | |
 | #19 | Cory picking gate (European Open) | TOP | Status: Resolved for T14 (all picks in); verify if fix permanent |
 | #18 | Field/registered players tab | TOP | |
@@ -32,7 +34,7 @@
 | #11 | Report a Bug button | TOP | |
 | #10 | sw.js 404 + version label visibility | TOP | |
 | #6 | Scoring screen placeholder ⬅️ **BUILDING** | TOP | [ready-for-build] Engineer session active |
-| #25, #27 | Backup staleness and refresh logic | HIGH | |
+| #27 | Backup refresh logic incomplete | HIGH | |
 
 ## Recently resolved
 | # | Title |
@@ -42,30 +44,21 @@
 
 ---
 
-## ⚠️ WATCHER CADENCE ESCALATION — Run #35
-- **Last Watcher run**: 17:23:54 UTC (~2h 50m ago)
+## ⚠️ WATCHER OFFLINE ESCALATION (3h 41m since Run #87)
+- **Last Watcher run**: 17:23:34 UTC (Run #87) — 3h 41m ago
 - **Expected cadence**: 5 minutes during live events
-- **Gap pattern**: Exponential growth (40 min → 60 min → 120 min) indicates systematic failure, not transient glitch
-- **Escalation level**: OUTER (third+ bounce-back per company escalation ladder adopted 2026-08-01)
-- **Production impact**: None (all systems verified nominal as of 17:23 UTC)
-- **Action required**: Owner investigation of Watcher scheduler/process state; recommend direct intervention (restart/scheduler review) if gap extends further
-- **Proposed next steps**: 
-  1. Check Watcher process logs for errors/timeouts
-  2. Verify GitHub API token is valid (no rate limiting)
-  3. Confirm scheduled job configuration hasn't changed
-  4. If systematic failure confirmed, restart process or escalate to infrastructure review
+- **Pattern**: Exponential growth (40 min → 60 min → 120 min) indicates systematic failure, not transient glitch
+- **Escalation level**: OUTER (third+ bounce-back per company escalation ladder, adopted 2026-08-01)
+- **Production impact**: None (all systems verified nominal as of 17:23 UTC; T14 live event ongoing)
+- **Dispatcher findings (Run #36)**: Queue healthy, all checks nominal, Issue #6 building clear, no stale issues
+- **Action required**: Owner investigation of Watcher scheduler/process state
+- **Proposed next steps**: Check Watcher logs, verify token validity, confirm job configuration, restart if needed
 
-_Last updated: 2026-08-01 20:24 UTC by Dispatcher Run #35_
+_Last updated: 2026-08-01 21:04 UTC by Dispatcher Run #36_
 
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 17:23:34 UTC (Run #87) — ⚠️ **~2h 50m offline** |
+| Last Run | 2026-08-01 17:23:34 UTC (Run #87) — ⚠️ **~3h 41m offline** |
 | Status | Unknown (cadence failure; no recent activity detected) |
 | Currently | Offline (requires investigation) |
-
-## Data Status
-| Tournament | State |
-|------------|-------|
-| T1-T13 | Complete, final scores in |
-| T14 (Ledgestone Open) | Live - all 6 members' picks in, scores pending |
