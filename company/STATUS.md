@@ -8,9 +8,9 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-08-01 00:53 UTC (Run #20)
-- Status: All systems nominal, Issue #23 verified fixed and closed, Ledgestone T14 live event active, Watcher current (1h 23m ago steady state)
-- Currently/next: Live blockers #19/#22 IMMEDIATE (Cory gate, Live Chains tournament), Issue #6 [ready-for-build] NEXT, continue 20-min cadence
+- Last run: 2026-08-01 01:13 UTC (Run #21)
+- Status: All systems nominal, Watcher current (15m ago), blockers #19/#22 verified IMMEDIATE (Cory gate + Live Chains stuck), Issue #23 engineer-closed, queue health good
+- Currently/next: Escalate blockers to Engineer for immediate attention; Issue #6 [ready-for-build] next; continue 20-min cadence
 
 ## Watcher
 - Last run: 2026-07-31T22:30:00 UTC (Run #35)
