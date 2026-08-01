@@ -1,43 +1,42 @@
-# Chains — Dispatcher Status Dashboard
+# Chains System Status
 
-✓ **[INCIDENT RESOLVED — 2026-08-01 03:41 UTC]**
-**Data Loss Recovery Confirmed.** All 14 tournaments present and verified in Firebase. Production operations resumed.
+## Dispatcher
+| Metric | Status |
+|--------|--------|
+| Last Run | 2026-08-01 00:31 UTC (Run #19) |
+| Status | Active build in progress — Engineer working Issue #6, GA build completed 00:31:28 UTC |
+| Currently | Monitoring active engineer session + live T14 event |
+| Next Check | ~20 minutes (00:51 UTC) |
+
+## Watcher
+| Metric | Status |
+|--------|--------|
+| Last Run | 2026-08-01 03:53 UTC (Run #52) |
+| Status | 🔴 **CRITICAL:** Backup staleness recurring—Issue #27 filed; corrected backup files + posted to chat |
+| Currently | Monitoring T46 (Ledgestone Open, 14 rounds complete; round 14 scores pending); backup refresh logic needs review |
+| Next Check | ~5 minutes (5-min automated cadence) |
+
+## Production Health
+| Component | Status | Last Verified |
+|-----------|--------|---------------|
+| Live App (GitHub Pages) | ✓ 200 OK (9.6MB+, v430) | 2026-08-01 03:49 UTC |
+| Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-08-01 03:49 UTC |
+| GitHub Actions | ✓ All passing (pages build & deploy) | 2026-08-01 00:32 UTC |
+| Backups | ✓ Latest & last_known_picks refreshed at 03:49:52Z | 2026-08-01 03:49 UTC |
+
+## Data Status
+| Tournament | State | Last Update |
+|------------|-------|-------------|
+| T1-T13 | ✓ Complete (final scores) | 2026-07-29 onward |
+| T46 (Ledgestone) | 🔴 Live — 14 rounds complete, round 14 scoring pending | In progress |
+
+## Known Issues
+| Issue | Status | Impact |
+|-------|--------|--------|
+| #15 | HTTP 401 notification (Firebase auth) | Low — production working |
+| #16 | Version display bug (shows v411, deployed v460) | Low — cosmetic |
+| #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer |
+| #47 | BACKUP STALENESS | ✓ RESOLVED — last_known_picks.json recovered to 14 rounds (Run #50) |
 
 ---
-
-| Role | Last Run | Status | Currently/Next |
-|------|----------|--------|-----------------|
-| **Dispatcher** | 2026-08-01 03:43 UTC (Run #27) | READY | Post-incident, queue ready for Engineer |
-| **Watcher** | 2026-08-01 03:43 UTC (Run #54) | READY | Zero pick changes; all audits passed; T14 live |
-| **Engineer** | (standby) | READY | Assign: Issues #22, #19 (Ledgestone blocking) |
-| **Data Scout** | 2026-08-01 03:35 UTC (Run #7) | READY | Standby for event data collection |
-
----
-
-## Incident Summary (RESOLVED)
-
-✓ **DATA LOSS INCIDENT CLOSED**: Tournaments 12-14 fully restored and verified present in Firebase:
-- `picks~46~12.json` ✓ Restored
-- `picks~46~13.json` ✓ Restored  
-- `picks~46~14.json` ✓ Restored
-
-**Recovery Details:**
-- All 14 tournaments confirmed intact (revision 1785441822836)
-- Daily backup committed: `firebase-2026-08-01.json`
-- Latest.json refreshed with current timestamp
-- Cross-system audit passed: draft order logic verified, standings consistent
-- Zero anomalies detected since Run #52
-
-**Lessons Learned:**
-- Issue #25 (backup staleness) remains open → infrastructure improvement needed
-- Issue #26 (incident report) can be closed once owner confirms recovery accepted
-
-**Status:** Production stable, ready for resumed operations.
-
----
-
-## Background
-
-This incident occurred between Run #51 (nominal state) and Run #52 (detection). Firebase revision showed regression (1782257436249 → 1785441822836), indicating either a transient rollback or restoration. Run #53 (current) confirms data integrity.
-
-(Full incident history in GitHub #26 and company/LESSONS_LEARNED.md)
+_Last updated: 2026-08-01 03:49 UTC (Watcher Run #51)_
