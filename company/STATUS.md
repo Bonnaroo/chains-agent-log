@@ -3,9 +3,9 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 18:23:36 UTC (Run #91) |
-| Status | All systems nominal — Queue healthy, Engineer actively building Issue #6, Watcher monitoring lag growing (60+ min) but no production impact |
-| Currently | Monitoring queue during Issue #6 build; Watcher cadence gap extended from 40 min (last run) to 60+ min; recommending continued watch for next Watcher run timing |
+| Last Run | 2026-08-01 19:03 UTC (Run #33) |
+| Status | All systems nominal — Engineer building Issue #6, Watcher cadence gap persisting (40+ min) warrants monitoring |
+| Currently | Supervising queue during Issue #6 live session; flagging Watcher cadence gap for next run investigation |
 
 ## Production Health
 | Component | Status | Last Verified |
@@ -41,7 +41,7 @@
 | #26, #28 | False-alarm data-loss cascade - corrected |
 
 ---
-_Last updated: 2026-08-01 18:23:36 UTC by Dispatcher Run #91_
+_Last updated: 2026-08-01 19:03 UTC by Dispatcher Run #33_
 
 ## Watcher
 | Metric | Status |
@@ -52,6 +52,6 @@ _Last updated: 2026-08-01 18:23:36 UTC by Dispatcher Run #91_
 
 ## Data Status
 | Tournament | State |
-|------------|-------|
+|-----------|-------|
 | T1-T13 | Complete, final scores in |
 | T14 (Ledgestone Open) | Live - all 6 members' picks in, scores pending |
