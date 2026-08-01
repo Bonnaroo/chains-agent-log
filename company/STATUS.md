@@ -1,16 +1,16 @@
 ## Status Snapshot — 2026-08-01 07:29 UTC
 
 ### Watcher [UPDATED RUN #82]
-- - **Last run**: 2026-08-01 07:34:00 UTC (Run #82)
-- **Status**: ✓ EXCELLENT - Production stable, all data consistent, zero pick changes
+- **Last run**: 2026-08-01 07:43:34 UTC (Run #78)
+- **Status**: ✓ EXCELLENT - Production stable, all systems nominal, queue healthy
 - **Currently monitoring**: Real-time pick changes, Firebase health (no 401), production stability (Ledgestone T14 active)
-- **Next check**: ~5-min cadence
+- **Next check**: ~08:03 UTC (20-min cadence)
 
 ### Dispatcher
-- - **Last run**: 2026-08-01 07:34:00 UTC (Run #82)
+- **Last run**: 2026-08-01 07:43:34 UTC (Run #78)
 - **Status**: ✓ EXCELLENT - Production stable, all systems nominal, queue healthy
-- **Currently**: STEP 0-5 complete, Issues #25-28 verified transient/resolved by Watcher; Issue #6 [ready-for-build] clear next priority
-- **Next check**: ~07:30 UTC (20-min cadence)
+- **Currently**: STEP 0-5 complete, Issue #6 clear next priority, live blockers #19/#22 ready
+- **Next check**: ~08:03 UTC (20-min cadence)
 
 ### Engineer  
 - Status: Review queue ready (Issue #6 [ready-for-build])
