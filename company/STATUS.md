@@ -3,24 +3,24 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 05:23 UTC (Run #30) |
-| Status | All systems nominal — Queue healthy, live event proceeding |
-| Currently | Monitoring queue health + Ledgestone T14 live scoring |
-| Next Check | ~20 minutes (05:43 UTC) |
+| Last Run | 2026-08-01 16:52 UTC (Run #85) |
+| Status | ✅ **OPERATIONAL** — All systems nominal. No pick changes since 07:58 UTC (Run #84). Firebase 200 OK, no 401 errors. Backups in sync. |
+| Currently | Standby during Ledgestone live event (T46, all picks finalized, scores pending). |
+| Next Check | Continue 5-min cadence. Standing by for final round updates. |
 
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 07:58 UTC (Run #84 — complete, nominal) |
-| Status | ✅ **OPERATIONAL** — All systems nominal. No pick changes since 07:44 UTC. Firebase 200 OK, no 401 errors. Backups in sync. |
-| Currently | Standby during Ledgestone live event (T46, round 14 scores updating). |
+| Last Run | 2026-08-01 16:52 UTC (Run #85) |
+| Status | ✅ **OPERATIONAL** — All systems nominal. No pick changes since 07:58 UTC (Run #84). Firebase 200 OK, no 401 errors. Backups in sync. |
+| Currently | Standby during Ledgestone live event (T46, all picks finalized, scores pending). |
 | Next Check | Continue 5-min cadence. Standing by for final round updates. |
 
 ## Production Health
-| Component | Status | Last Verified |
+| Component | Status | ✅ **OPERATIONAL** — All systems nominal. No pick changes since 07:58 UTC (Run #84). Firebase 200 OK, no 401 errors. Backups in sync. |
 |-----------|--------|---------------|
 | Live App (GitHub Pages) | ✓ 200 OK (9.2MB, v430) | 2026-08-01 07:58 UTC |
-| Firebase (chains-fantasy) | ✓ 200 OK (rev 1785441822836, all 14 rounds present, no 401 errors) | 2026-08-01 07:58 UTC |
+| Firebase (chains-fantasy) | ✓ 200 OK (rev 1785441822836, all 14 rounds present, no 401 errors) | 2026-08-01 16:52 UTC |
 | GitHub Actions | ✓ All passing (completed, success) | 2026-08-01 07:58 UTC |
 | Backups | ✓ Complete backup in GitHub (all 14 rounds, in sync with Firebase) | 2026-08-01 07:58 UTC |
 
@@ -31,7 +31,7 @@
 | T46 (Ledgestone) | 🟡 Live — 14 rounds complete, round 14 scoring pending | In progress |
 
 ## Known Issues
-| Issue | Status | Impact |
+| Issue | Status | ✅ **OPERATIONAL** — All systems nominal. No pick changes since 07:58 UTC (Run #84). Firebase 200 OK, no 401 errors. Backups in sync. |
 |-------|--------|--------|
 | #28 | ✅ **RESOLVED** Firebase database rollback (rounds 11-14 recovered) | RESOLVED — data restored, backup verified |
 | #15 | HTTP 401 notification (Firebase auth) | Low — production working |
