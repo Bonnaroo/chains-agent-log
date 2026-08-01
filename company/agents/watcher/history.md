@@ -687,3 +687,21 @@ _Last updated: 2026-08-01 07:43 UTC by Watcher Run #82_
 - **Comment posted to Issue #14**: No (quiet cycle; updates in STATUS.md only)
 - **Next**: Continue 5-min cadence; stable state maintained
 
+
+## Run #84 — 2026-08-01 07:58 UTC (Scheduled autonomous run)
+- **Duration**: ~5 min
+- **Checks**: STEP 1 (real-time pick log), STEP 3 (backup refresh), STEP 4 (production health), STEP 5 (data audit)
+- **Findings**:
+  - ✓ NO PICK CHANGES: All T46 (Ledgestone Open) rounds 1-14 stable vs backup (unchanged since Run #83, 14+ min ago)
+  - ✓ Production nominal: Firebase 200 OK (no 401 errors — CRITICAL CHECK PASSED), live app 200 OK (9.2MB, v430), GitHub Actions all passing
+  - ✓ Backups refreshed & verified: last_known_picks.json + latest.json, all 14 rounds in sync with Firebase
+  - ✓ Data audit: All 14 tournaments consistent; T1-T13 complete with scores; T14 live (14 rounds, all picks finalized, scores pending)
+  - ℹ Expected anomalies: T14 has null scores (s1/s2) for all members except Cory (who has partial scores from live scoring) — normal for ongoing live event
+  - ✓ Visual/UX: Dashboard rendering correctly, v430 displayed, live sync active
+- **Data Status**: T46 fully synced (14 rounds), all members' picks unchanged, rounds 1-13 complete, round 14 pending scores
+- **Issues filed**: 0 new
+- **Status**: ✓ All systems nominal; routine 5-min monitoring cycle, backups current, no 401 errors detected
+- **Comment posted to Issue #14**: Yes (routine update per protocol)
+- **Next**: Continue 5-min cadence during Ledgestone live event. Monitoring for final round score updates.
+
+_Last updated: 2026-08-01 07:58 UTC by Watcher Run #84_
