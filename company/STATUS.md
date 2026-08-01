@@ -8,9 +8,9 @@ Update ONLY your own row. Never edit another role's row. Keep each row to 1-2 li
 scannable in a few seconds, not become another history log.
 
 ## Dispatcher
-- Last run: 2026-08-01 00:43 UTC (Run #19)
-- Status: All systems nominal, Ledgestone T14 live continues, Watcher current (1h 13m ago but steady state)
-- Currently/next: Live blockers #19/#22/#23 IMMEDIATE, Issue #6 [ready-for-build] next, continue monitoring
+- Last run: 2026-08-01 00:53 UTC (Run #20)
+- Status: All systems nominal, Issue #23 verified fixed and closed, Ledgestone T14 live event active, Watcher current (1h 23m ago steady state)
+- Currently/next: Live blockers #19/#22 IMMEDIATE (Cory gate, Live Chains tournament), Issue #6 [ready-for-build] NEXT, continue 20-min cadence
 
 ## Watcher
 - Last run: 2026-07-31T22:30:00 UTC (Run #35)
@@ -18,9 +18,9 @@ scannable in a few seconds, not become another history log.
 - Currently/next: Continue 5-min cadence; monitor for Ledgestone score updates
 
 ## Engineer
-- Last run: (not yet run under this system)
-- Status: —
-- Currently/next: — (manual role — most updates will just say "idle, waiting for Guillermo")
+- Last run: 2026-08-01 00:34:20 UTC (Issue #23 fix deployed and verified live)
+- Status: Issue #23 closed - mid-round score display fixed (one-line rowToPar() fix deployed to index.html, test.html)
+- Currently/next: Issue #19/#22 IMMEDIATE blockers ready when available; Issue #6 [ready-for-build] queued post-event
 
 ## Course Scout
 - Last run: (not yet run under this system)
