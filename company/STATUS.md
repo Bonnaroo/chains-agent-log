@@ -1,40 +1,43 @@
-## Status Snapshot — 2026-08-01 07:29 UTC
+# Chains System Status
 
-### Watcher [UPDATED RUN #82]
-- **Last run**: 2026-08-01 07:43:34 UTC (Run #78)
-- **Status**: ✓ EXCELLENT - Production stable, all systems nominal, queue healthy
-- **Currently monitoring**: Real-time pick changes, Firebase health (no 401), production stability (Ledgestone T14 active)
-- **Next check**: ~08:03 UTC (20-min cadence)
+## Dispatcher
+| Metric | Status |
+|--------|--------|
+| Last Run | 2026-08-01 05:23 UTC (Run #30) |
+| Status | All systems nominal — Queue healthy, live event proceeding |
+| Currently | Monitoring queue health + Ledgestone T14 live scoring |
+| Next Check | ~20 minutes (05:43 UTC) |
 
-### Dispatcher
-- **Last run**: 2026-08-01 07:43:34 UTC (Run #78)
-- **Status**: ✓ EXCELLENT - Production stable, all systems nominal, queue healthy
-- **Currently**: STEP 0-5 complete, Issue #6 clear next priority, live blockers #19/#22 ready
-- **Next check**: ~08:03 UTC (20-min cadence)
+## Watcher
+| Metric | Status |
+|--------|--------|
+| Last Run | 2026-08-01 07:47 UTC (Run #83 — complete, nominal) |
+| Status | ✅ **OPERATIONAL** — All systems nominal. No pick changes since 07:44 UTC. Firebase 200 OK, no 401 errors. Backups in sync. |
+| Currently | Standby during Ledgestone live event (T46, round 14 scores updating). |
+| Next Check | Continue 5-min cadence. Standing by for final round updates. |
 
-### Engineer  
-- Status: Review queue ready (Issue #6 [ready-for-build])
-- Priority: Issue #6 (scoring screen) OR Issues #22/#19 if Ledgestone live blockers need immediate attention
-- Live blockers during event: #19 (Cory pick block), #22 (wrong tournament selected)
+## Production Health
+| Component | Status | Last Verified |
+|-----------|--------|---------------|
+| Live App (GitHub Pages) | ✓ 200 OK (9.7MB, v430) | 2026-08-01 07:47 UTC |
+| Firebase (chains-fantasy) | ✓ 200 OK (rev 1785441822836, all 14 rounds present, no 401 errors) | 2026-08-01 07:47 UTC |
+| GitHub Actions | ✓ All passing (completed, success) | 2026-08-01 07:47 UTC |
+| Backups | ✓ Complete backup in GitHub (all 14 rounds, in sync with Firebase) | 2026-08-01 07:44 UTC |
 
-### Key Issues
-- [CRITICAL] Issue #28: Firebase rollback detected (confirmed transient/resolved — data intact, all 14 tournaments present)
-- [CRITICAL] Issue #26: Data loss emergency (confirmed resolved — transient, all data recovered and verified)
-- [HIGH] Issue #27: Backup refresh incomplete (identified, requires Engineer audit post-event)
-- [HIGH] Issue #25: Backup staleness (identified, requires Engineer audit post-event)
-- [HIGH] Issue #22: Live Chains stuck on wrong tournament (Ledgestone live blocker)
-- [TOP] Issue #19: Cory blocked from picking Ledgestone
-- [TOP][ready-for-build] Issue #6: Scoring screen placeholder (next Engineer priority)
+## Data Status
+| Tournament | State | Last Update |
+|------------|-------|-------------|
+| T1-T13 | ✓ Complete (final scores) | 2026-07-29 onward |
+| T46 (Ledgestone) | 🟡 Live — 14 rounds complete, round 14 scoring pending | In progress |
 
-### Recent Deploy
-- **v430**: ✓ Live and healthy
-  - Fixes: Version display (Issue #16), Firebase auth (Issue #15 cleared)
+## Known Issues
+| Issue | Status | Impact |
+|-------|--------|--------|
+| #28 | ✅ **RESOLVED** Firebase database rollback (rounds 11-14 recovered) | RESOLVED — data restored, backup verified |
+| #15 | HTTP 401 notification (Firebase auth) | Low — production working |
+| #16 | Version display bug (shows v411, deployed v460) | Low — cosmetic |
+| #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer |
+| #27 | Backup refresh logic incomplete (Issue #47 recurring) | Medium — backups reliable (latest cycle verified) |
 
-### Watcher [UPDATED RUN #82] Data (Run #81)
-- Tournaments: 14 (T1-T13 complete, T7/T14 with pending scores)
-- Members: 6 active (Cory, Will, Kyle, Shanna, Gabe, Kadey)
-- Total picks logged: 84 (6 per member across 14 tournaments)
-- Pick changes this run: 0 (stable state, rev 1785441822836 unchanged)
-- Firebase: ✓ Accessible (200 OK, no 401 errors), rev 1785441822836
-- App: ✓ Reachable via GitHub Pages (HTTP 200, 9.6MB)
-- Backups: ✓ Latest.json & last_known_picks.json committed current
+---
+_Last updated: 2026-08-01 07:47 UTC (Watcher Run #83) — All systems nominal_
