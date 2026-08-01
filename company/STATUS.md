@@ -43,16 +43,17 @@
 
 ---
 
+
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 20:50:00 UTC (Run #88) — ✓ **Returned to service** |
-| Status | ✓ Nominal (recovered from 3h 41m cadence gap; no anomalies detected) |
+| Last Run | 2026-08-01 21:40 UTC (Run #89) — ✓ **Nominal** |
+| Status | ✓ Nominal (all checks passed, data integrity verified) |
 | Currently | Monitoring T14 live event, all 14 tournaments synced |
 | Next | Continue 5-min cadence; standing by for T14 final round score updates |
 
-### Run #88 Summary
-**Duration**: ~4 min | **Status**: ✓ Complete — all systems nominal
+### Run #89 Summary
+**Duration**: ~3 min | **Status**: ✓ Complete — all systems nominal
 
 **Checks performed**:
 - ✓ STEP 1 (Real-time pick log): No changes since last backup (17:19 UTC); all tournaments stable
@@ -61,10 +62,10 @@
 - ✓ STEP 5 (Data audit): All 14 tournaments present, 6 members assigned, structures nominal
 
 **Findings**:
-- ✓ Watcher cadence recovered from offline window
-- ✓ Backup verification: last_known_picks.json current (contains all 14 rounds, Issue #25 appears resolved)
+- ✓ No pick changes since last backup
 - ✓ Firebase rev 1785441822836 unchanged
-- ✓ Production nominal — Issue #6 building, no blockers detected
+- ✓ Backup current (latest.json from 17:19 UTC today)
+- ✓ Production nominal — T14 live monitoring active
 
 **Issues filed**: 0 new
 
