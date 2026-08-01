@@ -739,3 +739,19 @@ _Last updated: 2026-08-01 16:52 UTC by Watcher Run #85_
 - **Next**: Continue 5-min cadence during Ledgestone live event.
 
 _Last updated: 2026-08-01 17:11:48 UTC by Watcher Run #86_
+
+## Run #87 — 2026-08-01 17:23:34 UTC (Scheduled autonomous 5-min cadence)
+- **Duration**: ~5 min
+- **Checks**: STEP 1 (real-time pick log), STEP 4 (production health), STEP 5 (data audit)
+- **Findings**:
+  - ✓ NO PICK CHANGES: All 14 tournaments stable vs last run (17:11 UTC, ~12 min ago)
+  - ✓ Production nominal: Firebase reachable (GET returns data), live app HTTP 200 OK (v430), GitHub Actions all recent deploys successful (2026-08-01)
+  - ✓ Data audit: T1-T13 complete with final scores; T14 live (Ledgestone) with all 6 members' picks finalized, scores pending (s1/s2 null for all members)
+  - ✓ T7 variance: Confirmed as expected (single-pick tournament, only p1 per member, no p2)
+  - ✓ No issues filed
+- **Data Status**: All 14 tournaments synced, T1-T13 complete with scores, T14 live event ongoing
+- **Status**: ✓ All systems nominal; routine quiet cycle
+- **Comment posted to Issue #14**: No (quiet cycle, no news to report)
+- **Next**: Continue 5-min cadence during Ledgestone live event.
+
+_Last updated: 2026-08-01 17:23:34 UTC by Watcher Run #87_
