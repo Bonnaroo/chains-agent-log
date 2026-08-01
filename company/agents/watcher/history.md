@@ -127,3 +127,12 @@
 ✓ Issues #22, #19 (Ledgestone blocking) remain open; awaiting Engineer response
 
 **Summary:** Completely nominal run. Zero pick changes in past 4 minutes. All systems healthy. T14 live event proceeding normally.
+**Run #52 (2026-08-01T03:45:00Z)** — [CRITICAL INCIDENT]
+- **DETECTED DATA LOSS**: Tournaments 12-14 missing from Firebase (returns null)
+- **Evidence**: Backup has data; picks_history shows recent activity (T13 @ 2026-07-31T22:23:59Z)
+- **Firebase Status**: Revision regression detected (1782257436249 < 1785441822836) — possible rollback
+- **Action Taken**: Issue #26 filed [CRITICAL]; STATUS.md updated to INCIDENT; Office Chat notified
+- **Backup Status**: latest.json corrupted (113 bytes, incomplete); picks_history intact
+- **Owner Impact**: 36 picks + scores lost across T12-T14; recoverable from backup
+- **Next Steps**: Await owner decision on restore method; suspend operations until resolved
+
