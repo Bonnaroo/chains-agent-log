@@ -1,1 +1,1 @@
-{"locked": false}
+{"locked": true, "by": "Engineer (direct GitHub patch)", "reason": "Fix rowToPar missing round_to_par/event_to_par field names (Issue #23)", "acquired_at": "2026-08-01T00:29:57.963417+00:00"}
