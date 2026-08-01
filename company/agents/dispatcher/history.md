@@ -57,3 +57,15 @@ Format: date/time, what happened, evidence (Issue #/commit sha), next responsibl
 
 
 **2026-08-01 03:24 UTC** — Dispatcher run #26 (autonomous, 20-min cadence). Supervision: Watcher current (Run #51, 03:14 UTC, 10 min ago), BUILD_LOCK clear, all systems nominal. **POST-INCIDENT STATUS**: Issue #24 (data loss) fully resolved and verified by Watcher runs #49-51; production stable. Issue #25 (backup staleness) filed for infrastructure improvement; Watcher confirmed backup integrity OK (all 14 rounds in latest.json). Intake: 0 owner inbox items, 0 new findings. Queue health: 17 open issues all current (<2d old), live blockers #19/#22 IMMEDIATE (Ledgestone T14 event), Issue #6 [ready-for-build] NEXT. Product review: comprehensive coverage (fantasy/scoring/mobile/reliability) — no gaps. Daily report: current (2026-08-01.md). STATUS.md updated. Status: All systems nominal post-incident. Dispatcher cadence resumes normal. Ready for next Engineer session (Issue #6 queued). Office chat (Issue #14) to be updated. Next check in ~20 min.
+**2026-08-01 03:43 UTC** — Dispatcher run #27 (autonomous, 20-min cadence).
+
+- **STEP 0 (Supervise)**: ✓ Watcher current (Run #53, 03:41 UTC, 2 min ago), BUILD_LOCK clear, all systems nominal
+- **STEP 1 (Intake)**: ✓ Owner inbox drained, 0 owner inbox items
+- **STEP 2 (Queue Health)**: ✓ 17 open issues all current (<2d old), live blockers #19/#22 IMMEDIATE, Issue #6 [ready-for-build] NEXT
+- **STEP 3 (Product Review)**: ✓ Comprehensive coverage per PRODUCT_VISION.md, no gaps identified
+- **STEP 4 (Owner Report)**: ✓ Daily report exists (2026-08-01.md, written 01:44 UTC)
+- **STEP 5 (Never-Idle)**: ✓ No stale issues, no [needs-owner-decision] pending, inbox drained
+- **Comment posted to Issue #14**: Yes (ID: 5149641305)
+- **STATUS.md updated**: Yes (dispatcher row updated to run #27)
+- **Status**: Post-incident resumption complete. Issue #24 (data loss) fully resolved per Watcher run #53; all 14 tournaments restored and verified. Issue #25 (backup staleness infrastructure gap) filed for future improvement. Production stable. Queue ready for Engineer with clear priority sequence (Ledgestone blockers #19/#22, then Issue #6).
+
