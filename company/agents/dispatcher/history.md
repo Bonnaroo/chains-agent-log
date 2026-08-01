@@ -373,4 +373,21 @@ _Last updated: 2026-08-01 19:23 UTC by Dispatcher Run #34_
 _Note: Watcher cadence gap is now at systematic-failure scale. All production systems nominal. Engineer actively building Issue #6 with Guillermo. Escalation requires owner review of scheduler/process state._
 
 _Last updated: 2026-08-01 20:24 UTC by Dispatcher Run #35_
+## Run #36 — 2026-08-01 21:04:40 UTC (Scheduled autonomous 20-min cadence)
+- **Duration**: ~5 min
+- **Checks**: STEP 0 (Supervise Watcher), STEP 1 (intake OWNER_INBOX), STEP 2 (queue health), STEP 3 (product review), STEP 5 (never-idle)
+- **Findings**:
+  - ⚠️ WATCHER OFFLINE: 3h 41m (last run 17:23 UTC, Run #87); exponential cadence gap (40→60→120 min) = systematic failure
+  - ✓ Production nominal: All systems verified OK as of Watcher Run #87 (17:23 UTC)
+  - ✓ OWNER_INBOX drained (0 items)
+  - ✓ BUILD_LOCK clear (not locked)
+  - ✓ Queue healthy: Issue #6 [ready-for-build] clear, Engineer session active, all issues <4d old
+  - ✓ Product review: No gaps (all lanes covered), new Issue #25 (backup staleness) already filed
+  - ✓ Daily report current (2026-08-01.md written by earlier run)
+- **Issues filed/updated**: 0 new (monitoring only)
+- **Comment posted to Issue #14**: Yes (Run #36 status, Watcher escalation escalation, action needed for owner)
+- **STATUS.md updated**: Yes (Dispatcher section + Watcher escalation details)
+- **Status**: ⚠️ Watcher offline 3h 41m (escalation threshold exceeded); production systems nominal; queue health confirmed; engineer session proceeding; owner intervention needed for Watcher investigation
+- **Next**: Continue 20-min cadence. Monitor for Watcher recovery. Engineer proceeding with Issue #6. All production systems stable pending Watcher recovery.
 
+_Note: Watcher cadence gap now at 3h 41m (started at 2h 50m in Run #35). Systematic failure pattern confirmed. All production systems nominal per Watcher's last verified checks. No new production issues detected. Queue is healthy and ready for next Engineer session after Issue #6. Escalation escalated to require owner direct intervention (this is OUTER per company policy)._ 
