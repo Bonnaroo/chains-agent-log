@@ -217,3 +217,22 @@
 ---
 
 _Last updated: 2026-08-01 01:18 UTC by Watcher Run #39_
+
+**2026-07-31T23:50:00 UTC** — Watcher run #36 (autonomous, 5-min cadence)
+- **[CRITICAL] DATA LOSS DETECTED** 🚨
+- Pick Watch: ✗ BLOCKED — Firebase data loss, unable to verify consistency
+- **Issue**: picks~46~12, picks~46~13, picks~46~14 return `null` from Firebase
+- **Evidence**: Daily backup (2026-07-31 12:48:56Z) contains all three tournaments with complete data
+- **Timeline**: 12:48 UTC (backup ✓) → 22:30 UTC (last run all present ✓) → 23:50 UTC (12/13/14 missing ✗)
+- **Impact**: 
+  - T12, T13 completed tournaments: picks/scores lost
+  - T14 (Ledgestone): LIVE tournament — all 6 members drafted, scores pending BLOCKED
+  - Cannot finalize Ledgestone scoring or compute standings without T14 data
+- **Action Taken**: 
+  - Issue #24 filed (CRITICAL priority)
+  - Alert posted to Issue #14 (Office Chat)
+  - STATUS.md updated
+  - Backup confirmed intact at: data/backups/firebase-2026-07-31.json
+- **Awaiting**: Dispatcher/Engineer investigation and restore from backup
+- **Status**: HALTED — critical blocker, unable to continue normal monitoring until restored
+- **Next**: Engineer must restore picks~46~12/13/14 from backup, verify data integrity, enable deletion protection
