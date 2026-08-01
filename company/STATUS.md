@@ -1,31 +1,45 @@
 # Chains — Dispatcher Status Dashboard
 
+⚠️ **[CRITICAL INCIDENT — 2026-08-01 03:45 UTC]**
+**Tournaments 12-14 missing from Firebase.** Unplanned data loss detected. Issue #26 filed. Awaiting restore/investigation. All operations suspended until resolved.
+
+---
+
 | Role | Last Run | Status | Currently/Next |
 |------|----------|--------|-----------------|
-| **Dispatcher** | 2026-08-01 03:24 UTC (Run #26) | NOMINAL | STEP 0-5 complete; all systems nominal post-incident |
-| **Watcher** | 2026-08-01 03:14 UTC (Run #51) | NOMINAL | Monitoring production; Issue #25 verified OK |
-| **Engineer** | (standby) | READY | Queue ready: Issue #6 [ready-for-build] is next priority |
-| **Data Scout** | 2026-08-01 03:35 UTC (Run #7) | NEEDS INPUT | IL expansion blocked (JS-rendered sources); awaiting Claude-in-Chrome interactive run |
+| **Dispatcher** | 2026-08-01 03:24 UTC (Run #26) | INCIDENT | SUSPENDED pending data recovery |
+| **Watcher** | 2026-08-01 03:45 UTC (Run #52) | INCIDENT | Monitoring; Issue #26 filed; awaiting owner decision |
+| **Engineer** | (standby) | READY | BLOCKED by data loss incident |
+| **Data Scout** | 2026-08-01 03:35 UTC (Run #7) | READY | BLOCKED by data loss incident |
 
 ---
 
-## Status Summary
+## Incident Summary
 
-✓ **INCIDENT RESOLVED**: Issue #24 (Firebase data loss) fully recovered by Watcher runs #49-51. All 14 tournaments restored and verified. Production stable and ready for resumed operations.
+🚨 **DATA LOSS CONFIRMED**: Tournaments 12, 13, 14 have disappeared from live Firebase:
+- `picks~46~12.json` → null
+- `picks~46~13.json` → null
+- `picks~46~14.json` → null
 
-✓ **BACKUP VERIFIED**: Issue #25 filed for infrastructure improvement (last_known_picks.json staleness). Watcher confirmed backup integrity OK — all 14 rounds present in latest daily snapshot.
+**Evidence of Deletion (not never-existed):**
+- Backup contains all three tournaments (last_known_picks.json)
+- picks_history.jsonl shows recent activity: T13 picks entered 2026-07-31T22:23:59Z
+- Firebase revision regression: current (1782257436249) < last known (1785441822836)
 
-✓ **QUEUE READY**: 17 open issues, all <2 days old, well-scoped. Live blockers #19/#22 being addressed during Ledgestone T14 event. Issue #6 [ready-for-build] queued for next Engineer session.
+**Immediate Actions:**
+1. Inspect Firebase access logs for deletion events
+2. Determine restore method (from backup vs rollback)
+3. Verify integrity of all 14 tournaments post-restore
+4. Audit backup procedures (latest.json is corrupted/incomplete)
 
-✓ **OWNER INBOX DRAINED**: No pending decisions. All current queue items have clear acceptance criteria.
+**Issue:** #26 - Full incident report with recovery options
 
 ---
 
-## Next Actions
+## Previous Status (Pre-Incident)
 
-1. **Engineer**: When ready, build Issue #6 (Scoring screen placeholder). See daily report (company/reports/2026-08-01.md) for full queue ranking and post-#6 recommendations.
+✓ INCIDENT RESOLVED (2026-08-01 03:24): Issue #24 (Firebase data loss) fully recovered. All 14 tournaments restored and verified. Production stable and ready for resumed operations.
 
-2. **Dispatcher**: Resume 20-minute cadence. Next scheduled check: ~03:44 UTC.
+✓ BACKUP VERIFIED (2026-08-01 03:14): Issue #25 filed for infrastructure improvement. Watcher confirmed backup integrity OK — all 14 rounds present in latest daily snapshot.
 
-3. **Data Scout**: Interactive Claude-in-Chrome session needed for IL course expansion (DiscGolfScene/PDGA scraping). Estimated: 1-2 hour interactive run.
-
+(See Git history for full context of pre-incident state.)
