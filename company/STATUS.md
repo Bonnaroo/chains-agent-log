@@ -2,10 +2,10 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 00:31 UTC (Run #19) |
-| Status | Active build in progress — Engineer working Issue #6, GA build completed 00:31:28 UTC |
-| Currently | Monitoring active engineer session + live T14 event |
-| Next Check | ~20 minutes (00:51 UTC) |
+| Last Run | 2026-08-01 05:04 UTC (Run #31) |
+| Status | ✓ All systems nominal — monitoring live Ledgestone T14 event |
+| Currently | Supervising live blockers #19/#22, Issue #6 [ready-for-build] staged |
+| Next Check | ~20 minutes (05:24 UTC) |
 
 ## Watcher
 | Metric | Status |
@@ -18,7 +18,7 @@
 ## Production Health
 | Component | Status | Last Verified |
 |-----------|--------|-----------------|
-| Live App (GitHub Pages) | ✓ 200 OK (9.0MB, v430) | 2026-08-01 04:58 UTC |
+| Live App (GitHub Pages) | ✓ 200 OK (9.6MB, v430) | 2026-08-01 04:58 UTC |
 | Firebase (chains-fantasy) | ✓ 200 OK, no 401 errors | 2026-08-01 04:58 UTC |
 | GitHub Actions | ✓ All passing (pages build & deploy) | 2026-08-01 04:58 UTC |
 | Backups | ✓ Latest & daily backup verified current at 04:58Z | 2026-08-01 04:58 UTC |
@@ -32,10 +32,14 @@
 ## Known Issues
 | Issue | Status | Impact |
 |-------|--------|--------|
+| #19 | Cory blocked from Ledgestone picks (stale gate) | HIGH — live blocker |
+| #22 | Live Chains stuck awaiting Discmania Challenge | HIGH — live blocker |
+| #6 | [ready-for-build] Scoring placeholder | TOP — next build priority |
 | #15 | HTTP 401 notification (Firebase auth) | Low — production working |
-| #16 | Version display bug (shows v411, deployed v460) | Low — cosmetic |
-| #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer |
-| #47 | BACKUP STALENESS | ✓ RESOLVED — backups current (Run #53) |
+| #16 | Version display bug (shows v411, deployed v413) | Low — cosmetic |
+| #25 | Backup staleness (rounds 2-11 missing) | HIGH — post-event audit |
+| #26 | CRITICAL: Data loss (resolved, was transient) | Resolved — monitoring |
+| #20 | CRITICAL: Data loss risk (localStorage only) | Awaiting engineer review |
 
 ---
-_Last updated: 2026-08-01 04:58 UTC (Watcher Run #64)_
+_Last updated: 2026-08-01 05:04 UTC (Dispatcher Run #31)_
