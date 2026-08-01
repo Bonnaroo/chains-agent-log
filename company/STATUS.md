@@ -3,7 +3,7 @@
 Last update: Run #60, 2026-08-01 04:40 UTC
 
 ## Dispatcher
-Status: Ready (queue healthy)
+Status: Ready (queue healthy, Ledgestone T14 live)
 Last run: 2026-07-31 12:43 UTC (issue #14 comment)
 
 ## Watcher
