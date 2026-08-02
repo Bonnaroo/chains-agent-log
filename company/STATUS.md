@@ -47,27 +47,24 @@
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 21:40 UTC (Run #89) — ✓ **Nominal** |
-| Status | ✓ Nominal (recovered from 4h+ blackout, all checks passed) |
-| Currently | Monitoring T14 live event, all 14 tournaments synced |
-| Next | Continue 5-min cadence; standing by for T14 final round score updates |
+| Last Run | 2026-08-02 11:52:45 UTC (Run #90) — ✓ **Nominal** |
+| Status | ✓ Nominal - All systems operational, T14 live monitoring continues |
+| Currently | Monitoring T14 (Ledgestone Open) live event; T1-T13 complete with scores |
+| Next | Continue 5-min cadence; monitoring for T14 final round score updates |
 
-### Run #89 Summary (Watcher recovered)
-**Duration**: ~3 min | **Status**: ✓ Complete — all systems nominal
+### Run #90 Summary (Watcher autonomous)
+**Duration**: ~5 min | **Status**: ✓ Complete — all systems nominal
 
 **Checks performed**:
-- ✓ STEP 1 (Real-time pick log): No changes since last backup (17:19 UTC); all tournaments stable
-- ✓ STEP 4 (Production health): App 200 OK, Firebase 200 OK (no 401s), Actions passing
-- ✓ STEP 5 (Data audit): All 14 tournaments present, 6 members assigned, structures nominal
-- ⚠️ ISSUE #29 FILED: During recovery, detected /league.json keys list stale (T12-14 refs missing) while individual keys present with current revisions
+- ✓ STEP 1 (Real-time pick log): No changes since last backup (08:15:39 UTC, ~3.6 hours ago); all 14 tournaments stable
+- ✓ STEP 4 (Production health): App 200 OK (9.6MB), Firebase 200 OK (no 401s), GitHub Actions passing
+- ✓ STEP 5 (Data audit): All 14 tournaments present, 6 members each, structures nominal
 
 **Findings**:
-- ✓ No pick changes since last backup
-- ✓ All 14 tournaments verified accessible (direct key fetch)
-- ✓ Backup current (latest.json from 17:19 UTC today)
-- ✓ Production nominal — T14 live monitoring active
-- ⚠️ Firebase data consistency issue: Keys list vs individual keys revisions out of sync
+- ✓ No pick changes detected across all tournaments since backup
+- ✓ All 14 tournaments verified and synced: T1-T13 complete with scores; T14 (Ledgestone) drafted, awaiting final round scores
+- ✓ Production fully nominal: no 401 errors, no connectivity issues, all services reachable
+- ✓ Backup current (latest.json from 2026-08-02 08:15:39 UTC)
 
-**Issues filed**: 1 new (#29 CRITICAL — data visibility)
-
-**Confidence**: ✓ All checks passed; data integrity verified; Issue #29 requires UX verification
+**Issues filed**: 0 new (all systems nominal)
+**Status**: ✓ Routine monitoring cycle; no action items
