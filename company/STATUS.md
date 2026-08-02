@@ -3,9 +3,9 @@
 ## Dispatcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-01 21:43 UTC (Run #37) |
-| Status | ✓ Nominal - Watcher recovered, all systems verified; Issue #29 CRITICAL filed (Firebase keys list stale during live event) |
-| Currently | Monitoring Issue #29 (data visibility verification), Engineer building Issue #6, queue health confirmed |
+| Last Run | 2026-08-02 12:30 UTC (Run #37) |
+| Status | ✓ Nominal - Watcher recovered, Go Throw focus directive filed (Issue #33), queue health confirmed, OWNER_INBOX drained |
+| Currently | Processing Go Throw reprioritization, monitoring Issue #6 (Engineer building), queue ready for next session |
 
 ## Production Health
 | Component | Status | Last Verified |
