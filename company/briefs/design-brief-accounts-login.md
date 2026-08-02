@@ -18,23 +18,30 @@ Do not rebuild any of this — it exists and is verified working as of 2026-08-0
 - Usernames map to a **synthetic email**: `username@chains.app`. Members never type an email
   address. `ChainsAuth.sessionId()` resolves the signed-in account back to the app's member id
   (`will`, `kyle`, …), which every existing screen already keys on.
-- **All six league accounts are provisioned and tested.** Login confirmed working for each:
+- **All six league accounts are provisioned and tested.** Every one of these sign-ins was verified
+  working on 2026-08-02:
 
   | Username | Password | Member | Firebase uid |
   |---|---|---|---|
-  | `will` | *(already set)* | Will | `wp1ywNFroiZzCOUqvezfuJYYAYd2` |
+  | `will` | `chains1234` | Will *(owner)* | `wp1ywNFroiZzCOUqvezfuJYYAYd2` |
   | `cory` | `chains1234` | Cory | `fJPXm2FJiSayOtfhpK7RJDaqNUJ3` |
   | `kyle` | `chains1234` | Kyle | `LoVsKQWMXoQa6daNo3eINmSRCcs1` |
   | `shanna` | `chains1234` | Shanna | `Gmewm5Ll1XeCgcVkrIOc44Z8k1j1` |
   | `gabe` | `chains1234` | Gabe | `2ZGiHBt5gofD1z8B5sKLyyl5vq43` |
   | `kadey` | `chains1234` | Kadey | `PiZrpHVIoGP9rbE5FhrCAyg57xB2` |
 
+  The owner has a real account on exactly the same footing as everyone else — same starter
+  password, same forced change on first login. He is **not** a special case in the login flow.
+  His account carries `admins/{uid} = true` and `profile.isOwner = true`, which is what unlocks
+  the Console; that is the *only* difference.
+
 - **`usernames/{username}`** → `{ name, disc, uid, memberId }` — readable by any signed-in user
   (needed to resolve a username at login).
 - **`users/{uid}/profile`** → `{ username, memberId, name, disc, leagues, mustChangePassword }` —
   readable/writable **only by that user**. Verified: Kyle can read his own profile and is denied
   reading Will's.
-- Everyone except Will has **`mustChangePassword: true`**. That flag is the trigger for section 2.
+- **All six**, owner included, have **`mustChangePassword: true`**. That flag is the trigger for
+  section 2. Nobody skips it.
 
 **Owner's message to the group will be:** *"Your username is your first name, your password is
 `chains1234`."* Build for that.
