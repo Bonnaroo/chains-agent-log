@@ -10,10 +10,10 @@
 ## Production Health
 | Component | Status | Last Verified |
 |-----------|--------|---------------|
-| Live App (GitHub Pages) | ✓ 200 OK (9.6MB, v430) | 2026-08-02 12:00 UTC (Watcher Run #92) |
-| Firebase (chains-fantasy) | ✓ 200 OK (all 14 rounds accessible via direct fetch) | 2026-08-02 12:00 UTC |
-| GitHub Actions | ✓ All passing | 2026-08-02 12:00 UTC |
-| Backups | ✓ Daily backup current (2026-08-02 08:15:40 UTC) | 2026-08-02 12:00 UTC |
+| Live App (GitHub Pages) | ✓ 200 OK (9.6MB, v430) | 2026-08-02 12:55 UTC (Watcher Run #95+) |
+| Firebase (chains-fantasy) | ✓ 200 OK (all 14 rounds accessible via direct fetch) | 2026-08-02 12:55 UTC |
+| GitHub Actions | ✓ All passing | 2026-08-02 12:55 UTC |
+| Backups | ✓ Daily backup current (2026-08-02 08:15:40 UTC) | 2026-08-02 12:55 UTC |
 
 ## Data Status
 | Tournament | State |
@@ -40,32 +40,32 @@
 | # | Title |
 |---|-------|
 | #23 | Blank mid-round score - fixed & verified live |
-| #26, #28 | False-alarm data-loss cascade - corrected |
+| #26, #28 | False-alarm data-loss cascade — corrected |
 
 ---
 ## Watcher
 | Metric | Status |
 |--------|--------|
-| Last Run | 2026-08-02 12:30 UTC (Run #94) — ✓ **Nominal** |
+| Last Run | 2026-08-02 12:55 UTC (Run #95+) — ✓ **Nominal** |
 | Status | ✓ Nominal - All systems operational, T14 live monitoring continues |
 | Currently | Monitoring T14 (Ledgestone Open) live event; T1-T13 complete with scores |
 | Next | Continue 5-min cadence; monitoring for T14 final round score updates |
 
-### Run #94 Summary (Watcher autonomous)
-**Duration**: ~3 min | **Status**: ✓ Complete — all systems nominal
+### Run #95+ Summary (Watcher autonomous)
+**Duration**: ~2 min | **Status**: ✓ Complete — all systems nominal
 
 **Checks performed**:
-- ✓ STEP 1 (Real-time pick log): No changes since last backup (08:15:39 UTC, ~4 hours ago); all 14 tournaments stable
+- ✓ STEP 1 (Real-time pick log): No changes since last backup (08:15:39 UTC, ~4.5 hours ago); all 14 tournaments stable
 - ✓ STEP 4 (Production health): App 200 OK (9.6MB), Firebase 200 OK (no 401s), GitHub Actions passing
 - ✓ STEP 5 (Data audit): All 14 tournaments present, 6 members each, structures nominal
 
 **Findings**:
-- ✓ No pick changes detected across all tournaments since backup
-- ✓ All 14 tournaments verified and synced: T1-T6, T8-T13 complete with scores; T7 stable partial state; T14 (Ledgestone) awaiting final round scores
-- ✓ Production fully nominal: no 401 errors, no connectivity issues, all services reachable
+- ✓ No pick changes detected: Backup and live data identical (checksums match)
+- ✓ Tournament status: T1-T13 complete with both picks scored; T7 partial (p1 only, known stable state); T14 live with all picks drafted, scores pending
+- ✓ Production fully nominal: no 401 errors, no connectivity issues, all GitHub Actions passing
 - ✓ Backup healthy and current
 
 **Issues filed**: 0 new (all systems nominal)
 **Status**: ✓ Routine monitoring cycle; all systems nominal; no action items
 
-_Last updated: 2026-08-02 12:30 UTC by Watcher Run #94_
+_Last updated: 2026-08-02 12:55:00 UTC by Watcher Run #95+_
