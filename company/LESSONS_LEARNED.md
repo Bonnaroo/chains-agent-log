@@ -1771,3 +1771,33 @@ content.
 Lesson: when a scheduled role's own history shows a naming/number it never encountered before ("T46" appearing
 out of nowhere), that's a strong signal of a misread, not a new real thing — should always be sanity-checked
 against a fresh direct read before escalating.
+
+
+## 2026-08-02 — A deploy was silently clobbered 2.5 minutes after shipping
+
+Engineer shipped v438 at 13:06:24 UTC (fix for #31: Go Throw round save AND delete both failing with
+permission_denied). Dispatcher committed its own #19 fix at 13:08:56 UTC and wiped v438 out of production.
+Live version fell back to v437 and the #31 fix was gone. The owner spotted it before any agent did.
+
+**Why it happened:** Dispatcher fetched index.html early in its run, applied its edit to that in-memory copy,
+then wrote the whole ~9.6MB file back. It re-read the sha right before writing, so GitHub accepted the write.
+The sha was fresh; the CONTENT was stale. GitHub's optimistic-concurrency check cannot catch this — it only
+proves you knew the latest sha, not that your payload was built from the latest content.
+
+**Why it was easy to miss:** both fixes were legitimate and both agents behaved "correctly" by their own
+instructions. Nothing errored. The only symptom was a version number going backwards.
+
+**Fixes applied:**
+- New mandatory playbook `company/playbooks/never-clobber-a-deploy.md` (5 rules: hold the build lock; re-fetch
+  immediately before writing, never a copy from earlier in the run; check the version marker before AND after;
+  always bump the version; preserve modules you don't recognize as yours).
+- All three role prompts (Watcher, Dispatcher, Engineer) now carry those rules verbatim.
+- Watcher now checks every run that the live version marker never went DOWN since its last run, and recovers
+  per the playbook if it did — rather than filing a report about it.
+- Engineer's version-check step now compares a Design export against what is LIVE, and will not deploy
+  backwards over a hand-patched build.
+
+**Recovery method worth reusing:** do NOT revert — that destroys the other role's work. Decompress every
+`"data":"<base64>"` module blob in both builds, diff module by module, take the correct version of each changed
+module, merge into one build, bump the version, deploy, verify all three markers. v439 = Dispatcher's #19
+seed-data module + Engineer's #31 ChainsRounds module.
