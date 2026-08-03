@@ -1,0 +1,112 @@
+{
+  "generated_at": "2026-08-03T21:24:19.897164+00:00",
+  "app": {
+    "version": "v445",
+    "bytes": 2347147,
+    "markers": {
+      "cdn_assets": true,
+      "fantasy_impact": true,
+      "round_save_fix": true,
+      "auth_gate": true,
+      "login_required": true,
+      "in_the_bag_nav": true
+    }
+  },
+  "season": {
+    "scored_events": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "awaiting_scores": [],
+    "next_event": {
+      "t": 15,
+      "name": "Discmania Challenge",
+      "event_id": "96415",
+      "start_date": "2026-08-07",
+      "end_date": "2026-08-09",
+      "rounds": 3,
+      "year": 2026,
+      "tier": "Elite"
+    },
+    "poller_event": "Discmania Challenge",
+    "poller_event_id": "96415"
+  },
+  "field": {
+    "ok": true,
+    "event_tag": "T15",
+    "player_count": 111,
+    "stable_hours": 0.0,
+    "updated_at": "2026-08-03T21:20:43.370045+00:00",
+    "note": "All registered MPO players. Use as both the 'Who's Registered' display and the draftable pool for this event. stable_hours = how long the roster has been unchanged; over ~24h means registration has effectively settled, though withdrawals can still swap names right up to tee-off."
+  },
+  "issues": {
+    "open": 23,
+    "top": 13,
+    "top_list": [
+      {
+        "n": 5,
+        "t": "[TOP][bug][owner] Go Throw pre-round flow has no cancel/back and no way to find+delete a sent invite"
+      },
+      {
+        "n": 6,
+        "t": "[TOP][building][ready-for-build][bug][owner] Scoring screen shows placeholder 'Player, Player, Player' instead of real friends list"
+      },
+      {
+        "n": 7,
+        "t": "[TOP][bug][owner] In-progress round forces you through 'Live Now' card instead of direct Resume/Discard"
+      },
+      {
+        "n": 10,
+        "t": "[TOP][bug][owner] Version number not visible on mobile (sw.js 404 half fixed in v438)"
+      },
+      {
+        "n": 11,
+        "t": "[TOP][feature][owner] Report a Bug button (in-app feedback channel)"
+      },
+      {
+        "n": 18,
+        "t": "[TOP][feature][source:owner] Add a visible \"registered players / field\" tab for the current tournament"
+      },
+      {
+        "n": 32,
+        "t": "[TOP][owner-directive] Team focus shift: prioritize Go Throw section for near term"
+      },
+      {
+        "n": 34,
+        "t": "[TOP][Go Throw][feature] Fantasy Impact on live scoring events"
+      },
+      {
+        "n": 40,
+        "t": "[TOP][needs-owner-decision][Go Throw][epic] Real accounts - username + password login, replacing whoami() session identity"
+      },
+      {
+        "n": 41,
+        "t": "[TOP][Go Throw][In the Bag] Make In the Bag UDisc-grade: disc detail, flight numbers, stats per disc"
+      },
+      {
+        "n": 42,
+        "t": "[TOP][Go Throw][bug] Start-a-round pre-fills people nobody chose (Will, Player, Player, Player, Kyle, Kadey)"
+      },
+      {
+        "n": 43,
+        "t": "[TOP][Go Throw][bug] Rounds still cannot be deleted - delete reports success then the round returns"
+      },
+      {
+        "n": 44,
+        "t": "[TOP][owner-decision] Draft opens 36 hours before event start (+ per-pick clock & autopick)"
+      }
+    ]
+  }
+}
