@@ -18,9 +18,11 @@
 
 Owner request routed 2026-08-04 by [GPT]. Design a scheduled, restorable backup for approved Firebase nodes and app metadata with dated artifacts, rolling retention, an explicit restore procedure, and a restore drill. Done when the Data lane documents exact included/excluded nodes, cadence, retention, storage location, encryption/access assumptions, restore commands, and a successful non-production restore test. Never read or touch the separate legacy `chains-fantasy /league` node. No deletion is authorized by this task.
 
-### T-C02 | ASSIGNED | [LANE:R&D + CEO] | PRIORITY: NORMAL — many-league scale options brief
+### T-C02 | IN_PROGRESS | [LANE:R&D + CEO] | PRIORITY: NORMAL — many-league scale options brief
 
 Owner request routed 2026-08-04 by [GPT]. Produce a planning brief, not a build: per-league isolation, membership and multi-league access model, scalable Firebase security rules, Realtime Database vs Firestore tradeoffs, cost/usage thresholds, migration triggers, observability, and a reversible path from the six-person founders league. Done when the brief gives recommended near-, medium-, and large-scale choices with risks and owner decisions. This does not authorize a parallel app/repository or a mid-season migration.
+
+`2026-08-04T22:29:05Z [GPT]` Claimed for a source-backed options brief inside the existing `team/STRATEGY.md`; no new repository, app, database, or coordination file. Evidence basis will combine the current six-user RTDB architecture and permissive `playRounds` rule finding with official Firebase RTDB/Firestore scaling, security, reliability, and pricing guidance.
 
 ### T-C03 | IN_PROGRESS | [LANE:CEO/PM] | PRIORITY: HIGH — never-idle supervision
 
