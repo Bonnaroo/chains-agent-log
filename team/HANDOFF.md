@@ -1,48 +1,87 @@
-# HANDOFF — 2026-08-04 21:31 UTC — [GPT] CEO
+# HANDOFF — 2026-08-04 22:36 UTC — [GPT] CEO
 
-## WHAT I DID
+## LAST WORKER / ROLE / UTC / TASK
 
-- Claimed `team/LOCK.md` as `ACTIVE 2026-08-04T21:24:00Z GPT/dispatcher clock-in` and verified the exact claim after 15 seconds before shared writes.
-- Read the fresh shared office, lane model, CEO role/log, decisions, lessons, current app history, and the newer `company/STATE.md`, `company/LOOP_LOG.md`, and `company/ROUND_QUEUE.md` context already present on main.
-- Opened https://bonnaroo.github.io/chains-app/ in the logged-in Chrome session. Observable result: it loaded to `#dashboard`, title `Chains · Fantasy DGPT 2026`, sidebar label `Fantasy DGPT v453`, current league data, and T15 Discmania Challenge marked `Picks open`.
-- Verified `chains-app` main HEAD `73d7d057eeecaa32558b24ed5dbd990965b007d0` (v453, 2026-08-04 21:07 UTC). The commit records a functional start-round/add-two-friends/discard test after 47 native dialogs were replaced; [GPT] did not self-approve that other worker's QA.
-- Checked primary sources. PDGA event `96415` lists Discmania Challenge Aug 7–9 in Indianola, 168 total players, 116 MPO, last updated `04-Aug-2026 11:53:02 CDT`. DGPT lists the same dates/location and a projected 3:00 PM CDT MPO broadcast; broadcast time is not first-tee/pick-lock proof.
-- Verified `chains-dgpt-data/data/field.json` blob `e927c1d88496d42e6f28d60f0673a6a910a30bff`: T15 / event `96415`, 116 players, updated `2026-08-04T20:07:40Z`, count matching PDGA, `stable_hours: 1.7`. `data/events/96415-MPO.json` returned 404.
-- Replaced stale Ledgestone readiness with current T15 AMBER evidence in `team/EVENT_READINESS.md`.
-- Updated the CEO rollup in `team/BOARD.md` and routed owner requests as `T-C01` recurring restorable backups, `T-C02` many-league scale options brief, `T-C03` never-idle supervision, and `T-C04` T15 Data/QA closeout.
-- Moved the connected BACKUPS + SCALE + STOP STOPPING item from `team/FROM_OWNER.md` NEW to detailed `[GPT]` HANDLED entries; added the scale/resilience planning gate to `team/STRATEGY.md`; summarized it in `team/TO_OWNER.md`.
+- `[GPT]` / CEO / 2026-08-04 22:36 UTC / `T-C02` many-league scale options brief.
+- Lock claim: `ACTIVE 2026-08-04T22:26:43Z GPT/dispatcher clock-in`; exact claim was re-fetched after 15 seconds before work.
+- Shared-office delivery commit: `e34b17a1f7677b170338b477532ad388fb4e802d` (`[GPT] Complete T-C02 scale options brief`).
+- Knowledge-base delivery commit: `6944864196cbd3e1fc7b742cde342a39f766b901` (`[GPT] Add reusable scale planning method`).
 
-## EXACT DATA / SYSTEMS TOUCHED
+## WHAT CHANGED
 
-- Shared-office markdown only: `team/BOARD.md`, `team/EVENT_READINESS.md`, `team/FROM_OWNER.md`, `team/STRATEGY.md`, `team/TO_OWNER.md`, `team/HANDOFF.md`, `team/logs/ceo.md`, and finally `team/LOCK.md` for release.
-- No app, Design project, Firebase node, league member, pick, score, round, user, security rule, workflow, generated data, or issue was changed by [GPT].
-- No backup or delete was performed. Legacy `chains-fantasy /league` remained untouched.
+- Completed `T-C02` in the existing `team/STRATEGY.md` under `T-C02 OPTIONS BRIEF`; no new project, repository,
+  database, app, roadmap, or coordination file was created.
+- Documented four bounded choices: harden APP A on RTDB; Firestore-first APP B with optional measured RTDB live
+  sync; all-RTDB public scale; or all-Firestore public scale. Recommended keeping APP A on RTDB for the live
+  founders season and using Firestore for future durable multi-league state, adding RTDB only when measured
+  presence/high-frequency sync justifies it.
+- Captured tenant paths, phase triggers, metrics, migration/cost/security risks, owner decisions, and official
+  Firebase evidence. Marked `T-C02` DONE in `team/BOARD.md`, moved the owner request to completed in
+  `team/FROM_OWNER.md`, and summarized the decision in `team/TO_OWNER.md`.
+- Added the reusable rule/scale method to `team/kb/firebase.md` and `team/kb/LESSONS.md` so the next `[CLAUDE]` or
+  `[GPT]` worker can reuse it rather than rediscovering it.
+- Refreshed `team/EVENT_READINESS.md` from the newer T15 feed artifact: event `96415`, 116 players, updated
+  `2026-08-04T21:34:09.661860+00:00`, `stable_hours: 3.2`.
 
-## VERIFICATION
+## VERIFICATION / EVIDENCE
 
-- PASS: live page loaded as v453 with current dashboard and T15 card.
-- PASS: GitHub app HEAD `73d7d057...` matches live v453 label.
-- PASS: PDGA MPO count 116 equals current `field.json` count 116.
-- AMBER: roster has been unchanged only 1.7 hours.
-- FAIL/FINDING: `data/events/96415-MPO.json` is absent (404).
-- OPEN: independent regular-member Picks permission/field comparison and phone-sized v453 round walkthrough.
-- OPEN: official first-player tee time. Do not use DGPT's broadcast time as the pick-lock deadline.
+- PASS: shared-office commit `e34b17a1f7677b170338b477532ad388fb4e802d` contains `BOARD.md`, `STRATEGY.md`,
+  `EVENT_READINESS.md`, `FROM_OWNER.md`, and `TO_OWNER.md` updates stamped `[GPT]`.
+- PASS: knowledge-base commit `6944864196cbd3e1fc7b742cde342a39f766b901` contains the `[GPT]` scale lesson and
+  `SCALE PLANNING METHOD` playbook section for the next worker.
+- PASS: Firebase's official comparison says Firestore supplies document/collection data, indexed shallow compound
+  queries, non-cascading rules, automatic scale, and regional/multi-region placement; RTDB uses one JSON tree,
+  cascading rules, and per-database scale that requires sharding beyond its documented connection/write ranges.
+  Source checked: https://firebase.google.com/docs/database/rtdb-vs-firestore
+- PASS: Firebase documents that RTDB and Firestore can coexist but there is no automated migration; mapping data
+  and rules requires custom scripts, and staged synchronization needs guarded Cloud Functions. Source checked:
+  https://firebase.google.com/docs/firestore/firestore-for-rtdb
+- PASS: current office evidence in `company/LOOP_LOG.md` says `/playRounds` has parent `.write: auth != null` and
+  signed-in users can forge another member's write; because RTDB grants cascade, child rules cannot revoke it.
+- PASS: `chains-app` remains live v453 at main `73d7d057eeecaa32558b24ed5dbd990965b007d0`; no app build was needed.
+- PASS: `chains-dgpt-data/data/field.json` blob `c8c3a8b54e128a93d7d6b74efb55ee09aa10cdfd` is T15 / `96415`, 116
+  players, updated `2026-08-04T21:34:09.661860+00:00`, `stable_hours: 3.2`; PDGA still lists 116 MPO.
+
+## DATA / SAFETY
+
+- Changed shared-office Markdown only. No app file, `index.html`, Design version, Firebase project/node/rule,
+  workflow, issue, user, pick, round, score, league member, or live deployment changed.
+- No backup, deletion, migration, dual-write, or privileged service identity was created.
+- Legacy `chains-fantasy /league` was not read or touched. Betting stays removed. Confirmed-good v453 behavior was
+  not changed.
 
 ## REUSABLE METHOD FOR THE OTHER AI
 
-- [GPT] reused the verified `company/LOOP_LOG.md` lesson instead of rediscovering the three-build revert loop: a direct production patch is incomplete until the authoritative Design source contains it. The v452 commit states it is the first Design export containing the login-gate fixes; keep checking source-lineage markers before every future deploy.
-- For event readiness, compare the live page, PDGA event ID/count/timestamp, and `field.json` event ID/count/timestamp as one chain. A matching count is not enough when `stable_hours` is low, and a DGPT broadcast time is not a tee-time deadline.
+- `[GPT]` reused the current `[CLAUDE]`/company evidence about the permissive `/playRounds` parent rule and improved
+  it into a repeatable architecture gate: first separate current-product hardening from future-database selection;
+  then measure provider/usage thresholds, cost per real workflow, cross-tenant denies, backup restore results, and
+  p95 latency before choosing a migration. A future user count by itself is not evidence.
+- RTDB child rules cannot make a broadly granted parent safe. Remove the broad parent grant, then run an explicit
+  allow-own / deny-other-user / deny-other-league matrix before inviting outsiders.
+- For APP B planning, default durable multi-tenant state to Firestore and make RTDB live-sync optional and measured.
+  Avoid permanent dual-write; if a migration window is approved, map data/rules explicitly and guard sync triggers
+  against loops and drift.
 
-## WHAT'S NEXT AND WHOSE JOB
+## WHAT'S NEXT AND WHO OWNS IT
 
-1. **Data:** keep event `96415` fresh through tee-off; resolve or document the missing `data/events/96415-MPO.json`; claim T-C01 and specify backup scope before implementing writes.
-2. **QA:** compare the live T15 Picks list to PDGA's 116 MPO field from a regular-member session; verify own-picks-only behavior; independently repeat the phone-sized v453 round walkthrough.
-3. **CEO/R&D:** produce T-C02 as an options brief only; do not start a parallel app/repository or mid-season migration.
-4. **CEO/PM:** audit each blocked lane for an evidenced fallback under T-C03.
+1. **Data:** claim `T-C01`; specify approved backup scope, cadence, retention, storage/access, RPO/RTO, restore
+   procedure, and a non-production restore drill before any write or delete.
+2. **Engineer/Data + independent QA:** before any outside APP A tester, replace broad `/playRounds` authenticated
+   parent writes with least-privilege rules and prove the cross-tenant deny matrix. Rule deployment still requires
+   the owner/service-account/manual Firebase-console path recorded in `company/OPERATING_RULES.md`.
+3. **Data:** keep T15 event `96415` current through tee-off and resolve or document the missing
+   `data/events/96415-MPO.json` artifact.
+4. **QA:** verify live Picks contains the official 116-player MPO field from a regular-member session, prove members
+   can edit only their own two picks, and independently repeat the phone-sized v453 round walkthrough.
+5. **Owner (only before APP B implementation):** approve Firestore-first with optional RTDB live-sync; set backup
+   RPO/RTO and retention; choose regional versus multi-region placement and a monthly budget guardrail.
 
 ## WATCH OUT FOR
 
-- T15 starts August 7. The feed matches now, but the roster is still moving.
-- `EVENT_READINESS.md` is AMBER until Data/QA close the specific gates above.
-- Older `team/BOARD*.md` and role-log entries are Ledgestone-era history. Do not let them override current v453/T15 evidence.
-- Do not reopen the obsolete v413 initialization false alarm; live v453 loaded successfully this shift.
+- `T-C02` is a completed options brief, not authorization to create APP B, another repository, another production
+  Firebase project, or a mid-season migration.
+- APP A's broad `/playRounds` parent write remains a hard stop for outside testers; this shift documented but did
+  not deploy rules.
+- T15 readiness remains AMBER: the field matches PDGA at 116, but the per-event artifact, regular-member pick
+  permissions, independent v453 round test, and official first-player tee time remain open.
+- Do not use DGPT's broadcast time as a tee-time or pick-lock deadline.
