@@ -1,7 +1,34 @@
 # BOARD — Master task rollup (all lanes) + CEO summary
 
-**Last updated:** 2026-07-29 ~21:02 UTC by [CLAUDE] CEO lane
-**Next update:** ~22:02 UTC (next CEO shift)
+**Last updated:** 2026-08-04 21:31 UTC by [GPT] CEO lane
+**Next update:** after Data/QA close the T15 readiness gates below
+
+---
+
+## [GPT] CURRENT ROLLUP — T15 DISCMANIA CHALLENGE
+
+- Live App A is `v453`, commit `73d7d057eeecaa32558b24ed5dbd990965b007d0` (2026-08-04 21:07 UTC). [GPT] opened the production URL and observed the dashboard at `#dashboard` with `Fantasy DGPT v453`, current league data, and no initialization hang.
+- Next event is T15 Discmania Challenge, August 7–9, PDGA event `96415`.
+- Official PDGA state at the 2026-08-04 check: 168 total registrations, 116 MPO, last updated `04-Aug-2026 11:53:02 CDT`.
+- Current `chains-dgpt-data/data/field.json`: T15 / `96415`, 116 players, updated `2026-08-04T20:07:40Z`; count matches PDGA. `stable_hours: 1.7`, so the field is still moving.
+- `chains-dgpt-data/data/events/96415-MPO.json` is absent (404). This is now a concrete Data-lane readiness finding, not an inferred app failure.
+- Existing sections below are retained as Ledgestone-era history. Where they conflict with this current rollup, this section and `EVENT_READINESS.md` are authoritative.
+
+### T-C01 | ASSIGNED | [LANE:DATA] | PRIORITY: HIGH — recurring retrievable backups
+
+Owner request routed 2026-08-04 by [GPT]. Design a scheduled, restorable backup for approved Firebase nodes and app metadata with dated artifacts, rolling retention, an explicit restore procedure, and a restore drill. Done when the Data lane documents exact included/excluded nodes, cadence, retention, storage location, encryption/access assumptions, restore commands, and a successful non-production restore test. Never read or touch the separate legacy `chains-fantasy /league` node. No deletion is authorized by this task.
+
+### T-C02 | ASSIGNED | [LANE:R&D + CEO] | PRIORITY: NORMAL — many-league scale options brief
+
+Owner request routed 2026-08-04 by [GPT]. Produce a planning brief, not a build: per-league isolation, membership and multi-league access model, scalable Firebase security rules, Realtime Database vs Firestore tradeoffs, cost/usage thresholds, migration triggers, observability, and a reversible path from the six-person founders league. Done when the brief gives recommended near-, medium-, and large-scale choices with risks and owner decisions. This does not authorize a parallel app/repository or a mid-season migration.
+
+### T-C03 | IN_PROGRESS | [LANE:CEO/PM] | PRIORITY: HIGH — never-idle supervision
+
+Owner request routed 2026-08-04 by [GPT]. A lane that is blocked on its primary task must complete one allowed fallback with evidence in the same shift; `blocked` plus no fallback is a supervision failure. CEO/PM must surface repeated no-fallback shifts in the rollup and sharpen or reroute the work rather than letting it rot.
+
+### T-C04 | ASSIGNED | [LANE:DATA + QA] | PRIORITY: HIGH — T15 event-readiness closeout
+
+Data: keep event `96415` field refresh current through tee-off and resolve/document the missing `data/events/96415-MPO.json`. QA: independently compare the live Picks roster to PDGA's 116 MPO registrations, verify regular-member own-picks-only behavior, and run the phone-sized v453 round walkthrough. Done when `EVENT_READINESS.md` can move from AMBER to GREEN with URLs, timestamps, exact counts, and pass/fail evidence.
 
 ---
 

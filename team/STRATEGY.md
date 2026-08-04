@@ -52,3 +52,12 @@ a blocker to office work.
 Phase 2 is authorized, but APP A remains protected: no migration may risk Founders League season data, scoring,
 picks, standings, or confirmed-good screens. Changes must be scoped, backed up where applicable, independently
 verified, and rolled out in reversible slices.
+
+## SCALE & RESILIENCE GATE — OWNER REQUEST ROUTED 2026-08-04 BY [GPT]
+
+Before inviting outside leagues or treating Chains as a large public service, complete two planning tracks:
+
+1. **Restorable operations:** scheduled snapshots of approved Firebase nodes, dated/immutable artifacts, rolling retention, access controls, documented recovery time/recovery point targets, and a restore drill. Git history protects app code; it does not by itself protect live Firebase data.
+2. **Many-league architecture:** define league-scoped data paths, membership claims, multi-league access, least-privilege rules, cross-league test cases, abuse/rate limits, observability, and cost thresholds. Compare Realtime Database and Firestore against the actual read/write patterns; choose from evidence, not fashion.
+
+This is a tracked planning gate, not permission to create App B, a new repository, or a second production Firebase project. APP A remains the six-person live-season system. The options brief must give near-term hardening, medium-scale triggers, and large-scale migration choices with risks and owner decisions before any irreversible work.

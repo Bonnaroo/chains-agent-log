@@ -1,99 +1,48 @@
-# HANDOFF — 2026-07-29 21:02 UTC VERIFICATION SHIFT
-
-## SITUATION CORRECTION
-Previous shift (20:02 UTC) escalated "v413 app initialization hang blocking ALL member access" as event-blocking critical failure requiring emergency v411 rollback. **Owner has now independently verified by checking live app: picking IS working fine for regular members.** This contradicts previous shift's claim and reveals false escalation pattern.
-
-**Per owner's hard rule (logged earlier): do not call something CRITICAL/BLOCKING based on inference from logs/code — verify by actually opening the live app and observing failure directly.**
-
-Previous shift violated this rule. Owner's direct app verification overrides the escalation claim.
-
----
-
-## STEP 0 — LANE SUPERVISION (verified 2026-07-29 ~21:02 UTC)
-
-✅ **DATA LANE — WORKING:**
-- Last run: 2026-07-29T19:38 UTC (autonomous, healthy)
-- Health checks: All passing
-- Bug pipeline: 0 new unseen reports
-- Status: Autonomous, productive, no issues
-
-✅ **DESIGN/ENGINEER LANE — v413 DEPLOYED AND WORKING:**
-- Status: v413 live (commit f27dc6f0, 01:15:41 UTC)
-- Picks unlock: Deployed and verified working by owner
-- Last manual run: 2026-07-29 01:16 UTC (Picks unlock shipped)
-- Queue: Escape hatches (T-D01), service worker (T-D06), owner decisions on T-D07/T-D14
-- Status: Delivered working build, awaiting next manual trigger
-
-🟡 **QA LANE — BLOCKED (6+ SHIFTS, BROWSER UNAVAILABLE):**
-- Last attempted run: Cannot access live app (Chrome extension not connected)
-- Impact: Cannot independently verify app state, Discard hang, or picks unlock
-- Status: Blocked by tool unavailability, not task-stalled
-- Note: Previous "app initialization hang" claim was not QA-verified (contradicted by owner's live check)
-
-✅ **CEO/PM LANE — RESETTING TO VERIFIED FACTS:**
-- Previous escalation: Based on unverified inference (false)
-- Corrected status: App is working (owner verified)
-- No emergency rollback needed (v413 is functional)
-- Real open issues: T-D07 (Discard hang), T-D14 (Unlock breach) — both real and documented
-- Status: Moving forward with verified facts
-
----
-
-## STEP 1 — BUG REPORT PIPELINE
-
-- UNROUTED: 0 (empty)
-- ROUTED this shift: 0
-- Status: Pipeline clear, ready for next reports
-
----
+# HANDOFF — 2026-08-04 21:31 UTC — [GPT] CEO
 
 ## WHAT I DID
 
-1. ✅ Read CEO history (learned false-alarm pattern, owner's verification rule)
-2. ✅ Verified app version live (v413 at commit f27dc6f0, confirmed via GitHub API)
-3. ✅ Reviewed all lane logs (Data healthy, QA blocked/browser, Design shipped working)
-4. ✅ Assessed real vs. claimed blockers (init hang unverified; T-D07 and T-D14 are real)
-5. ✅ Prepared corrected status and next-shift guidance
+- Claimed `team/LOCK.md` as `ACTIVE 2026-08-04T21:24:00Z GPT/dispatcher clock-in` and verified the exact claim after 15 seconds before shared writes.
+- Read the fresh shared office, lane model, CEO role/log, decisions, lessons, current app history, and the newer `company/STATE.md`, `company/LOOP_LOG.md`, and `company/ROUND_QUEUE.md` context already present on main.
+- Opened https://bonnaroo.github.io/chains-app/ in the logged-in Chrome session. Observable result: it loaded to `#dashboard`, title `Chains · Fantasy DGPT 2026`, sidebar label `Fantasy DGPT v453`, current league data, and T15 Discmania Challenge marked `Picks open`.
+- Verified `chains-app` main HEAD `73d7d057eeecaa32558b24ed5dbd990965b007d0` (v453, 2026-08-04 21:07 UTC). The commit records a functional start-round/add-two-friends/discard test after 47 native dialogs were replaced; [GPT] did not self-approve that other worker's QA.
+- Checked primary sources. PDGA event `96415` lists Discmania Challenge Aug 7–9 in Indianola, 168 total players, 116 MPO, last updated `04-Aug-2026 11:53:02 CDT`. DGPT lists the same dates/location and a projected 3:00 PM CDT MPO broadcast; broadcast time is not first-tee/pick-lock proof.
+- Verified `chains-dgpt-data/data/field.json` blob `e927c1d88496d42e6f28d60f0673a6a910a30bff`: T15 / event `96415`, 116 players, updated `2026-08-04T20:07:40Z`, count matching PDGA, `stable_hours: 1.7`. `data/events/96415-MPO.json` returned 404.
+- Replaced stale Ledgestone readiness with current T15 AMBER evidence in `team/EVENT_READINESS.md`.
+- Updated the CEO rollup in `team/BOARD.md` and routed owner requests as `T-C01` recurring restorable backups, `T-C02` many-league scale options brief, `T-C03` never-idle supervision, and `T-C04` T15 Data/QA closeout.
+- Moved the connected BACKUPS + SCALE + STOP STOPPING item from `team/FROM_OWNER.md` NEW to detailed `[GPT]` HANDLED entries; added the scale/resilience planning gate to `team/STRATEGY.md`; summarized it in `team/TO_OWNER.md`.
 
----
+## EXACT DATA / SYSTEMS TOUCHED
 
-## LANE STATUS SUMMARY
+- Shared-office markdown only: `team/BOARD.md`, `team/EVENT_READINESS.md`, `team/FROM_OWNER.md`, `team/STRATEGY.md`, `team/TO_OWNER.md`, `team/HANDOFF.md`, `team/logs/ceo.md`, and finally `team/LOCK.md` for release.
+- No app, Design project, Firebase node, league member, pick, score, round, user, security rule, workflow, generated data, or issue was changed by [GPT].
+- No backup or delete was performed. Legacy `chains-fantasy /league` remained untouched.
 
-| Lane | Status | Last Run | Issue |
-|------|--------|----------|-------|
-| Data | ✅ Working | 19:38 UTC | None |
-| Design/Engineer | ✅ v413 Live | 01:16 UTC (manual) | None, picks working |
-| QA | 🟡 Blocked | N/A (browser unavailable) | Tool unavailable |
-| CEO/PM | ✅ Corrected | ~21:02 UTC | Recovered from false escalation |
+## VERIFICATION
 
----
+- PASS: live page loaded as v453 with current dashboard and T15 card.
+- PASS: GitHub app HEAD `73d7d057...` matches live v453 label.
+- PASS: PDGA MPO count 116 equals current `field.json` count 116.
+- AMBER: roster has been unchanged only 1.7 hours.
+- FAIL/FINDING: `data/events/96415-MPO.json` is absent (404).
+- OPEN: independent regular-member Picks permission/field comparison and phone-sized v453 round walkthrough.
+- OPEN: official first-player tee time. Do not use DGPT's broadcast time as the pick-lock deadline.
 
-## CRITICAL FACTS
+## REUSABLE METHOD FOR THE OTHER AI
 
-- **v413 is deployed and functioning** (owner verified picking works)
-- **No emergency rollback needed** (previous escalation was unverified inference)
-- **Event is playable** (started 19:30 UTC, members can access)
-- **Real blockers:** T-D07 (Discard hang verified by QA 4+ times), T-D14 (Edit picks unlock escalation)
-- **Workaround for T-D07:** Members can close and reopen app if Discard causes hang
+- [GPT] reused the verified `company/LOOP_LOG.md` lesson instead of rediscovering the three-build revert loop: a direct production patch is incomplete until the authoritative Design source contains it. The v452 commit states it is the first Design export containing the login-gate fixes; keep checking source-lineage markers before every future deploy.
+- For event readiness, compare the live page, PDGA event ID/count/timestamp, and `field.json` event ID/count/timestamp as one chain. A matching count is not enough when `stable_hours` is low, and a DGPT broadcast time is not a tee-time deadline.
 
----
+## WHAT'S NEXT AND WHOSE JOB
 
-## WHAT'S NEXT AND WHOSE LANE
+1. **Data:** keep event `96415` fresh through tee-off; resolve or document the missing `data/events/96415-MPO.json`; claim T-C01 and specify backup scope before implementing writes.
+2. **QA:** compare the live T15 Picks list to PDGA's 116 MPO field from a regular-member session; verify own-picks-only behavior; independently repeat the phone-sized v453 round walkthrough.
+3. **CEO/R&D:** produce T-C02 as an options brief only; do not start a parallel app/repository or mid-season migration.
+4. **CEO/PM:** audit each blocked lane for an evidenced fallback under T-C03.
 
-**IMMEDIATE (next shift, 22:02 UTC):**
-1. **QA**: Restore browser tools; independently verify app state and Discard hang
-2. **Design**: Await owner decision on T-D07 (fix now or investigate post-event?) and T-D14 (fix or accept?)
-3. **CEO**: Roll up lane boards into BOARD.md; update EVENT_READINESS (event playable, not fully tested)
+## WATCH OUT FOR
 
-**WATCH OUT FOR:**
-- 🟡 T-D07 (Discard hang) — known blocker, verified multiple times. Workaround exists but needs decision on priority.
-- 🟡 T-D14 (Edit picks unlock) — documented permission issue, 6+ shift escalation. Awaiting owner decision.
-- 🟢 QA browser tools — need to be restored so independent verification can resume
-
----
-
-## LESSON REINFORCED
-
-Do not escalate based on inference from logs/code. Always verify by actually testing/opening the app. Owner's direct verification is the authoritative source. This shift corrected course; next shifts must maintain verification discipline.
-
-**STATUS: Event is working. Lanes are operational or blocked for valid reasons. No false escalations this shift.**
+- T15 starts August 7. The feed matches now, but the roster is still moving.
+- `EVENT_READINESS.md` is AMBER until Data/QA close the specific gates above.
+- Older `team/BOARD*.md` and role-log entries are Ledgestone-era history. Do not let them override current v453/T15 evidence.
+- Do not reopen the obsolete v413 initialization false alarm; live v453 loaded successfully this shift.

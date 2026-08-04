@@ -1,109 +1,38 @@
 # EVENT READINESS — pre-tournament checklist (CEO owns; drive to green before every DGPT event)
 
-The owner's rule: BEFORE an event, everything must be verified ready — especially the registered field and the
-background event wiring, which have broken before. File every gap as a HIGH-PRIORITY board task.
+**Last verified:** 2026-08-04 21:31 UTC by [GPT]
 
-## ACTIVE EVENT: Ledgestone Open — starts 2026-07-30. GET IT READY. Job #1.
+## ACTIVE EVENT: T15 Discmania Challenge — August 7–9, 2026 — Indianola, Iowa
 
-Verified source facts from the 2026-07-26 CEO passes:
-- Real event = "DGPT+ Ledgestone Open", 30-Jul to 02-Aug-2026, Peoria IL, PDGA event 96414.
-- PDGA event page showed MPO registration = 156 at the 2026-07-26 18:58 UTC check.
+Primary-source facts:
 
-### A. The Picks / Draft
-- [x] Correct event ID, number, name, dates, tier, and location are shown for T14.
-- [x] LIVE QA DONE — 2026-07-26 23:55 UTC [CLAUDE]: live app (v406) itself fetches data/field.json (verified in
-      resource timing); Registered list shows 154 named pros updated Jul 26 6:52 PM = the 22:52Z feed run for
-      T14/96414; qualifier placeholders not draftable; picks open. T-014 closed.
-- [x] LIVE QA DONE — 2026-07-26 23:55 UTC [CLAUDE]: live order KADEY ... CORY confirmed against the T13 result
-      panel (Cory 1st, Kadey 6th). T-015 closed as not-a-bug.
-- [ ] **RED — T-016 UNRESOLVED** MEMBER PERMISSIONS / DISCOVERABILITY: v409 deployed 2026-07-27 04:10 UTC
-      with claimed "member Draft Now + own-slots-only uid write guard", but live Picks screen still shows
-      read-only "Edit picks" gate (commissioner-only) per owner report 2026-07-28. T-016 remains REVIEW — v409
-      member path unverified. Requires Chrome signed into real non-commissioner member account to test. URGENT:
-      Ledgestone tees 2026-07-30 (~1.5 days). If v409's feature is broken, rebuild must ship today.
-  - 2026-07-28 23:12 UTC [CLAUDE] CEO: marked RED and routed decision to owner. T-016 either needs rebuild
-    (if member feature incomplete) or member test (if feature exists but untested). Picks must unlock ~18 hours.
-- [ ] PICK LOCK + WD handling: verify against the real first-tee deadline and the documented league rule.
-  - 2026-07-27 00:28 UTC [GPT] Primary-source deadline audit: PDGA event 96414 (https://www.pdga.com/tour/event/96414)
-    lists Jul 30-Aug 2, 156 MPO registrations, last updated Jul 25 19:20 CDT, but currently exposes no Tee Time
-    table/column. DGPT (https://www.dgpt.com/event/2026-ledgestone-open/) lists 3:00 PM CDT for MPO Round 1
-    broadcast, which is not the first player tee time. T-017 must not use the broadcast time as the lock.
-  - 2026-07-27 01:15 UTC [CLAUDE] Recheck: PDGA 96414 still shows no tee-time table (last updated 25-Jul 19:20 CDT). Amber holds.
-  - 2026-07-27 04:29 UTC [GPT] Fresh primary-page recheck: PDGA 96414 still shows 156 MPO registrations and
-    `Last updated: 25-Jul-2026 19:20:02 CDT`; there is no `Tee Time` table and no `Withdrawn` text. The DGPT
-    event page still provides broadcast programming, not an official first-player tee time. T-017 remains open;
-    do not invent a lock timestamp.
-  - 2026-07-27 05:27 UTC [GPT] Reused [CLAUDE]'s fresh 05:10 PDGA roster diff: Thomas Earhart had left the
-    registration while Kayleb Gillmore (#245013) had joined. Manual workflow #527 generated commit `5e643c0`;
-    both current artifacts now exclude Earhart, include Gillmore, and hold 156 entrants. Backend WD/registration
-    following passes for this change; live non-draftability still needs QA, and the official tee table is absent.
-  - 2026-07-27 07:25 UTC [GPT] Fresh official-source recheck: PDGA 96414 now reports `Last Updated`
-    `26-Jul-2026 22:55:02 CDT` and still has 156 MPO registrations, with Gillmore #245013 present and Earhart
-    absent. The page still has no Tee Time, Round 1, or Withdrawn section. DGPT's 3:00 PM CDT remains explicitly
-    under BROADCAST SCHEDULE, so T-017 stays blocked from choosing a lock timestamp.
+- PDGA event `96415` lists 168 total players and 116 MPO players, last updated `04-Aug-2026 11:53:02 CDT`.
+- DGPT lists August 7–9 at Pickard Park and a projected MPO Round 1 broadcast at 3:00 PM CDT. That is a broadcast time, not proof of the first player tee time or the league pick-lock deadline.
 
-### B. Standings / Stats / Schedule / History
-- [x] Season standings rendered correctly in the prior pass: 13 events scored; Cory led with 56 points.
-- [x] Schedule showed the correct Ledgestone dates/tier/status and the first 13 events as final.
-- [x] History showed real results through T13 Heinola Open.
+### A. Live app / draft
 
-### C. Live Chains
-- [x] Prior pass showed AWAITING NEXT TOURNAMENT — LEDGESTONE OPEN, queued for tee-off.
+- [x] Live app loads to Dashboard as `Fantasy DGPT v453` at https://bonnaroo.github.io/chains-app/.
+- [x] Dashboard identifies `Discmania Challenge`, Indianola, IA, August 7–9, and shows `Picks open`.
+- [ ] Independent QA must verify the live Picks screen uses the current 116-player MPO field and that each regular member can edit only their own two picks.
+- [ ] Verify the official first-player tee time before setting or approving a pick-lock timestamp. Do not substitute DGPT's 3:00 PM broadcast time.
 
-### D. Background data wiring
-- [x] BACKGROUND ID COVERAGE FIXED — 2026-07-26 20:00 UTC [GPT]: commit
-      `4cb6a21ba221d77e9a1bf8590c5add72a34ca7dc` added T14/96414 to `collect_field.py` and brought `events.txt`
-      through 96414. Manual `Collect DGPT Data` run 30217973885 (#521) succeeded in 39 seconds.
-- [x] FIELD FEED FIXED — generated commit `03b17dc284b9c61c8601033daac67f0ad7581a32` published a fresh
-      `data/field.json` at 2026-07-26T19:58:54Z with `event_tag: T14`, `event_id: 96414`, and 154 named players.
-      `data/events/96414-MPO.json` now has the full 156-slot PDGA field: 154 PDGA-numbered players plus two
-      `Sunday Qualifier` placeholders. PDGA-number set comparison = 154/154, zero missing, zero extra.
-- [x] AUTOMATIC COLLECTION PROVEN — 2026-07-26 21:05 UTC [GPT]: the first post-fix scheduled run
-      30219698728 (#522) triggered via schedule at 20:46 UTC and completed Success in 1m 7s. Generated commit
-      `5fc3a0e7466c3985566efb8bcf8fa2bc95719535` refreshed `field.json` at 20:47:51Z and event 96414 at
-      20:47:39Z; the exact-commit artifacts still reconcile 154/154 numbered players with zero missing/extra,
-      plus two non-draftable Sunday Qualifier placeholders.
-- [x] VERIFIED — 2026-07-26 23:55 UTC [CLAUDE]: the live page's own network log shows it fetched
-      Bonnaroo/chains-dgpt-data data/field.json; rendered count/timestamp match the 22:52Z generated artifact.
-- [x] CURRENT ARTIFACT RECHECK — 2026-07-27 04:29 UTC [GPT]: `data/field.json` blob
-      `c3ab164203068b55cebe685f3231f49b1a54f221` remains T14/96414 with 154 named players, updated 02:03:55Z;
-      `data/events/96414-MPO.json` blob `cbfb65408e4ab319b1e0a504657ca6eb345ef23f` remains 156 slots,
-      collected 02:03:39Z. No backend repair or Firebase write was needed.
-- [x] ROSTER STALENESS REPAIRED — 2026-07-27 05:27 UTC [GPT]: reused [CLAUDE]'s 05:10 PDGA diff and confirmed
-      the 02:03 artifacts still had Thomas Earhart and lacked Kayleb Gillmore. Manually dispatched workflow
-      30239662932 (#527) with event input `96414`; all 21 steps succeeded from base `23d04a8` and generated
-      commit `5e643c00e5511b70b41438ee5b60c465c58c9ef6`. `field.json` blob `334569b` is T14/96414, 156 entrants,
-      updated 05:24:59Z (154 numbered + Gracen Lomelino/Chris Reliford unnumbered); event blob `e7933f9` is 156,
-      collected 05:24:43Z. Earhart absent and Gillmore #245013 present in both.
-- [x] RECURRENCE RECHECK — 2026-07-27 06:26 UTC [GPT]: genuine scheduled run 30241283786 (#528) triggered via
-      `schedule` at 05:58Z from repaired base `5e643c00e5511b70b41438ee5b60c465c58c9ef6`, completed Success
-      in 1m16s, and every collect/commit job step passed. Generated commit
-      `06bd3b43c299796ef796f96f27d2e505249ad6b1` pins `field.json` blob
-      `9743387f2cc70c671505b20ee3f9b4e9660ef79e` (156 entrants, updated 06:00:04Z) and event blob
-      `7dfca62400953c7bf1ef60ecab95d58355550c30` (156, collected 05:59:45Z). Exact-commit and current-main
-      reads match: Earhart absent, Gillmore #245013 present, and Gracen Lomelino/Chris Reliford remain the two
-      unnumbered real registrations. Background recurrence is green again; the Actions page carries a
-      non-blocking Node.js 20 deprecation warning for checkout/setup-python now forced onto Node 24.
-- [ ] CADENCE RELIABILITY — 2026-07-27 07:25 UTC [GPT]: workflow blob `a003c23` is configured `*/15`, but
-      Actions still showed successful scheduled #528 at 05:58Z as latest at 07:24Z (1h26m, five expected starts
-      absent). One scheduled run proves the path can fire, not that nominal cadence is meeting the event-critical
-      freshness need. Current blobs remain correct and were generated after PDGA's 03:55:02Z source update, so no
-      manual refresh is needed now. PM must route a HIGH-priority reliability/backstop task with a <=30-minute
-      freshness target and visible missed-run signal before background health is fully green.
-- [ ] Verify automatic registration-finalized -> draft-open behavior, not just this event's manual/snapshot fix.
+### B. Current data feed
+
+- [x] `Bonnaroo/chains-dgpt-data/data/field.json` is T15 / event `96415`, `player_count: 116`, updated `2026-08-04T20:07:40Z`.
+- [x] The feed count matches PDGA's official 116-player MPO count as of this check.
+- [ ] Roster is still moving: `stable_hours: 1.7`. Data lane must continue refreshes and re-check withdrawals/additions through tee-off.
+- [ ] `data/events/96415-MPO.json` returned 404. Data lane must either publish the per-event artifact or document that `field.json` intentionally supersedes it; silent absence is not green.
+
+### C. Current build and known round-path risk
+
+- [x] `chains-app` main HEAD is `73d7d057eeecaa32558b24ed5dbd990965b007d0` (v453, 2026-08-04 21:07 UTC).
+- [x] The commit's recorded functional evidence says a start-round/add-two-friends/discard path completed without the native-dialog freeze after replacing 47 native alert/confirm/prompt calls with in-app dialogs.
+- [ ] QA must independently repeat the phone-sized round walkthrough. [GPT] did not self-approve another worker's functional test this shift.
 
 ## STATUS
-**AMBER — v409 is live and current roster artifacts are correct, but collector cadence, member, and deadline
-gates remain.** [GPT] verified the artifacts were generated after PDGA's newer 03:55:02Z update and still hold
-156 registrations with Earhart absent/Gillmore present. Scheduled #528 passed, but no later run appeared by
-07:24Z despite the `*/15` cron; PM must route the <=30-minute reliability/backstop gap. QA must still confirm the
-corrected roster live without selecting a player. T-016 needs a true non-commissioner proof (owner sign-in request
-is OPEN in INBOX). T-017 still needs the official earliest tee time, live WD non-draftability, pick lock, and
-automatic registration-finalized -> draft-open proof. DGPT's 3:00 PM broadcast time must not be substituted.
-T-009 stays IN_PROGRESS.
 
-## REUSABLE
-Repeat A-D for every DGPT event about five days before it starts. Do not accept a correct-looking UI fallback as
-proof that the dynamic feed is healthy: inspect `data/field.json` metadata (`updated_at`, `event_id`, `player_count`,
-non-empty `players`), confirm the event ID exists in the collector/list, then verify the live app consumes the feed.
-Compare PDGA-number sets, not just counts: total registration slots may include non-draftable qualifier placeholders.
+**AMBER.** The current app and live T15 feed are aligned on event `96415` and 116 MPO players, but the roster is not yet stable, the per-event JSON artifact is absent, member pick permissions still need independent QA, and the official first-player tee time/pick-lock proof remains open.
+
+## SAFETY
+
+No app, Firebase, picks, rounds, users, league standings, or legacy `chains-fantasy /league` data was changed by this readiness pass.

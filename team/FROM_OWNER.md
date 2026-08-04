@@ -5,28 +5,12 @@ replies in TO_OWNER.md. You never talk to the workers directly.
 
 ## NEW (unprocessed — CEO picks these up)
 
-- [NEW] BACKUPS + SCALE FOR REAL GROWTH. Owner wants two things, treat as connected: (1) REGULAR BACKUPS -
-  both the app code (already improving via staging/GitHub history) AND the Firebase data itself (leagues,
-  members, picks, standings, rounds) need automated, retrievable backups Guillermo can actually restore from if
-  something breaks - not just the ad-hoc _trash-before-delete pattern that already exists, a real recurring
-  snapshot. Route to Data lane: add a scheduled backup step that snapshots key Firebase nodes to a dated JSON
-  file committed in chains-dgpt-data (or similar), on a real cadence (e.g. daily), kept for some rolling window.
-  (2) SCALE PLANNING - owner is thinking ahead to potentially many leagues/many users (his words: "let's say this
-  app blows up and we have a million people using it... a ton of different leagues, some people in multiple
-  leagues"). This is a real architecture question (per-league data isolation, Firebase security rules that scale
-  to many leagues without cross-league leakage, whether Realtime DB stays the right choice at that scale vs.
-  Firestore, cost at scale) and deserves an honest PLANNING pass, not a rushed mid-tournament hack. Route to
-  CEO/STRATEGY: add this as a tracked future phase (does not block Ledgestone-week work), and have R&D produce a
-  short, honest options writeup (not a build) on what "ready for many leagues" would actually require.
-  (3) STOP STOPPING. Owner is frustrated that lanes report "blocked" and just stop instead of finding other real
-  work. Reinforce NEVER-IDLE across every lane: being blocked on task A is never a reason to produce nothing -
-  there is always a second real, useful thing to do (see each lane's own NEVER-IDLE fallback list). A lane that
-  logs "blocked" with no attempted fallback work this shift should be treated as a supervision failure by CEO,
-  same severity as a missed run.
-
-(none yet)
+(none)
 
 ## HANDLED (CEO moves items here with a status once routed/answered)
+- [ROUTED 2026-08-04 by [GPT] -> BOARD T-C01 / DATA] REGULAR BACKUPS. Assigned a recurring, retrievable Firebase backup design with explicit node scope, cadence, rolling retention, restore procedure, and non-production restore drill. This is planning/implementation work for the Data lane; no deletion or legacy `chains-fantasy /league` access is authorized.
+- [ROUTED 2026-08-04 by [GPT] -> BOARD T-C02 / STRATEGY] SCALE FOR REAL GROWTH. Added a tracked many-league planning gate covering isolation, security rules, RTDB vs Firestore, cost thresholds, observability, and migration triggers. This is an options brief, not authorization for a parallel app/repository or a mid-season migration.
+- [ROUTED 2026-08-04 by [GPT] -> BOARD T-C03 / CEO SUPERVISION] STOP STOPPING. Blocked lanes must complete and evidence an allowed fallback in the same shift; blocked-with-no-fallback is a supervision failure that CEO/PM must surface and correct.
 - [ROUTED -> STRATEGY.md / PM NEXT] PHASE 2 = GO. Backend-first efficiency is now active: changing tournament
   data belongs in Firebase/backend, with Design reserved for actual UI changes. PM must split the migration into
   reversible tasks that protect App A. The old July 29 hard gate is superseded by the owner's 2026-07-26 directive.
