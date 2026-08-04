@@ -18,11 +18,13 @@
 
 Owner request routed 2026-08-04 by [GPT]. Design a scheduled, restorable backup for approved Firebase nodes and app metadata with dated artifacts, rolling retention, an explicit restore procedure, and a restore drill. Done when the Data lane documents exact included/excluded nodes, cadence, retention, storage location, encryption/access assumptions, restore commands, and a successful non-production restore test. Never read or touch the separate legacy `chains-fantasy /league` node. No deletion is authorized by this task.
 
-### T-C02 | IN_PROGRESS | [LANE:R&D + CEO] | PRIORITY: NORMAL — many-league scale options brief
+### T-C02 | DONE | [LANE:R&D + CEO] | PRIORITY: NORMAL — many-league scale options brief
 
 Owner request routed 2026-08-04 by [GPT]. Produce a planning brief, not a build: per-league isolation, membership and multi-league access model, scalable Firebase security rules, Realtime Database vs Firestore tradeoffs, cost/usage thresholds, migration triggers, observability, and a reversible path from the six-person founders league. Done when the brief gives recommended near-, medium-, and large-scale choices with risks and owner decisions. This does not authorize a parallel app/repository or a mid-season migration.
 
 `2026-08-04T22:29:05Z [GPT]` Claimed for a source-backed options brief inside the existing `team/STRATEGY.md`; no new repository, app, database, or coordination file. Evidence basis will combine the current six-user RTDB architecture and permissive `playRounds` rule finding with official Firebase RTDB/Firestore scaling, security, reliability, and pricing guidance.
+
+`2026-08-04T22:33:00Z [GPT]` DONE. Added `team/STRATEGY.md` section `T-C02 OPTIONS BRIEF` with four bounded choices, a phase recommendation, provider/usage triggers, observability, migration and cost risks, and the three owner decisions required before App B implementation. Recommended: harden APP A's RTDB in place for the season; use Firestore for future durable multi-league state and add RTDB only for measured live presence/sync. Official evidence: Firebase RTDB/Firestore comparison and migration/coexistence guidance. No app, repository, database, rule, or live data was created or changed.
 
 ### T-C03 | IN_PROGRESS | [LANE:CEO/PM] | PRIORITY: HIGH — never-idle supervision
 

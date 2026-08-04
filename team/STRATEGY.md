@@ -61,3 +61,60 @@ Before inviting outside leagues or treating Chains as a large public service, co
 2. **Many-league architecture:** define league-scoped data paths, membership claims, multi-league access, least-privilege rules, cross-league test cases, abuse/rate limits, observability, and cost thresholds. Compare Realtime Database and Firestore against the actual read/write patterns; choose from evidence, not fashion.
 
 This is a tracked planning gate, not permission to create App B, a new repository, or a second production Firebase project. APP A remains the six-person live-season system. The options brief must give near-term hardening, medium-scale triggers, and large-scale migration choices with risks and owner decisions before any irreversible work.
+
+### T-C02 OPTIONS BRIEF — 2026-08-04 [GPT]
+
+**Current reality and hard stop.** APP A is a six-person, direct-client Realtime Database (RTDB) system. The
+current `/playRounds` parent rule grants `.write` to any authenticated user. RTDB rules cascade, so a narrower
+child rule cannot revoke that parent grant; a signed-in client can therefore forge another member's round write.
+That is tolerable only inside today's trusted founders group and must be closed before any outside tester is
+invited. Do not migrate APP A mid-season merely to solve this: first replace broad parent grants with
+league/member/user-scoped rules and prove both allowed-own and denied-cross-tenant cases in the Emulator Suite.
+
+**Options.**
+
+1. **Harden APP A on RTDB (recommended now).** Keep the live season on its current backend, scope every durable
+   path by `leagueId` and `uid`, remove broad authenticated parent writes, add cross-user/cross-league deny tests,
+   and complete T-C01 backup/restore work. This is the smallest reversible change and avoids a risky season-time
+   data migration. It is not the recommended public-product architecture.
+2. **Firestore-first APP B, with RTDB only for measured live-sync needs (recommended future architecture).** Put
+   durable, queryable multi-tenant state in Firestore: `/users/{uid}`, `/leagues/{leagueId}`,
+   `/leagues/{leagueId}/members/{uid}`, `/events/{eventId}`,
+   `/leagues/{leagueId}/events/{eventId}/picks/{uid}`, `/rounds/{roundId}`, and
+   `/rounds/{roundId}/participants/{uid}`. Keep an optional RTDB `/liveRounds/{roundId}` channel only if measured
+   presence or very high-frequency live updates justify it. Use a bounded migration window, not permanent
+   dual-write. Firestore's document model, indexed compound queries, non-cascading rules, automatic scaling, and
+   regional/multi-region choices fit many leagues better than one shared JSON tree.
+3. **Public product entirely on RTDB (not recommended).** This minimizes rewrite but moves scale into sharding,
+   fan-out indexes, cascading-rule review, connection/write ceilings, and cross-database operations. Firebase's
+   current comparison describes roughly 200,000 concurrent connections and 1,000 writes/second per RTDB database,
+   with additional databases required beyond that. Chains should not volunteer for that operational burden when
+   the durable product is naturally queryable by user, league, event, and round.
+4. **Public product entirely on Firestore (viable alternative).** This keeps one database and strong tenant/query
+   boundaries, but live presence and rapid score mirroring can create many small billed operations or hot documents.
+   Choose it only after a realistic round simulation shows acceptable operation count, latency, and cost.
+
+**Phase recommendation and decision triggers.**
+
+- **Founders season:** stay on RTDB; harden `/playRounds`; add a least-privilege deny matrix and recurring restorable
+  backups. No new app, repository, database, or production migration is authorized by this brief.
+- **Private App B beta:** only after owner approval and a separate Firebase project exists, use Firestore for durable
+  multi-league state. Add RTDB only when captured product measurements show a real presence/live-sync advantage.
+- **Growth:** before 10,000 monthly active users *or* projected usage reaches 25% of any provider ceiling, run load
+  and cost tests. The 25% threshold is a Chains internal guardrail, not a Firebase limit. Track concurrent
+  connections, writes/second, Firestore reads/writes per screen and per round, bytes transferred, p95 latency,
+  denied-rule counts, cross-tenant test results, backup success, restore RPO, and restore RTO.
+
+**Risks and owner decisions.** Firebase documents no automated RTDB-to-Firestore migration: data and rules require
+custom mapping/scripts. A phased dual-write can use Cloud Functions, but poorly guarded triggers can loop or drift.
+Firestore can cost more when one user action becomes many small operations; RTDB can cost more in bandwidth and
+operational sharding. Server SDKs are governed by IAM rather than client security rules, so future privileged
+workers need separate least-privilege service identities and audit logs. Before App B implementation, the owner
+must approve (1) Firestore-first with optional RTDB live-sync, (2) backup RPO/RTO and retention, and (3) regional
+versus multi-region placement and the monthly budget guardrail.
+
+**Official evidence checked 2026-08-04 [GPT]:**
+
+- Firebase database comparison: https://firebase.google.com/docs/database/rtdb-vs-firestore
+- Firebase RTDB-to-Firestore migration and coexistence guidance:
+  https://firebase.google.com/docs/firestore/firestore-for-rtdb

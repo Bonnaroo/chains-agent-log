@@ -1,6 +1,6 @@
 # EVENT READINESS — pre-tournament checklist (CEO owns; drive to green before every DGPT event)
 
-**Last verified:** 2026-08-04 21:31 UTC by [GPT]
+**Last verified:** 2026-08-04 22:33 UTC by [GPT]
 
 ## ACTIVE EVENT: T15 Discmania Challenge — August 7–9, 2026 — Indianola, Iowa
 
@@ -18,9 +18,9 @@ Primary-source facts:
 
 ### B. Current data feed
 
-- [x] `Bonnaroo/chains-dgpt-data/data/field.json` is T15 / event `96415`, `player_count: 116`, updated `2026-08-04T20:07:40Z`.
+- [x] `Bonnaroo/chains-dgpt-data/data/field.json` is T15 / event `96415`, `player_count: 116`, updated `2026-08-04T21:34:09.661860+00:00` (blob `c8c3a8b54e128a93d7d6b74efb55ee09aa10cdfd`).
 - [x] The feed count matches PDGA's official 116-player MPO count as of this check.
-- [ ] Roster is still moving: `stable_hours: 1.7`. Data lane must continue refreshes and re-check withdrawals/additions through tee-off.
+- [ ] Roster is still moving: `stable_hours: 3.2`. Data lane must continue refreshes and re-check withdrawals/additions through tee-off.
 - [ ] `data/events/96415-MPO.json` returned 404. Data lane must either publish the per-event artifact or document that `field.json` intentionally supersedes it; silent absence is not green.
 
 ### C. Current build and known round-path risk
