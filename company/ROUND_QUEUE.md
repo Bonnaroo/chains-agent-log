@@ -87,3 +87,57 @@ At a **phone-sized viewport**, against the deployed build, as if standing on a t
 
 **If any step is awkward, confusing, or fails — the item is NOT done.** Say exactly which step broke
 and what you saw. Do not mark it complete and move on. Do not weaken the test to make it pass.
+
+---
+
+## 9. Replace all native `window.confirm()` popups (~28 of them)
+- [ ] Resume-round, discard, delete and every other confirm becomes an **in-app modal**
+- [ ] Two reasons, both real: native dialogs look broken on mobile, AND they freeze all browser
+      automation until a human clicks — which blocked five straight verification cycles
+- [ ] Nothing may silently change data without a confirmation the app itself owns
+
+---
+
+# WHEN THIS QUEUE IS DONE — DO NOT STOP HERE
+
+The round is the *first* phase, not the whole product. The owner gave a complete 32-section feature
+specification. It is sequenced into five phases in **`company/briefs/ROADMAP.md`** — read it and
+continue from **Phase 2**. Do not re-derive the plan; it already exists.
+
+**What comes next, in order (full detail in ROADMAP.md):**
+
+**Phase 2 — deepen scoring & stats (the core loop)**
+- Basic / advanced / map-based scoring modes (quick scoring stays the default, always)
+- Full player statistics: C1/C2 putting %, fairway hits, GIR, scramble %, OB %, per-course and
+  per-layout averages, per-hole best/average, streaks — filterable by recent/month/year/all-time
+- Hole comparisons shown **while you're playing that hole** — your average, your best, last five,
+  course average, birdie %
+- Round & player ratings (labelled projected/unofficial until official)
+- **In the Bag depth (#41)** — flight numbers (speed/glide/turn/fade), plastic, weight, colour,
+  condition; multiple bags/loadouts; in-bag vs collection; share your bag. Then the differentiator:
+  **per-disc stats derived from real scored rounds** — how often thrown, how it scores, longest
+  throw. That links the bag to actual scoring, which competitors do poorly. This one matters.
+- Achievements extending ChainsBadges (first ace, bogey-free, personal best, new course, streaks,
+  and fantasy ones — drafted the winner, won from behind)
+
+**Phase 3 — social & competition**
+Friends profiles + stat comparison + privacy controls · league features (recurring weeklies,
+divisions, handicaps, season standings, bag tags, ace pools, closest-to-pin) · live leaderboards ·
+**animated live viewer persistence** (it must resume from saved progress, not restart on every open —
+the owner has raised this repeatedly) · course reviews & photos
+
+**Phase 4 — course platform** (data-bound, not UI-bound; needs real course data first)
+Discovery + filters · conditions reporting · hole maps & navigation · multiple layouts · traffic
+
+**Phase 5 — later / premium**
+Throw tracking · GPS rangefinder · measure-a-throw · activity tracking · practice tools ·
+smartwatch (NOT until phone scoring is rock solid) · offline · scorecard photo import ·
+free/premium split (do not build paywalls at six users)
+
+**Explicitly out of scope unless the owner reverses it:** course-management tools for arbitrary
+courses, parks-department analytics, store directory, and a public multi-league tournament platform.
+Different customers, different products.
+
+**The standing rule for all of it:** finish a feature before starting the next. Overbuild rather than
+underbuild. The differentiator is that the fantasy season and your own game live in one app — every
+phase should deepen that, not chase UDisc's feature count.
