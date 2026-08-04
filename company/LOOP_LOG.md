@@ -142,3 +142,34 @@ LOOP_LOG must now record the current item AND its phase, so the next run knows w
 **Next queue action:** open **PHASE A** on replacing the ~28 native `window.confirm()` calls with
 in-app modals. This is the fix that unblocks automated walkthroughs *and* removes jarring OS popups
 for real users on mobile. Ask Design how it wants to approach it — do not prescribe.
+
+---
+
+**2026-08-04 · BLOCKER FOUND: scheduled runs have no browser tool access · loop made browser-optional**
+
+Owner: *"It says no browser access... see they're not doing anything."* He is right that nothing was
+getting done, and the reason is concrete.
+
+**Diagnosis:** this log contains ZERO entries written by a scheduled run — only manual ones. The runs
+were dying before they could do or log anything. The browser itself is fine (device connected and
+healthy). What's missing is **tool permission granted to the scheduled task**, which is approved
+per-task on its first run. Until someone clicks "Run now" once, every automatic run fails at the
+first browser call.
+
+**Second, real, fixable problem:** the loop was written assuming the browser always works, so losing
+it killed the whole run. That was a design flaw. **Roughly half of this role's work needs no browser
+at all** — rules testing, backup verification, silent-failure hunting, pre-building backend for the
+next queue item, regression checks against the raw committed file.
+
+**Fix applied:** the loop now tests browser availability first. No browser -> it does NOT stop; it
+runs the backend track (STEP 0's six jobs) and logs the finding. Only the Design conversation and the
+phone-viewport walkthrough genuinely require a browser; everything else proceeds.
+
+**Lesson worth keeping:** an agent that stops when one tool is unavailable will look identical to an
+agent that is doing nothing. Always give it a degraded mode that still produces evidence.
+
+**Also noted:** `company/AUDIT_LOG.md` does not exist yet (404) — the auditor has not completed a run
+either, same root cause.
+
+**State unchanged:** live is v452, all eight markers present, field loaded (111 players for T15),
+queue item 9 (replace ~28 native `window.confirm()` calls) still at PHASE A, not yet asked.
