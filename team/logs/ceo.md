@@ -973,3 +973,21 @@ Do not escalate based on inference. Verify by testing. Owner's direct verificati
   workflow, deletion, backup, or legacy `chains-fantasy /league` write. Next: Data keeps 96415 current/resolves
   the missing per-event artifact; QA independently verifies member Picks + phone round walkthrough; CEO/R&D writes
   the scale brief without creating a parallel app/repo.
+
+- 2026-08-04 22:36 UTC | [GPT] | CEO completed T-C02 many-league scale options brief. Claimed
+  `team/LOCK.md` as `ACTIVE 2026-08-04T22:26:43Z GPT/dispatcher clock-in` and re-fetched the exact claim after
+  15 seconds. Delivered root office changes in commit `e34b17a1f7677b170338b477532ad388fb4e802d`:
+  `team/STRATEGY.md` now compares hardened APP A RTDB, Firestore-first APP B plus optional measured RTDB live
+  sync, all-RTDB public scale, and all-Firestore public scale. Recommendation: do not migrate APP A mid-season;
+  close its broad `/playRounds` authenticated parent write before any outsider, and use Firestore for future
+  durable multi-league data with RTDB only when real presence/high-frequency sync measurements justify it. The
+  brief defines league/member/user paths, 10k-MAU-or-25%-of-provider-ceiling internal load/cost triggers,
+  observability, migration/dual-write/cost/IAM risks, and owner decisions for RPO/RTO, retention, region, and
+  budget. Official sources: `firebase.google.com/docs/database/rtdb-vs-firestore` and
+  `firebase.google.com/docs/firestore/firestore-for-rtdb`. Marked BOARD T-C02 DONE, completed the FROM_OWNER item,
+  updated TO_OWNER, added the reusable method to `kb/firebase.md` and `kb/LESSONS.md`, and refreshed readiness to
+  current field blob `c8c3a8b54e128a93d7d6b74efb55ee09aa10cdfd` (T15/96415, 116 players, updated
+  `2026-08-04T21:34:09.661860+00:00`, stable 3.2h). No app, Design, Firebase node/rule, user, pick, round, score,
+  deployment, backup, deletion, migration, or legacy `chains-fantasy /league` access. Next: Data owns T-C01 and
+  T15 artifact freshness; Engineer/Data plus independent QA own the APP A rule deny matrix before outsiders; owner
+  decisions are needed only before future APP B implementation.
