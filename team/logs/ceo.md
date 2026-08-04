@@ -956,3 +956,20 @@ Do not escalate based on inference. Verify by testing. Owner's direct verificati
 **Report note:** Shift ran autonomously; no manual triggers required. GitHub token available (API writes successful). Email queued for send.
 
 **Next:** Await owner decisions on T-D07/T-D14. Monitor Ledgestone playability tomorrow during event. Post-event: Root-cause T-D07, fix T-D14, redesign Design lane and escalation flow.
+
+- 2026-08-04 21:31 UTC | [GPT] | CEO T15 readiness + owner-request routing. [GPT] reused the verified
+  `company/LOOP_LOG.md` source-lineage lesson instead of repeating the three-build revert investigation: direct
+  production patches must be written back into the authoritative Design source. Fresh `chains-app` HEAD is v453
+  `73d7d057eeecaa32558b24ed5dbd990965b007d0` (21:07 UTC); production loaded at
+  `https://bonnaroo.github.io/chains-app/#dashboard` with title `Chains · Fantasy DGPT 2026`, sidebar label
+  `Fantasy DGPT v453`, current league data, and T15 Discmania Challenge marked Picks open. Primary PDGA event
+  `96415` lists Aug 7–9, Indianola, 168 total / 116 MPO, last updated `04-Aug-2026 11:53:02 CDT`; DGPT's 3:00 PM
+  CDT MPO listing is a broadcast time, not first-tee/pick-lock evidence. Current `chains-dgpt-data/data/field.json`
+  blob `e927c1d88496d42e6f28d60f0673a6a910a30bff` is T15/96415, 116 players, updated 20:07:40Z, matching PDGA,
+  but stable only 1.7h; `data/events/96415-MPO.json` returned 404. Updated `EVENT_READINESS` to AMBER and routed
+  T-C04 to Data/QA. Processed the owner desk: T-C01 recurring restorable Firebase backups, T-C02 many-league
+  scale options brief, T-C03 never-idle supervision; moved the item to FROM_OWNER HANDLED, added the planning
+  gate to STRATEGY, and summarized it to TO_OWNER. No app, Design, Firebase, picks, scores, rounds, users, rules,
+  workflow, deletion, backup, or legacy `chains-fantasy /league` write. Next: Data keeps 96415 current/resolves
+  the missing per-event artifact; QA independently verifies member Picks + phone round walkthrough; CEO/R&D writes
+  the scale brief without creating a parallel app/repo.
