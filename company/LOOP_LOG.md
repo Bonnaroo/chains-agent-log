@@ -72,3 +72,39 @@ Also worth flagging to Design next cycle: its todo says *"DEPLOY: v447 is the ca
 stale — v448 is already live** and contains v447 plus the v444/v445 login fixes it was missing.
 Deploying v447 now would clobber the login gate a third time. The loop's pre-deploy marker check
 would catch it, but tell Design directly so it doesn't waste a cycle.
+
+---
+
+**2026-08-03 22:35 UTC · v450 shipped · ROOT CAUSE of the recurring breakage found**
+
+Owner: *"It keeps breaking."* He is right, and it is one specific thing repeating.
+
+**Three consecutive Design exports — v447, v449, and the v450 base — all arrived MISSING the v444/v445
+login-gate fixes.** I have now re-applied the same two patches three times.
+
+**Root cause:** those fixes were only ever patched into the deployed `index.html` on GitHub. They were
+never written back into Design's own project file. So every build Design produces descends from a
+lineage that never contained them, and faithfully reintroduces the bug. This is not Design being
+careless — it is us patching production without patching the source.
+
+**Lesson (this generalises):** any fix applied by direct module patch MUST be written back into
+Design's project file, or it will be silently reverted on the next export. A pre-deploy marker check
+catches it, but catching it every cycle is not a fix — it is a tax.
+
+Action taken: sent Design the exact code for all three changes (the two AuthGate branches plus the
+signOut ordering) and told it to verify by searching its own file for
+`ANONYMOUS SESSIONS NO LONGER GRANT ACCESS`. Once that lands, the tax goes away.
+
+**v450 is live** = Design's v449 + the re-applied fixes. Verified present: login block, authUid,
+_indexWrite, European Open, In the Bag nav, AuthGate, ChainsImpact, ChainsAssets, editHistory.
+
+v449's actual work shipped and is good: post-finish edit **with audit trail** (owner edits any row,
+participant only their own, every change logs who/when/hole/from→to), mark-as-practice, starting-hole
+choice, honors-based tee order, per-hole notes, adjustable hole par, and the **36h draft window with
+on-the-clock enforcement + autopick** (closes #44). Design verified most of the round lifecycle was
+already solid rather than rebuilding it, and deferred manual old-round entry openly instead of
+faking it.
+
+Still open: `editHistory`/`practice`/`notes` ride the same permissive `playRounds` write path as
+`scorePatch`/`joinRequests` — Design flagged it independently, matching my own finding. Rules pass
+deferred until the round lifecycle stabilises; **must close before outside testers get accounts.**
