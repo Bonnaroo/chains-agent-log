@@ -90,3 +90,22 @@ Read interfaces for CEO/QA:
      Prevents re-processing on next run
 
 Tested 2026-07-30: created 2 test reports via POST, verified structure, tested seen workflow (1 report marked seen, 1 unseen), read counts and lists both work. Schema is production-ready.
+
+## SCALE PLANNING METHOD (2026-08-04 [GPT])
+
+- Treat rule topology as a scale gate, not cleanup. The current `/playRounds` parent `.write: auth != null` is
+  unsafe for outside users because RTDB rules cascade and a child cannot revoke a parent grant. Before onboarding
+  outsiders, remove broad parent grants and prove own-write allow plus other-user/other-league deny cases in the
+  Emulator Suite.
+- Keep APP A on RTDB during the live season and harden it in reversible slices. Do not force a database migration
+  to repair an authorization rule.
+- For future APP B, default durable multi-tenant data to Firestore; use RTDB only when measured presence or
+  high-frequency live-sync behavior makes it valuable. Firebase supports both in one project, but there is no
+  automated RTDB-to-Firestore migration. Use mapped scripts and a bounded migration window; avoid permanent
+  dual-write and guard Cloud Function triggers against loops.
+- Capture evidence before committing: concurrent connections, writes/second, bytes transferred, Firestore
+  reads/writes per screen and per round, p95 latency, denied-rule counts, cross-tenant test results, backup success,
+  and restore RPO/RTO. Load/cost test before 10,000 MAU or 25% of any provider ceiling; 25% is an internal Chains
+  guardrail, not a Firebase limit.
+- Official references: https://firebase.google.com/docs/database/rtdb-vs-firestore and
+  https://firebase.google.com/docs/firestore/firestore-for-rtdb.

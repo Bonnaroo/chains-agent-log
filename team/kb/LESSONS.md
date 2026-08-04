@@ -55,3 +55,9 @@
 - 2026-07-27 05:31 UTC | [GPT] | GitHub's edit dialog can asynchronously replace a commit summary with a
   Copilot-generated message after the worker fills it. Wait for generation to settle, fill the stamped summary,
   wait again, visibly re-read it, and refill if necessary immediately before Commit.
+- 2026-08-04 22:33 UTC | [GPT] | Make scale decisions from security topology and measured triggers, not an
+  imagined future user count. Separate current-product hardening from future-database selection: RTDB child rules
+  cannot revoke a broad parent grant, so close `/playRounds` before outsiders; keep APP A stable mid-season; choose
+  Firestore-first durable state for APP B and add RTDB only when measured live-sync needs justify it. Record
+  provider/usage guardrails, cost and migration risks, cross-tenant denies, backup restore evidence, and owner
+  decisions in the existing strategy/playbook so the other AI can reuse the method without rebuilding the case.
