@@ -108,3 +108,37 @@ faking it.
 Still open: `editHistory`/`practice`/`notes` ride the same permissive `playRounds` write path as
 `scorePatch`/`joinRequests` — Design flagged it independently, matching my own finding. Rules pass
 deferred until the round lifecycle stabilises; **must close before outside testers get accounts.**
+
+---
+
+**2026-08-04 · v452 deployed · LOOP RESTRUCTURED to three phases · next: PHASE A on native-dialog replacement**
+
+Two real wins and one correction.
+
+**1. The revert loop is CLOSED.** v452 is the first Design export that already contained the
+login-gate fixes **in Design's own source** — verified the marker before deploying, present.
+v447/v449/v451 all reverted them because they were only ever patched into production. Telling Design
+to fix its source worked. Keep doing that for every direct patch.
+
+**2. v452 is live** — round lifecycle work: post-finish edit with audit trail, mark-as-practice,
+starting-hole choice, honors tee order, per-hole notes, adjustable par, 36h draft window with
+on-the-clock enforcement + autopick.
+
+**3. CORRECTION — I was running the loop wrong.** Owner: *"It's supposed to think of a good way to do
+it, to tell you to make the instructions to tell it. Ask it the best way to do it, so you can make
+instructions for it."*
+
+I had been handing Design solutions I designed. Wrong. Design sees the UI surface and component
+structure; I don't. The loop is now explicitly **three phases per feature, one per run**:
+  - **PHASE A (ASK)** — "How would you build X? Don't build yet. Approach, what needs deciding,
+    what backend you need, what already exists."
+  - **PHASE B (INSTRUCT)** — I answer every question with a ruling, build AND verify the backend it
+    asked for, then write instructions **from its approach**, not mine.
+  - **PHASE C (BUILD)** — Design builds; I verify markers, walkthrough, deploy.
+LOOP_LOG must now record the current item AND its phase, so the next run knows where it is.
+
+**Also set: never run Design on FABLE** (owner directive). Model check is now step zero.
+
+**Next queue action:** open **PHASE A** on replacing the ~28 native `window.confirm()` calls with
+in-app modals. This is the fix that unblocks automated walkthroughs *and* removes jarring OS popups
+for real users on mobile. Ask Design how it wants to approach it — do not prescribe.
