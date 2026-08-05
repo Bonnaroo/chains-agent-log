@@ -1446,3 +1446,52 @@ credentials for that project — untouched again this run per hard rule.
 config/friends/diagnostics/usernames/sharedBags/_trash/joinCodes), starting with whichever holds the most
 sensitive data. Also: reconcile GitHub Issues against shipped ROUND_QUEUE items (#7/#10/#11/#18), and resolve
 the stale test-account logins before the next negative-test pass.
+
+---
+
+## 2026-08-05 (Cowork, later run) — verification pass, no new build
+
+Design was idle (no build running, no unanswered question) when this run started. `company/BUILD_LOCK.json`
+was `{"locked": false}`. Checked STEP 1 (export waiting) first: the Design chat showed v463/v464 already built
+and smoke-tested (6 new badges: bogey-free, course record, course explorer, Go-Throw win streak, drafted-the-
+winner, comeback kid — issue #45, Phase 2 achievements). GitHub history showed v464 had **already been staged
+to test.html and promoted to index.html at 2026-08-05T17:55:36Z**, just before this run started (commit
+`8fda4ce70fdc7f8c11bb1ff3f938e2ed2ce8ee9e`, "Promote v464: #45 Achievements/badges"). So there was no pending
+export left to ship — the prior run/cycle had already closed it out. This run's job became: independently
+verify that promotion was real, since the task's Level 3 (functional, real browser) hadn't been evidenced yet
+in the log for v464.
+
+**3-level verification performed this run:**
+1. **Artifact** — downloaded "Chains Fantasy DGPT App v464.html" fresh from Design (three-dot menu), decompressed
+   all 93 gzip blobs, confirmed all 8 required markers present (`function authUid(`, `function _indexWrite(`,
+   `Teemu Paakinen`, `label: "In the Bag"`, `window.AuthGate`, `ANONYMOUS SESSIONS NO LONGER GRANT ACCESS`,
+   `window.ChainsImpact`, `window.ChainsAssets`), plus badge-specific content (`ChainsBadges.compute`,
+   `drafted_winner`, `bogey_free`, `comeback`). `window.CHAINS_VERSION = "v464"` confirmed in plaintext.
+2. **Deployment** — first fetch of `raw.githubusercontent.com/Bonnaroo/chains-app/main/index.html` came back
+   stale (`v462`, cached); a cache-busted re-fetch (`?cb=<timestamp>`) returned `v464` — CDN lag confirmed
+   and worked around per the skill, not mistaken for a broken deploy.
+3. **Functional** — opened `https://bonnaroo.github.io/chains-app/` live in a real browser tab (cache-busted
+   URL), phone-relevant dashboard loaded correctly with real league data (Cory 1st/58pts, standings, Discmania
+   Challenge picks-open card, Ledgestone Open results). Sidebar shows "V464". Navigated to Go Throw home:
+   **Badges — 1/14** shelf renders with all 14 icons including the 5 new ones from #45, "Drafted the Winner"
+   shown earned (trophy, highlighted) matching a real cross-referenced result. No console-visible errors, no
+   blank/broken states.
+
+**What this run PROVED:** v464 (#45 achievements/badges) is genuinely live and functional, not just committed
+— closing the gap between "promoted" and "verified" that the process requires. No rollback needed, no new code
+shipped this run (nothing was broken to fix, and Design had no new build queued or question pending).
+
+**BUILD_LOCK.json:** left as `{"locked": false}` — no build session opened this run (verification only, no
+prompt sent to Design).
+
+**Not touched this run:** ROUND_QUEUE.md phase-1 items (1-9) remain unchecked in that file even though
+STATE.md/LOOP_LOG history shows the last several cycles (v457-v464) actually shipped Phase-2/adjacent work
+(#7, #10, #11, #18, #44 timezone fix, #45 badges) — the queue markdown itself is stale and still flagged from
+a prior run as needing reconciliation; not re-litigated this run since Design had no open question and nothing
+was broken.
+
+**Next:** Design's chat is idle with no pending question — next run should open PHASE A on the next unresolved
+item. Two candidates carried from prior state: (a) reconcile ROUND_QUEUE.md checkboxes / GitHub Issues against
+what's actually shipped (#7/#10/#11/#18/#44/#45), since the queue file itself is stale and misleading; (b) the
+`$other`/`ledger`/`bugReports`/`config`/`friends`/`diagnostics`/`usernames`/`sharedBags`/`_trash`/`joinCodes`
+Firebase nodes still on broad `auth != null` — flagged for a dedicated security pass, still open.
