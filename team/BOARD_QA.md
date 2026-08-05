@@ -1,6 +1,30 @@
 # QA LANE BOARD
 <!-- Owned exclusively by this lane. Statuses: ASSIGNED -> IN_PROGRESS -> REVIEW -> DONE -->
 
+## 2026-08-05 02:45 UTC — [GPT] current-head + ready-export rejection
+
+**RESULT: FAIL / keep T-C04 IN_PROGRESS; ready export not staged.** Cache-busted production at
+`https://bonnaroo.github.io/chains-app/?cb=202608050235#dashboard` visibly reports v454 from app HEAD
+`fcb86480fa3ec1770277b759ccdcc9ad1a9283be`. Promoted `index.html` and staged `test.html` are byte-identical
+(blob `59642dea0b9ebf2c9638acb2ecc8660f9ea2ec68`, SHA-256
+`FA99551DE831B0AB48C88BBD4EF5744AD52F91E89B21E1A3019CE6B9CAE67085`). Decompressed source proves the active-
+round Discard path still fires `ChainsRounds.remove(cloudIdRef.current)` without await/return/result handling,
+then clears `chains_play_active` and exits. The unchanged callee can report `true` through an eight-second timeout.
+
+The authoritative Design project has a newer download named `Chains Fantasy DGPT App v456 (1).html`, SHA-256
+`AC4DBC3B17B2FDB2F570F101230F8C8B0D139FD6E0370DA839346D087A6A6A0B`. It improves the precondition by creating
+or adopting a round ID if scores exist and the ref is empty, but its Design summary explicitly says no await was
+added; source confirms the remove remains fire-and-forget and the export still embeds `window.CHAINS_VERSION =
+"v454"`. Fixing the missing-ID race is useful but does not satisfy ROUND_QUEUE #2's confirmed success/failure
+contract. Do not stage or deploy this artifact; PM/Engineer must return to the authoritative Design source.
+
+Secondary evidence: current `field.json` remains event 96415 / 116 MPO and matches PDGA's official 116 MPO count;
+all 12 visible T15 Player 1/2 controls remain disabled. Go Throw currently renders three identical LIVE NOW cards
+and nine ROUND IN PROGRESS controls (Tadpole Beach ×6, Otterburn ×2, Old Farm ×1); do not infer duplicate records
+until Firebase is inspected safely. Console again showed `/friendCodes/SRE3D7` `permission_denied`. No existing
+round was opened or deleted, and no app, Design, Firebase, pick, score, issue, rule, deployment, or `/league` data
+was changed.
+
 ## 2026-08-05 01:40 UTC — [GPT] v455 non-destructive verification finding
 
 **RESULT: FAIL / return to PM + Engineer; no live record deleted.** Production at
