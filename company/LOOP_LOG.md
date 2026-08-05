@@ -553,3 +553,38 @@ BOUNDED WAIT or move to BACKEND TRACK item 3 (now unblocked if test-account emai
 `playRounds` granular-rules item (editHistory/practice/notes/scorePatch/joinRequests still riding permissive
 `auth != null` — good next backend candidate once emails are known, or independently).
 
+
+---
+
+## 2026-08-05 — Cowork run (chains-design-loop)
+
+**BLOCKED-partial:** Chrome MCP connected fine (tabs_context_mcp returned a live tab group), but given
+bug #43 was already CLOSED/verified in the prior run (v456, confirmed again by re-reading STATE.md/LOOP_LOG
+this run) and the Design track needs no backend-only action right now, this run stayed on the BACKEND TRACK
+rather than opening the Design tab for a UI change that wasn't queued as ready.
+
+**Verified bug #43 status:** confirmed still closed — `company/STATE.md` and this log already record
+`remove()` awaiting `Promise.all(jobs)` + `rs.every(x => x !== false)` + `_failOnce` surfacing, shipped in
+v456. No regression found, no re-fix needed this run.
+
+**BACKEND TRACK item 5 — PROVED backup is real.** Fetched `Bonnaroo/chains-dgpt-data/data/backups/league-2026-08-04.json`
+via GitHub Contents API. `data.keys` contains `picks~46~1` through `picks~46~14` (all 14 scored events,
+T1–T14). Every one of the 14 picks keys has a non-empty, JSON-parseable array value (lengths 441–499 chars,
+6 members' picks each) — confirmed by decoding and `json.loads`-ing every `.v` string, not just checking key
+presence. Backup is genuinely restorable, not just a file that exists.
+
+**Flagging:** no `league-2026-08-05.json` backup exists yet as of this run (2026-08-05) — the most recent is
+`league-2026-08-04.json`. Per the backup skill, a missing daily backup is worth flagging rather than silently
+skipping. Did not run a fresh backup this cycle (kept scope to verification per item 5's wording); next run
+should either confirm the daily backup job caught up on its own or take one if it's still missing.
+
+**No Tier-3 changes. No deploy this run.** BUILD_LOCK.json confirmed `{"locked": false}` (read-only check,
+no write). Did not touch chains-fantasy `/league` or `/live` — all reads were against the already-committed
+GitHub backup file, not live Firebase.
+
+**Next in queue:** if `league-2026-08-05.json` is still missing next run, take a fresh Firebase `/league`
+backup (anonymous sign-in per chains-firebase-backup skill) and commit it. Otherwise: BACKEND TRACK item 3
+(cross-user negative test) still blocked on cory/kyle/shanna/gabe real emails — record them in STATE.md/team.md
+if found. Or pick up the `playRounds` granular-rules item (editHistory/practice/notes/scorePatch/joinRequests
+riding permissive `auth != null`) flagged by the audit as the next good backend candidate. Or check the Design
+tab for a #5 (pre-round cancel/back + pending-invite delete/view) export ready to stage.
