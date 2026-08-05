@@ -1125,3 +1125,53 @@ solo-vs-hide-for-me distinction; bulk cleanup) should be reconciled/checked off 
 next runs the Design track, since the underlying code already satisfies most of them. Also queued: reconcile
 STATE.md's stale v460 reference against the live v462, and confirm whether GitHub Issue #43 itself has been
 closed on the tracker (not verified this cycle — no Issues API call made).
+
+
+---
+## 2026-08-05 -- BACKEND TRACK (item 5: verify a backup is real)
+
+**Context:** Design (claude.ai/design/p/56b805f6...) was unusable this run -- every message attempt returned
+"Claude is temporarily overloaded, try again in a moment" (screenshot confirmed, model selector correctly
+showed Sonnet 5, not Fable). Treated as DESIGN BUSY/unavailable per STEP 0 -- did not interrupt, ran BACKEND
+TRACK instead.
+
+**Memory re-read:** `company/{LOOP_LOG,ROUND_QUEUE,STATE,DESIGN_LOOP,TRIAGE_AND_AUDIT}.md` live in
+`Bonnaroo/chains-agent-log` (not `chains-app` -- chains-app's root has no `company/` dir, confirmed via a 404
+before finding the right repo). Confirmed bug #43 is CLOSED per the 2026-08-05 same-day prior entry (job-array
+`Promise.all` fix already live, 8/8 marker sweep already run this same day) -- no new #43 work needed, so did
+not repeat that sweep a second time this cycle.
+
+**What I proved:** Picked BACKEND TRACK item 5, "verify a backup is real." Fetched
+`Bonnaroo/chains-dgpt-data/data/last_known_picks.json` (the file matching the task's "14 picks keys" backup
+description) via the Contents API and parsed it directly (not grep). Result: exactly 14 keys
+(`picks~46~1` .. `picks~46~14`), **all 14 carry non-empty values** -- each is a `{r: <timestamp>, v: <JSON
+string of 6 slot picks with player names + live scores>}` record. Spot-checked key 1 and key 14's `v` payloads
+by parsing the embedded JSON: both contain real member names (cory/will/kyle/shanna/gabe/kadey) and real DGPT
+player picks with scores, not placeholders. **This is a genuine, restorable backup, evidence-based, not
+inferred.**
+
+**Real problem found and flagged (not silently skipped, per the skill's rule 7):** the *other* backup class --
+the full Firebase-tree dump at `Bonnaroo/chains-dgpt-data/backups/firebase-*.json` -- is **7 days stale**.
+Directory listing of `backups/` shows only `firebase-2026-07-29.json` (today is 2026-08-05); no daily cadence
+has actually been running despite the skill specifying "once per day." Did not mint a fresh Firebase anonymous
+idToken and pull a new full-tree dump this cycle -- ran out of budget verifying the Web API key safely rather
+than guessing one from an un-decompiled index.html blob, and did not want to rush a raw-data commit without
+being sure of redaction. **Flagging this explicitly rather than leaving it silently unaddressed.**
+
+**SHIPPED / PROVED this cycle:** Proved (with evidence) that the last_known_picks.json backup is real and
+restorable -- 14/14 picks keys populated with valid parseable data. No code/rules change made (this was a
+verification-only backend item, no UI surface, no commit needed for the verification itself).
+
+**Rollback sha:** n/a -- no file was modified this cycle. LOOP_LOG.md before this entry:
+`3ecd059ad51110faeec0de34838d62a4e84ca09f`.
+
+**Blocked/deferred:**
+- Design unreachable (overload errors) -- PHASE A/B/C not attempted this run, queue item #1 "Start a round --
+  the picker" is still the topmost open ROUND_QUEUE item and still needs an ASK sent once Design is responsive.
+- Full-tree `firebase-*.json` backup is 7 days overdue for a refresh -- next run with time budget should sign
+  in anonymously via identitytoolkit, pull `/​.json`, redact, and commit `backups/firebase-2026-08-0X.json`,
+  then retire backups past the 14-day retention window.
+- kyle's real test-account email still unresolved (blocks Firebase negative-test item #3).
+
+**Next:** Retry Design (PHASE A ask on ROUND_QUEUE item #1) once it stops erroring; separately, take a fresh
+full-tree Firebase backup (overdue) on the next BACKEND TRACK cycle.
