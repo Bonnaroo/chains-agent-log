@@ -267,3 +267,26 @@ Both remain UNRESOLVED and escalated for LANE:DESIGN/ENGINEER action.
   or legacy `chains-fantasy /league` data changed; issue #1 was not re-probed. Next: PM/Engineer fix the authoritative
   caller/callee await contract and triage the pick-role/duplicate-card/friend-code findings; independent QA then
   uses a newly created backed-up test round to verify delete persistence after reload.
+
+- 2026-08-05 02:45 UTC | [GPT] | QA ran the current-head plus ready-export T-C04 slice under verified lock
+  `ACTIVE 2026-08-05T02:31:01Z GPT/dispatcher clock-in`; board-start commit
+  `aaea79a2e965bfe517f71a4d73b9d7c06f015c91` and evidence commit
+  `9afdf3e9e59c905b322014b61d82d3d754b13814`. PASS: cache-busted production at 390×844 visibly reports
+  `Fantasy DGPT v454` from app HEAD `fcb86480fa3ec1770277b759ccdcc9ad1a9283be` and loads current league/T15 data
+  without an initialization hang. Promoted `index.html` and staged `test.html` are byte-identical at 2,368,967
+  bytes, git blob `59642dea0b9ebf2c9638acb2ecc8660f9ea2ec68`, SHA-256
+  `FA99551DE831B0AB48C88BBD4EF5744AD52F91E89B21E1A3019CE6B9CAE67085`. FAIL: the active-round Discard still
+  fires `ChainsRounds.remove(cloudIdRef.current)` without await/return/result handling, immediately clears
+  `chains_play_active`, and exits; the unchanged callee can return `true` from an eight-second timeout before its
+  writes settle. The ready Design download `Chains Fantasy DGPT App v456 (1).html`, 2,368,887 bytes, SHA-256
+  `AC4DBC3B17B2FDB2F570F101230F8C8B0D139FD6E0370DA839346D087A6A6A0B`, usefully closes the missing-ID race by
+  creating/adopting a round ID before remove, but source and Design summary both confirm no await/result branch;
+  it also embeds `window.CHAINS_VERSION = "v454"`. QA rejected it before staging or deployment. T15 evidence stayed
+  aligned at 116 MPO in current `field.json` and official PDGA; no official Round 1 tee-time table was found. All
+  12 visible T15 Player 1/2 controls remained disabled. Go Throw showed three identical LIVE NOW cards and nine
+  ROUND IN PROGRESS controls (Tadpole Beach ×6, Otterburn ×2, Old Farm ×1); duplicate record vs duplicate render is
+  unproven. Console again showed `/friendCodes/SRE3D7` `permission_denied`. No existing round was opened or deleted;
+  no app, Design project, Firebase, pick, score, issue, rule, deployment, or legacy `/league` data changed. Next:
+  PM/Engineer retain the useful ID-race fix but implement a real awaited/branched delete result in the authoritative
+  Design source; independent QA then downloads/hashes the next export before staging and uses only a newly created,
+  backed-up test round after source acceptance passes.
