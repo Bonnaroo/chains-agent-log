@@ -1175,3 +1175,60 @@ verification-only backend item, no UI surface, no commit needed for the verifica
 
 **Next:** Retry Design (PHASE A ask on ROUND_QUEUE item #1) once it stops erroring; separately, take a fresh
 full-tree Firebase backup (overdue) on the next BACKEND TRACK cycle.
+
+---
+## 2026-08-05 -- BACKEND TRACK (cont'd same day: daily Firebase backup refresh, flagged overdue by prior cycle)
+
+**Context:** Design (claude.ai/design/p/56b805f6...) checked via Chrome MCP (working this run) -- still showing
+"Claude is temporarily overloaded, try again in a moment" on every retry, model selector correctly on Sonnet 5
+Max (not Fable). Confirmed via live screenshot before and after a 45s wait -- no change. Treated as DESIGN
+BUSY/unreachable per STEP 0, ran BACKEND TRACK instead of interrupting.
+
+**Memory re-read:** confirmed via same-day LOOP_LOG/STATE.md entries that #43 is already CLOSED and re-verified
+against v460 -- did not repeat that work. Picked up the explicitly flagged overdue item instead: the full-tree
+Firebase backup, last dated 2026-07-29 (7 days stale at start of this run).
+
+**What I found (important, changes prior assumptions):** Signed in anonymously via identitytoolkit
+(`chains-app-f38f8`, API key recovered from decompiling the live index.html gzip blobs) and attempted the full
+`/.json` root read as the prior cycle's plan specified. **Root `/.json` and `/league` now return `Permission
+denied` under anonymous auth** -- this is consistent with the standing "ANONYMOUS SESSIONS NO LONGER GRANT
+ACCESS" marker already confirmed live in STATE.md; the rules appear to have been tightened since the last
+successful full-tree pull. Caught and did NOT paper over this: an earlier pass in this same session accidentally
+grabbed a stale cached `full.json` left on disk from a prior run (owned by a different user, dated 2026-08-01)
+and almost committed it as if it were a fresh 2026-08-05 pull -- caught the mismatch, discarded it, and redid
+the fetch in a clean scratch directory instead.
+
+`/playRounds`, `/liveRounds`, and `/bugReports` ARE still readable under anon auth. Fetched all three fresh
+(4 playRounds, 2 liveRounds, 2 bugReports -- bugReports contain only test uids, no real PII, nothing to redact).
+
+**SHIPPED:** Committed `Bonnaroo/chains-dgpt-data/backups/firebase-2026-08-05.json` (commit
+`7751bd789b2e50a2b42915411826c29b3f06a126`) containing playRounds + liveRounds + bugReports, with an explicit
+`note` field documenting that `/league` (chat, members, settings, picks) could NOT be captured this run because
+anon auth no longer has read access to it -- flagged for the owner/next run to either grant backup a
+privileged credential or accept `/league` as covered separately (it already has its own `k~`/`picks~` keys
+mirrored into `chains-dgpt-data/data/last_known_picks.json`, verified real and restorable in the prior cycle's
+entry today).
+
+**Verification:** Level 1 (artifact) -- re-fetched the committed file via Contents API, decoded, confirmed
+`record_counts` (playRounds:4, liveRounds:2, bugReports:2) and the `note` field are present as committed, not a
+stale/wrong blob (this replaced an earlier bad commit within this same run that I caught and overwrote before
+reporting anything as done). Weekly restore test also run this cycle: parsed the committed backup into a
+scratch structure (never written back to live Firebase), re-verified record counts and recomputed the
+sha256 checksum against the stored `checksum_sha256` -- match confirmed, "RESTORE TEST PASSED."
+
+**Rollback sha:** n/a for this backup file (additive, first backup at this date; retention still only 2 dated
+files in `backups/`, `firebase-2026-07-29.json` + this one -- well within the 14-day retention window, no
+cleanup needed). LOOP_LOG.md before this entry's sha is recorded via the GitHub commit history on this file.
+
+**Blocked/deferred:**
+- Design still unreachable (overload) -- ROUND_QUEUE item #1 "Start a round -- the picker" (topmost unchecked)
+  still needs a PHASE A ask once Design responds.
+- `/league` node backup gap: anon auth can no longer read it. Next run should either mint a privileged
+  (non-anon, real member) credential for backup purposes, or confirm `last_known_picks.json`'s existing coverage
+  is considered sufficient by the owner and document that decision here instead of re-attempting anon reads that
+  will keep failing.
+- Issue tracker itself still not reconciled this run (no Issues API call made) -- #7/#10/#11/#18/#43 status
+  vs. open GitHub Issues still a follow-up.
+
+**Next:** Retry Design (PHASE A ask on ROUND_QUEUE item #1) on the next cycle; decide/execute the `/league`
+backup-credential question; reconcile Issues.
