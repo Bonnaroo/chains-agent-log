@@ -88,3 +88,69 @@ standings/picks/live-chains data) felt solid and on-brand once the sync layer is
   successfully (4 pre-purge records, each with real hole-by-hole data) — a real, restorable backup, not an
   untested one. Note it reflects the PRE-purge state; today's purge should get a fresh post-purge backup
   committed so the backup and live state don't drift.
+
+
+## 2026-08-05 (later run) — Field Tester run (account: fieldtest0805, fresh signup)
+
+A second pass the same day, using a brand-new throwaway signup instead of `shanna`, specifically to rule
+out any stale-localStorage explanation for the picker leak the earlier run today fixed.
+
+**Worst thing found:** confirmed the earlier run's [chains-app#6](https://github.com/Bonnaroo/chains-app/issues/6)
+end-to-end with a genuinely fresh account — scored and finished a real round, got *"Round finished, but the
+cloud didn't update — it'll retry,"* then watched the round vanish completely on next sign-in. `playRounds`
+and `liveRounds` both confirmed empty via direct read. Full details, plus a same-shaped `friendCodes` bug and
+an unexplained `/usernames` no-show for new signups, added as a comment on #6 rather than re-filing.
+
+### What I fixed and shipped this run
+**chains-app commit `2be086a` (index.html, GroupPick roster builder):** a *different* stale-partner bug
+than the one fixed earlier today. `GroupPick`'s roster builder unconditionally merged the ENTIRE league
+roster (`ChainsEngine.members()`) into every signed-in user's "Who's playing?" picker, regardless of actual
+friend status — a `// for the current testers` scaffold left in production. Reproduced on `fieldtest0805`,
+a brand-new account with zero prior localStorage/session history on this device, so this is provably not the
+same root cause as the earlier localStorage-namespacing leak — both bugs were live at once, independently.
+Removed the unconditional merge; roster is now self + `ChainsFriends.list()` + guests only. Verified all 3
+levels (artifact decompress-and-search, live CDN re-fetch, functional retest in-browser): the picker now
+shows only the signed-in player, defaults to solo, and guests still add normally.
+
+### Walkthrough — what I actually did
+1. **Player picker** — FAIL, then fixed (see above). Confirmed clean after the fix: fresh account, solo
+   default, no unaffiliated players offered.
+2. **Add a second player** — PASS, via "Add a guest" (no friends existed to add by design, for a fresh
+   account).
+3. **Score 6+ holes** — PASS on speed (one tap per player per hole). FAIL on sync, every hole — same
+   `PERMISSION_DENIED` pattern as #6.
+4. **Edit a score** — PASS on the UI edit itself (hole 1, 4→5, applied instantly). Could not verify the
+   edit-history audit UI — blocked by #6 (round never reached a state where history was inspectable before
+   it disappeared).
+5. **Reload mid-round** — PASS. "Resume round in progress" correctly restored all 6 holes including the
+   edited one, from the local mirror.
+6. **Finish + delete** — finished cleanly in the UI, but the round was already gone from "Recent Rounds" on
+   the very next screen, before I ever got to tap delete. Confirmed absent from both `playRounds` and
+   `liveRounds` directly. This is #6, not a separate delete bug — there was nothing server-side to delete.
+7. **Other screens** — In the Bag loaded fine with real disc-database search (1197 discs) and a pre-seeded
+   starter disc already in the bag for a brand-new account (a Destroyer marked "Lost" — worth a look, low
+   priority, not chased further this run). League-scoped screens (Standings/Picks/Live Chains) aren't
+   reachable for a leagueless fresh account by design ("you're not in a league yet") — not a bug, and the
+   Dashboard/standings view was already confirmed loading real data for an existing member earlier this run
+   before switching accounts.
+
+### Session note
+Hit the same dangerous auto-fill risk the earlier run flagged: after the round-finish sync failure, the app
+dropped back to the login screen pre-filled with **Will's saved username + password**. Did not submit it;
+cleared the fields and signed back in as the test account. Confirming this is still live and worth Design's
+attention independent of #6.
+
+### Data-truth checks
+- `playRounds` / `liveRounds`: both 0 records, no orphans — consistent with the earlier run's post-purge
+  state; nothing new landed because #6 blocks all writes.
+- `usernames`: cory/kadey/shanna/will now show real per-account Firebase uids (previously placeholder
+  `uid: "<username>"` entries) — looks like account migration progressed during today's window. The earlier
+  `qatest43_w69cr` stale test entry seen at the very start of this run was gone by the time of the
+  data-truth check; not chased further (unclear if cleaned up by another process or expired).
+- Backup health: `rounds-2026-08-05.json` and `league-2026-08-05.json` both exist, fetched and parsed
+  successfully. No new post-purge backup was needed this run since no new writes landed (blocked by #6).
+
+### What still doesn't feel like UDisc
+Same verdict as the earlier run today: sync reliability is the blocker. Everything that doesn't touch
+`playRounds`/`liveRounds`/`friendCodes` (picker composition once fixed, scoring taps, guest-add, resume,
+In the Bag) felt genuinely solid and on-brand.
