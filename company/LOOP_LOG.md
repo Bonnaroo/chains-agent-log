@@ -684,3 +684,49 @@ gabe's `chains1234` logins are currently failing — `ACCESS.md` test-account ta
 worth a owner check before relying on all four accounts again; (c) resume the queued item from the
 prior run — Design tab check for a #5 (pre-round cancel/back + pending-invite delete/view) export,
 or the `league-*.json` backup credential gap.
+
+---
+
+## 2026-08-05 -- Cowork autonomous run -- browser available, BACKEND TRACK (STATE.md regen)
+
+**Item / phase:** BACKEND TRACK. Browser connected fine (claude.ai/design tab loaded, no computer-use
+fallback needed). Read the Design project chat before touching anything: Design was not blocked waiting on a
+question -- last message was "v460 built ... out for verification now" for ROUND_QUEUE #18. No PHASE B
+response needed. Did not interrupt Design or build UI.
+
+**What happened:** Fetched company/LOOP_LOG.md and company/STATE.md from Bonnaroo/chains-agent-log first, per
+process. STATE.md was still stale at v456/#43-just-closed, even though the Design transcript showed v457, v458,
+v459, and v460 had since shipped (#7 resume-round dashboard card, #10 mobile version tag, #11 in-app bug report
+modal, #18 registered-field tab promotion). Verified independently against live truth, not the transcript:
+fetched index.html via GitHub Contents API (sha `9f3fe7d77568588bc7f4b11a940bf423141afcad`, 2,373,523 bytes),
+confirmed `raw.githubusercontent.com/.../main/index.html` is byte-identical (md5 `83724f2cd1bac...`) to the
+committed copy -- CDN not lagging. Decompressed all 93 embedded gzip/base64 blobs (6.13M chars decoded) and
+confirmed `CHAINS_VERSION = "v460"`, all 8 standing regression markers present, and #43's fix intact and
+unregressed since v456 (`_indexWrite` returns real true/false; `ChainsRounds.remove()` does
+`Promise.all(jobs).then(rs => rs.every(x => x !== false))` with `_failOnce` on partial failure -- exact same
+logic re-checked against v460's decompiled source, byte-for-byte the same control flow as when it was verified
+at v456).
+
+Regenerated `company/STATE.md` from scratch against this evidence: updated live version/size/sha/md5, kept all
+8 markers, added a "Since STATE.md was last accurate" section logging what v457-460 shipped (sourced from the
+Design chat transcript, clearly labeled as transcript-derived rather than independently verified per-feature),
+and flagged what still needs a follow-up: season/field.json section carried over unverified (should be
+re-fetched next run), and the GitHub Issues list itself was not reconciled -- #7/#10/#11/#18 look shipped but
+their issue-tracker entries weren't checked/closed this run, that's flagged as next-step, not done.
+
+**Evidence:** STATE.md commit sha `1877a771307d596757603d329dc7432e1332af56` (new content sha
+`6db0d27a5420811b1f91b3bc6910368c48c9310a`), fetched back and confirmed live via
+`raw.githubusercontent.com/Bonnaroo/chains-agent-log/main/company/STATE.md` -- reads "Live version: `v460`".
+index.html: committed sha `9f3fe7d77568588bc7f4b11a940bf423141afcad`, CDN vs committed md5 match
+`83724f2cd1bac3e671c920bdc1aa9c68`. No changes made to chains-app/index.html this run -- backend item was a
+memory-file regen, not a code patch (bug #43 was already fixed and re-confirmed unregressed, no further action
+needed there).
+
+**No Tier-3 items touched.** No UI built (Design's lane). No Firebase rules changed. No irreversible actions.
+
+**Next:** (1) re-fetch field.json and re-verify the season/registered-field block in STATE.md, it was carried
+over unverified this run. (2) Reconcile GitHub Issues #7/#10/#11/#18 against ROUND_QUEUE.md and close/update
+the ones that match v457-460's shipped work -- STATE.md now flags this gap but doesn't fix it. (3) If browser
+available, check whether Design has moved past #18/started the next ROUND_QUEUE item and whether it's asking
+a PHASE A/B question. (4) kyle's real test-account email still unresolved, still blocks the negative-test
+Firebase rules BACKEND TRACK item.
