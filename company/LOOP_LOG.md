@@ -957,3 +957,110 @@ real email.
   standalone fix for a future cycle -- affects more than just #44; (3) joinRequests/requests open-write
   hole still needs an owner decision; (4) continue treating plain Contents-API/raw.githubusercontent.com
   reads as potentially CDN-stale -- Git Blobs API off a fresh HEAD commit sha remains the reliable source.
+
+
+---
+
+## 2026-08-05 -- BACKEND TRACK (Design blocked: "temporarily overloaded")
+
+**Step -1 (browser):** Chrome MCP connected fine, navigated to the Design project successfully.
+**Step 0:** Design was NOT mid-build -- it had asked a Phase-A question on ROUND_QUEUE #45
+(Achievements/badges) and then hit repeated "Claude is temporarily overloaded" errors in the
+composer, unanswered. Not a busy/mid-task state to avoid interrupting -- just stuck/erroring, so no
+new message was sent to it this cycle (retrying a visibly overloaded session isn't productive).
+Confirmed model is Sonnet 5 Max (not Fable) -- rule satisfied, no switch needed.
+
+**Regression sweep (fresh reads, not trusted from old logs):**
+- Fetched committed `index.html` from `Bonnaroo/chains-app` (sha `1c13b0bf...`) and the live CDN copy
+  (cache-busted). Both are byte-identical (2,373,827 bytes) and both report `window.CHAINS_VERSION =
+  "v462"` -- matches the last-known version, NOT a drop. No production incident.
+- All 8 regression markers present via the decompress-and-search method (not plain grep): `function
+  authUid()` x1, `function _indexWrite(` x1, `Teemu Paakinen` x1, `label: "In the Bag"` x1,
+  `window.AuthGate` x2, `ANONYMOUS SESSIONS NO LONGER GRANT ACCESS` x3, `window.ChainsImpact` x1,
+  `window.ChainsAssets` x18.
+
+**PRIORITY FIX #43 -- re-verified, already shipped correctly (v462, no action needed this cycle):**
+Read `ChainsRounds.remove()` and `_indexWrite()` directly out of the decompressed committed blob.
+Confirmed the real fix is live: `remove()` builds a `jobs[]` array (multi-path RTDB update +
+`_indexWrite` clear + legacy chains-fantasy REST delete), awaits `Promise.all(jobs)`, and only reports
+success if `rs.every(x => x !== false)` -- a failed index-clear or legacy-store delete now correctly
+flips the result to `false` and surfaces a toast ("Couldn't delete that round everywhere..."), instead
+of the old bug of checking only job[0]. `_indexWrite` itself returns `false` on a rejected promise
+rather than swallowing the error. This matches STATE.md's note that #43 was closed in an earlier
+cycle -- confirmed still true and not reverted by later Design builds (v460-v462 touched Players/#44
+timezone code, not ChainsRounds).
+
+**SHIPPED this cycle -- backend track item 3, negative-test Firebase rules + found & fixed a real hole:**
+1. Signed in real test accounts via `identitytoolkit.googleapis.com` REST (`kyle` and `gabe` logins
+   FAILED -- `INVALID_LOGIN_CREDENTIALS`, consistent with STATE.md's note that kyle's real test
+   credentials are still unresolved; `cory` and `shanna` signed in fine, used as the A/B pair).
+2. Correct denials confirmed (evidence, HTTP 401 = Firebase's permission-denied over REST):
+   - shanna reading `users/{cory}` -> 401 Permission denied.
+   - shanna writing `users/{cory}/rounds/...` -> 401 Permission denied.
+   - shanna writing `playRounds/{coryRound}/practice` (owner-only field) -> 401.
+   - shanna deleting `playRounds/{coryRound}` outright -> 401.
+   - shanna writing a fake join request as `joinRequests/{coryUid}` -> 401.
+   (shanna self-adding to `playRounds/{coryRound}/players/{shannaUid}` succeeded -- 200 -- but that's
+   the intended join mechanic, `$key === auth.uid`, not a hole.)
+3. **Found a real, live privilege-escalation hole:** the `admins` node's rule was
+   `".write": "auth != null"` -- ANY authenticated user (a plain test account) could write
+   `admins/{ownUid} = true` and self-grant the app's owner/god-view mode
+   (`admins/{uid}===true` gates `window.ChainsFB` owner tools per the app source). Proved it live:
+   `shanna` PUT `admins/{shannaUid}=true` -> **200 OK, write succeeded** -- confirmed via readback
+   that Firebase then listed shanna alongside the real owner uid (`wp1ywNFroiZzCOUqvezfuJYYAYd2`).
+   Immediately cleaned up (shanna deleted her own escalated grant, verified admins node back to just
+   the real owner).
+4. **Backed up rules before changing anything:** fetched LIVE rules fresh via the admin service-account
+   JWT-bearer OAuth exchange (key file at `Downloads/chains-app-f38f8-firebase-adminsdk-*.json`,
+   scopes `firebase.database` + `userinfo.email` -- the `userinfo.email` scope was required for the
+   rules-read endpoint to authorize; database-only scope alone returned "Unauthorized request").
+   Diffed live rules against the committed `company/backups/firebase-rules-chains-app-f38f8.json` --
+   **exact match**, no drift, so that file also became the accurate "before" backup.
+5. **Fixed:** changed only the `admins` node's `.write` rule to
+   `"auth != null && root.child('admins').child(auth.uid).val() === true"` -- write now requires the
+   caller to already be an admin (owner's existing `admins/{ownerUid}=true` grant is preserved and
+   still lets them promote future admins from the app; nobody else can self-escalate anymore).
+   `.read` on `admins` left unchanged (still `auth != null` -- app code reads this client-side to gate
+   the owner-tools UI, no PII exposed by the node itself, only booleans keyed by uid). Left every other
+   node's ruleset untouched (`friends`, `joinCodes`, `bugReports`, `config`, `ledger`, `diagnostics`,
+   `usernames`, `liveRounds`, `sharedBags`, `$other` all remain broad `auth != null` -- these looked
+   intentionally shared/cross-referenced from the app's own UI patterns and were NOT proven to be
+   exploitable the way `admins` was; flagging as lower-confidence [needs-owner-decision] follow-up
+   rather than touching them without stronger evidence this cycle).
+6. **Re-verified the fix live:** re-ran the exact same `shanna` self-escalation PUT post-fix ->
+   **401 Permission denied** (was 200 before). Confirmed `admins` read still works for shanna (unchanged
+   by design) and the real owner uid is still present and unaffected.
+7. Committed the new ruleset as the updated ground-truth backup to
+   `company/backups/firebase-rules-chains-app-f38f8.json` (commit `770e686b...`) with a message
+   documenting the hole and the fix; the prior (vulnerable) ruleset remains recoverable from that
+   file's git history if a rollback is ever needed.
+
+**Evidence retained locally this session** (not committed, contains no secrets beyond already-known
+test-account tokens which expire in ~1h): sign-in responses, before/after `admins` rule JSON, and the
+raw HTTP transcripts for every test above, under `scratch/work/negtest/` and `scratch/work/*.json`.
+
+**Rollback point for this cycle:** rules backup commit prior to this fix was
+`67fdadb2e23e8fbb80c07fee9afd1bb1ffa3a114` (the vulnerable, but currently-live-matching, ruleset) --
+if the tightened `admins` rule ever blocks a legitimate owner action, that commit has the exact prior
+JSON to restore via the same OAuth PUT method.
+
+**Did NOT do:** did not touch `chains-fantasy` `/league` or `/live` (read-only, untouched). Did not
+change scoring/league rules, monetization, branding, or auth *mechanism* (this was an authorization
+*rule* tightening on an existing, already-broad ruleset -- explicitly in-scope per the task's own
+backend-track item 3 instruction to "back up... then fix" a found hole, not a Tier-3 auth-mechanism
+change). Did not attempt to resolve kyle's still-broken test login (still [needs-owner-decision] /
+follow-up, blocks a fully 4-account negative-test matrix). Did not send Design a new task while its
+composer was erroring.
+
+**What should happen next run:**
+1. Re-check whether Design's "#45 Achievements/badges" Phase-A question is still pending or got
+   answered after this cycle ended -- if Design recovered from the overload, rule on it before
+   building anything new.
+2. Consider tightening `friends`, `joinCodes`, `bugReports`, `config`, `ledger`, `diagnostics` in the
+   same way if a similar self-escalation or cross-user-tamper path is found in a future audit -- not
+   proven exploitable yet, just broader than ideal.
+3. kyle's test-account login is still broken (`INVALID_LOGIN_CREDENTIALS`) -- needs the owner to reset
+   or confirm the real password/email before a full 4-account negative-test matrix is possible.
+4. #43, #44 (except server-side enforcement + autopick-policy, both correctly left as
+   [needs-owner-decision]), and this cycle's admins-rule fix are all confirmed live and verified --
+   no known regressions to chase into next cycle.
