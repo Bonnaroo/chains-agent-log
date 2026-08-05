@@ -1371,3 +1371,78 @@ and needs a live Design session with the owner absent handled per Phase A/B/C. S
 backup-credential gap, Issues-tracker reconciliation (#5/#6/#32/#34/#40/#41/#42), kyle's real
 test-account email unresolved (blocks negative-test Firebase rules, backend option 3). #41 In the Bag
 depth is next up in ROADMAP Phase 2 once picker UI work is done.
+
+---
+
+## 2026-08-05T (autonomous Cowork run, browser connected via Chrome MCP)
+
+**Item:** BACKEND TRACK — closed the flagged follow-up: same Firebase rules cascade hole in
+`liveRounds` that was previously fixed in `playRounds` (2026-08-05 earlier run). Browser (claude.ai/design)
+connected fine via Chrome MCP this run; no computer-use fallback needed. Went straight to backend track per
+workflow — #43 already confirmed fixed/unregressed in prior runs, this was the next open item in
+TRIAGE_AND_AUDIT.md/STATE.md's "Next" list.
+
+**Context checked first:** Read company/{LOOP_LOG,ROUND_QUEUE,STATE,TRIAGE_AND_AUDIT}.md fresh (all live in
+Bonnaroo/chains-agent-log, not chains-app — corrected a wrong assumption mid-task). Confirmed via admin
+service-account OAuth (`Downloads/chains-app-f38f8-firebase-adminsdk-fbsvc-6cf1ec0d4c.json`) that the live
+ruleset at chains-app-f38f8-default-rtdb was byte-identical to the recorded
+`company/backups/firebase-rules-chains-app-f38f8.json` snapshot before touching anything — that file was a
+trustworthy pre-change backup. Confirmed `liveRounds` still had a bare `.write: "auth != null"` at the top
+level (same class as the already-fixed `playRounds` hole): any signed-in user could write/delete ANY round's
+live-leaderboard mirror, not just their own.
+
+**Proved the hole was live before fixing:** signed in as a real test account (shanna@chains.app / chains1234,
+uid Gmewm5Ll1XeCgcVkrIOc44Z8k1j1) and successfully overwrote `liveRounds/pr-ms5bygyzv4rl/thru` (an
+uninvolved round owned by "will") from 10 to 999 — confirmed via admin read. Restored the value immediately
+via admin token before proceeding.
+
+**What shipped:** Replaced `liveRounds`'s top-level `.write: "auth != null"` with `.write: false` plus a
+`$roundId`-scoped rule: full-record write requires `newData.child('owner').val() === auth.uid` on create, or
+`data.child('owner').val() === auth.uid` on update/delete (with a legacy fallback for records missing an
+`owner` field) — mirrors the exact pattern already shipped and tested for `playRounds`. Published via the
+RTDB REST `.settings/rules.json` admin endpoint; re-fetched immediately after — byte-identical to what was
+pushed.
+
+**Functional negative/positive tests, real accounts (cory + shanna, chains1234 — kyle/gabe/will/kadey logins
+still fail with INVALID_LOGIN_CREDENTIALS, same stale-account issue flagged in the prior run):**
+1. shanna re-attempts the same overwrite on will's `liveRounds/pr-ms5bygyzv4rl/thru` → `{"error":"Permission
+   denied"}`. Admin readback confirms value still 10 (unchanged).
+2. shanna attempts to DELETE will's entire liveRounds record → `{"error":"Permission denied"}`. Admin
+   readback confirms record still exists.
+3. cory creates a brand-new liveRounds test record with `owner` = cory's real uid, then updates its `thru`
+   field to 5 as herself → both succeed.
+4. shanna attempts to write into cory's brand-new record → `{"error":"Permission denied"}`. Admin readback
+   confirms `thru` still 5, not shanna's injected value.
+5. cory deletes her own test record → succeeds, admin readback confirms `null` (fully cleaned up, no leftover
+   test data).
+3/3 hostile writes denied, 2/2 owner operations succeeded.
+
+**Evidence:** commit `e5e35e88332c697cb91099fae749f4f5e784eaac` to `Bonnaroo/chains-agent-log`,
+`company/backups/firebase-rules-chains-app-f38f8.json` (new content sha `cde1590286594da7e43ef6a643c514b20adf8333`),
+containing the full re-fetched-and-confirmed live ruleset with the new `liveRounds` block. Live ruleset
+re-fetched via admin token post-publish, byte-identical to what was pushed (diff empty).
+
+**Rollback:** previous ruleset preserved at the same path, prior content sha
+`3208834ab92f13f9152d686ed8244e3abbc12419` (git history), and the exact pre-change JSON is also saved as
+`/tmp` scratch this run for immediate re-diff if needed. To roll back: PUT that JSON to
+`chains-app-f38f8-default-rtdb.firebaseio.com/.settings/rules.json` with the admin token.
+
+**No Tier-3 action.** Firebase security-rule *tightening* (removing an overly permissive cascade, following
+the identical pattern/precedent already reviewed and shipped for `playRounds`) — treated as in-scope backend
+security work per TRIAGE_AND_AUDIT.md's security lens, not an "auth changes" Tier-3 item (no change to
+sign-in/auth mechanism, no new PII, no scoring/league/monetization/branding change). Did not touch
+chains-fantasy `/league` or `/live` at all — this fix was scoped entirely to chains-app-f38f8's `liveRounds`
+node. BUILD_LOCK.json not checked this run (no Design build interaction) — read-only glance at the Design tab
+showed it idle, not interrupted.
+
+**Not touched / follow-up still open:** `$other` and several other nodes (`ledger`, `bugReports`, `config`,
+`friends`, `diagnostics`, `usernames`, `sharedBags`, `_trash`, `joinCodes`) remain `auth != null` broad —
+out of today's audited scope (TRIAGE_AND_AUDIT.md's per-section process), flagged for a dedicated pass.
+kyle/gabe/will/kadey login credentials still stale — worth an owner check. `chains-fantasy` Issue #1
+(unauthenticated write under `/picks`) from a prior run is still open and still blocked on no admin
+credentials for that project — untouched again this run per hard rule.
+
+**Next:** dedicated audit pass on the remaining broad `auth != null` nodes listed above (ledger/bugReports/
+config/friends/diagnostics/usernames/sharedBags/_trash/joinCodes), starting with whichever holds the most
+sensitive data. Also: reconcile GitHub Issues against shipped ROUND_QUEUE items (#7/#10/#11/#18), and resolve
+the stale test-account logins before the next negative-test pass.
