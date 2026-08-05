@@ -1,0 +1,116 @@
+{
+ "rules": {
+  "leagues": {
+   "$leagueId": {
+    ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+    ".write": "auth != null",
+    "meta": {
+     ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+     ".write": "root.child('leagues').child($leagueId).child('commissioner').val() === auth.uid"
+    },
+    "members": {
+     ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()",
+     "$userId": {
+      ".write": "$userId === auth.uid || root.child('leagues').child($leagueId).child('commissioner').val() === auth.uid"
+     }
+    },
+    "standings": {
+     ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()"
+    },
+    "rounds": {
+     ".read": "root.child('leagues').child($leagueId).child('members').child(auth.uid).exists()"
+    }
+   }
+  },
+  "users": {
+   "$userId": {
+    ".read": "$userId === auth.uid",
+    ".write": "$userId === auth.uid"
+   }
+  },
+  "ledger": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "bugReports": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "friendCodes": {
+   ".read": "auth != null",
+   "$code": {
+    ".write": "auth != null && ( (!newData.exists() && data.child('uid').val() === auth.uid) || (newData.exists() && newData.child('uid').val() === auth.uid) )"
+   }
+  },
+  "config": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "admins": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "joinCodes": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "friends": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "diagnostics": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "playRounds": {
+   ".read": "auth != null",
+   ".write": "auth != null",
+   "$roundId": {
+    "joinRequests": {
+     ".read": "auth != null",
+     "$uid": {
+      ".write": "auth != null && ( (auth.uid === $uid && newData.exists()) || root.child('playRounds').child($roundId).child('owner').val() === auth.uid || (auth.uid === $uid && !newData.exists()) )",
+      ".validate": "!newData.exists() || newData.hasChildren(['ts'])"
+     }
+    }
+   }
+  },
+  "usernames": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "sharedBags": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "_trash": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "liveRounds": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "$other": {
+   ".read": "auth != null",
+   ".write": "auth != null"
+  },
+  "leagueCodes": {
+   ".read": "auth != null",
+   "$code": {
+    ".write": "auth != null && ( (!newData.exists() && root.child('leagues').child(data.child('leagueId').val()).child('commissioner').val() === auth.uid) || (newData.exists() && root.child('leagues').child(newData.child('leagueId').val()).child('commissioner').val() === auth.uid) )",
+    ".validate": "newData.hasChildren(['leagueId','createdBy','ts','active'])"
+   }
+  },
+  "friendRequests": {
+   "$uid": {
+    ".read": "auth != null && auth.uid === $uid",
+    "$from": {
+     ".read": "auth != null && (auth.uid === $uid || auth.uid === $from)",
+     ".write": "auth != null && ( (auth.uid === $from && $from !== $uid && newData.exists()) || (auth.uid === $uid && !newData.exists()) || (auth.uid === $from && !newData.exists()) )",
+     ".validate": "!newData.exists() || newData.hasChildren(['ts'])"
+    }
+   }
+  }
+ }
+}
