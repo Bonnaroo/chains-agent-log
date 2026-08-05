@@ -588,3 +588,43 @@ backup (anonymous sign-in per chains-firebase-backup skill) and commit it. Other
 if found. Or pick up the `playRounds` granular-rules item (editHistory/practice/notes/scorePatch/joinRequests
 riding permissive `auth != null`) flagged by the audit as the next good backend candidate. Or check the Design
 tab for a #5 (pre-round cancel/back + pending-invite delete/view) export ready to stage.
+
+---
+
+## 2026-08-05 — Cowork run #2 (chains-design-loop, BACKEND TRACK)
+
+**Browser check:** Chrome MCP connected fine; Design tab loaded (Sonnet 5 Max confirmed, not Fable), idle
+(no active generation, Send button ready, not Stop). There was a stale unsent draft in the composer from an
+earlier session referencing #43 verification — left it alone and did not send, since #43 is already
+CLOSED/verified in v456 (confirmed again this run via STATE.md) and sending a stale note could confuse
+Design mid-context. No interruption made.
+
+**BACKEND TRACK item 5 — SHIPPED a real daily backup that was missing.** Confirmed via GitHub Contents API
+that `Bonnaroo/chains-dgpt-data/data/backups/rounds-2026-08-05.json` did not exist yet (last one was
+`rounds-2026-08-04.json`). Pulled the live Firebase apiKey straight from the decompressed production
+`index.html` (per the mandatory decompress-and-search method — plain grep found nothing), signed in
+anonymously via `identitytoolkit.googleapis.com`, and fetched `/playRounds` and `/liveRounds` from
+`chains-app-f38f8-default-rtdb.firebaseio.com` (HTTP 200, 4 playRounds + 2 liveRounds). `/users` and
+`/leagues` correctly returned 401 for the anon token — rules still deny broad reads, consistent with prior
+negative-test findings. Committed `data/backups/rounds-2026-08-05.json` (commit `712e1de6`) matching the
+existing `rounds-YYYY-MM-DD.json` convention (source: chains-app-f38f8 /playRounds + /liveRounds).
+**Verified by re-fetching and JSON-parsing the committed file**: keys `['backed_up_at','liveRounds',
+'playRounds','source']`, playRounds=4, liveRounds=2 — matches what was fetched, proving it's a real
+restorable backup, not just a file that exists.
+
+Did NOT attempt a `league-2026-08-05.json` (fantasy league) backup this run — that data lives behind a
+separate config I don't have recorded, and the hard rule against touching chains-fantasy `/league`/`/live`
+made it safer to stay in my own domain (chains-app-f38f8 Go Throw data) rather than guess at another
+project's credentials. Flagging for the owner/next run: if a fantasy-league backup is still wanted daily,
+either the current `league-*.json` backup job needs its own credential path documented in STATE.md, or
+confirm it's handled by a separate automated process outside this loop.
+
+**No Tier-3 changes. No deploy this run.** BUILD_LOCK.json confirmed `{"locked": false}` before starting.
+Did not write to chains-fantasy `/league` or `/live` at all (read-only backup fetch was against
+chains-app-f38f8 only, not the fantasy project).
+
+**Next in queue:** check the Design tab again for a #5 (pre-round cancel/back + pending-invite delete/view)
+export — it looked idle this run, not actively generating, but no ready export was visible in the immediate
+viewport. If ready, run the full stage/walkthrough/promote flow from DESIGN_LOOP.md. Otherwise: resolve the
+`league-*.json` backup credential gap noted above, or pick up BACKEND TRACK item 3 (cross-user negative test,
+still blocked on cory/kyle/shanna/gabe real emails not being recorded anywhere in company/*).
