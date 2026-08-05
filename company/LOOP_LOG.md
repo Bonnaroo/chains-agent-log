@@ -290,3 +290,50 @@ ready (version must be > v453/v454), run THE WALKTHROUGH against it before promo
 STATE.md. If Design is still mid-build, fall to BACKEND TRACK item #3 (negative-test rules via Firebase
 REST with cory/kyle/shanna/gabe) or #6 (regression sweep), which haven't been run since the last
 LOOP_LOG entry logged them as done for v453 — re-verify against v454.
+
+
+---
+
+## 2026-08-04 — Design Loop (autonomous scheduled run)
+
+**Bug #43 re-verified, not re-fixed.** Confirmed the priority fix (remove() must await ALL writes,
+never report success on partial failure) is present and correct in the CURRENT live build, which has
+moved on to **v476** (prior verification was against v454). Method: pulled
+`raw.githubusercontent.com/Bonnaroo/chains-app/main/index.html`, located the ChainsRounds module via the
+mandatory decompress technique (plain grep gives false negatives — `zlib.decompress(base64.b64decode(b),
+16+zlib.MAX_WBITS)` over every long base64 run in the file), and read `remove()` directly:
+`Promise.all(jobs)` + `rs.every(x => x !== false)` + a real `_failOnce(...)` toast on partial failure,
+with the `#43-freeze` debounce/timeout kept separate so an offline device still resolves optimistically
+without masking a later real failure. Comment in the code itself reads "#43: every store must confirm —
+checking only rs[0] masked index/legacy failures." No code change made — nothing to fix.
+
+**Backend track: negative-permission sweep against chains-app Firebase (not chains-fantasy).** Signed in
+as real test accounts via Identity Toolkit REST (cory, shanna, gabe — kyle's `kyle@chains.app` /
+chains1234 combo returned INVALID_LOGIN_CREDENTIALS, worth checking if kyle's account uses a different
+email). Verified `users/{uid}/...` per-user index nodes are correctly locked down: cory got 401
+Permission denied reading/writing shanna's `users/{uid}` subtree and reading it unauthenticated. That part
+of the rules is solid.
+
+**Finding — [needs-owner-decision], not fixed:** `playRounds/{id}` write rules let ANY authenticated user
+edit or delete arbitrary fields on a round they don't own, not just their own player entry. Proved it live
+and cleaned up after: as cory (uid `fJPXm2FJiSayOtfhpK7RJDaqNUJ3`), PATCHed a `tamperedByTest` field onto
+`playRounds/pr-ms5bygyzv4rl` (owned by `will`) — got `200` back, field was written, then DELETEd it back
+out and re-fetched the round to confirm it's byte-clean again (verified via GET, `tamperedByTest` now
+`null`, rest of record untouched). This *may* be intentional — playRounds is a shared card and multiple
+players legitimately need to write their own `players/{key}` scores into the same record — but the rule as
+written doesn't scope the write to the player's own subtree, so it also permits touching `owner`, `course`,
+or another player's scores. Changing Firebase security rules is a Tier-3 auth change per the loop's hard
+rules, so this is flagged, not touched. Recommend: scope `playRounds/{id}/players/{key}` writes to
+`auth.uid`-matched keys only, leave `owner`/`course`/top-level fields owner-write-only, and re-run this
+same negative test after any rule change to confirm it actually closes the gap.
+
+**Also checked** `ChainsPlayInvites` (`window.ChainsPlayInvites`, the #5 backend Design already has) for
+the same class of silent-swallow bug #43 had — `deleteInviteData`/`requestCancelInvite` correctly
+propagate `.catch(() => false)` through to a real `okDel === false` check before toasting success, no
+issue found there.
+
+**STATE.md is still stale** (last generated against v445; live is v476) — not regenerated this run, flagging
+again for whoever owns that step.
+
+**Next:** get an owner decision on the `playRounds` write-scope finding above before anyone touches those
+rules. Chase down kyle's real test-account email/credential. Re-run STATE.md generation against v476.
