@@ -451,3 +451,51 @@ run with browser access should actually run THE WALKTHROUGH end-to-end against v
 and check off ROUND_QUEUE.md items 1/2/3/5/9 for real, or report exactly which step breaks. ROUND_QUEUE.md
 boxes are still unchecked despite the underlying work being done — that desync should get resolved before
 more feature work stacks on top of it.
+
+---
+
+## 2026-08-05 — Cowork run (design-loop, browser available)
+
+**Item / phase:** #43 regression re-check + PHASE A ruling on #7 (resume in-progress round). Design track,
+browser connected successfully (claude.ai/design tab).
+
+**What happened:** Design was mid-task on arrival — chat history showed #43 had already been root-caused,
+fixed, and shipped as v456 in an earlier session today (remove() now awaits Promise.all over every job —
+index/cloud/legacy — and reports failure honestly instead of trusting only jobs[0]; the cloudIdRef mint-on-
+discard race is also patched). I did not duplicate that work. Instead I independently re-verified it from
+scratch: fetched index.html via GitHub Contents API (sha e0918ffe0cb133ce9aad91214387b0ac17532af8, 2,368,887
+bytes), decompressed all embedded gzip/base64 blobs, and confirmed in the decompiled source: (a) `_indexWrite`
+returns a real true/false instead of swallowing, (b) `ChainsRounds.remove()` builds a `jobs[]` array (index
+write, playRounds+liveRounds update, legacy REST delete) and does `Promise.all(jobs).then(rs => rs.every(x =>
+x !== false))` before reporting success, matching the fix spec exactly, (c) the Discard-round onClick handler
+mints `cloudIdRef.current` via the idempotent `ChainsRounds.start()` if unset and any score exists, before
+calling `remove()` — the v456 race fix. Also confirmed all 8 standing regression markers present in the live
+blob, and that `bonnaroo.github.io/chains-app` is byte-identical (md5) to the committed main `index.html` —
+CDN is not lagging right now. **#43 holds. No action taken, none needed.**
+
+Design then asked (PHASE A, no build yet) how to build ROUND_QUEUE #7 — resuming an in-progress round
+currently routes through the Live Now list instead of a direct Resume/Discard action. I answered in chat with
+a backend ruling: reuse the existing `onResumeId(id)`/`resumeFromCloud(rec,id)` path verbatim (already does
+the correct `loadGroup([id]) → status==="open" && owner===me` check) and the already-race-safe `remove()`,
+adding only a direct "Continue round" entry point (e.g. dashboard/Go Throw landing) instead of forcing a stop
+at Live Now; Live Now stays untouched for spectating others. No new Firebase reads/writes/rules needed —
+`ChainsRounds.loadMine()` already exists for an "open round?" check on mount. Told Design to go ahead and
+build #7. As of end of this run Design had started building (Searching/Reading, "Deep in thought…") — did not
+wait for the export since staging/promotion requires either Design's own GitHub access or a follow-up run.
+
+**Evidence:** index.html sha `e0918ffe0cb133ce9aad91214387b0ac17532af8`; live-vs-committed md5 match confirmed
+via curl; decompiled source excerpts for `_indexWrite`, `remove()`, and the Discard onClick handler captured
+during this run.
+
+**No changes made by Cowork this run** — this was verification + a ruling, not a build (UI belongs to Design
+per HARD RULES). No Tier-3 items touched.
+
+**Still open:** #7 build in progress on the Design side, not yet exported/staged/promoted — needs a follow-up
+run (with browser) to check for an export, verify the 8 markers, stage to test.html, run the phone-viewport
+walkthrough, and promote if it passes. `playRounds/{id}` write-scope gap still `[needs-owner-decision]`,
+untouched this run. STATE.md still stale per prior runs' notes — not re-verified this run, still flagged.
+
+**Next:** follow-up run should check whether Design's #7 export is ready; if yes, run the full staging/
+walkthrough/promote workflow from DESIGN_LOOP.md. If no browser next time, fall back to BACKEND TRACK item 3
+(negative-test Firebase rules with cory/kyle/shanna/gabe) or item 6 (regression sweep), since #43 is now
+independently double-verified closed.
