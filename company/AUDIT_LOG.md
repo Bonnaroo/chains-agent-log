@@ -88,3 +88,80 @@ signed-in-account negative-test method against every top-level node, not just th
 happened to probe. Section 1 (Auth & identity) can be considered done for this pass; a future repeat
 should specifically negative-test the anonymous-session/`watch=` path with a live browser session
 rather than REST alone.
+
+
+## 2026-08-05 — Auditor run #2
+
+**Section audited:** 2. Firebase rules, whole ruleset — next item in TRIAGE_AND_AUDIT.md after Section 1
+(Auth, closed in run #1). `LOOP_LOG.md` at time of this run showed the build loop mid-work on Round
+lifecycle (#7 resume-flow build in progress on the Design side) — that is Section 3 territory, not
+Section 2, so this pass was safe. `BUILD_LOCK.json` was `{"locked": false}`.
+
+**What I checked, specifically:**
+- Pulled live `chains-app/index.html` fresh via raw.githubusercontent.com (2,368,543 bytes fetched this
+  run), decompressed all 92 embedded gzip+base64 blobs with `zlib.decompress(base64.b64decode(b),
+  16+zlib.MAX_WBITS)` to pull the live Firebase config (`chains-app-f38f8-default-rtdb`, apiKey) rather
+  than trusting a stale value.
+- Attempted to fetch the actual ruleset (`/.settings/rules.json`) via REST with a real user ID token —
+  denied (`Permission denied`; rules-file reads require Firebase Console OAuth/admin creds, not a normal
+  user token). **Could not save the ruleset to a file this run** — flagging as a real gap: nobody who has
+  actually read the deployed ruleset text has recorded it in `company/`. All rules knowledge in this repo
+  is inferred from probe behavior, not read from source. Recommend the owner (who has Console access)
+  paste the ruleset into `company/backups/rules-<date>.json` once, so future runs have ground truth
+  instead of re-deriving it by trial and error every time.
+- **Negative security testing** signed in as two real seeded accounts, **cory** and **shanna**
+  (starter password `chains1234`), via Firebase Auth REST (`accounts:signInWithPassword`), fresh tokens
+  each confirmed via `localId` match. All probe writes cleaned up (DELETE or restore-to-original) and
+  verified removed/restored via read-back in the same session, before this log entry was written.
+
+**Findings — re-confirmed still-open (Issue #46, evidence pasted, cleaned up after):**
+- `admin/passwordResets/__negtest__` — cory PUT succeeded (200), confirmed written, then deleted +
+  confirmed null. Any signed-in user can still queue a fake password reset for another account.
+- `ledger/__negtest__` — cory PUT of a forged `{amount:999999,type:"forge"}` entry succeeded, confirmed
+  written, then deleted + confirmed null. Ledger forgery gap still open.
+- `usernames/gabe` and `usernames/kyle` — **two independent account/node tests**: cory overwrote gabe's
+  entire `usernames/gabe` node (uid field replaced), confirmed via read-back, then restored the exact
+  original values and confirmed restored. Separately, shanna overwrote kyle's node the same way,
+  confirmed, restored, confirmed. Real identity-hijack primitive, still open.
+
+**New finding this run — `liveRounds` has the same non-owner write gap as `playRounds`:** cory (not a
+participant on any live round) successfully `PUT {"probe":true}` to `liveRounds/__negtest__`, then
+deleted it, confirmed null. Added to Issue #46's checklist via a comment
+(https://github.com/Bonnaroo/chains-agent-log/issues/46#issuecomment-5189451010) rather than filing a
+duplicate issue — #46 already has the right closing condition ("before outside testers get accounts").
+
+**Findings — correctly scoped, tested NEGATIVELY this run (rules engine works fine here, no action
+needed — worth recording so nobody re-tests these from scratch):**
+- `leagueCodes` — cory read OK (expected, needed to join a league by code), but PUT of a brand-new code
+  -> `{"error":"Permission denied"}`. Commissioner-only write holds.
+- `friendCodes/{other_uid}` — cory PUT into shanna's own node -> denied.
+- `friendRequests` (broad read of whole node) — denied. Correctly not publicly listable.
+- `leagues` (broad read of whole node) — denied.
+- `usernames` READ (as opposed to write) is intentionally broad (needed for username->uid lookup at
+  login) — the asymmetry is real (broad read + unscoped write) but the read side itself is not a bug.
+
+**What I fixed:** Nothing — every open gap here is a Firebase security-rules change, explicitly Tier-3
+per TRIAGE_AND_AUDIT.md Section 5 (rules changes need a saved ruleset backup first, and this session
+could not even fetch the ruleset to back it up — see gap above). All belongs to the owner's decision
+queue, same as the prior run correctly deferred it.
+
+**What I filed:** No new GitHub Issue — posted a consolidated evidence comment on the existing
+Issue #46 (chains-agent-log) adding the `liveRounds` node to its scope and re-confirming the rest with
+fresh, independent evidence. Closing condition unchanged: must close before outside/non-team testers get
+accounts.
+
+**Clean result, for the record:** `leagueCodes`, `friendCodes`, `friendRequests`, and `leagues` all
+passed negative testing this run — no cross-user access possible on any of them. That part of the rules
+tree is solid.
+
+**Real limitation to flag plainly:** I could not fetch and save the actual deployed ruleset text — only
+user-token REST access was available, and Firebase rules reads require Console-level admin credentials.
+Everything in this and prior audit passes about the ruleset is inferred from probe behavior (what got
+denied/allowed), not from reading rule source directly. This should be corrected once, by whoever has
+Firebase Console access, rather than re-derived indefinitely.
+
+**Next:** Section 3 (Round lifecycle) is currently mid-rebuild per LOOP_LOG (#7 resume flow) — skip it
+until that stabilizes. Section 4 (Picks & scoring engine) or Section 5 (League & membership, including
+the hardcoded six-member roster blocking new-member drafts) are the next safe candidates. Also worth a
+follow-up: get the owner to paste the real ruleset text into `company/backups/` once, so future Section 2
+passes can diff against ground truth instead of re-probing blind every time.
