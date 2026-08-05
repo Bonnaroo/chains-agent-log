@@ -64,8 +64,27 @@
   },
   "playRounds": {
    ".read": "auth != null",
-   ".write": "auth != null",
    "$roundId": {
+    ".write": "auth != null && (!data.exists() ? newData.child('owner').val() === auth.uid : (!data.child('owner').exists() || data.child('owner').val() === auth.uid))",
+    "players": {
+     "$key": {
+      ".write": "auth != null && ( $key === auth.uid || !data.parent().parent().child('owner').exists() || data.parent().parent().child('owner').val() === auth.uid )"
+     }
+    },
+    "updatedAt": {
+     ".write": "auth != null && ( !data.parent().child('owner').exists() || data.parent().child('owner').val() === auth.uid || data.parent().child('players').child(auth.uid).exists() )"
+    },
+    "editHistory": {
+     "$entryId": {
+      ".write": "auth != null && ( !data.parent().parent().child('owner').exists() || data.parent().parent().child('owner').val() === auth.uid || data.parent().parent().child('players').child(auth.uid).exists() )"
+     }
+    },
+    "practice": {
+     ".write": "auth != null && ( !data.parent().child('owner').exists() || data.parent().child('owner').val() === auth.uid )"
+    },
+    "notes": {
+     ".write": "auth != null && ( !data.parent().child('owner').exists() || data.parent().child('owner').val() === auth.uid )"
+    },
     "joinRequests": {
      ".read": "auth != null",
      "$uid": {
