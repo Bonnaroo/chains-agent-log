@@ -730,3 +730,59 @@ the ones that match v457-460's shipped work -- STATE.md now flags this gap but d
 available, check whether Design has moved past #18/started the next ROUND_QUEUE item and whether it's asking
 a PHASE A/B question. (4) kyle's real test-account email still unresolved, still blocks the negative-test
 Firebase rules BACKEND TRACK item.
+
+---
+
+## 2026-08-05 -- Cowork autonomous run -- browser available, TRIAGE (priority-one incident confirmed)
+
+**Item / phase:** Browser was working (Design tab loaded fine). Design's chat was idle (not mid-build) --
+last message showed a v461 fix ("countdown/awaiting-next-tournament branch bypassed the Registered tab
+strip") already built and "out for re-verification," committed live is still v460 (confirmed via
+`raw.githubusercontent.com/Bonnaroo/chains-app/main/index.html`, `CHAINS_VERSION = "v460"`). Before
+starting the normal PHASE A/PHASE C loop, checked GitHub Issues fresh per the hard rule ("if production
+looks broken, treat that as priority one -- read live state fresh, don't trust old logs") and found 5 open
+CRITICAL issues (#1-#5) filed 2026-08-04/05 by an earlier Auditor run, none closed. Issue #1 is the most
+severe: unauthenticated WRITE access to `chains-fantasy-default-rtdb`, including under the real `/picks`
+namespace.
+
+**What I did:** Did NOT trust the issue as still-accurate without re-testing. Re-ran the identical class of
+probe myself, fresh, same rules as the auditor (no `/league` or `/live` paths touched):
+```
+curl -X PUT -d '{"probe":true,"by":"cowork-loop-2026-08-05"}' \
+  https://chains-fantasy-default-rtdb.firebaseio.com/auditTestWriteCowork.json
+-> HTTP 200 {"by":"cowork-loop-2026-08-05","probe":true}   (confirmed by independent re-read)
+```
+Root path still correctly denied (`/.json?shallow=true` -> 401), confirming this is the same
+"deny only at root, permissive underneath" pattern, not blanket-open. Cleaned up immediately:
+`DELETE /auditTestWriteCowork.json` -> re-read confirmed `null`.
+
+**Confirmed:** the vulnerability in Issue #1 is REAL and CURRENTLY LIVE, not stale. This is a
+priority-one production data-integrity risk (any anonymous client can write/delete under `/picks`).
+
+**Why not fixed this run:** Attempted to pull the actual ruleset to back it up before touching anything
+(hard rule). `https://chains-fantasy-default-rtdb.firebaseio.com/.settings/rules.json` returned 403
+unauthenticated -- rules can only be read/written via the Firebase Console or an authenticated
+`firebase-tools`/Admin SDK session, neither of which is available in this environment (no service account
+key, no `firebase login` session). Checked `chains-agent-log/firebase/{database.rules.json,firebase.json,
+DEPLOYMENT.md}` as a possible source of truth/deploy path -- these reference a different project name
+(`chains-fantasy-dgpt`, commissioner/league schema) that does not match the live app's actual data model
+(6 hardcoded members, no commissioner concept) or the live DB host (`chains-fantasy-default-rtdb`) --
+treating that doc as stale/unrelated rather than a usable deploy path. Same blocker the original Auditor
+hit ("did not view or modify the actual rules file -- no console access from this environment").
+
+**No Tier-3/irreversible action taken.** No rules changed (couldn't -- no credentials). No `/league` or
+`/live` path touched. Probe data written and deleted in the same breath, verified null.
+
+**Next (blocking on owner/console access):** (1) Someone with Firebase Console access to the
+`chains-fantasy` project needs to pull the live `.rules.json`, back it up to
+`chains-agent-log/firebase/`, and deploy a ruleset that denies unauthenticated writes at every level, not
+just root -- re-run the exact negative test above afterward and confirm 401. (2) Until that happens, this
+should be flagged to Guillermo directly, not just logged -- it's a live data-integrity hole, and the specific
+mechanism (`/picks/{eventId}/...` writable by anyone with the public REST URL, trivially found in the
+client bundle) may also explain the previously "unexplained" Firebase rollback pattern in
+`company/LESSONS_LEARNED.md` (#28/#39), per Issue #1's own hypothesis -- worth ruling in/out once rules
+are fixed. (3) v461 (Registered-tab countdown fix) is sitting in Design, not yet staged/promoted --
+next run with browser access should verify markers, stage to test.html, run the walkthrough, and promote.
+(4) Issues #2-#5 (silent failure on league-code regen/revoke, cross-user writes in `playInvites` and
+`ChainsFriends`) still open and unreviewed this run -- same class of problem as #1, worth a fresh look
+once console access exists.
