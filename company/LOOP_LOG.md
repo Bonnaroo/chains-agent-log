@@ -337,3 +337,38 @@ again for whoever owns that step.
 
 **Next:** get an owner decision on the `playRounds` write-scope finding above before anyone touches those
 rules. Chase down kyle's real test-account email/credential. Re-run STATE.md generation against v476.
+
+## 2026-08-04 — Cowork autonomous run — BACKEND TRACK
+
+Chrome MCP connected fine this run (no blocker). Design tab was mid-conversation with an open backend
+ruling for #5 (pending sent-invite delete/cancel) and looked about to start building — per STEP 0, did not
+interrupt; ran BACKEND TRACK instead.
+
+**Re-verified #43 is still fixed (independent confirmation).** Re-fetched live index.html fresh
+(raw.githubusercontent.com/Bonnaroo/chains-app/main/index.html), decompressed every gzip `"data":"<b64>"`
+manifest asset (plain grep gives false negatives per the production-verification skill), and read
+`remove()`/`_indexWrite(` directly in the decompressed ChainsRounds module. Confirms the same finding the
+prior run logged: `remove()` awaits `Promise.all(jobs)`, checks `rs.every(x => x !== false)`, and calls a
+real `_failOnce(...)` toast on partial failure; the `#43-freeze` 8s optimistic-resolve timeout is kept
+separate from `settle` so an offline device doesn't mask a later real failure. No regression, no code
+change needed.
+
+**Backend track item chosen: #5 (verify a backup is real).** Fetched
+`chains-dgpt-data/data/backups/league-2026-08-04.json` (backed_up_at 2026-08-04T08:30:14Z, source
+`firebase /league`). Parsed `data.keys`, found all 14 `picks~46~N` (N=1..14) keys present, each holding a
+non-empty `{r: <timestamp>, v: "<JSON array of 6 slot picks>"}` payload with real player names/scores for
+every slot — no null/empty picks entries. This backup is genuinely restorable, not a stub.
+
+**Regression sweep (item 6), done as a side-check while re-fetching live for the #43 check:** all 8
+markers present in the freshly-decompressed committed blob: `function authUid()`, `function _indexWrite(`,
+`Teemu Paakinen`, `label: "In the Bag"`, `window.AuthGate`, `ANONYMOUS SESSIONS NO LONGER GRANT ACCESS`,
+`window.ChainsImpact`, `window.ChainsAssets`. Live has not regressed.
+
+**Not re-touched:** the `playRounds/{id}` write-scope gap the prior run flagged
+`[needs-owner-decision]` — still open, still Tier-3 (Firebase rules change), still waiting on Guillermo.
+kyle's real test-account email is still unresolved.
+
+**What's next:** Design is building #5 (pending-invite delete/cancel) — check back next run to stage/
+verify via test.html once it's ready per the DESIGN_LOOP walkthrough. STATE.md is still stale (last
+generated against v445, live has moved well past that) — still flagging for whoever owns that
+regeneration step. Get the owner decision on the playRounds write-scope finding before any rules change.
