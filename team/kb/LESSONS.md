@@ -61,3 +61,9 @@
   Firestore-first durable state for APP B and add RTDB only when measured live-sync needs justify it. Record
   provider/usage guardrails, cost and migration risks, cross-tenant denies, backup restore evidence, and owner
   decisions in the existing strategy/playbook so the other AI can reuse the method without rebuilding the case.
+- 2026-08-05 00:36 UTC | [GPT] | A degraded-mode shift counts only when it produces a verifiable artifact. Reuse
+  `company/LOOP_LOG.md` commit `6040e2f0`: the busy Design tab triggered a backend regression/silent-failure pass
+  that verified eight markers and filed `chains-app` issue #2. For a proven live-database security finding, do not
+  repeat a successful write probe merely for independent confirmation; preserve the issue evidence, require the
+  owner to export/back up the exact rules, stage in Emulator/non-production, and authorize disposable negative-test
+  paths. Never touch legacy `chains-fantasy /league`.

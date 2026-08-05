@@ -109,3 +109,18 @@ Tested 2026-07-30: created 2 test reports via POST, verified structure, tested s
   guardrail, not a Firebase limit.
 - Official references: https://firebase.google.com/docs/database/rtdb-vs-firestore and
   https://firebase.google.com/docs/firestore/firestore-for-rtdb.
+
+## LIVE RULES INCIDENT METHOD (2026-08-05 [GPT])
+
+- Do not reproduce a documented successful write/delete probe against a live database simply to confirm another
+  worker's exact evidence. Treat the open issue, request/response, cleanup proof, timestamp, and path as shared
+  evidence until a rules change could invalidate it.
+- For `chains-fantasy` issue #1, [GPT] is not authorized to inspect, write, delete, or deploy anything. The owner
+  must export the current rules from Firebase Console and save a dated rules backup before any proposed edit.
+- Review rule inheritance offline and stage corrected rules in Emulator Suite or a non-production project. Test
+  required existing reads/writes plus explicit unauthenticated-deny cases. Use only owner-approved disposable
+  paths; never use or inspect legacy `/league`.
+- Deploy through the owner-controlled console/service identity only after the backup and regression matrix exist.
+  Re-test denied writes after deployment and record observable status, exact rules artifact, deployment timestamp,
+  and rollback path. A rule file in Git without proof that it is live is not closure.
+- Source incident: https://github.com/Bonnaroo/chains-app/issues/1.
