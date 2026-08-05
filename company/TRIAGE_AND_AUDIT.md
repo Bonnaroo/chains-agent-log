@@ -65,7 +65,11 @@ clearly in scope, escalate what isn't.
 positively? Are there paths with no explicit rule falling through to a permissive parent? (Firebase
 rules cascade and only ADD permission — a child rule can never restrict a permissive parent. This has
 already bitten us: `playRounds` `.write: auth != null` makes `scorePatch`/`joinRequests`/`editHistory`
-/`practice`/`notes` all writable by any signed-in user. **Open — must close before outside testers.**)
+/`practice`/`notes` all writable by any signed-in user. **CLOSED 2026-08-05** — top-level
+`playRounds.write` removed, replaced with owner/participant-scoped rules at `$roundId` level;
+verified with real negative tests (5/5 hostile writes denied) and positive tests (owner + real
+`scorePatch()` pattern still work). See `company/LOOP_LOG.md` 2026-08-05 entry. Same class of hole
+still open on `liveRounds` — flagged as follow-up, not yet fixed.)
 Any secret in client code? Any PII we don't need?
 
 **STABILITY** — What happens offline? Mid-write? On a stale cache? If two people edit at once? Does
