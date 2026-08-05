@@ -1281,3 +1281,49 @@ edited here — this run only verified, per the loop's "UI is Design's territory
 chat thread is otherwise idle/available for the next Phase A/B question. Outstanding from prior runs
 still open: `/league` backup-credential gap, Issues-tracker reconciliation (#5/#6/#32/#34/#40/#41/#42
 not re-checked this run), kyle's real test-account email still unresolved for negative-test rules work.
+
+---
+
+## 2026-08-05 — BACKEND TRACK (autonomous scheduled run, no owner present)
+
+**Context:** Chrome MCP loaded successfully; Design canvas at the project URL loaded and appeared
+idle (no active generation, input box free, last activity was the prior run's v464 badge-shelf
+export). Chose not to interrupt on an ambiguous idle/busy read — opted for backend-track
+independent re-verification instead of guessing on Design's state.
+
+**What I did:** Read memory files (LOOP_LOG.md, ROUND_QUEUE.md, STATE.md, BUILD_LOCK.json — all
+live in `Bonnaroo/chains-agent-log/company/`, not `chains-app`; noting this for future runs since
+the brief's default path is `chains-app/company/*` which 404s). BUILD_LOCK.json confirmed
+`{"locked": false}`. Independently re-verified (did not trust the prior run's log entry alone):
+1. **Artifact** — fetched `index.html` via Contents API, sha `6865e8f6d995d04beac3c4fb569bcf4be8161228`
+   (2,377,783 bytes, unchanged since last run). Decompressed all 93 gzip/base64 blobs via
+   `zlib.decompress(base64.b64decode(b), 16+zlib.MAX_WBITS)`. All 8 required markers present:
+   `function authUid()`, `function _indexWrite(`, `Teemu Paakinen`, `label: "In the Bag"`,
+   `window.AuthGate`, `ANONYMOUS SESSIONS NO LONGER GRANT ACCESS`, `window.ChainsImpact`,
+   `window.ChainsAssets`.
+2. **#43 regression check** — confirmed `Promise.all(jobs` and `.every(` still present in the
+   decompressed source (the fix for "deleted round comes back": `remove()` awaits all index/path
+   writes and reports real success only if every job succeeded). No regression — issue #43's fix
+   from a prior run is holding in the current committed artifact.
+3. **Deployment** — fetched live `https://bonnaroo.github.io/chains-app/` cache-busted, confirmed
+   `CHAINS_VERSION = "v464"` matches the committed artifact exactly. No CDN drift.
+
+**SHIPPED/PROVED this run:** No new code changed (none was needed — #43 was already fixed and
+verified holding). Proved: production artifact == committed source == live CDN, all 8 integrity
+markers intact, and the #43 fix has not regressed. This is a real, independent (re-decompressed
+from scratch, not copy-pasted from the prior log) confirmation, not a shallow reachability check.
+
+**Rollback sha:** unchanged, `6865e8f6d995d04beac3c4fb569bcf4be8161228` remains current-good HEAD.
+No changes made, no rollback needed.
+
+**Blocked on Chrome:** No — Chrome MCP worked fine this run.
+
+**Next:** Design's chat thread is idle and ready for the next Phase A ask on the topmost unchecked
+ROUND_QUEUE.md item (item #1, "Start a round — the picker," is next up top-to-bottom; item #2,
+"Delete a round and have it stay deleted (#43)," has its core remove()/await logic done per this
+run's verification but is not checked off in ROUND_QUEUE.md yet — that's a UI-walkthrough gap, not
+a backend gap, and belongs to Design/whoever runs Phase C). Still open from prior runs: `/league`
+backup-credential gap, Issues-tracker reconciliation (#5/#6/#32/#34/#40/#41/#42), kyle's real
+test-account email unresolved for negative-test rules work (option 3 in backend track, deferred
+again this run for the safer independent-verification path given no owner present to weigh in on
+a rules-testing session).
