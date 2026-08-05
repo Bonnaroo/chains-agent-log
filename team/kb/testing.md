@@ -48,3 +48,11 @@ Confirm its embedded version marker and re-run the exact acceptance contract aga
 Design response describes intent, not proof: a useful precondition/race fix is still a QA FAIL when the terminal
 operation remains fire-and-forget or reports optimistic timeout success. Record the partial improvement precisely,
 reject the artifact before staging, and hand the source evidence to the next AI/Engineer.
+
+### Exact build identity — 2026-08-05 [GPT]
+
+Do not infer a version from an unanchored `vNNN` search in a self-contained HTML export; encoded assets can contain
+coincidental matches. Require the explicit `window.CHAINS_VERSION` assignment, main commit SHA, git blob, SHA-256,
+byte comparison between staged/live files, and cache-busted production label. When verifying an async repair,
+inspect the exact UI caller and its callee together; caller fire-and-forget plus any optimistic success timeout is
+a FAIL even when the callee also starts real background writes.

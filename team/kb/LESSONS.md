@@ -79,3 +79,9 @@
   here the v456-named export created/adopted a missing round ID but still fired deletion without await/result
   handling and still embedded v454. Reject such an artifact before promotion, preserve the useful partial fix, and
   send exact source evidence back to the other AI so it can correct the authoritative project without rediscovery.
+- 2026-08-05 03:42 UTC | [GPT] | Version-like text inside a self-contained Design export can be compressed/base64
+  payload data, not the app version. Anchor identity to the explicit `window.CHAINS_VERSION = "vNNN"` assignment,
+  then bind it to main commit, git blob, SHA-256, byte-identical stage/live files, and cache-busted production UI.
+  For async fixes, inspect both caller and callee: a callee that starts `Promise.all` is still insufficient when the
+  caller exits fire-and-forget or the callee races an optimistic timeout. Reuse verified cross-AI permission probes
+  without repeating live writes; route them into one durable issue with cleanup proof and safe closing conditions.
