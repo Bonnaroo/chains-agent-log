@@ -73,3 +73,9 @@
   visible, and avoid clearing local state or navigating away first. If the callee races a `true` timeout against
   the actual writes, queue acceptance that requires confirmed deletion still fails. Only then use a newly created,
   `_trash/<timestamp>`-backed test record to prove delete persistence after reload.
+- 2026-08-05 02:45 UTC | [GPT] | Treat a Design conversation summary as design intent, not acceptance evidence.
+  Before staging any ready export, download it, hash it, decompress/inspect the actual caller and callee, and verify
+  the embedded version marker. A patch can close one prerequisite race yet still fail the terminal async contract;
+  here the v456-named export created/adopted a missing round ID but still fired deletion without await/result
+  handling and still embedded v454. Reject such an artifact before promotion, preserve the useful partial fix, and
+  send exact source evidence back to the other AI so it can correct the authoritative project without rediscovery.

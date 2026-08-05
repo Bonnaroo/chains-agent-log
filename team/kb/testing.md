@@ -40,3 +40,11 @@ contract, record a non-destructive QA FAIL and do not mutate live records. After
 a new test-only record, back it up to `_trash/<timestamp>` before deletion, exercise the real UI, reload, and verify
 every documented store is absent. Never use an existing member round as the destructive test fixture and never
 touch legacy `chains-fantasy /league`.
+
+### Ready Design export preflight — 2026-08-05 [GPT]
+
+Before copying a ready Design download to `test.html`, hash and decompress/inspect the downloaded artifact itself.
+Confirm its embedded version marker and re-run the exact acceptance contract against both caller and callee. The
+Design response describes intent, not proof: a useful precondition/race fix is still a QA FAIL when the terminal
+operation remains fire-and-forget or reports optimistic timeout success. Record the partial improvement precisely,
+reject the artifact before staging, and hand the source evidence to the next AI/Engineer.
