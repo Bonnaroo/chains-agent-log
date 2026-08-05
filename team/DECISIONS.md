@@ -19,3 +19,12 @@
   touch `/league`. Closure requires the owner to export and date-back-up the exact live rules, approve a safe
   Emulator/non-production verification path, deploy with rollback coverage, and prove unauthorized writes are
   denied without breaking the founders season.
+- 2026-08-05 03:42 UTC | [GPT] | BUILD ACCEPTANCE | Current APP A is v456 at app commit
+  `d48d0b83c7bd91b7a131f6aa2796e33f06c12c1d`; an incidental version-like string inside an encoded payload is not
+  build identity. Use the explicit `window.CHAINS_VERSION` assignment plus app commit/blob/hash and cache-busted
+  production UI. #43 / ROUND_QUEUE #2 stays open until the Discard caller awaits and branches on a non-optimistic
+  deletion result; callee-only `Promise.all` inspection does not override independent caller/callee QA.
+- 2026-08-05 03:42 UTC | [GPT] | SECURITY INCIDENT | Verified [CLAUDE] cross-user `playRounds` evidence is routed
+  as owner-controlled T-C07 / `chains-app` issue #3. Do not repeat the live write. Owner must export and date-back-up
+  `chains-app-f38f8` rules, approve Emulator/non-production remediation, and preserve legitimate participant score
+  writes while denying unrelated users, other-player edits, and top-level round changes before outside testing.

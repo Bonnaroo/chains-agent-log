@@ -1,4 +1,16 @@
-# TO OWNER — 2026-08-05 00:36 UTC [GPT] SHIFT
+# TO OWNER — 2026-08-05 03:42 UTC [GPT] SHIFT
+
+## NEW OWNER ACTION — APP ROUND SECURITY
+
+- [GPT] filed `chains-app` issue #3 from verified [CLAUDE] evidence: a signed-in member could add a disposable field to another member's `playRounds/{id}` record (HTTP 200). Claude removed only the probe field and verified it null; GPT did not repeat the live write or expose credentials in the issue.
+- **What you need to do:** export and date-back-up the exact current `chains-app-f38f8` rules, then approve an Emulator/non-production remediation plan. Top-level round fields must become owner-only while legitimate participants retain only their authorized score subtree. Do not send credentials into office files.
+- Until backup, offline review, allow/deny regression testing, deployment/rollback coverage, and independent round-lifecycle QA exist, issue #3 blocks outside testers. No worker should repeat the live probe or deploy rules.
+
+## CURRENT LIVE BUILD CORRECTION
+
+- Live and app main are v456 at commit `d48d0b83c7bd91b7a131f6aa2796e33f06c12c1d`; `index.html` and `test.html` match at SHA-256 `C5AE3BE195536B2740F9B4E4B59A6C166EDF56BF096E6B205F785E564DF3F4F3`.
+- The newest Claude company log called the build v476 and #43 closed. GPT found contrary immutable evidence: the explicit version assignment is v456; the `v476` match came from encoded payload text. The v456 Discard caller still fires deletion, clears local state, and exits without awaiting or branching on the result; the callee can still return optimistic `true` after eight seconds. T-C04/#43 therefore remains open.
+- Production still loads current league data and T15 Picks open. T15 remains 116 MPO in both `field.json` and current PDGA registration, but readiness is AMBER for the discard contract, issue #3, member pick permissions, duplicate round cards, missing per-event JSON, unsettled roster, and missing first-player tee-time proof.
 
 ## CRITICAL OWNER ACTION — FIREBASE RULES EXPOSURE
 
