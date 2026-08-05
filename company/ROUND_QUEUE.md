@@ -1,143 +1,110 @@
-# ROUND QUEUE — one feature per cycle, built properly
+# CHAINS — WORK QUEUE
 
-Owner directive 2026-08-03: *"do them one at a time so they don't get underbuilt. If anything, they
-need to be overly built."* He wants to use this **in the field**. Nothing else matters until the
-round works standing on a tee with friends.
+**THIS QUEUE IS NEVER EMPTY. There is no state called "nothing left to do."**
 
-**Rules for this queue**
-- Work the list **top to bottom**. One item per Design cycle. Never batch.
-- An item is done only when it passes **THE WALKTHROUGH** (bottom of this file) — not when the code exists.
-- Overbuild rather than underbuild: handle the empty state, the error state, the offline state, the
-  someone-else-changed-it state, and the phone-sized viewport. If you're unsure whether an edge case
-  matters, build for it.
-- Do not start the next item while the current one is unfinished.
-- Mark items `[x]` only after the walkthrough passes. Add the version it shipped in.
+The loop previously stalled because it worked down a short list, found it finished, and idled. That is
+a bug, not a milestone. `company/SPEC.md` is a 32-section specification — the work is measured in
+months. If this file's active section ever looks complete, **you pull the next item from Phase 2 below
+and add it here yourself.** Never report "queue empty." Never wait for the owner to refill it.
 
----
+The owner, plainly: *"There's not very much going on when I'm not here... I'm busy. You need to work
+on this app."* He should not be the thing that unblocks you.
 
-## THE LIST
-
-### 1. Start a round — the picker
-- [ ] Defaults to **solo**. Zero taps for the common case.
-- [ ] **Never** renders a chip labelled "Player" (bug #42 — corrupted local member cache rendered literally)
-- [ ] Add people explicitly: friends list / recent cardmates ("Played with recently") / guest by typed name / QR
-- [ ] Clear count: "Playing solo" / "You + 2"
-- [ ] Course + layout + **starting hole** (not always hole 1)
-- [ ] Scoring format: singles / doubles / teams
-- [ ] **Back and Cancel at every step**; cancelling orphans nothing (#5)
-
-### 2. Delete a round and have it stay deleted (#43)
-- [ ] `deleteRound` **awaits** `ChainsRounds.remove()` and reports real success/failure
-- [ ] Covers: local mirror, `playRounds/{id}`, `liveRounds/{id}`, per-user index under the **real auth uid**, and legacy `chains-fantasy/play_rounds/{id}`
-- [ ] Solo round -> hard delete. Round with other players -> **hide-for-me only**, record intact for them, and say so plainly
-- [ ] Real error surfaced on failure — never a silent revert
-- [ ] **Bulk cleanup** (multi-select / "delete my test rounds") — there is a live backlog
-
-### 3. Resume — the one that cost a real round
-- [ ] Works after: app killed, browser closed, storage cleared, **different phone**
-- [ ] Rebuilt from the **cloud**, never from a localStorage pointer alone
-- [ ] Direct **Resume / Discard**, not routed via the Live Now card (#7)
-- [ ] Any open round is reachable from Go Throw home, not just the newest
-
-### 4. Scoring — the fast path
-- [ ] Quick scoring is the default: **one tap per player per hole, defaults to par**
-- [ ] Advanced stats are an optional layer that **never** slows the fast path
-- [ ] Penalty strokes; adjust a hole's par; skip a hole; play holes out of order
-- [ ] Notes on the round and on a specific hole
-- [ ] Save a round without keeping score
-
-### 5. Changing scores — owner called this out specifically
-- [ ] Edit any score **during** the round
-- [ ] Edit any score **after** it's finished, behind an explicit "Edit round" (history opens read-only)
-- [ ] **Edit history: who changed what, when.** In a group round, silent edits are poison
-- [ ] Enter an old round manually, after the fact
-
-### 6. Adding people to a round already in progress
-- [ ] Add a player mid-round, including someone joining at hole 7
-- [ ] Their earlier holes handled sensibly — blank, not zero, and totals stay correct
-- [ ] Join by QR/link: on the card -> score your row; not on it -> watch + ask to join
-- [ ] Owner gets tap-to-approve; auto-approve if already friends
-
-### 7. Group / shared scoring
-- [ ] Live sync across everyone on the card; simultaneous entry
-- [ ] Each person scores their own row, **or** one person scores everybody
-- [ ] Tee order calculated and shown
-- [ ] Guests with no account fully supported
-
-### 8. Ending a round
-- [ ] End early and keep what's scored
-- [ ] Discard with confirm
-- [ ] Mark as practice -> excluded from stats
-- [ ] Share a finished scorecard
+**Standing rule:** one feature at a time, finished properly. Overbuild rather than underbuild.
+Ask Design *how* first — never hand it a solution you invented.
 
 ---
 
-## THE WALKTHROUGH — run this before marking ANYTHING done
+## PHASE 1 — SHIPPED (do not rebuild)
 
-At a **phone-sized viewport**, against the deployed build, as if standing on a tee:
-
-1. Start a round. Add two friends.
-2. Score nine holes.
-3. Add a third person mid-round.
-4. Fix a score you typed wrong.
-5. Kill the app entirely.
-6. Reopen. Resume the round.
-7. Finish it.
-8. Delete it. Confirm it's still gone after a reload.
-
-**If any step is awkward, confusing, or fails — the item is NOT done.** Say exactly which step broke
-and what you saw. Do not mark it complete and move on. Do not weaken the test to make it pass.
-
----
-
-## 9. Replace all native `window.confirm()` popups (~28 of them)
-- [ ] Resume-round, discard, delete and every other confirm becomes an **in-app modal**
-- [ ] Two reasons, both real: native dialogs look broken on mobile, AND they freeze all browser
-      automation until a human clicks — which blocked five straight verification cycles
-- [ ] Nothing may silently change data without a confirmation the app itself owns
+- [x] Replace all 47 native `window.confirm/alert/prompt` with in-app modals — v453
+- [x] #5 pre-round back/cancel at every step + find and delete a sent invite — v454
+- [x] #43 delete a round and it stays deleted (clears `playRounds` AND `liveRounds`) — v455/456
+- [x] #7 resuming an in-progress round → direct Resume/Discard — v457
+- [x] #10 version number visible on mobile — v458
+- [x] #11 in-app Report a Bug writing to `/bugReports` — v459
+- [x] #18 registered-field tab with stability — v460/461
+- [x] #44 36h draft window + per-pick clock + autopick + timezone fix — v462
+- [x] #45 achievements / badge shelf — v464
+- [x] #42/#6 start-a-round defaults to solo, no "Player" chips
+- [x] Post-finish edit with audit trail, mark-as-practice, starting hole, tee order, per-hole notes,
+      adjustable par — v449→v452
 
 ---
 
-# WHEN THIS QUEUE IS DONE — DO NOT STOP HERE
+## ACTIVE QUEUE — work top to bottom
 
-The round is the *first* phase, not the whole product. The owner gave a complete 32-section feature
-specification. It is sequenced into five phases in **`company/briefs/ROADMAP.md`** — read it and
-continue from **Phase 2**. Do not re-derive the plan; it already exists.
+### 1. Recent-partners must come from REAL history
+- [ ] The picker seeded "recent partners" from stale round docs, so the owner saw friends he never
+      added. Rounds were purged 2026-08-05; the CODE is unfixed.
+- [ ] Source it from actual friend relationships and rounds genuinely played together
+- [ ] Show nothing when there is no history — never invent a chip
+- [ ] Guard: a round doc with unknown/legacy member keys must never produce a suggestion
 
-**What comes next, in order (full detail in ROADMAP.md):**
+### 2. UDisc-quality pass on the round flow (SPEC §5, §6)
+Owner: *"This looks nothing like UDisc. That's what I'm trying to emulate."* **Ask Design how** — this
+is its judgement, not yours. From the spec, still missing:
+- [ ] Save a round **without keeping score**
+- [ ] Enter an old round **manually**
+- [ ] Front-nine / back-nine totals, player position, estimated finish time on the card
+- [ ] Score verification for group rounds
+- [ ] Automatic tee-order calculation (audio announcement optional)
 
-**Phase 2 — deepen scoring & stats (the core loop)**
-- Basic / advanced / map-based scoring modes (quick scoring stays the default, always)
-- Full player statistics: C1/C2 putting %, fairway hits, GIR, scramble %, OB %, per-course and
-  per-layout averages, per-hole best/average, streaks — filterable by recent/month/year/all-time
-- Hole comparisons shown **while you're playing that hole** — your average, your best, last five,
-  course average, birdie %
-- Round & player ratings (labelled projected/unofficial until official)
-- **In the Bag depth (#41)** — flight numbers (speed/glide/turn/fade), plastic, weight, colour,
-  condition; multiple bags/loadouts; in-bag vs collection; share your bag. Then the differentiator:
-  **per-disc stats derived from real scored rounds** — how often thrown, how it scores, longest
-  throw. That links the bag to actual scoring, which competitors do poorly. This one matters.
-- Achievements extending ChainsBadges (first ace, bogey-free, personal best, new course, streaks,
-  and fantasy ones — drafted the winner, won from behind)
+### 3. Live viewer persistence (SPEC §30) — owner has raised this repeatedly
+- [ ] Animation must NOT restart when the screen is reopened
+- [ ] Derive state from saved round progress + timing: waiting at tee / driving / walking / approaching
+      / putting / holing out / moving to next tee
 
-**Phase 3 — social & competition**
-Friends profiles + stat comparison + privacy controls · league features (recurring weeklies,
-divisions, handicaps, season standings, bag tags, ace pools, closest-to-pin) · live leaderboards ·
-**animated live viewer persistence** (it must resume from saved progress, not restart on every open —
-the owner has raised this repeatedly) · course reviews & photos
+### 4. Player statistics, real depth (SPEC §11)
+- [ ] Averages by course and by layout; best and average on each hole
+- [ ] Longest birdie streak, longest par-or-better streak, bogey-free rounds
+- [ ] Filters: latest / month / year / previous year / all time / course / layout / casual / league
+- [ ] **Ask Cowork for the per-hole/per-throw schema before building advanced stats** — inventing one
+      means migrating it twice
 
-**Phase 4 — course platform** (data-bound, not UI-bound; needs real course data first)
-Discovery + filters · conditions reporting · hole maps & navigation · multiple layouts · traffic
+### 5. Hole comparisons while playing (SPEC §13)
+- [ ] Your average on this hole, your best, last five attempts, birdie %
+- [ ] Shown *on the hole you're playing*, not buried in a stats screen
 
-**Phase 5 — later / premium**
-Throw tracking · GPS rangefinder · measure-a-throw · activity tracking · practice tools ·
-smartwatch (NOT until phone scoring is rock solid) · offline · scorecard photo import ·
-free/premium split (do not build paywalls at six users)
+### 6. Bag depth (SPEC §15)
+- [ ] Flight numbers, plastic, weight, colour, condition, purchase info, photo
+- [ ] Multiple bags / loadouts; active vs stored
+- [ ] **Per-disc stats from real scored rounds** — thrown how often, how it scores, longest throw.
+      This is the differentiator: it links the bag to actual scoring.
 
-**Explicitly out of scope unless the owner reverses it:** course-management tools for arbitrary
-courses, parks-department analytics, store directory, and a public multi-league tournament platform.
-Different customers, different products.
+### 7. Round & player ratings (SPEC §12)
+- [ ] Per-round rating from score + course/layout difficulty + expected score
+- [ ] Rolling player rating, history, trends
+- [ ] **Must be labelled projected/unofficial**
 
-**The standing rule for all of it:** finish a feature before starting the next. Overbuild rather than
-underbuild. The differentiator is that the fantasy season and your own game live in one app — every
-phase should deepen that, not chase UDisc's feature count.
+### 8. Friends & profiles (SPEC §17)
+- [ ] Public profile, stat comparison, recent-round feed, round invitations
+- [ ] Privacy controls: who sees rounds, location, statistics
+
+---
+
+## WHEN THE ACTIVE QUEUE EMPTIES — REFILL IT YOURSELF
+
+Read `company/briefs/ROADMAP.md` for the phase order and `company/SPEC.md` for the definition. Take the
+next unstarted item, write it into the ACTIVE QUEUE above with real acceptance criteria drawn from the
+spec, and start Phase A on it. **Do not ask permission. Do not idle. Do not report an empty queue.**
+
+Rough order after the above: achievements depth (§18) → league features (§21) → live leaderboards (§23)
+→ course reviews (§25) → practice tools (§16) → course discovery and maps (§1–§4, needs real course
+data first) → offline (§20) → GPS-dependent work (§8, §9, §10, §14) → smartwatch (§19, **not until
+phone scoring is rock solid**).
+
+**Not in scope unless the owner reverses it:** course-management tools (§26), course analytics (§27),
+store directory (§28), TD/tournament platform (§22), and any paywall (§32 — six users; do not build
+monetization yet).
+
+---
+
+## BLOCKERS THAT NEED CLOSING (not features, but they gate real users)
+
+- [ ] **`playRounds` is `.write: auth != null`** — `scorePatch`, `joinRequests`, `editHistory`,
+      `practice`, `notes` all inherit full write access for any signed-in user. Firebase rules cascade
+      and only ADD permission, so a child rule cannot restrict it. Needs granular per-field rules.
+      **MUST close before anyone outside the six gets an account.**
+- [ ] **League-code joiners get no `memberId`**, so they cannot be drafted; the six-member roster is
+      hardcoded. Fixing it is the season-data migration — **do not attempt mid-season.**
