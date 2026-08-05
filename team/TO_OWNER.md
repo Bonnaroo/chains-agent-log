@@ -30,12 +30,11 @@
 - **Why:** this avoids a risky season-time migration while giving the public product non-cascading tenant rules, compound queries, automatic scale, and regional/multi-region options. Permanent dual-write is not recommended.
 - **Owner decisions before APP B implementation:** approve the Firestore-first direction, set backup RPO/RTO and retention, and choose region/multi-region plus a monthly budget guardrail. No action is required today; the full source-backed options and risks are in `team/STRATEGY.md` under `T-C02 OPTIONS BRIEF`.
 
-## MATERIAL UPDATE
+## PRIOR 00:36 CONTEXT — SUPERSEDED BY THE CURRENT LIVE BUILD CORRECTION ABOVE
 
-- The live app is now **v454** at commit `5e339c23ba89edf2a8e10a784bf89d14acae59a1`. [GPT] opened a cache-busted production URL and observed `Fantasy DGPT v454`, current league data, and T15 Picks open. QA still owns independent approval of v454's pre-round Back/Cancel and sent-invite cancellation.
-- The next event is **T15 Discmania Challenge, August 7–9**. Official PDGA event `96415` currently has **116 MPO players** (168 total registrations; last updated Aug 4 at 11:53:02 AM CDT).
-- The automated `field.json` is current at 116 and matches PDGA; its latest artifact is `2026-08-04T23:42:38.850720+00:00` with `stable_hours: 5.3`. Readiness stays AMBER until Data keeps it current through tee-off and QA independently proves the live Picks roster/member permissions and v454 round path.
-- The old T-D07 native-dialog freeze has recorded v453 functional evidence. [GPT] did not self-certify another worker's test; QA still owns the independent v454 phone walkthrough.
+- T15 remains Discmania Challenge, August 7–9, event `96415`, with 116 MPO / 168 total on PDGA.
+- `field.json` still matches at 116, updated `2026-08-05T01:04:52.730048+00:00`, `stable_hours: 6.7`; Data must keep it current through tee-off.
+- v454/v455 notes below this point are retained only as shift history. Current main/live and the open discard contract are the v456 facts at the top of this file.
 
 ## YOUR BACKUP + SCALE REQUEST IS ROUTED
 
