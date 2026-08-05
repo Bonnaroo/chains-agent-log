@@ -1,87 +1,94 @@
-# HANDOFF — 2026-08-05 00:46 UTC — [GPT] CEO
+# HANDOFF — 2026-08-05 01:45 UTC — [GPT] QA
 
 ## LAST WORKER / ROLE / UTC / TASK
 
-- `[GPT]` / CEO / 2026-08-05 00:46 UTC / `T-C03` never-idle supervision audit and incident routing.
-- Lock claim: `ACTIVE 2026-08-05T00:30:18Z GPT/dispatcher clock-in`; exact claim was re-fetched after 15 seconds before work.
-- Root office delivery: `d246675367e1508d400243048e74b86cfdfe1ef4` (`[GPT] Route v454 and security findings`).
-- Knowledge delivery: `26dd64459ba3e9642f76a9f85e8f716e0195a220` (`[GPT] Record live-rules incident method`).
+- `[GPT]` / QA / 2026-08-05 01:45 UTC / `T-C04` live v455, T15 field, and protected Discard verification.
+- Lock claim: `ACTIVE 2026-08-05T01:31:13Z GPT/dispatcher clock-in`; exact claim was re-fetched after 15 seconds before work.
+- Board-start commit: `d6328b429b6f37bc7e7c3b16d74a05df37c786ff` (`[GPT] Start T-C04 v455 QA`).
+- QA evidence commit: `4f78134a3f1ff6c1e9b7dd4f319843301748219b` (`[GPT] Fail v455 discard contract in QA`).
+- Reusable-method commit: `c34be468e08af8e5deb9b54017f9c4ff3bbfdd61` (`[GPT] Add protected live-delete QA method`).
 
 ## WHAT CHANGED
 
-- Completed `T-C03`: the browser-busy Design loop did not idle. Company commit
-  `6040e2f01d44649a2442408debd4647a6f3e9016` records a backend regression/silent-failure pass, verified the
-  then-current live build, and filed `chains-app` issue #2 instead of stopping.
-- Routed `chains-app` issue #1, a critical live `chains-fantasy-default-rtdb` rules exposure, to owner-controlled
-  task `T-C05`. The prior Auditor evidence says unauthenticated disposable-path writes succeeded and were cleaned
-  up; `[GPT]` did not repeat any write probe. Owner must export and date-backup the live rules, approve an
-  emulator/non-production validation path, and deploy a least-privilege fix that preserves the founders season.
-- Routed issue #2 to `T-C06` for PM + Engineer + independent QA: fix silent regenerate/revoke failures in the
-  authoritative Design project, show actionable errors, and prove both success and failure paths before deploy.
-- Refreshed the board/readiness rollup to live v454 at `chains-app` commit
-  `5e339c23ba89edf2a8e10a784bf89d14acae59a1`, including Back/Cancel consistency and sent-invite cancel handling.
-- Refreshed T15 field evidence to blob `083254df93400aeb595fefa6ce26c7986a1c42a3`, updated
-  `2026-08-04T23:42:38.850720+00:00`, 116 MPO players, `stable_hours: 5.3`; the per-event
-  `data/events/96415-MPO.json` artifact still returns 404.
-- Added the no-reprobe incident method to `team/kb/firebase.md`, `team/kb/LESSONS.md`, and the decision record so
-  `[CLAUDE]` can resume from verified evidence without rediscovering or repeating the unsafe live operation.
+- Kept `T-C04` IN_PROGRESS and failed the v455 Discard slice back to PM/Engineer. App main advanced after the
+  prior handoff to `3a8bb7577eec92be5ae93d8c690785190a2a7d84` (v455); production visibly serves that build.
+- Compared decompressed immutable v454/v455 handlers. v454's active-round Discard only removed the local pointer
+  and exited. v455 adds `ChainsRounds.remove(cloudIdRef.current)` but does not await/return it, inspect its boolean,
+  or hold the UI; it immediately removes `chains_play_active` and calls `onBail()`.
+- Traced the callee. `ChainsRounds.remove(id)` starts the `playRounds/{id}` + `liveRounds/{id}` update, per-user
+  index removal, and legacy `chains-fantasy/play_rounds/{id}` REST delete, but returns
+  `Promise.race([settle, timeout])`, where the timeout resolves `true` after eight seconds. The caller/callee pair
+  therefore cannot prove deletion before a success-looking exit and fails ROUND_QUEUE #2's real-result contract.
+- Refreshed T15: current `field.json` is still event 96415 / 116 MPO, and the live Registered screen says
+  `116 pros registered`. Official PDGA remains 168 total / 116 MPO; no official Round 1 tee-time table was present.
+- Recorded two additional phone-sized findings for PM/Engineer: the visible Will session had all 12 T15 Player 1/2
+  controls disabled with `Only the commissioner can edit picks and scores`; Go Throw displayed three identical
+  live cards and three identical resume cards for the same Tadpole Beach state. Console also logged a denied write
+  to `/friendCodes/SRE3D7`.
+- Added the protected live-delete verification method to `team/kb/testing.md` and `team/kb/LESSONS.md`.
 
 ## VERIFICATION / EVIDENCE
 
-- PASS: https://bonnaroo.github.io/chains-app/?cb=202608050032#dashboard rendered `Fantasy DGPT v454`, the current
-  league dashboard, and T15 Discmania Challenge with `Picks open`; no initialization hang was observed.
-- PASS: `chains-app` main `5e339c23ba89edf2a8e10a784bf89d14acae59a1` is the deployed v454 source commit.
-- PASS: official PDGA event 96415 still lists 7–9 August 2026 in Indianola, 168 total / 116 MPO, last updated
-  `04-Aug-2026 11:53:02 CDT`: https://www.pdga.com/tour/event/96415
-- PASS: `chains-dgpt-data/data/field.json` blob `083254df93400aeb595fefa6ce26c7986a1c42a3` is event 96415 with
-  116 players and an unchanged roster hash; FAIL: `data/events/96415-MPO.json` remains 404.
-- PASS: root office commit `d246675367e1508d400243048e74b86cfdfe1ef4` contains the stamped BOARD,
-  EVENT_READINESS, TO_OWNER, FROM_OWNER, and DECISIONS changes.
-- PASS: knowledge commit `26dd64459ba3e9642f76a9f85e8f716e0195a220` contains the stamped LESSON and
-  `LIVE RULES INCIDENT METHOD` playbook section.
-- EVIDENCE ONLY, NOT REPRODUCED: issue #1 is https://github.com/Bonnaroo/chains-app/issues/1; issue #2 is
-  https://github.com/Bonnaroo/chains-app/issues/2.
+- PASS: `https://bonnaroo.github.io/chains-app/?cb=202608050136#dashboard` at 390×844 rendered
+  `Fantasy DGPT v455`, current league data, T15 Discmania Challenge, and `Picks open`; no initialization hang.
+- PASS: GitHub base/head comparison reports v455 exactly one commit ahead of v454 and only `index.html` changed
+  (2 additions / 2 deletions in the bundle). Local immutable v455 `index.html` is 2,368,683 bytes, blob
+  `b571c86f65e2acf9f56b964f2b5597c97e9954f8`, SHA-256
+  `00CA7F9E20F6B1F4993BF2489D4B426B800CADA7571B38A59E57190EA6BBAFD4`.
+- FAIL: decompressed v455 has exactly one `ChainsRounds.remove(cloudIdRef.current)` occurrence in the active-round
+  handler, and it is fire-and-forget before local clear/navigation. The callee's eight-second optimistic `true`
+  race also violates confirmed deletion. No version-presence shortcut can close #43/ROUND_QUEUE #2.
+- PASS: live Registered reports 116 pros. `chains-dgpt-data/data/field.json` blob
+  `e79e2eace48faed4146e9e4f09b6d85d7143b231` is event 96415, 116 players, updated
+  `2026-08-05T01:04:52.730048+00:00`, roster hash `46e7cea96c95`, `stable_hours: 6.7`.
+- PASS: https://www.pdga.com/tour/event/96415 still reports August 7–9 in Indianola, 168 total / 116 MPO, last
+  updated `04-Aug-2026 11:53:02 CDT`. FAIL: no Round 1 tee-time table and `data/events/96415-MPO.json` remains 404.
+- FAIL/BLOCKED: visible Will session had all 12 T15 Player 1/2 buttons disabled; own-picks-only is not certified.
+- FINDING: six identical Tadpole Beach controls were visible (three live + three resume); no record was opened,
+  altered, or deleted. Browser console had only the known Babel warning plus the `/friendCodes/SRE3D7`
+  permission-denied warning.
 
 ## DATA / SAFETY
 
-- Changed shared-office Markdown only. No app file, `index.html`, Design version, Firebase project/node/rule,
-  workflow, issue, user, pick, round, score, league member, or live deployment changed.
-- `[GPT]` performed no Firebase read/write probe, no rules deploy, no deletion, and no backup operation. Because
-  the existing evidence is sufficient to establish exposure, repeating a live destructive-capability test would
-  add risk without adding a decision-relevant fact.
-- Legacy `chains-fantasy /league` was not read or touched. Betting stays removed. Confirmed-good v454 behavior was
-  preserved.
+- Changed shared-office Markdown only. No app file, `index.html`, Design version, Firebase node/rule, workflow,
+  issue, user, pick, score, round, league member, or live deployment changed.
+- No destructive walkthrough was run: the visible rounds were existing member records and no new test fixture had
+  been backed up under `_trash/<timestamp>`. This shift did not delete, hide, resume, or score any round.
+- The separate issue #1 rules exposure was not re-probed. Legacy `chains-fantasy /league` was not read or touched;
+  the legacy `/play_rounds` path appears only in immutable source inspection. Betting stays removed.
 
 ## REUSABLE METHOD FOR THE OTHER AI
 
-- `[GPT]` reused the company/Auditor artifacts instead of rediscovering them, then improved them into an
-  owner-controlled incident path: preserve the issue evidence; stop all live write probing; owner exports and
-  date-backs up rules; reproduce only in an emulator or approved non-production project; test explicit allow-own
-  and deny-other-user/league cases; deploy with rollback evidence; never touch legacy `/league`.
-- A degraded-mode run counts only when it leaves a visible artifact. Commit
-  `6040e2f01d44649a2442408debd4647a6f3e9016` plus issue #2 is the reusable proof that the Design-busy fallback
-  worked; do not repeat the same audit unless later changes invalidate it.
-- For browser-independent supervision, verify the current live commit, one primary-source event fact, the newest
-  data blob, and open issues, then route the concrete delta. Bookkeeping alone is not a completed fallback.
+- `[GPT]` reused the prior company/Auditor safety rule against risky rediscovery and improved it for protected
+  deletes: compare immutable decompressed base/head handlers, then trace the caller and callee promise contract.
+  Call presence is not success; require await/return, real result branching, visible failure, and no premature local
+  clear/navigation. Only after that passes should QA create a new test-only record, back it up to
+  `_trash/<timestamp>`, delete through the real UI, reload, and verify every documented store is absent.
+- `[GPT]` found contrary evidence to the latest company claim that #43 was already closed. The company correctly
+  proved the callee touched multiple stores, but v454's active Discard never called it; v455 calls it without await,
+  and the callee can report optimistic timeout success. The next worker should use this evidence, not repeat the
+  same call-presence audit or mark the queue item complete from version text.
 
 ## WHAT'S NEXT AND WHO OWNS IT
 
-1. **Owner — `T-C05` (critical):** export and date-backup current `chains-fantasy-default-rtdb` rules, provide an
-   approved emulator/non-production validation path, and authorize a least-privilege deployment with rollback.
-   No scheduled worker should repeat unauthenticated writes or access legacy `/league`.
-2. **PM + Engineer + independent QA — `T-C06`:** scope the issue #2 UI/error contract, implement in the existing
-   authoritative Design project, and test regenerate/revoke success and forced-failure paths before deploy.
-3. **Data + QA — `T-C04`:** keep field 96415 fresh, resolve/document the missing per-event artifact, verify Picks
-   against the official 116-player MPO field, and independently test v454 Back/Cancel and sent-invite cancel.
-4. **Data — `T-C01`:** specify recurring restorable backup scope, retention, RPO/RTO, access, and a non-production
-   restore drill before any Firebase write or delete work.
+1. **PM + Engineer:** keep ROUND_QUEUE #2 open; in the existing authoritative Design project make active Discard
+   await the delete promise, branch on the real result, preserve failure/retry UI, and do not clear/navigate first.
+   Revisit the callee's optimistic eight-second `true` timeout because it contradicts confirmed deletion.
+2. **PM + Engineer:** establish why the visible Will session cannot edit its own two T15 picks without handling or
+   storing credentials; determine auth/role mismatch versus permission regression, then hand to independent QA.
+3. **PM + Engineer/Data:** identify whether the three duplicate live cards and three duplicate resume cards are
+   duplicate Firebase records or duplicate rendering. Do not delete existing member rounds during diagnosis.
+4. **PM + Engineer:** route the `/friendCodes/SRE3D7` permission-denied initialization warning if it is not already
+   tracked; prove user-visible failure handling rather than silently retrying.
+5. **Data + QA:** continue event 96415 refresh, resolve/document the missing per-event JSON, obtain the official
+   first-player tee time, and re-run member Picks plus the backed-up destructive round walkthrough before GREEN.
 
 ## WATCH OUT FOR
 
-- Issue #1 is a live security/data-integrity risk. The previous disposable probes were reportedly cleaned up, but
-  the rules exposure remains until owner-controlled remediation and deny-matrix evidence land.
-- Do not treat this handoff as permission to deploy Firebase rules, create another project, or change the founders
-  season. Do not hand-edit `index.html`; UI work remains Design-source-only.
-- T15 readiness remains AMBER: field count matches PDGA at 116, but the per-event artifact, official first-player
-  tee time, regular-member pick permissions, and independent v454 phone walkthrough remain open.
-- Do not use DGPT broadcast time as the tee-time or pick-lock deadline.
+- v455 is live but ROUND_QUEUE #2 is not done. Do not equate a call, toast, version, or local disappearance with
+  confirmed multi-store deletion.
+- Do not use an existing member round as a destructive fixture. Create and back up a dedicated test record only
+  after the caller/callee contract is corrected.
+- T15 readiness remains AMBER: field count is correct, but member pick permissions, discard persistence, duplicate
+  round cards, per-event artifact, roster stability, and official first-player tee time remain open.
+- Issue #1 remains owner-controlled. Do not repeat unauthenticated live writes, deploy rules, or touch `/league`.
