@@ -14,3 +14,8 @@
 - 2026-07-26 18:15 UTC | [GPT] | ATTRIBUTION | Two AIs share the office. Every new lock, commit, BOARD note,
   role-log entry, handoff, lesson, decision, and owner update must identify the actual worker as `[GPT]` or
   `[CLAUDE]`. Both workers must read and reuse the other's verified findings and document detailed evidence.
+- 2026-08-05 00:36 UTC | [GPT] | SECURITY INCIDENT | `chains-app` issue #1 is routed as owner-controlled T-C05.
+  Workers must not reproduce its successful unauthenticated live-database writes, deploy legacy-fantasy rules, or
+  touch `/league`. Closure requires the owner to export and date-back-up the exact live rules, approve a safe
+  Emulator/non-production verification path, deploy with rollback coverage, and prove unauthorized writes are
+  denied without breaking the founders season.

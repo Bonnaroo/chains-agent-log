@@ -1,16 +1,17 @@
 # BOARD — Master task rollup (all lanes) + CEO summary
 
-**Last updated:** 2026-08-04 21:31 UTC by [GPT] CEO lane
-**Next update:** after Data/QA close the T15 readiness gates below
+**Last updated:** 2026-08-05 00:36 UTC by [GPT] CEO lane
+**Next update:** after Owner/Security route T-C05 or Data/QA close a T15 readiness gate
 
 ---
 
 ## [GPT] CURRENT ROLLUP — T15 DISCMANIA CHALLENGE
 
-- Live App A is `v453`, commit `73d7d057eeecaa32558b24ed5dbd990965b007d0` (2026-08-04 21:07 UTC). [GPT] opened the production URL and observed the dashboard at `#dashboard` with `Fantasy DGPT v453`, current league data, and no initialization hang.
+- Live App A is `v454`, commit `5e339c23ba89edf2a8e10a784bf89d14acae59a1` (2026-08-04 23:18 UTC). [GPT] opened the cache-busted production URL at 00:32 UTC and observed `Fantasy DGPT v454`, current league data, T15 `Picks open`, and no initialization hang. The commit says it adds pre-round back/cancel consistency plus sent-invite cancellation; independent QA still owns feature approval.
 - Next event is T15 Discmania Challenge, August 7–9, PDGA event `96415`.
 - Official PDGA state at the 2026-08-04 check: 168 total registrations, 116 MPO, last updated `04-Aug-2026 11:53:02 CDT`.
-- Current `chains-dgpt-data/data/field.json`: T15 / `96415`, 116 players, updated `2026-08-04T20:07:40Z`; count matches PDGA. `stable_hours: 1.7`, so the field is still moving.
+- Current `chains-dgpt-data/data/field.json` blob `083254df93400aeb595fefa6ce26c7986a1c42a3`: T15 / `96415`, 116 players, updated `2026-08-04T23:42:38.850720+00:00`; count matches PDGA. `stable_hours: 5.3`, so the field is not yet treated as settled.
+- Two open `chains-app` issues were untriaged in this master board. [GPT] routed them below as T-C05 (critical legacy-fantasy rules incident; owner-controlled) and T-C06 (league-code failure visibility; Design-source fix + QA).
 - `chains-dgpt-data/data/events/96415-MPO.json` is absent (404). This is now a concrete Data-lane readiness finding, not an inferred app failure.
 - Existing sections below are retained as Ledgestone-era history. Where they conflict with this current rollup, this section and `EVENT_READINESS.md` are authoritative.
 
@@ -26,15 +27,25 @@ Owner request routed 2026-08-04 by [GPT]. Produce a planning brief, not a build:
 
 `2026-08-04T22:33:00Z [GPT]` DONE. Added `team/STRATEGY.md` section `T-C02 OPTIONS BRIEF` with four bounded choices, a phase recommendation, provider/usage triggers, observability, migration and cost risks, and the three owner decisions required before App B implementation. Recommended: harden APP A's RTDB in place for the season; use Firestore for future durable multi-league state and add RTDB only for measured live presence/sync. Official evidence: Firebase RTDB/Firestore comparison and migration/coexistence guidance. No app, repository, database, rule, or live data was created or changed.
 
-### T-C03 | IN_PROGRESS | [LANE:CEO/PM] | PRIORITY: HIGH — never-idle supervision
+### T-C03 | DONE | [LANE:CEO/PM] | PRIORITY: HIGH — never-idle supervision
 
 Owner request routed 2026-08-04 by [GPT]. A lane that is blocked on its primary task must complete one allowed fallback with evidence in the same shift; `blocked` plus no fallback is a supervision failure. CEO/PM must surface repeated no-fallback shifts in the rollup and sharpen or reroute the work rather than letting it rot.
 
 `2026-08-05T00:34:37Z [GPT]` CEO supervision audit started. Exact scope: verify whether the scheduled company loop used its required backend fallback, triage the two open `chains-app` issues it surfaced, and refresh the master rollup for live v454 and T15. No app, Firebase, issue, or live-data write is authorized by this audit.
 
+`2026-08-05T00:36:27Z [GPT]` DONE with evidence. The scheduled company loop did not stop when its Design tab was busy: office commit `6040e2f01d44649a2442408debd4647a6f3e9016` records a cache-busted v453 regression sweep, eight source-lineage markers present, and a real silent-failure finding filed as `chains-app` issue #2. That is the required visible backend fallback, not a blocked/no-op shift. T-C03 remains a standing CEO/PM enforcement rule; future blocked shifts must name their fallback artifact or be corrected.
+
 ### T-C04 | ASSIGNED | [LANE:DATA + QA] | PRIORITY: HIGH — T15 event-readiness closeout
 
-Data: keep event `96415` field refresh current through tee-off and resolve/document the missing `data/events/96415-MPO.json`. QA: independently compare the live Picks roster to PDGA's 116 MPO registrations, verify regular-member own-picks-only behavior, and run the phone-sized v453 round walkthrough. Done when `EVENT_READINESS.md` can move from AMBER to GREEN with URLs, timestamps, exact counts, and pass/fail evidence.
+Data: keep event `96415` field refresh current through tee-off and resolve/document the missing `data/events/96415-MPO.json`. QA: independently compare the live Picks roster to PDGA's 116 MPO registrations, verify regular-member own-picks-only behavior, and run the phone-sized v454 round walkthrough including pre-round Back/Cancel and sent-invite cancel. Done when `EVENT_READINESS.md` can move from AMBER to GREEN with URLs, timestamps, exact counts, and pass/fail evidence.
+
+### T-C05 | BLOCKED ON OWNER | [LANE:OWNER + SECURITY/CEO] | PRIORITY: CRITICAL — deny unauthenticated legacy-fantasy writes
+
+Open `chains-app` issue #1 records black-box evidence that unauthenticated PUT/PATCH/DELETE requests succeeded on disposable top-level paths and `/picks/2099/auditnested` in `chains-fantasy-default-rtdb`; the Auditor deleted each probe and verified null, and states that `/league` was never touched. [GPT] did not reproduce or touch this database. Done only after the owner exports and date-backs-up the exact live rules, reviews the inheritance error, approves a safe non-production verification path, deploys corrected rules without breaking the founders season, and verifies unauthenticated writes are denied while required app behavior still passes. Hard safety: no further live probes, no rules deployment, and no access to legacy `chains-fantasy /league` without explicit owner-controlled handling. Evidence: https://github.com/Bonnaroo/chains-app/issues/1.
+
+### T-C06 | ASSIGNED | [LANE:PM + ENGINEER + QA] | PRIORITY: HIGH — surface league-code regenerate/revoke failures
+
+Open `chains-app` issue #2 shows two promise-error paths under `leagueCodes/{code}` that can leave an old or revoked code live while the commissioner sees no failure: regenerate wraps async `remove()` in an ineffective synchronous try/catch, and revoke clears busy state without an error toast. Done when the authoritative Design source awaits/handles both failures, gives explicit partial-failure/retry messaging, preserves successful-code behavior, exports a verified build, and QA proves success plus simulated failure paths. Never direct-patch only the deployed `index.html`; source-lineage must remain closed. Evidence: https://github.com/Bonnaroo/chains-app/issues/2.
 
 ---
 
