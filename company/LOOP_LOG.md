@@ -1232,3 +1232,52 @@ cleanup needed). LOOP_LOG.md before this entry's sha is recorded via the GitHub 
 
 **Next:** Retry Design (PHASE A ask on ROUND_QUEUE item #1) on the next cycle; decide/execute the `/league`
 backup-credential question; reconcile Issues.
+
+---
+
+## 2026-08-05 — BACKEND TRACK / Export verification (Round-queue item #45, Achievements/badges)
+
+**Context:** Chrome MCP connected fine this run. Design was not mid-work (idle chat, compose box free)
+and had already built, smoke-tested, and shipped v463->v464 (6 new ChainsBadges entries: bogey-free,
+course record, course explorer, Go-Throw win streak, drafted-the-winner, season-long-comeback) per my
+4 rulings recorded earlier in this same chat thread (scope-widen to ChainsEngine/ExploreData approved;
+"won from behind" = definition (a) season-long only; win/loss streak = pure ChainsRounds head-to-head
+only; static badge list, no toast/new localStorage this round). AUDIT-v464.md was out for
+re-verification — this run performed that verification (Step 1 of the loop).
+
+**Verified (3-level):**
+1. Artifact — fetched `index.html` via Contents API -> `download_url` (raw.githubusercontent.com,
+   commit sha `6865e8f6d995d04beac3c4fb569bcf4be8161228`, 2,377,783 bytes). Decompressed all 93 gzip
+   base64 blobs and confirmed all 8 required markers present: `function authUid()`, `function
+   _indexWrite(`, `Teemu Paakinen`, `label: "In the Bag"`, `window.AuthGate`, `ANONYMOUS SESSIONS NO
+   LONGER GRANT ACCESS`, `window.ChainsImpact`, `window.ChainsAssets`. Also confirmed the 6 new badge
+   terms (bogey-free, course record, win streak, drafted_winner, season-long comeback, BadgeShelf)
+   present in the decompressed badges.js/view_play.jsx blobs.
+2. Deployment — same raw CDN fetch shows `CHAINS_VERSION = "v464"`, matching the version Design
+   reported shipping. No CDN lag issue observed.
+3. Functional — loaded `https://bonnaroo.github.io/chains-app/` live: dashboard renders real league
+   data (v464 tag visible in sidebar), navigated to Go Throw, confirmed "BADGES · 2/14" shelf renders
+   with all 6 new badges visible (Bogey-Free, Course Record, Course Explorer, On A Run, Drafted The
+   Winner — earned/trophy state, Comeback Kid), no visible console/render errors, mobile-viewport
+   sidebar/cards intact.
+
+**Also spot-checked (not this run's primary item, but on the critical-fix list):** Issue #43 "deleted
+round comes back" — confirmed the fix is ALREADY live in v464, not just in STATE.md's claim. Decompiled
+`ChainsRounds.remove()`/`_indexWrite()`: `remove()` now builds a `jobs[]` array covering
+playRounds+liveRounds (single multi-path update), the per-user index (`_indexWrite(d, id, null)`), and
+the legacy `chains-fantasy/play_rounds` REST delete; awaits `Promise.all(jobs)`, uses `.every()` (not
+just job 0) to compute real success, and surfaces a toast via `_failOnce(...)` on any partial failure —
+matching the required fix exactly. No further action needed on #43 this run.
+
+**SHIPPED/PROVED this run:** No new code — this run's output was the required export verification
+(Step 1) for #45, now confirmed genuinely live and correct end-to-end, plus independent re-confirmation
+that #43's fix (previously logged as CLOSED) is real in the current production artifact.
+
+**Rollback sha (pre-existing, recorded for reference only — no change made this run):** commit
+`6865e8f6d995d04beac3c4fb569bcf4be8161228` is current HEAD/verified-good; no rollback needed.
+
+**Next:** Round-queue item #45 can be marked done/checked off by whoever owns that tracking doc (not
+edited here — this run only verified, per the loop's "UI is Design's territory" boundary). Design's
+chat thread is otherwise idle/available for the next Phase A/B question. Outstanding from prior runs
+still open: `/league` backup-credential gap, Issues-tracker reconciliation (#5/#6/#32/#34/#40/#41/#42
+not re-checked this run), kyle's real test-account email still unresolved for negative-test rules work.
