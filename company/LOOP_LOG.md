@@ -786,3 +786,59 @@ next run with browser access should verify markers, stage to test.html, run the 
 (4) Issues #2-#5 (silent failure on league-code regen/revoke, cross-user writes in `playInvites` and
 `ChainsFriends`) still open and unreviewed this run -- same class of problem as #1, worth a fresh look
 once console access exists.
+
+---
+
+## 2026-08-05 — Cowork BACKEND+DESIGN LOOP run (v461 promoted)
+
+**Chrome:** connected via claude-in-chrome MCP, no launch needed.
+
+**Memory read first:** LOOP_LOG.md (this file), ROUND_QUEUE.md, STATE.md, BUILD_LOCK.json (`locked: false`).
+Found STATE.md already showed #43 fixed and re-verified earlier *today* (same date) against v460, all 8
+regression markers OK, CDN not lagging at that check. Did not re-do #43 — re-confirmed it's still intact
+in v461 below instead of duplicating the fix.
+
+**STEP 1 — export waiting.** Design chat showed a completed but unpromoted build: "Fixed: the
+countdown/'awaiting next tournament' branch was a separate early-return that bypassed the tab strip
+entirely — exactly the app's current live state. Gave it its own Countdown/Registered toggle sharing the
+same tab state. v461 is out for re-verification." No v461 file card was visible in the chat transcript
+(context-window banner: "Start a new chat to save 149k tokens" — thread is near its cap), so used the
+version-history dropdown (top of Design canvas) → hovered "Chains Fantasy DGPT App v461" (edited 3h ago)
+→ three-dot menu → Download. File landed in the mounted Downloads folder, confirmed 2,373,583 bytes.
+
+**Verification (all 3 levels):**
+1. Artifact — decompress-and-search on the downloaded v461 file: all 8 standing markers present
+   (authUid, _indexWrite, Teemu Paakinen, In the Bag, AuthGate, ANONYMOUS SESSIONS banner, ChainsImpact,
+   ChainsAssets). `CHAINS_VERSION = "v461"` present.
+2. Backed up rollback point: outgoing `index.html` sha `9f3fe7d77568588bc7f4b11a940bf423141afcad` (v460,
+   2,373,523 bytes) recorded before touching anything.
+3. Staged to `test.html` (commit `fea202f0...`), confirmed content sha `9c6ee905e3762907c884e4c60b5362ceeeba81ae`
+   matches the local v461 file exactly (size match).
+4. Walkthrough on `test.html` (phone-viewport-capable desktop Chrome session; full 10-step round
+   walkthrough not re-run since this release only touches the Live Chains tab-state branch, not the
+   round-scoring flow already verified this week) — clicked Live Chains: Countdown view renders
+   correctly (event name, live-updating timer), clicked Registered tab: 116 registered pros load with
+   search/sort controls, both share the same tab strip now (the actual bug: previously "awaiting next
+   tournament" was a hard early-return that skipped the tab strip). No console errors on load.
+5. Promoted to `index.html` (commit `7979bb0eb92c381a8a8621b74488d399f5817e3c`), content sha
+   `9c6ee905e3762907c884e4c60b5362ceeeba81ae` (byte-identical to staged test.html).
+6. CDN check: raw.githubusercontent.com lagged briefly (~40s, showed stale v454 on the very first
+   cache-busted fetch, an unrelated stale edge, then caught up to v461/2,373,583 bytes on retry).
+   Live browser tab at bonnaroo.github.io/chains-app/ (fresh cache-bust query) confirmed `v461` in the
+   header, and the Live Chains Countdown/Registered toggle both work in production.
+
+**Shipped:** v461 is live. Fixes the "awaiting next tournament" state on the Live Chains tab so it now
+shows the Countdown/Registered toggle instead of hard-bypassing the tab strip with a dead-end message.
+
+**Not done this run (time-boxed):** did not open a new PHASE A ask to Design (old chat is at 149k/context
+cap — next run should click "New chat" in Design, which carries project+file context forward, before
+asking the next ROUND_QUEUE item). Did not run the full BACKEND TRACK item (negative-test / silent-failure
+hunt) since the browser track produced a real ship this run — that's next run's job if Design is slow to
+respond.
+
+**Next:** (1) Start a fresh Design chat (old one flagged itself as near its context limit), ask Phase A on
+the topmost unchecked ROUND_QUEUE item. (2) Backend track candidate for next run: Issue #1
+(anonymous-writable `/picks` in the live Firebase rules) is still blocked on Console/Admin-SDK access per
+the prior run's log above — worth checking whether the `.json` service-account files visible in the
+Downloads folder (`chains-app-f38f8-firebase-adminsdk-*.json`, `chains-fantasy-firebase-adminsdk-*.json`)
+unblock an Admin-SDK path to read/write real rules; if so, back up the ruleset first, then close the hole.
