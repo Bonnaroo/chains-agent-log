@@ -628,3 +628,59 @@ export — it looked idle this run, not actively generating, but no ready export
 viewport. If ready, run the full stage/walkthrough/promote flow from DESIGN_LOOP.md. Otherwise: resolve the
 `league-*.json` backup credential gap noted above, or pick up BACKEND TRACK item 3 (cross-user negative test,
 still blocked on cory/kyle/shanna/gabe real emails not being recorded anywhere in company/*).
+
+---
+
+## 2026-08-05 — BACKEND TRACK: closed Firebase rules cascade hole in `playRounds`
+
+**Item worked:** bug #43 was already CLOSED/verified (v456, confirmed via decompress of live
+`index.html` — `remove()` awaits `Promise.all(jobs)`, checks `rs.every(x => x !== false)`, real
+failure surfaced via `_failOnce`; Discard button calls `ChainsRounds.remove`). No further action
+needed there. Fell back to decision-tree option 3: closed the security hole flagged in
+`TRIAGE_AND_AUDIT.md` — `playRounds` had `.write: "auth != null"` at the top level, which (per
+Firebase's rule-cascade semantics — a permissive ancestor always overrides a stricter child)
+silently made `scorePatch`, `editHistory`, `practice`, and `notes` writable by **any** signed-in
+user for **any** round, not just the round's owner/participants.
+
+**What shipped:**
+1. Backed up the live ruleset first — re-fetched via admin service-account OAuth
+   (`Downloads/chains-app-f38f8-firebase-adminsdk-*.json`, JWT-bearer exchange, scope
+   `firebase.database`) and confirmed it byte-for-byte matched the existing
+   `company/backups/firebase-rules-chains-app-f38f8.json`, so that file was trustworthy as the
+   pre-change snapshot.
+2. Removed the permissive top-level `playRounds.write` and replaced `$roundId`'s rules with
+   owner/participant-scoped ones: full-record write (create/delete/finalize) is owner-only;
+   `players/$key` write requires `$key === auth.uid` OR round owner; `updatedAt`/`editHistory`
+   require owner OR an existing participant; `practice`/`notes` are owner-only. `joinRequests`
+   left untouched (it already had a correct scoped rule). Legacy rounds with no `owner` field keep
+   working via an explicit fallback clause.
+3. Published the new ruleset via the RTDB REST `.settings/rules.json` admin endpoint. Re-fetched
+   immediately after — byte-identical to what was pushed.
+4. **Functional negative/positive tests, real accounts** (cory/shanna, `chains1234` — kyle/gabe
+   logins failed with `INVALID_LOGIN_CREDENTIALS`, so used the two that worked): created a real
+   test round as cory (owner). As shanna (uninvolved outsider): `setPractice`, `setNotes`, writing
+   into cory's `players/` row, deleting the round, and injecting an `editHistory` entry **all
+   correctly returned `{"error":"Permission denied"}`** — 5/5 hostile writes denied. Then added
+   shanna as a real participant and had her run the *actual* `scorePatch()` write pattern (a
+   flattened multi-location `root.update()`, matching the real client code) against her own
+   player row — succeeded. A parallel attempt by shanna to flatten-update *cory's* row while a
+   participant was still correctly denied. Owner (cory) practice-flag + full delete both
+   succeeded. Test round fully cleaned up afterward (confirmed `null` on refetch).
+5. Committed the refreshed ruleset to `company/backups/firebase-rules-chains-app-f38f8.json`
+   (`chains-agent-log` commit `3e6196b287b0a84502b8ccdd5759b6153a9f991a`) as the new ground truth,
+   per `ACCESS.md`'s "diff against that file, don't re-probe blind" rule.
+
+**Not touched / follow-up flagged:** `liveRounds` still has the same `auth != null` top-level
+write (the lightweight live-leaderboard mirror) — same class of hole, not in the TRIAGE_AND_AUDIT
+finding as written, left alone this run to keep blast radius contained to what was audited and
+tested. Worth a dedicated pass. No chains-fantasy paths touched at all (out of scope, read-only
+per hard rule).
+
+**No UI change, no Design involvement needed** — this is a backend-only rules fix with no user-
+visible surface, consistent with the Cowork/Design split in `DESIGN_LOOP.md`.
+
+**What's next for the following run:** (a) same cascade audit + fix for `liveRounds`; (b) kyle and
+gabe's `chains1234` logins are currently failing — `ACCESS.md` test-account table may be stale,
+worth a owner check before relying on all four accounts again; (c) resume the queued item from the
+prior run — Design tab check for a #5 (pre-round cancel/back + pending-invite delete/view) export,
+or the `league-*.json` backup credential gap.
