@@ -1,6 +1,27 @@
 # QA LANE BOARD
 <!-- Owned exclusively by this lane. Statuses: ASSIGNED -> IN_PROGRESS -> REVIEW -> DONE -->
 
+## 2026-08-05 01:40 UTC — [GPT] v455 non-destructive verification finding
+
+**RESULT: FAIL / return to PM + Engineer; no live record deleted.** Production at
+`https://bonnaroo.github.io/chains-app/?cb=202608050136#dashboard` visibly reports v455, matching app commit
+`3a8bb7577eec92be5ae93d8c690785190a2a7d84`. Decompressed immutable comparison with v454 proves the only active-
+round Discard change is a new fire-and-forget `ChainsRounds.remove(cloudIdRef.current)` call. The handler does not
+await or inspect the returned boolean; it immediately clears `chains_play_active` and calls `onBail()`. The callee
+returns `Promise.race([settle, timeout])` where the timeout resolves `true` after eight seconds. Therefore the UI
+can leave as if deletion succeeded before all stores confirm. This fails company ROUND_QUEUE #2's explicit
+`deleteRound awaits ChainsRounds.remove() and reports real success/failure` acceptance. It also supplies contrary
+evidence to the earlier company log that #43 was already closed. Do not mark #43/queue #2 done from version or call
+presence alone; fix in the authoritative Design source, await and branch on the real result, then use a newly
+created backup-safe test record for destructive persistence QA.
+
+Additional phone-sized evidence: Registered shows 116 pros, matching PDGA and current field blob
+`e79e2eace48faed4146e9e4f09b6d85d7143b231`; the visible Will session has all 12 T15 Player 1/2 buttons disabled
+with `Only the commissioner can edit picks and scores`, so regular-member own-picks-only is not certified. Go Throw
+shows three identical Tadpole Beach live cards and three identical resume cards. Console logged a Firebase
+`permission_denied` write at `/friendCodes/SRE3D7`. No app, Firebase, pick, score, or round data was changed, and
+the separate rules incident was not re-probed.
+
 ## T-018 — BLOCKER — Go Throw: Discard/Cancel round freezes renderer AND fails to discard (regression on known blocker gap)
 Status: CRITICAL RE-VERIFY FAIL (escalated for LANE:DESIGN/ENGINEER — urgent)
 **2026-07-29 08:15 UTC VERIFICATION UPDATE**: Re-tested on live app (v412+ build, commissioner session).
