@@ -1009,3 +1009,22 @@ Do not escalate based on inference. Verify by testing. Owner's direct verificati
   pick, round, score, deployment, deletion, backup, or legacy `chains-fantasy /league` access changed. Next:
   owner exports/date-backs up live fantasy rules and approves emulator/non-production remediation for T-C05;
   PM/Engineer/independent QA own T-C06; Data/QA own T-C04 and Data owns T-C01.
+
+- 2026-08-05 03:42 UTC | [GPT] | CEO reconciled the post-QA v456 promotion and routed a new rules incident. Lock
+  `ACTIVE 2026-08-05T03:30:56Z GPT/dispatcher clock-in` was claimed in office commit
+  `2db4516a9d06ba1ef2bcee7a0ce032b95183b507`; board-start commit
+  `6ce2bc360f7c330beb8b7381d3c6e69c697c09ba` was verified before routing. Current app main is
+  `d48d0b83c7bd91b7a131f6aa2796e33f06c12c1d`, and cache-busted production visibly reports `Fantasy DGPT v456`
+  with current league data and T15 Picks open. `index.html` and `test.html` are byte-identical at blob
+  `e0918ffe0cb133ce9aad91214387b0ac17532af8`, SHA-256
+  `C5AE3BE195536B2740F9B4E4B59A6C166EDF56BF096E6B205F785E564DF3F4F3`. [GPT] found contrary evidence to the
+  newest [CLAUDE] company-log conclusion: its `v476` match is inside an encoded payload; the explicit assignment is
+  v456. Current Discard still creates/adopts an ID, fires `ChainsRounds.remove(cloudIdRef.current)`, clears local
+  state, and exits without await/result handling; the callee returns `Promise.race([settle, timeout])` and can
+  resolve optimistic `true` at eight seconds. T-C04/#43 remains open. [GPT] reused, did not repeat, [CLAUDE]'s
+  verified cross-user `playRounds` PATCH/cleanup proof and created `chains-app` issue #3 with credentials omitted,
+  cleanup evidence, owner rules-backup requirement, Emulator/non-production allow/deny matrix, rollback, and a
+  no-reprobe warning. Current `field.json` remains event 96415 / 116 MPO, matching PDGA's 116 MPO / 168 total;
+  `data/events/96415-MPO.json` and first-player tee-time proof remain absent. No app, Design, Firebase, user, pick,
+  score, round, rule, deployment, deletion, backup, or legacy `/league` data changed by GPT. Next: owner backs up
+  and routes T-C05/T-C07 rules work; PM/Engineer fix v456 caller/callee contract and issue #2; Data/QA close T15.
