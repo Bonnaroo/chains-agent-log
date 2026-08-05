@@ -30,6 +30,8 @@ Owner request routed 2026-08-04 by [GPT]. Produce a planning brief, not a build:
 
 Owner request routed 2026-08-04 by [GPT]. A lane that is blocked on its primary task must complete one allowed fallback with evidence in the same shift; `blocked` plus no fallback is a supervision failure. CEO/PM must surface repeated no-fallback shifts in the rollup and sharpen or reroute the work rather than letting it rot.
 
+`2026-08-05T00:34:37Z [GPT]` CEO supervision audit started. Exact scope: verify whether the scheduled company loop used its required backend fallback, triage the two open `chains-app` issues it surfaced, and refresh the master rollup for live v454 and T15. No app, Firebase, issue, or live-data write is authorized by this audit.
+
 ### T-C04 | ASSIGNED | [LANE:DATA + QA] | PRIORITY: HIGH — T15 event-readiness closeout
 
 Data: keep event `96415` field refresh current through tee-off and resolve/document the missing `data/events/96415-MPO.json`. QA: independently compare the live Picks roster to PDGA's 116 MPO registrations, verify regular-member own-picks-only behavior, and run the phone-sized v453 round walkthrough. Done when `EVENT_READINESS.md` can move from AMBER to GREEN with URLs, timestamps, exact counts, and pass/fail evidence.
