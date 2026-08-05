@@ -894,3 +894,66 @@ needed — logging as informational, not [needs-owner-decision] since it's not a
 ambiguous instruction). (2) Start a fresh Design chat for the next ROUND_QUEUE / ROADMAP Phase 2 item if
 browser is available next run. (3) Option 3 (negative-test permission rules) still blocked on kyle's
 real email.
+
+
+## 2026-08-05 — automated cycle (chains-design-loop scheduled run, cycle 38)
+- STEP -1: Chrome MCP connected cleanly (tabs_context_mcp -> navigate worked, no computer-use fallback
+  needed). Design composer showed "Sonnet 5 Max" (not Fable) -- proceeded per MODEL rule.
+- FIX-THIS-FIRST (#43): re-verified via Git Blobs API (ground truth, bypasses CDN). Fetched HEAD commit
+  7979bb0eb9 -> tree -> index.html blob 9c6ee905e3762907c884e4c60b5362ceeeba81ae (2,373,583 bytes),
+  decompressed all 93 gzip data blobs, read ChainsRounds.remove(id) directly: it builds a jobs[] array
+  (Firebase multi-path update, _indexWrite(d,id,null), and a legacy chains-fantasy-default-rtdb
+  play_rounds REST DELETE whose result now counts toward ok), comment reads "#43: every store must
+  confirm -- checking only rs[0] masked index/legacy failures." Fix confirmed present and unchanged.
+  All 8 standard markers present (authUid, _indexWrite, Teemu Paakinen, In the Bag, AuthGate, ANONYMOUS
+  SESSIONS NO LONGER GRANT ACCESS, ChainsImpact, ChainsAssets). No regression.
+- **New finding this cycle: v461 is now live** (window.CHAINS_VERSION = "v461"), promoted at
+  2026-08-05T13:54:56Z (commit 7979bb0eb9, "Promote v461: fix Countdown/Registered tab-state bypass on
+  Live Chains"), superseding v460 (d8d581a04d) that was still current as of cycle 37's log entry. Both
+  index.html and test.html point at the identical blob sha -- staging and production are in sync.
+  raw.githubusercontent.com CDN already served v461 fresh (no lag observed this check). This promotion
+  happened via Design's own workflow between cycles 37 and 38, not via this run.
+- **PHASE A on #44 (Draft window)**: Design's chat was idle (no in-progress generation) when this cycle
+  opened. Sent the ASK template (approach/why, open questions on autopick logic / offline handling /
+  timezone, backend needs, what to reuse). First  call into the composer hit the same
+  Input.dispatchMouseEvent-style CDP timeout documented in prior cycles' frozen-tab notes, but a follow-up
+  screenshot showed the text had actually landed in the composer despite the tool error -- clicked Send
+  manually rather than retyping (would have duplicated the message). Design answered in full within the
+  bounded wait (~3 tool-call rounds, well under the 4-minute cap):
+  1. **#44 is already substantially built** -- 36h pre-open window and ~4h per-pick clock are live and
+     confirmed in the app (static HTML + Firebase RTDB, no server-side scheduler).
+  2. **Real bug found: timezone drift.**  parses as the *viewer's
+     local* midnight, not a fixed instant -- two members in different timezones compute different
+     absolute deadlines for the same pick (e.g. 3h apart for ET vs. PT), which is ~10% noise against a
+     4h per-pick clock. Pre-existing pattern used app-wide for countdowns, not something this feature
+     introduced. Flagging, not yet fixed.
+  3. **Autopick enforcement is lazy, not scheduled.** No Cloud Functions/cron exist in this app (confirmed
+     -- it is static HTML + Firebase RTDB; the only GitHub Actions cron job is an unrelated 2h field.json
+     refresh). If nobody opens the app during a window, that turn just sits expired until someone does.
+     True unattended enforcement would need a new backend surface (a scheduled Cloud Function) that does
+     not exist today.
+  4. **Autopick selection policy ("best remaining by rating") was implemented but never asked/confirmed
+     with the owner** -- Design flagged this itself as worth a sanity check against alternatives (field-
+     seed order, random, etc.).
+- **PHASE B ruling**: did not authorize building a new backend surface (scheduled Cloud Function for
+  unattended autopick) or changing draft/autopick selection policy this cycle -- both are game-rule /
+  draft-mechanics decisions in the Tier-3 sense (affects who gets drafted, a fairness-sensitive league
+  rule), not pure backend/data plumbing with no UI surface. **Tagging both as [needs-owner-decision]**:
+  (a) whether unattended autopick enforcement is worth the new Cloud Function backend surface for a
+  6-person friends league, or the current lazy/opportunistic version is acceptable; (b) whether "best
+  remaining by rating" is the desired autopick policy vs. an alternative. The timezone-drift bug is a
+  genuine defect (not a rule change) and is a legitimate small fix candidate for a future cycle --
+  logging it rather than patching live under this cycle's time budget, since it touches countdown code
+  used app-wide and deserves its own verification pass rather than a rushed edit appended to this run.
+- Did not touch chains-fantasy /league or /live. No Tier-3 changes executed. No Firebase rules changed
+  this cycle. joinRequests/requests permissive-write hole remains open, still [needs-owner-decision]
+  (unchanged from prior cycles).
+- Design account showed "83% of weekly limit used, resets Fri 4:00 AM" during this cycle -- flagging so
+  a future cycle doesn't misread throttling/refusals as a tooling failure.
+- No code shipped this cycle -- this was a PROVE (v461 promotion + #43 re-confirmation via Git Blobs API)
+  + PHASE A/B (real findings, correctly deferred) cycle.
+- **What is next**: (1) owner decision needed on the two [needs-owner-decision] items above before any
+  #44 backend build starts; (2) timezone-drift bug in the shared countdown-parsing code is a good
+  standalone fix for a future cycle -- affects more than just #44; (3) joinRequests/requests open-write
+  hole still needs an owner decision; (4) continue treating plain Contents-API/raw.githubusercontent.com
+  reads as potentially CDN-stale -- Git Blobs API off a fresh HEAD commit sha remains the reliable source.
