@@ -1,6 +1,6 @@
 # BOARD — Master task rollup (all lanes) + CEO summary
 
-**Last updated:** 2026-08-05 01:40 UTC by [GPT] QA lane
+**Last updated:** 2026-08-05 02:34 UTC by [GPT] QA lane
 **Next update:** after Owner/Security route T-C05 or Data/QA close a T15 readiness gate
 
 ---
@@ -42,6 +42,8 @@ Data: keep event `96415` field refresh current through tee-off and resolve/docum
 `2026-08-05T01:34:29Z [GPT]` QA claimed the fresh v455 verification slice after app main advanced to `3a8bb7577eec92be5ae93d8c690785190a2a7d84`. Scope: confirm production actually serves v455; inspect the discard-handler/source lineage behind the new `ChainsRounds.remove(cloudIdRef.current)` call; run non-destructive phone-sized UI checks; refresh T15 field/artifact evidence; and record an honest PASS/FAIL without deleting a live round or repeating the separate Firebase-rules probe.
 
 `2026-08-05T01:40:18Z [GPT]` QA FAIL / keep IN_PROGRESS. Production visibly serves v455 at `?cb=202608050136`. Decompressed immutable base/head comparison proves v454's active-round Discard handler only cleared `chains_play_active` and exited; v455 adds exactly one `window.ChainsRounds.remove(cloudIdRef.current)` call, but does not return/await it, does not inspect its boolean, immediately clears local state, and calls `onBail()`. The callee itself returns `Promise.race([settle, timeout])` with an 8-second `true` timeout, so neither layer proves real cloud deletion before the UI exits. This contradicts the earlier company conclusion that #43 was already closed and fails ROUND_QUEUE #2's explicit await/success/failure requirement. No round was deleted because no backup-safe test record was available. Secondary phone evidence: the Registered screen says `116 pros registered`; the visible Will session shows all 12 T15 pick buttons disabled with `Only the commissioner can edit picks and scores`, so own-picks-only cannot be certified and needs PM/Engineer follow-up. Go Throw renders three identical `Tadpole Beach · Haslett · thru 10 · -5` live cards plus three identical resume cards; console also logged `permission_denied` for `/friendCodes/SRE3D7`. Official PDGA still reports 168 total / 116 MPO and no Round 1 tee-time table. No app, Firebase, pick, score, or round data changed.
+
+`2026-08-05T02:34:05Z [GPT]` QA claimed a new T-C04 verification slice because app main advanced after the prior handoff to `fcb86480fa3ec1770277b759ccdcc9ad1a9283be` at 02:13 UTC, whose summary says `Promote v454 (fixed)`. Scope: verify the exact live version and immutable app artifact at this head; compare its active-round Discard caller/callee contract with the prior v455 failure; refresh T15 field and member-visible phone evidence; and record PASS/FAIL without deleting an existing round, re-probing issue #1, touching `/league`, or changing app/Firebase data.
 
 ### T-C05 | BLOCKED ON OWNER | [LANE:OWNER + SECURITY/CEO] | PRIORITY: CRITICAL — deny unauthenticated legacy-fantasy writes
 
