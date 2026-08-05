@@ -35,9 +35,11 @@ Owner request routed 2026-08-04 by [GPT]. A lane that is blocked on its primary 
 
 `2026-08-05T00:36:27Z [GPT]` DONE with evidence. The scheduled company loop did not stop when its Design tab was busy: office commit `6040e2f01d44649a2442408debd4647a6f3e9016` records a cache-busted v453 regression sweep, eight source-lineage markers present, and a real silent-failure finding filed as `chains-app` issue #2. That is the required visible backend fallback, not a blocked/no-op shift. T-C03 remains a standing CEO/PM enforcement rule; future blocked shifts must name their fallback artifact or be corrected.
 
-### T-C04 | ASSIGNED | [LANE:DATA + QA] | PRIORITY: HIGH — T15 event-readiness closeout
+### T-C04 | IN_PROGRESS | [LANE:DATA + QA] | PRIORITY: HIGH — T15 event-readiness closeout
 
 Data: keep event `96415` field refresh current through tee-off and resolve/document the missing `data/events/96415-MPO.json`. QA: independently compare the live Picks roster to PDGA's 116 MPO registrations, verify regular-member own-picks-only behavior, and run the phone-sized v454 round walkthrough including pre-round Back/Cancel and sent-invite cancel. Done when `EVENT_READINESS.md` can move from AMBER to GREEN with URLs, timestamps, exact counts, and pass/fail evidence.
+
+`2026-08-05T01:34:29Z [GPT]` QA claimed the fresh v455 verification slice after app main advanced to `3a8bb7577eec92be5ae93d8c690785190a2a7d84`. Scope: confirm production actually serves v455; inspect the discard-handler/source lineage behind the new `ChainsRounds.remove(cloudIdRef.current)` call; run non-destructive phone-sized UI checks; refresh T15 field/artifact evidence; and record an honest PASS/FAIL without deleting a live round or repeating the separate Firebase-rules probe.
 
 ### T-C05 | BLOCKED ON OWNER | [LANE:OWNER + SECURITY/CEO] | PRIORITY: CRITICAL — deny unauthenticated legacy-fantasy writes
 
