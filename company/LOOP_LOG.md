@@ -1327,3 +1327,47 @@ backup-credential gap, Issues-tracker reconciliation (#5/#6/#32/#34/#40/#41/#42)
 test-account email unresolved for negative-test rules work (option 3 in backend track, deferred
 again this run for the safer independent-verification path given no owner present to weigh in on
 a rules-testing session).
+
+
+---
+
+## 2026-08-05T (autonomous Cowork run)
+
+**Item:** Backend track option 5 — verify a backup is real.
+**Phase:** Cowork/backend track (no browser attempted this run; went straight to a concrete backend
+verification per workflow guidance since prior run already re-verified #43 holding and confirmed no
+regressions).
+
+**Context checked first:** BUILD_LOCK.json not present/false in all three repos (not locked). LOOP_LOG
+last entry (prior run) confirmed #43 fix (remove() awaits all index/path writes, Promise.all(jobs)+
+.every()) still present in committed index.html, all 8 integrity markers intact, live v464 == committed
+artifact. No new regression to fix, so priority-fix #43 required no action this run.
+
+**SHIPPED/PROVED this run:** Verified data/backups/league-2026-08-05.json in chains-dgpt-data
+(sha 5e6c7fe2301937c481250214f8acdb0853ec2600, backed_up_at 2026-08-05T08:29:04Z, source firebase
+/league) is a real, restorable backup, not a stub:
+- Parsed the fmt:2 keyed structure (data.data.keys).
+- Confirmed all 14 expected picks~46~1 through picks~46~14 keys are present.
+- Confirmed every one of the 14 carries a non-empty v (JSON array of 6 member picks each, with
+  real player names/scores), i.e. no missing or empty-array picks weeks.
+- Also spot-checked members_v1 (6 members: cory/will/kyle/shanna/gabe/kadey) and settings_v1 keys
+  present in the same backup.
+This is a real, independent parse (not trusting the filename/size alone) proving the latest league
+backup would restore all 14 weeks of picks correctly.
+
+**Evidence:** repo Bonnaroo/chains-dgpt-data, path data/backups/league-2026-08-05.json, sha
+5e6c7fe2301937c481250214f8acdb0853ec2600. python3 json.loads of all 14 picks~46~N values succeeded,
+zero MISSING/EMPTY/EMPTY_ARRAY results.
+
+**Rollback sha:** No changes made this run (read-only verification), nothing to roll back.
+Chains-app committed HEAD unchanged at 6865e8f6d995d04beac3c4fb569bcf4be8161228 (per prior run).
+
+**Blocked on Chrome:** Not attempted this run — went directly to a backend-track item since the prior
+run already covered the Design-reachability check and #43 regression sweep. If a future run wants
+Phase A/B/C Design work, start with Step -1 fresh.
+
+**Next:** Topmost open ROUND_QUEUE item (#1, "Start a round — the picker") is still Design/UI-owned
+and needs a live Design session with the owner absent handled per Phase A/B/C. Still open: /league
+backup-credential gap, Issues-tracker reconciliation (#5/#6/#32/#34/#40/#41/#42), kyle's real
+test-account email unresolved (blocks negative-test Firebase rules, backend option 3). #41 In the Bag
+depth is next up in ROADMAP Phase 2 once picker UI work is done.
