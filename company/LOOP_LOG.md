@@ -499,3 +499,57 @@ untouched this run. STATE.md still stale per prior runs' notes — not re-verifi
 walkthrough/promote workflow from DESIGN_LOOP.md. If no browser next time, fall back to BACKEND TRACK item 3
 (negative-test Firebase rules with cory/kyle/shanna/gabe) or item 6 (regression sweep), since #43 is now
 independently double-verified closed.
+
+---
+
+## 2026-08-05 — Cowork BACKEND TRACK run (browser available, Design mid-build on #5)
+
+**Got a browser** (Chrome MCP connected on first try). Design tab was already mid-PHASE-C, actively
+building queue item **#5** (pre-round flow cancel/back + pending-invite delete), model confirmed **Sonnet 5**
+(not Fable). Design's transcript shows #43 and #42/#6 already closed by Design itself this cycle (v453
+functional pass: in-app ChainsConfirm dialogs, no freeze, no placeholder pre-fill, clean discard). Did not
+interrupt Design mid-build per HARD RULES; bounded-waited ~2.5 min (page still showed "Searching, Searching
+available tools" for #5) and moved to BACKEND TRACK rather than stalling to the full 4 min.
+
+**Bug #43 ("deleted round comes back") — INDEPENDENTLY RE-VERIFIED, not re-fixed (already fixed):**
+Fetched main HEAD directly via GitHub API/git refs (commit `d48d0b83c7bd91b7a131f6aa2796e33f06c12c1d`,
+"Promote v456: #43 sub-1s discard race fixed"), decompressed all 92 gzip+base64 module blobs in the
+committed `index.html`, and read the actual `ChainsRounds` source (module 56): `_indexWrite()` reports real
+success/failure (no swallowed error), and `remove()` collects ALL jobs (playRounds+liveRounds atomic update,
+`_indexWrite`, legacy chains-fantasy REST delete) into `Promise.all(jobs)`, then `rs.every(x => x !== false)`
+before reporting success, surfacing real failure via `_failOnce`. Module 64 (Discard button) confirmed calling
+`ChainsRounds.remove(cloudIdRef.current)` — the v456 mint-on-discard race fix. **No code change made — the
+fix was already correct and shipped.** (Caught my own false alarm mid-run: an early raw.githubusercontent
+fetch returned a stale/cached response that looked like it was missing the fix; a fresh cache-busted refetch
+confirmed live == committed HEAD, md5 `2ce911290780d9e8ce497e6f8f2c8fc7` on both.)
+
+**Regression sweep (BACKEND TRACK item 6) — PASSED.** All 8 markers present in the decompressed committed
+blob: `function authUid()`, `function _indexWrite(`, `Teemu Paakinen`, `label: "In the Bag"`,
+`window.AuthGate`, `ANONYMOUS SESSIONS NO LONGER GRANT ACCESS`, `window.ChainsImpact`, `window.ChainsAssets`.
+Live version v456 (2,368,887 bytes) — up from the STATE.md-recorded v445, no regression. Live
+`bonnaroo.github.io/chains-app/index.html` (fresh cache-busted fetch) is byte-identical (md5) to commit
+`d48d0b83c7` on main.
+
+**SHIPPED:** updated `company/STATE.md` (chains-agent-log commit `026703e1d4fc06ab3d431f8d4c0f48ed34ca4455`)
+— it was stale (said live v445, listed #43 as open/[TOP]); corrected to v456 and marked #43 closed with the
+verification evidence above, so the next run doesn't waste a cycle re-fixing an already-fixed bug.
+
+**PROVED (raw REST evidence):** unauthenticated Firebase REST reads/writes against
+`chains-app-f38f8-default-rtdb.firebaseio.com` are denied — `playRounds.json`, `users.json` GET, and a PUT to
+`playRounds/__negtest__` all returned `{"error":"Permission denied"}`. Could NOT complete the fuller
+cross-user negative test (item 3, cory/kyle/shanna/gabe vs each other's data) — no test-account email
+addresses are recorded anywhere in `company/*` or discoverable via GitHub code search; guessing credentials
+felt wrong to attempt blind. **Flagging for owner/next run:** either record the 4 test accounts' real emails
+in `company/STATE.md` or `team.md`, or tell the next run where to find them, so the cross-user rules test can
+actually run.
+
+**No Tier-3 changes. No deploy this run** (nothing was broken — this was verification + a stale-doc fix).
+BUILD_LOCK.json confirmed `{"locked": false}`.
+
+**Next in queue:** #5 (pre-round cancel/back + pending-invite delete/view) — Design was actively building it
+end of this run; a follow-up run should check the Design tab for an export, and if ready, run the full
+stage/walkthrough/promote flow from DESIGN_LOOP.md (export must be numbered > v456). If no export yet, resume
+BOUNDED WAIT or move to BACKEND TRACK item 3 (now unblocked if test-account emails get recorded) or the
+`playRounds` granular-rules item (editHistory/practice/notes/scorePatch/joinRequests still riding permissive
+`auth != null` — good next backend candidate once emails are known, or independently).
+
