@@ -418,3 +418,36 @@ sent-invites + discard-race all shipped in v454/v455/v456). Whoever has the brow
 THE WALKTHROUGH end-to-end against v456 and check off whatever actually passes, rather than leaving the
 queue file permanently out of sync with what's live. After that, item 9 (native confirm replacement) is
 already done (v453) — next unstarted queue item is wherever THE WALKTHROUGH stops passing.
+
+## 2026-08-05 (later) UTC · Cowork autonomous run · #43 confirmed still fixed live + backup re-verified (no new deploy needed)
+
+**Chrome reachable** (navigated to the Design URL successfully) but backend track took priority per
+instructions since bug #43 was already closed by an earlier run today (v456, commit `d48d0b83c7`,
+2026-08-05T02:37:57Z). Did not touch Design or re-do the fix — re-verifying instead of duplicating work.
+
+**Level 1 (artifact) + Level 2 (deployment) verification of #43, independently repeated:** fetched live
+`index.html` via raw.githubusercontent.com (bypasses CDN), confirmed `CHAINS_VERSION = "v456"` present
+as a literal string, size 2,368,887 bytes matches the prior run's record. Decompressed all 92 gzip/base64
+blobs (71 clean, 21 non-gzip embedded assets, consistent with prior runs). All 8 standing regression
+markers present exactly once/expected count. `#43-race` comment block, `cloudIdRef.current`, and
+`ChainsRounds.start(` (mint-on-demand before remove) all present in the decompressed source — the fix
+described in the prior log entry is genuinely live, not just claimed.
+
+**Backup verification (item: "verify a backup is real"):** `chains-dgpt-data/data/backups/rounds-latest.json`
+has `backed_up_at: 2026-08-04T08:30:15Z`, `playRounds` count 2 with full real course/scoring payloads
+(not stubs — e.g. `pr-ms5bygyzv4rl` has real course data for Tadpole Beach, MI, 18 holes). No 2026-08-05
+rounds or league backup exists yet today — consistent with prior run's note that the daily backup job
+hasn't fired yet for today; not a fault.
+
+**No changes made.** No Tier-3 items touched. No new deploy — none needed.
+
+**Still open / unchanged:** `playRounds/{id}` write-scope gap — Tier-3, `[needs-owner-decision]`, still
+waiting on Guillermo. kyle's test-account email still unresolved. STATE.md still stale (shows v445; live
+is v456) — flagged again, this has now been flagged across at least 3 consecutive runs and should be
+fixed by whoever owns the regeneration step rather than re-flagged indefinitely.
+
+**Next:** since #43/#42/#6/#5/#9 are shipped per the walkthrough-adjacent evidence in prior logs, next
+run with browser access should actually run THE WALKTHROUGH end-to-end against v456 at a phone viewport
+and check off ROUND_QUEUE.md items 1/2/3/5/9 for real, or report exactly which step breaks. ROUND_QUEUE.md
+boxes are still unchecked despite the underlying work being done — that desync should get resolved before
+more feature work stacks on top of it.
