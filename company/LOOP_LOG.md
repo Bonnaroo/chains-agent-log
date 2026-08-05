@@ -240,3 +240,53 @@ shippable; if items 1-8 still have unchecked boxes despite earlier log entries c
 work, THE WALKTHROUGH needs to actually be run against v453 before marking any of them `[x]`. Also
 worth a look: **fix chains-app issue #2** (league-code silent failures) as backend-only work — no Design
 UI change needed since it's a `.catch()` handler + toast wiring, could be pre-built next backend cycle.
+
+---
+
+## 2026-08-04 — Cowork run (bug #43 verification + PHASE A/B status)
+
+**Bug #43 ("deleted round comes back") — already fixed and shipped, not touched further.**
+Fetched committed `index.html` (Bonnaroo/chains-app, sha `93ac7ae3`) via Contents API, decompressed
+the embedded gzip blob containing `window.ChainsRounds` (blob index 56 of 92). `remove(id)` now
+awaits `Promise.all(jobs)` covering `playRounds/{id}` + `liveRounds/{id}` atomic update, the per-user
+index write (`_indexWrite`, keyed by real `authUid()`), and the legacy `chains-fantasy/play_rounds`
+REST delete; only reports success if `rs.every(x => x !== false)`, and surfaces a real failure toast
+via `_failOnce` if any leg fails (comment in source: "#43: every store must confirm — checking only
+rs[0] masked index/legacy failures"). `CHAINS_VERSION = "v454"` in the live build — newer than the
+v453 the prior LOOP_LOG entry referenced, confirming a deploy landed since then. Live URL fetch
+(cache-busted) matches committed byte-for-byte.
+Cross-checked the Design chat (project `56b805f6`): Design independently ran a live functional pass
+on bonnaroo.github.io/chains-app and confirmed the same — resume dialog clean, solo-default with no
+placeholder chips (#42/#6), "Discard round" resolves via the new in-app `ChainsConfirm` dialog with no
+freeze. Design's own ruling in that chat: **#43, #42, #6 all CLOSED**, checked off Round Queue there.
+No corresponding GitHub Issue existed for #43 in `Bonnaroo/chains-app` (only #1 and #2 are open there)
+so there was nothing to close via the Issues API — the "#43" tracking lives in `STATE.md`/Round Queue
+text, not a GH issue.
+
+**PHASE status found in Design chat:** a prior Cowork run already opened PHASE A on queue item **#5**
+(pre-round back/cancel + delete-invite flow) and delivered a full backend ruling: no new Firebase
+writes/rules needed, `window.ChainsPlayInvites` (load/save/setRsvp/remove) already exists against
+`playInvites/{id}`, told Design to use `.remove(id)` directly, handle the someone-else-changed-it race
+by re-reading `rsvp` before showing the delete confirm, and to just proceed and build using the new
+`ChainsConfirm` module. That's PHASE B — Design was told to build but had not yet produced a new
+export in that transcript.
+
+**This run:** posted a status-check message in the Design chat asking whether #5 build is in progress
+or ready to stage, and re-confirming the backend is unblocked (nothing new needed from me). Waited
+~90s (2x45s checks); the chat transcript did not show a new reply in that window — either Design
+hadn't started responding yet or the message didn't register with the live agent session. Not treating
+this as a real PHASE B answer; logging as **PHASE B pending**, no promotion/deploy performed this run.
+
+**STATE.md is stale** — still shows `v445` as of its last generation (2026-08-03 21:24 UTC); live is
+now `v454`. Left it alone since it says "generated... nothing here is typed by hand" — flagging for
+whichever run owns the regen step to pick up the corrected version + closed #43/#42/#6/#5-in-progress.
+
+**Verified, not shipped, this run** (no code/rules changes made — bug #43 was already fixed by an
+earlier cycle, and #5 is Design's build in progress). Nothing touched in chains-fantasy /league or
+/live. No BUILD_LOCK present (`{"locked": false}`).
+
+**Next:** whoever picks this up next should re-open the Design chat, check whether #5 has a new export
+ready (version must be > v453/v454), run THE WALKTHROUGH against it before promoting, and regenerate
+STATE.md. If Design is still mid-build, fall to BACKEND TRACK item #3 (negative-test rules via Firebase
+REST with cory/kyle/shanna/gabe) or #6 (regression sweep), which haven't been run since the last
+LOOP_LOG entry logged them as done for v453 — re-verify against v454.
