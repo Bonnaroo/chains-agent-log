@@ -481,3 +481,121 @@ Same as every run today, now for the fifth time: a round tracker that cannot sav
 telling the user "Live · Synced" in the header the entire time it's failing underneath. That gap between
 what the status pill claims and what's actually happening is the single most un-UDisc thing about this app
 right now — UDisc's offline mode tells you plainly when you're offline; this app doesn't.
+
+
+## 2026-08-05 (sixth run, 23:25 UTC) — Field Tester run (account: fieldtest0805c, fresh signup)
+
+Sixth pass the same day. App now at v462 in production (v465/v466 exist on `main` but are still only
+*staged*, not promoted, per the commit log — "Stage v466: My Stats" was the latest commit at time of
+this run). Browser MCP, 390x844 phone viewport requested and this time actually rendered correctly
+during account creation/login, though later screens (post-login dashboard) reverted to a wide desktop
+layout (~1920px) despite no further resize calls — inconsistent with the two prior runs' clean "it never
+resizes" verdict; noting as an unresolved tooling quirk, not chasing further.
+
+**Worst thing found: the browser silently re-authenticated as Will — the owner's real account — with zero
+user action, landing me on his real Settings/ProfileEditor screen, which then crashed with chains-app#8.**
+This is a materially worse instance of the "Will autofill" risk three earlier runs today flagged as a
+session note: this was not a login-screen field getting pre-filled with saved credentials (which I could
+see and avoid submitting) — it was the app's persisted Firebase session swapping the *active signed-in
+user* out from under a completely different account, mid-scroll, on the Settings page, with no login form
+ever touched. I signed out immediately via a direct `ChainsAuth.signOut()` API call (bypassing the UI
+Sign Out button and any form field) specifically to avoid reading, editing, or saving anything on Will's
+real profile. That signOut call itself reproduced chains-app#8's exact hooks-order crash
+(`Rendered fewer hooks than expected` in `<ProfileEditor>`, white screen, raw error banner) — identical
+stack to the original report. No data was viewed in a form, changed, or saved on Will's account at any
+point; confirmed clean logout via a fresh reload (empty login screen, no session, no autofill) immediately
+after. Added a comment to chains-app#8 with the full detail, since this shows the crash's trigger surface
+is wider than "user taps Sign Out" — it also fires on this silent session-restoration path, which is a
+real risk on a shared/family device independent of the crash itself. Not filing separately; same root
+cause, same issue.
+
+### chains-app#6 — still open, still reproduces (sixth consecutive same-day confirmation)
+Every hole-score write, the score edit, and the round-finish write all failed
+`[ChainsRounds] write failed Error: PERMISSION_DENIED` in console, same as every run today. Also
+reproduced the `friendCodes` write failure (`set at /friendCodes/KA3Z8B failed: permission_denied`).
+Did not re-file or add a routine "still broken" comment on #6 itself — five prior comments/entries today
+already cover this exhaustively; piling on would be noise. Did confirm one new, slightly worse data point:
+`users/*/rounds` now has **three** dangling index entries pointing at nonexistent `playRounds` records
+(the two the fifth run deliberately left as evidence, plus one new pair from this run's own test rounds) —
+confirms the orphan accumulation is ongoing and un-bounded while #6 stays open, not just a one-time
+artifact. Left all three in place, same reasoning as the fifth run (trivial, risk-free cleanup once the
+write path is fixed; valuable as live evidence until then).
+
+### Credentials note
+`kyle`/`chains1234` failed with "Wrong username or password" (username field showed autofill-corrupted
+`Willkyle` on the first attempt — Will's saved username got inserted before my keystrokes landed, even on
+a clean fresh login screen with no prior session; cleared and retried correctly). Consistent with the
+established pattern: starter password rotated, used a fresh throwaway signup (`fieldtest0805c`) instead.
+New data point: the `usernames` index now contains an entry `willfieldtest2218v` — a username that looks
+exactly like what you'd get if "Will" autofilled into a signup username field before "fieldtest2218" (plus
+a stray character) was typed and submitted as a *real new account*. This is circumstantial but consistent
+evidence that the autofill risk has already produced at least one polluted real signup, not just
+near-misses caught by field testers. Worth Design knowing when scoping the login-screen fix.
+
+### Walkthrough — pass/fail summary
+1. **Player picker defaults to solo** — PASS (only self checked). Still shows the full league roster
+   (Cory, Will, Kyle, Shanna, Gabe, Kadey) as one-tap quick-picks on a zero-history account, plus a
+   leftover test account (`Fieldtest0805185744`) as a bogus "played with recently" suggestion — same
+   documented interim behavior (`// for the current testers` scaffold, per the third run's direct
+   decompile) that two prior runs already correctly scoped as `[needs-owner-decision]` rather than a fresh
+   bug. Course-search "Recent" list also still shows a full page of Michigan courses for a brand-new
+   account (Johnson Park duplicated at top) — same leaked-global-state family, already noted, not
+   separately filed.
+2. **Add a second player** — PASS, via guest name (avoided tapping real accounts' chips to avoid writing
+   test data into their histories).
+3. **Score 6 holes** — PASS on speed: one tap per player per hole, no lag. FAIL on sync, every hole
+   (chains-app#6, see above).
+4. **Edit a score, check edit history** — PASS on the UI edit (hole 3, 4→5, applied instantly, lead
+   recalculated correctly). Edit-history/audit-trail control — confirmed via element search that no such
+   control exists anywhere in the current UI (not hidden behind a tap I missed — searched explicitly).
+   Product gap, independent of #6, consistent with what every prior run today also could not find.
+5. **Reload mid-round** — PASS. Reloaded the full page mid-round; resumed exactly at hole 3 with the
+   edited score (5) intact via the local mirror, no data lost.
+6. **Finish round** — finished cleanly in the UI ("Round Complete," correct standings, "Verify & Sign My
+   Card" available, toast confirmed "Couldn't sync to the cloud"). Round vanished from "Recent Rounds"
+   and from `localStorage` (`chains_rounds_v1` confirmed `{}`) the moment the screen returned to Go Throw
+   — same as every run today, root cause chains-app#6.
+7. **Delete round (explicit test)** — started a second, separate solo round, scored 2 holes, tapped
+   Discard round → Discard. Toast: "Couldn't delete that round everywhere — it's gone from this device and
+   we'll keep retrying in the background." Confirmed gone from the UI and confirmed still gone after a full
+   page reload. Honest, well-worded failure state, same as the fifth run found — better UX than the
+   generic sync toast elsewhere in the app.
+8. **Other screens** — In the Bag: PASS, real 1197-disc search; fresh account again had one pre-seeded
+   disc ("Destroyer," marked "Lost") before ever touching Add-a-disc — sixth consecutive run to see this
+   exact thing, still low priority, still not chased down, but six-for-six is not a fluke at this point.
+   Watch/Highlights: PASS, real 2026 Discraft Ledgestone Open content, "updated 51m ago." Standings / The
+   Picks / Live Chains: not reachable for this leagueless fresh account ("you're not in a league yet") —
+   confirmed the header's "My Leagues" dropdown simultaneously shows "Chains · LIVE ✓" as joined for the
+   same account at the same time, reproducing chains-app#7 exactly as filed. Not re-filing.
+
+### Data-truth checks (admin Firebase Admin SDK token, `chains-app-f38f8`)
+- `playRounds`: 0 records. `liveRounds`: 0 records. Ground truth via the Google service-account JWT
+  exchange (not just an anonymous client read), rules bypassed entirely.
+- `users/*/rounds` index: 3 dangling entries app-wide (2 pre-existing from the fifth run, left as evidence
+  per their note; 1 new from this run's own two test rounds). No cleanup performed — trivial and safe once
+  #6's write path is fixed, and valuable as live evidence until then.
+- `usernames`: `fieldtest0805c` correctly indexed (no repeat of the earlier no-show issue). New
+  `willfieldtest2218v` entry flagged above as likely autofill-pollution evidence.
+- `friendCodes`: 7 entries, all real-looking codes, nothing new or obviously synthetic.
+- Backup health: `rounds-2026-08-05.json` and `rounds-latest.json` (7,451 bytes each) both still current,
+  matching the pre-purge snapshot from earlier today. No new backup needed — no writes have landed
+  anywhere all day (fully blocked by #6, sixth confirmation).
+- `BUILD_LOCK.json`: confirmed `{"locked": false}` at start of run; no build/deploy attempted this run so
+  no lock state change.
+
+### What I fixed and shipped this run
+Nothing. Same scope call as all five prior runs: #6 needs the owner/uid identity model reworked across
+Go Throw, friends, and the picker (not a safe single-line patch); #7 needs someone to determine which of
+the two membership reads is authoritative; #8 needs Design to look at the real `<ProfileEditor>` source,
+not a decompiled-bundle guess. Filed no new issues — added one comment to #8 with new evidence about its
+trigger surface (see above). No Firebase writes made; the 3 orphaned index pointers were left in place,
+not cleaned up.
+
+### What still doesn't feel like UDisc
+Unchanged verdict, sixth time today: a round tracker that cannot save a round while its own status pill
+insists "Live · Synced" the entire time. Today's addition to that list is worse in kind, not just degree —
+UDisc would never silently swap which account you're looking at without you touching anything, let alone
+land you on someone else's real profile and then crash. Everything that doesn't touch
+`playRounds`/`liveRounds`/session/account state (picker interaction speed, guest-add, scoring taps, solo
+and multi-player resume, discard-round's honest failure toast, In the Bag search, Watch content) continues
+to feel genuinely solid and on-brand, same as every run today.
