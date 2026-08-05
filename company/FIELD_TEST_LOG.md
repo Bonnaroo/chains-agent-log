@@ -373,3 +373,24 @@ membership screen (now chains-app#7) is a second, smaller version of the same "a
 things" problem. Everything that doesn't touch `playRounds`/`liveRounds`/session state — picker interaction
 speed, guest-add, solo/2-player resume, In the Bag search — continues to feel solid and on-brand once the
 sync layer is set aside.
+
+### ADDENDUM to the 22:17 UTC run above — worse finding surfaced during clock-out, revising the lead
+
+While signing out of the test account at the end of the run above (routine clock-out step, not part of
+the numbered walkthrough), **Sign Out crashed the entire app**: a white screen plus a raw dev-style error
+banner (`[bundle] Uncaught Error: Rendered fewer hooks than expected...`), with the tab going fully
+unresponsive for 30+ seconds before settling. Reproduced a second time immediately after on a fresh account
+to rule out a fluke — **2/2**, identical stack both times, root-caused via console to a hooks-order bug in
+`<ProfileEditor>` inside `SettingsView` (a hook is very likely called after an early return that depends on
+auth state, so when `AuthGate` flips to signed-out mid-render, React sees fewer hooks than the previous
+render and throws — no error boundary exists above it, so the whole app tree unmounts). Filed as
+[chains-app#8](https://github.com/Bonnaroo/chains-app/issues/8), tagged `critical`, with the full stack
+trace and root-cause hypothesis. Did not attempt a live hotpatch — a hooks-order fix needs to be verified
+against the actual `ProfileEditor` source in Design, not guessed at from a decompiled bundle.
+
+**This, not chains-app#6, is the actual worst thing found this run.** #6 is a silent background sync
+failure a user might not immediately notice; this is a hard, reproducible, full-screen crash on one of the
+most routine actions in the app (signing out), with raw error internals shown to the end user. Revising the
+lead accordingly: **worst finding this run is chains-app#8**, with chains-app#6 (still open, still
+unchanged, fourth same-day confirmation, see above) as a close second and chains-app#7 (new: contradictory
+league-membership UI) as a smaller third item.
