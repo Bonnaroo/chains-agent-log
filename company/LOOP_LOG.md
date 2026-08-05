@@ -1064,3 +1064,64 @@ composer was erroring.
 4. #43, #44 (except server-side enforcement + autopick-policy, both correctly left as
    [needs-owner-decision]), and this cycle's admins-rule fix are all confirmed live and verified --
    no known regressions to chase into next cycle.
+
+---
+
+## 2026-08-05 — Backend track, #43 "deleted round comes back" (independent re-verification, no code change)
+
+**Item worked:** #43 deleted round comes back — backend track. **Phase:** BACKEND TRACK.
+
+**Read memory first (per procedure):** `company/LOOP_LOG.md`, `company/ROUND_QUEUE.md`, `company/STATE.md`,
+`company/DESIGN_LOOP.md`, `company/TRIAGE_AND_AUDIT.md`, `company/BUILD_LOCK.json` (all in
+`Bonnaroo/chains-agent-log`, not `chains-app` — note for future runs: `company/` lives in the agent-log repo,
+`chains-app` root only has `README.md`, `index.html`, `sw.js`, `test.html`, `docs/`).
+`BUILD_LOCK.json` = `{"locked": false}` — clear to proceed. STATE.md already stated #43 was CLOSED as of v460,
+re-verified earlier today by an apparent earlier BACKEND TRACK cycle this same day.
+
+**What I found on independent re-check (did NOT trust the memory claim blindly):**
+- Rollback point recorded before touching anything: committed `index.html` sha `1c13b0bf2d8ac0e2374cfb92c64c942f70be1acf`
+  (this IS the current HEAD — see below, no write was made this cycle so this is also the current state).
+- Fetched committed HEAD via Contents API (`download_url`, since `content` is empty for this ~2.3MB file) and
+  the live CDN page (`bonnaroo.github.io/chains-app/`). **md5 identical** (`5358b4f096b5cd13eea8979dd29c6ece`),
+  both 2,373,827 bytes — no drift, no partial deploy in progress. Live version marker: `CHAINS_VERSION = "v462"`
+  (STATE.md's v460 note is stale — Design shipped v461/v462 since; not this cycle's concern, backend-only fix
+  needed no deploy).
+- Decompressed the gzip/base64 blob containing `ChainsRounds` (blob index 54 of 93 in the module list) using
+  the documented zlib technique and read `_indexWrite` and `remove()` directly, byte for byte:
+  - `_indexWrite(d, id, val)` returns a real promise resolving `true`/`false` (via `.then(()=>true, ()=>false)`
+    inside a try/catch that also resolves `false` on throw) — does not swallow errors into a false "success".
+  - `remove(id)` builds a `jobs[]` array: a combined `playRounds/{id}` + `liveRounds/{id}` update, the
+    `_indexWrite(d, id, null)` call, and a legacy `chains-fantasy/play_rounds/{id}` REST DELETE whose result is
+    explicitly folded into `ok` (comment: *"a store that silently fails to delete is how 'gone' rounds keep
+    reappearing"*). It does `Promise.all(jobs).then(rs => rs.every(x => x !== false))`, and on any partial
+    failure calls `_failOnce(...)` to surface a real user-visible error — it does **not** report success when
+    any part fails. (There is also a documented 8s optimistic-timeout race so an offline device doesn't hang
+    the UI forever; `settle` keeps running in the background and still surfaces failure via toast if the
+    timeout wins the race. This is a deliberate, commented tradeoff, not a swallowed error.)
+  - This matches the bug-#43 fix required by the standing task description exactly (await all jobs, not just
+    the first; never report success on partial failure).
+- Ran the mandatory 8-marker regression sweep against the committed blob (decompress-and-search, not grep):
+  `function authUid()` OK, `function _indexWrite(` OK, `Teemu Paakinen` OK, `label: "In the Bag"` OK,
+  `window.AuthGate` OK, `ANONYMOUS SESSIONS NO LONGER GRANT ACCESS` OK, `window.ChainsImpact` OK,
+  `window.ChainsAssets` OK. All 8/8 present.
+
+**SHIPPED / PROVED this cycle:** No new commit was made — #43 was already correctly fixed and live going into
+this cycle (confirmed by a prior same-day BACKEND TRACK run per STATE.md). This cycle independently re-derived
+that conclusion from the actual decompiled source and live/committed byte-diff rather than trusting the prior
+run's claim, per the "verification, not inference" rule. **Rollback sha for this cycle = current HEAD sha
+`1c13b0bf2d8ac0e2374cfb92c64c942f70be1acf`** (no change made, so before == after).
+
+**Action item for Design (relayed here since no Design/browser session was available this run):** Design's own
+export source must carry the same `_indexWrite`/`remove()` job-array + `Promise.all(...every(x => x !== false))`
+pattern already shipped in the compiled build, or the **next Design export will silently revert bug #43** back
+to the old first-job-only check. Please confirm this pattern exists in Design's source of truth for
+`ChainsRounds`, not just in the compiled `index.html`, before the next export.
+
+**Queued next:** No code change needed for #43 this cycle. Per `company/ROUND_QUEUE.md` (top-to-bottom,
+one-at-a-time discipline), queue item **#1 "Start a round — the picker"** is still fully unchecked and is the
+topmost open item; item **#2 "Delete a round and have it stay deleted (#43)"**'s two remaining unchecked
+sub-boxes (full store coverage across local/playRounds/liveRounds/index/legacy — now true per this review;
+solo-vs-hide-for-me distinction; bulk cleanup) should be reconciled/checked off in ROUND_QUEUE.md by whoever
+next runs the Design track, since the underlying code already satisfies most of them. Also queued: reconcile
+STATE.md's stale v460 reference against the live v462, and confirm whether GitHub Issue #43 itself has been
+closed on the tracker (not verified this cycle — no Issues API call made).
