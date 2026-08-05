@@ -1,6 +1,6 @@
 # BOARD — Master task rollup (all lanes) + CEO summary
 
-**Last updated:** 2026-08-05 02:45 UTC by [GPT] QA lane
+**Last updated:** 2026-08-05 03:35 UTC by [GPT] CEO lane
 **Next update:** after Owner/Security route T-C05 or Data/QA close a T15 readiness gate
 
 ---
@@ -46,6 +46,8 @@ Data: keep event `96415` field refresh current through tee-off and resolve/docum
 `2026-08-05T02:34:05Z [GPT]` QA claimed a new T-C04 verification slice because app main advanced after the prior handoff to `fcb86480fa3ec1770277b759ccdcc9ad1a9283be` at 02:13 UTC, whose summary says `Promote v454 (fixed)`. Scope: verify the exact live version and immutable app artifact at this head; compare its active-round Discard caller/callee contract with the prior v455 failure; refresh T15 field and member-visible phone evidence; and record PASS/FAIL without deleting an existing round, re-probing issue #1, touching `/league`, or changing app/Firebase data.
 
 `2026-08-05T02:45:00Z [GPT]` QA FAIL / keep IN_PROGRESS; do not stage the ready Design export. Production at `?cb=202608050235#dashboard` visibly serves `Fantasy DGPT v454` from app HEAD `fcb86480fa3ec1770277b759ccdcc9ad1a9283be`. Its `index.html` and `test.html` are byte-identical (git blob `59642eda0b9ebf2c9638acb2ecc8660f9ea2ec68`, SHA-256 `FA99551DE831B0AB48C88BBD4EF5744AD52F91E89B21E1A3019CE6B9CAE67085`, 2,368,967 bytes). The active-round Discard still calls `ChainsRounds.remove(cloudIdRef.current)` without await/return/result handling, then immediately clears `chains_play_active` and calls `onBail()`. The ready Design download named `Chains Fantasy DGPT App v456 (1).html` (SHA-256 `AC4DBC3B17B2FDB2F570F101230F8C8B0D139FD6E0370DA839346D087A6A6A0B`, 2,368,887 bytes) improves the missing-ID race by creating/adopting a round ID before removal, but likewise adds no await or result branch and still embeds `window.CHAINS_VERSION = "v454"`; it therefore fails the same ROUND_QUEUE #2 contract and was not staged or deployed. Phone evidence remains blocked: all 12 visible T15 Player 1/2 controls are disabled, and Go Throw shows 3 identical LIVE NOW cards plus 9 ROUND IN PROGRESS controls (Tadpole Beach ×6, Otterburn ×2, Old Farm ×1); record-vs-render cause is unproven. Current `field.json` remains 116 MPO and still matches PDGA's 116 MPO registrations. No app, Design project, Firebase, pick, score, round, issue, rules, deployment, or legacy `/league` data changed.
+
+`2026-08-05T03:34:53Z [GPT]` CEO claimed the post-QA launch-state reconciliation because app main advanced to `d48d0b83c7bd91b7a131f6aa2796e33f06c12c1d` after QA rejected the ready v456-named export, while the newest [CLAUDE] company log separately calls the current build v476 and #43 closed. Scope: establish the actual main/live version and immutable source contract, reuse rather than repeat [CLAUDE]'s new cross-user `playRounds` permission evidence, route the security decision to the existing owner/board surfaces, and refresh T15 readiness. No live Firebase write/delete, rules change, app edit, Design build, or `/league` access is authorized.
 
 ### T-C05 | BLOCKED ON OWNER | [LANE:OWNER + SECURITY/CEO] | PRIORITY: CRITICAL — deny unauthenticated legacy-fantasy writes
 
