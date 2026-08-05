@@ -271,3 +271,105 @@ UDisc does not silently fail to save a round while its own UI insists "LIVE · S
 Will-autofill risk is the second standing issue, now confirmed three-for-three. Everything that doesn't
 touch `playRounds`/`liveRounds`/auth session state (tap speed, guest-add, solo resume, In the Bag
 search) continues to feel solid and on-brand.
+
+
+## 2026-08-05 (fourth run, 22:17 UTC) — Field Tester run (account: fieldtest2217, fresh signup)
+
+Fourth pass the same day. Goal: confirm current state hours after the third run, not just re-file what's
+already tracked. Browser MCP + computer-use, phone viewport requested (390x844) — same tooling limitation
+as the third run: `resize_window` reported success but the rendered viewport stayed wide. Testing proceeded
+at the effective width; this is a session/tooling note, not an app bug.
+
+**Worst thing found: chains-app#6 is still open and still reproduces exactly, unchanged, on the fourth
+straight test today.** Signed in attempt as `kyle`/`chains1234` failed with "Wrong username or password"
+(expected — same starter-password-rotation behavior ACCESS.md already documents as correct, not a bug).
+Used a fresh throwaway signup (`fieldtest2217`) instead, per the pattern the last two runs established.
+Scored a 2-player round on Johnson Park: every hole-score write, every score edit, and the round-finish
+write failed with `[ChainsRounds] write failed Error: PERMISSION_DENIED` in console while the corner status
+pill still claimed "LIVE · SYNCED" — only the toast ("Couldn't sync to the cloud — saved on this device")
+told the truth. The `friendCodes` shape-mismatch write failure noted in an earlier comment on #6 also
+reproduced again on sign-up (`set at /friendCodes/WAQK2A failed: permission_denied`). Did not re-file or
+re-comment on #6 — three separate runs today already have this fully documented with root cause, and
+piling on a fourth "still broken" comment would just be noise on an issue that's already correctly tagged
+`[needs-owner-decision]` (fix touches ~12 raw `owner === me` comparisons per the existing writeup). Leaving
+it alone, same scope call as every run today.
+
+### New this run: filed [chains-app#7](https://github.com/Bonnaroo/chains-app/issues/7)
+The third run's log flagged a self-contradictory league-membership UI (Dashboard says "You're not in a
+league yet," header's My Leagues dropdown simultaneously shows "Chains · LIVE" checked as joined) but never
+turned it into a tracked issue. Confirmed it reproduces again on this run's fresh account, searched open
+issues first (no existing issue covered it), and filed it as chains-app#7 with a concrete 2-tap repro. Did
+not attempt a fix — root cause (which of the two membership reads is wrong) isn't obvious without digging
+into the compiled module, and this doesn't rise to a blind-hotpatch call.
+
+### Walkthrough — what I actually did, screenshot at each step
+1. **Player picker** — defaults to solo correctly (PASS). Still shows the full league roster (Cory, Will,
+   Kyle, Shanna, Gabe, Kadey) as one-tap quick-picks plus "Played with recently: +Kyle" for a zero-history
+   fresh account — same documented interim behavior the third run traced to a literal `// for the current
+   testers` comment still live in the deployed `GroupPick` module. Not a regression, just still-open scope.
+   Also newly observed: the course-search screen's "Recent" section lists a full page of Michigan courses
+   (Johnson Park duplicated at the top, then 10+ more) for an account that has never played anywhere — same
+   class of leaked-global-state issue as the roster leak, on the course list instead of the player list.
+   This matches the "Johnson Park" cosmetic duplicate the first run today already noted and chose not to
+   file separately; treating it the same way here rather than opening a second ticket for the same root
+   cause.
+2. **Add a second player** — PASS. Added Cory via one tap, "You +1" confirmed.
+3. **Score 6 holes** — PASS on speed: 6 holes × 2 players scored in under 15 seconds, one tap per
+   player per hole, no lag. FAIL on sync, every hole (chains-app#6, see above).
+4. **Edit a score, check edit history** — PASS on the edit itself (hole 3, 4→5, applied instantly, lead
+   recalculated correctly). FAIL on audit trail: searched the live scoring screen and the finished-round
+   recap for any edit-history/audit-trail control — none exists anywhere in the current UI. This is a
+   product gap independent of #6 (there's nowhere to see who/when/from→to even if sync worked), consistent
+   with what the third run also could not find.
+5. **Reload mid-round** — PASS, cleanly. Reloaded the page mid-round (fresh page load, not just a soft
+   nav); the session stayed signed in as `fieldtest2217` (no Will-autofill risk hit this run — see note
+   below on why), and "Resume round in progress" correctly restored all 6 holes including the edited hole 3
+   from the local mirror.
+6. **Finish round** — finished cleanly in the UI ("Round Complete," standings shown, "Verify & Sign My
+   Card" available). Toast still read "Couldn't sync to the cloud."
+7. **Delete round** — could not test meaningfully, same as every run today: the finished round was already
+   gone from "Recent Rounds" the moment the screen changed back to Go Throw, before there was ever anything
+   to tap delete on. Confirmed via a fresh anonymous read that both `playRounds` and `liveRounds` are still
+   0 records app-wide. This is chains-app#6, not a distinct delete bug — nothing server-side exists to
+   delete.
+8. **Other screens** — In the Bag loaded fine with real 1197-disc search; the fresh account again already
+   had one disc pre-seeded ("Destroyer," marked "Lost") before ever touching Add-a-disc — fourth
+   consecutive field-test run to see this exact thing on a brand-new account, still low priority, still not
+   chased further, but four-for-four is enough to say this isn't a fluke. Standings / The Picks / Live
+   Chains were not reachable for this leagueless fresh account ("you're not in a league yet") — not a bug on
+   its own, see chains-app#7 above for the contradictory-membership angle on that same screen.
+
+### Session note — no Will-autofill this run
+Unlike the three earlier runs today, navigating directly to the app URL after already being signed in as
+`fieldtest2217` did NOT drop back to a login screen pre-filled with Will's credentials — the session simply
+stayed signed in through the reload. The autofill risk only showed up in earlier runs at points where the
+app actually returned to the login screen (post-sign-out, or after an unexpected session drop). Not
+claiming the risk is gone — just noting it didn't trigger this specific run's reload, for accuracy. Signed
+out of `fieldtest2217` at the end of this run rather than leaving the session for the next run, per the
+process note the third run raised.
+
+### Data-truth checks
+- `playRounds` / `liveRounds`: both `null` (0 records) app-wide, confirmed via a fresh anonymous
+  Identity Toolkit sign-up + authenticated read at both paths with `shallow=true`. No orphans possible —
+  there is nothing to orphan while #6 blocks all writes.
+- `usernames`: `fieldtest2217` appears correctly. Neither `fieldtest0805` nor bare `FIELDTEST0805` (the
+  second and third runs' leftover accounts) appear in the index — consistent with the already-known,
+  unexplained `/usernames` no-show-for-new-signups issue noted in the comment on #6; not re-chased.
+- `friendCodes`: 7 entries, all real-looking uppercase codes, no obviously stale/synthetic test values
+  spotted. Not chased further given the write-path for this node is already known-broken (see #6 comment).
+- Backup health: `chains-dgpt-data/data/backups/rounds-2026-08-05.json` (7,451 bytes) and
+  `rounds-latest.json` (same size) both still present and match the pre-purge snapshot from earlier today —
+  no new backup was needed since no new writes landed anywhere today (blocked by #6 the entire day).
+
+### What I fixed and shipped this run
+Nothing. No data problems needed a fix (both round stores remain empty — nothing to repair), and #6 remains
+correctly scoped as `[needs-owner-decision]` by three prior runs today; did not touch it. Filed chains-app#7
+(new finding, not a fix).
+
+### What still doesn't feel like UDisc
+Unchanged from every run today: sync reliability is the blocker, now four-for-four failed across an entire
+day of testing while the UI's own status pill insists everything is fine. The contradictory league-
+membership screen (now chains-app#7) is a second, smaller version of the same "app tells you two different
+things" problem. Everything that doesn't touch `playRounds`/`liveRounds`/session state — picker interaction
+speed, guest-add, solo/2-player resume, In the Bag search — continues to feel solid and on-brand once the
+sync layer is set aside.
