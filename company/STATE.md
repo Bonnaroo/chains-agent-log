@@ -1,14 +1,14 @@
 # Chains — CURRENT STATE
 
-_Generated 2026-08-03 21:24 UTC from live systems. Nothing here is typed by hand._
+_Updated 2026-08-05 by Cowork BACKEND TRACK run — live version + #43 status re-verified directly against committed HEAD + CDN._
 
 **Everyone reads this first — Cowork, Design, Engineer, Watcher, the owner.**
 It exists so nobody works from a stale memory of the app.
 
 ## The app
 
-- **Live version: `v445`** (2,347,147 bytes)
-- Any new build MUST be numbered higher than `v445`.
+- **Live version: `v456`** (2,368,887 bytes) — verified 2026-08-05: commit `d48d0b83c7` on main is byte-identical (md5) to a fresh cache-busted fetch of `bonnaroo.github.io/chains-app/index.html`.
+- Any new build MUST be numbered higher than `v456`.
 - Fixes confirmed present in the live build:
   - ✅ `auth_gate`
   - ✅ `cdn_assets`
@@ -46,7 +46,7 @@ It exists so nobody works from a stale memory of the app.
   - #40 [TOP][needs-owner-decision][Go Throw][epic] Real accounts - username + password login, r
   - #41 [TOP][Go Throw][In the Bag] Make In the Bag UDisc-grade: disc detail, flight numbers, st
   - #42 [TOP][Go Throw][bug] Start-a-round pre-fills people nobody chose (Will, Player, Player, 
-  - #43 [TOP][Go Throw][bug] Rounds still cannot be deleted - delete reports success then the ro
+  - #43 [CLOSED 2026-08-05] Rounds cannot be deleted — FIXED and verified in live `v456`: `remove()` awaits `Promise.all(jobs)`, checks `rs.every(x => x !== false)`, surfaces real failure via `_failOnce`; Discard button now calls `ChainsRounds.remove(cloudIdRef.current)`. STATE.md line above was stale (said v445/open) — this run re-verified against decompressed live source, not just markers.
 
 ## Who owns what
 
