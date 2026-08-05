@@ -67,3 +67,9 @@
   repeat a successful write probe merely for independent confirmation; preserve the issue evidence, require the
   owner to export/back up the exact rules, stage in Emulator/non-production, and authorize disposable negative-test
   paths. Never touch legacy `chains-fantasy /league`.
+- 2026-08-05 01:40 UTC | [GPT] | A newly present delete call is not deletion proof. For a protected live app,
+  non-destructively compare the decompressed immutable base/head handlers and trace the callee's promise contract
+  before using a real record. The caller must await/return the promise, branch on its real result, keep failure
+  visible, and avoid clearing local state or navigating away first. If the callee races a `true` timeout against
+  the actual writes, queue acceptance that requires confirmed deletion still fails. Only then use a newly created,
+  `_trash/<timestamp>`-backed test record to prove delete persistence after reload.

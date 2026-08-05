@@ -29,3 +29,14 @@ There is no automated test suite. To verify a change or audit the app:
 6. Watch the browser console for errors on each screen (read_console_messages).
 7. Check Firebase (kb/firebase.md) for lost/duplicated/orphan records after the flow.
 8. Record PASS/FAIL with a concrete repro. A task is only DONE when its "done when" is met against the real app.
+
+## Protected live-delete verification — 2026-08-05 [GPT]
+
+Before exercising Delete/Discard against APP A, compare the immutable base/head handlers and trace the full caller
+plus callee promise contract. Call presence is not acceptance: the caller must await/return the delete promise,
+inspect its real success/failure result, keep failure visible, and avoid clearing local state or navigating away
+first. A callee that races a success timeout against pending writes is not confirmed deletion. If source fails this
+contract, record a non-destructive QA FAIL and do not mutate live records. After the source contract passes, create
+a new test-only record, back it up to `_trash/<timestamp>` before deletion, exercise the real UI, reload, and verify
+every documented store is absent. Never use an existing member round as the destructive test fixture and never
+touch legacy `chains-fantasy /league`.
