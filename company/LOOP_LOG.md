@@ -372,3 +372,49 @@ kyle's real test-account email is still unresolved.
 verify via test.html once it's ready per the DESIGN_LOOP walkthrough. STATE.md is still stale (last
 generated against v445, live has moved well past that) — still flagging for whoever owns that
 regeneration step. Get the owner decision on the playRounds write-scope finding before any rules change.
+
+
+## 2026-08-05 02:5X UTC · Cowork autonomous run · bug #43 re-verified + #5 race fix confirmed shipped + backup verified
+
+**Chrome/Design reachable this run.** Opened the Design tab — found the #5 (pre-round back/cancel +
+sent-invites) chat already mid/post-build with a real, scoped regression fix ready: a sub-1-second
+"tap-score-then-instantly-discard" race where `cloudIdRef.current` could still be null when Discard
+fires, silently no-oping the `ChainsRounds.remove()` call and letting the round survive (same failure
+class as bug #43). Design's fix (v456): if no cloud id yet but a score was entered, mint/adopt the SAME
+id via the idempotent `ChainsRounds.start()` before calling `remove()` — no duplicate-round risk since
+a later effect fire sees the ref already set and skips.
+
+**Downloaded and independently verified v456** (`Chains Fantasy DGPT App v456.html`, 2,368,887 bytes)
+via the three-dot menu. Decompressed all 92 gzip/base64 module blobs (71 decompress cleanly, rest are
+known non-gzip embedded assets) and confirmed the exact patch in source: the `#43-race` comment block,
+`Object.keys(scores).some(...)` check, `window.ChainsRounds.start(...)` mint-on-demand, then
+`window.ChainsRounds.remove(cloudIdRef.current)` — matches Design's description exactly. All 8 standing
+markers present (`authUid`, `_indexWrite`, `Teemu Paakinen`, In the Bag nav, `AuthGate`, anonymous-block,
+`ChainsImpact`, `ChainsAssets`).
+
+**Deploy check: already live.** Before I could stage/promote, `GET commits?path=index.html` showed
+`d48d0b83c7` — "Promote v456: #43 sub-1s discard race fixed" — committed 2026-08-05T02:37:57Z, i.e.
+moments before this check (a parallel run beat me to it). Re-fetched live `index.html` (cache-busted
+via the raw URL) and confirmed: `CHAINS_VERSION = "v456"`, the `#43-race` fix present in the
+decompressed live blob, all 8 markers present, byte size matches the committed blob (2,368,887 bytes).
+**No deploy action needed from this run — already shipped correctly, independently confirmed.**
+
+**Backend track: backup verification (item #5).** Fetched
+`chains-dgpt-data/data/backups/league-2026-08-04.json` (backed_up_at present, source `firebase
+/league`). All 14 `picks~46~N` (N=1..14) keys present, each with a non-empty `{r, v}` payload
+containing real player names and scores for every slot — no null/empty entries. Backup is genuinely
+restorable, not a stub. (Today's `league-2026-08-05.json` doesn't exist yet — expected, backup job
+likely hasn't run for today yet; 2026-08-04 is the latest and it's good.)
+
+**Not re-touched (still open, still correctly deferred):** the `playRounds/{id}` write-scope gap
+(any signed-in user can write fields outside their own player subtree) — Tier-3 Firebase rules change,
+still `[needs-owner-decision]`, not touched. kyle's real test-account email still unresolved. STATE.md
+still stale (last generated against v445; live is now v456) — flagging again for whoever owns that
+regeneration step, it has been stale across several runs now and should probably just get fixed.
+
+**Next:** re-read `ROUND_QUEUE.md` — items 1-8 still show unchecked boxes despite substantial round-
+lifecycle work landing (#43/#42/#6 closed per a prior run's live walkthrough, #5's back/cancel +
+sent-invites + discard-race all shipped in v454/v455/v456). Whoever has the browser next should run
+THE WALKTHROUGH end-to-end against v456 and check off whatever actually passes, rather than leaving the
+queue file permanently out of sync with what's live. After that, item 9 (native confirm replacement) is
+already done (v453) — next unstarted queue item is wherever THE WALKTHROUGH stops passing.
