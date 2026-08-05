@@ -244,3 +244,26 @@ Checklist results:
 Both remain UNRESOLVED and escalated for LANE:DESIGN/ENGINEER action.
 
 **NEXT SHIFT ROTATION**: Live Chains section.
+
+- 2026-08-05 01:40 UTC | [GPT] | QA ran the non-destructive T-C04/v455 verification slice under lock
+  `ACTIVE 2026-08-05T01:31:13Z GPT/dispatcher clock-in`; board-start commit
+  `d6328b429b6f37bc7e7c3b16d74a05df37c786ff` was verified before testing. PASS: cache-busted production at
+  390×844 visibly reports `Fantasy DGPT v455`, matching `chains-app` commit
+  `3a8bb7577eec92be5ae93d8c690785190a2a7d84`; Dashboard loads current league data and T15 Picks open without an
+  initialization hang. PASS: live Registered states 116 pros, current data blob
+  `e79e2eace48faed4146e9e4f09b6d85d7143b231` is event 96415 / 116 players, updated
+  `2026-08-05T01:04:52.730048+00:00`, roster hash `46e7cea96c95`, stable 6.7h, and PDGA still reports 168 total /
+  116 MPO with no Round 1 tee-time table. FAIL: decompressed immutable v454/v455 comparison proves v454's active-
+  round Discard handler only cleared local state/exited; v455 adds one
+  `ChainsRounds.remove(cloudIdRef.current)` call but does not await/return it, inspect its boolean, or hold the UI.
+  It immediately clears `chains_play_active` and calls `onBail()`. The callee returns
+  `Promise.race([settle, timeout])`, with timeout resolving `true` after eight seconds, so deletion is not confirmed
+  before success-looking exit. This fails ROUND_QUEUE #2 and contradicts the prior company conclusion that #43 was
+  closed. No destructive walkthrough was run because the visible rounds were existing member data and no
+  `_trash/<timestamp>` backup-safe fixture existed. Additional FAIL/blocker evidence: the visible Will session had
+  all 12 T15 pick buttons disabled with `Only the commissioner can edit picks and scores`; Go Throw rendered three
+  identical Tadpole Beach live cards plus three identical resume cards; console logged
+  `permission_denied` at `/friendCodes/SRE3D7`. No app, Design, Firebase, pick, score, round, issue, rule, deployment,
+  or legacy `chains-fantasy /league` data changed; issue #1 was not re-probed. Next: PM/Engineer fix the authoritative
+  caller/callee await contract and triage the pick-role/duplicate-card/friend-code findings; independent QA then
+  uses a newly created backed-up test round to verify delete persistence after reload.
