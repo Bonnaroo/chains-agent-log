@@ -394,3 +394,90 @@ most routine actions in the app (signing out), with raw error internals shown to
 lead accordingly: **worst finding this run is chains-app#8**, with chains-app#6 (still open, still
 unchanged, fourth same-day confirmation, see above) as a close second and chains-app#7 (new: contradictory
 league-membership UI) as a smaller third item.
+
+## 2026-08-05 (fifth run, 23:20 UTC) — Field Tester run (account: fieldtest0805185744, fresh signup)
+
+**Worst thing found:** chains-app#6 is still open and still reproduces, unchanged, for the fifth field-test
+run in a row today. This is not a new bug — it's an all-day outage: the first run caught it at ~08:29 UTC
+(pre-purge backup timestamp) and every run since (shanna, fieldtest0805, fieldtest0805b, fieldtest2217, now
+this one) has independently hit the same wall. **Every Go Throw round played today, by every account, has
+failed to sync and then vanished from local history too.** Flagging the duration explicitly because four
+prior automated passes have each, correctly, declined to hot-patch it and deferred to
+`[needs-owner-decision]` — but nobody has actually picked it up yet, and it's now been ~15 hours.
+
+### Credentials note (worse than previously logged)
+ACCESS.md still states "cory and shanna still hold the starter password" as the safe test accounts. As of
+this run, **all four** of `kyle` / `cory` / `shanna` / `gabe` return `INVALID_LOGIN_CREDENTIALS` against
+`identitytoolkit.googleapis.com/v1/accounts:signInWithPassword` with `chains1234` — confirmed directly via
+the API (not just the UI), bypassing any autofill risk. Per the app's own "starter password failing = system
+working" logic, this most likely means cory and shanna have now also set their own passwords since ACCESS.md
+was last edited. Used a brand-new throwaway signup (`fieldtest0805<HHMMSS>`) instead, per the "never reset a
+password to keep a test convenient" rule. ACCESS.md's credentials table needs another pass — this is the
+second run today to find it stale, now for all four accounts instead of just kyle.
+
+### Walkthrough
+1. **Player picker defaults to solo** — PASS. **Still leaks the full league roster** (Cory, Will, Kyle,
+   Shanna, Gabe, Kadey all shown as one-tap quick-adds on a zero-history brand-new account) — same as the
+   third and fourth runs found. Commit `2be086a` (claimed fixed + "verified all 3 levels" per its own log
+   entry above) does not appear to be live: production still renders `v462` and the unconditional roster
+   merge still fires exactly as before. Not re-diagnosing this from scratch since two prior runs already did
+   — just confirming it's still broken in production right now. **Recommend whoever owns deploys next
+   double-checks whether `2be086a` actually reached `index.html` on `main` vs. only `test.html` or a
+   different branch** — the verification claim and the live behavior disagree.
+2. **Add a second player** — PASS, via guest name (avoided tapping the real Cory/Will/Kyle/Shanna/Gabe/Kadey
+   chips to avoid writing test data into real accounts' histories).
+3. **Score 6+ holes** — PASS on speed (one tap per player per hole). FAIL on sync, every hole — console
+   confirms `[ChainsRounds] write failed Error: PERMISSION_DENIED` plus a distinct
+   `set at /friendCodes/2PUWD4 failed: permission_denied` (the same rules-shape mismatch, different node —
+   already noted on chains-app#6).
+4. **Edit a score** — PASS in UI (hole 6, 4→5, applied instantly). No edit-history control found anywhere in
+   the UI, same gap prior runs noted.
+5. **Reload mid-round** — PASS. Resumed exactly at hole 6 with all scores intact via the local mirror.
+6. **Finish round** — UI shows "Round Complete" with full scorecard. Confirmed via direct `localStorage`
+   read that `chains_rounds_v1` is `{}` immediately after — the finished round is not merely "not synced,"
+   it is gone from the device too, root-caused (this run) to `loadMine()`'s reconciliation: the per-user
+   index write (`users/{authUid}/rounds/{id}`) succeeds independently of the broken `owner` write, so on the
+   next "My Rounds" load the code trusts the index, does a cloud read that returns `ok:true, val:null`, and
+   drops the round from the merged local set instead of falling back to the local copy — overwriting
+   `chains_rounds_v1` and erasing the local backup too. Two independently-broken paths compound into total
+   loss. Detail added to chains-app#6.
+7. **Delete round (explicit test)** — started a second, separate solo round, scored 2 holes, tapped
+   **Discard round → Discard**. Toast: *"Couldn't delete that round everywhere — it's gone from this device
+   and we'll keep retrying in the background."* Confirmed gone from `localStorage` and confirmed gone after
+   a full page reload. Honest, well-worded failure state — better UX than the generic sync toast elsewhere.
+   Cloud-side delete predictably also denied (never existed there to begin with).
+8. **In the Bag / Watch** — PASS, loaded real data. In the Bag again showed one pre-seeded disc ("Destroyer,"
+   marked Lost) on a brand-new account with zero history — fifth consecutive run to see this, still not
+   chased down, still worth someone eventually looking at the `chains_bag_v1` localStorage scoping (same
+   leaked-global-state family as the already-fixed course/group leak).
+
+### Data-truth checks (admin-key read, `chains-app-f38f8`)
+- `playRounds`: 0 records. `liveRounds`: 0 records. Confirmed via the Firebase Admin SDK key
+  (`Downloads/chains-app-f38f8-firebase-adminsdk-*.json`) rather than just an anonymous client read, for a
+  ground-truth check with no rules in the way.
+- `users/*/rounds` index: exactly 4 dangling entries app-wide, all pointing at round IDs that don't exist in
+  `playRounds` — `dBAYygLAM0NxOITjYaui5C6zFSJ2` (this run's own two test rounds) and
+  `diBWwlbtyeU5jr6LHXodtQZo8982` (an earlier run's leftover test account, not cleaned up). **Left these
+  in place rather than deleting them** — they're the cleanest concrete evidence of the live incident for
+  whoever fixes #6, and cleanup is trivial and risk-free once the underlying write path is fixed. Snapshotted
+  to `/sessions` scratch space (not committed — see below) rather than overwriting today's real backup.
+- Backups: `rounds-2026-08-05.json` (pre-purge, 08:29 UTC) and `rounds-prepurge-2026-08-05.json` (19:54 UTC,
+  taken right before an intentional purge described as "pre-purge of stale name-pick-era rounds that
+  survived delete and seeded phantom friends") both fetched and parsed cleanly — 4 real records each with
+  real hole/player data, not corrupted, not empty. This confirms the incident timeline: rounds were saving
+  fine as of 19:54 UTC (using username-string `owner` values under the OLD permissive rules), and something
+  between 19:54 and whenever the rules tightened is what actually broke saving — did not chase the exact
+  commit/rules-deploy timestamp further this run. No new backup was committed since no new writes exist
+  anywhere to back up (still fully blocked by #6).
+
+### What I fixed and shipped this run
+Nothing — no live patch attempted (same call as four prior runs: the correct fix spans the `owner`/`me`
+identity model across Go Throw, friends, and the picker, not a single safe line). No Firebase writes made
+either; left the 4 orphaned index pointers as evidence rather than cleaning them up. Added a confirmation
+comment to chains-app#6 with today's date and the `loadMine()` root-cause detail above.
+
+### What still doesn't feel like UDisc
+Same as every run today, now for the fifth time: a round tracker that cannot save a round, all day, while
+telling the user "Live · Synced" in the header the entire time it's failing underneath. That gap between
+what the status pill claims and what's actually happening is the single most un-UDisc thing about this app
+right now — UDisc's offline mode tells you plainly when you're offline; this app doesn't.
