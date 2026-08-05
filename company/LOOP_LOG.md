@@ -842,3 +842,55 @@ the topmost unchecked ROUND_QUEUE item. (2) Backend track candidate for next run
 the prior run's log above — worth checking whether the `.json` service-account files visible in the
 Downloads folder (`chains-app-f38f8-firebase-adminsdk-*.json`, `chains-fantasy-firebase-adminsdk-*.json`)
 unblock an Admin-SDK path to read/write real rules; if so, back up the ruleset first, then close the hole.
+
+---
+
+## 2026-08-05 — Backend Track (no browser opened)
+
+**Item worked:** BACKEND TRACK — verified priority fix #43 status + full regression sweep of the 8
+standing markers against the currently-committed/live `index.html`, plus checked for a real
+`data/backups/league-*.json` picks backup (option 5) before falling back to the marker sweep (option 6).
+
+**What was SHIPPED/PROVED:**
+1. Confirmed #43 ("deleted round comes back") is still fixed and intact in the live artifact — this
+   was already closed by a prior run, not re-fixed here to avoid duplicating work. Fetched the
+   committed `index.html` (sha `9c6ee905e3762907c884e4c60b5362ceeeba81ae`, 2,373,583 bytes, matches the
+   v461 sha recorded in the last log entry — no drift since last run) via
+   `raw.githubusercontent.com/Bonnaroo/chains-app/main/index.html` (cache-busted), decompressed all 93
+   gzip `"data":"<base64>"` blobs with zlib, and located `ChainsRounds.remove(id)`: it now builds a
+   `jobs` array (Firebase multi-path `update()`, `_indexWrite(d,id,null)`, and the legacy-store REST
+   DELETE) and awaits all of them before reporting success, with an explicit comment "// #43: every
+   store must confirm." This matches the required fix (await all writes, no silent partial-success).
+2. Regression-swept all 8 standing markers against the same decompressed blob set — all present:
+   `function authUid(`, `function _indexWrite(`, `"Teemu Paakinen"`, `"In the Bag"`,
+   `window.AuthGate`, `"ANONYMOUS SESSIONS NO LONGER GRANT ACCESS"`, `window.ChainsImpact`,
+   `window.ChainsAssets`. No regression.
+3. Checked for the `data/backups/league-*.json` picks backup requested by option 5: no such file/path
+   exists in any Chains repo. `chains-app` has no `data/` dir at all. `chains-dgpt-data/backups/` holds
+   `firebase-2026-07-29.json` (full RTDB snapshot — `leagues` node contains only a `ledgestone-test-2026`
+   test league with `eventField`, no real picks) and a localStorage export (no `picks` node either).
+   Concluded the picks-backup-verification item as specified doesn't have a real target yet — noting
+   this as a gap rather than fabricating a result; fell back to the marker sweep (option 6) as the
+   concrete deliverable for this run.
+
+**Evidence:** committed `index.html` sha `9c6ee905e3762907c884e4c60b5362ceeeba81ae` (unchanged from
+prior run's v461, so nothing to re-deploy); no commits made this run (verification-only, no write
+action taken); browser was not opened (backend-track-only run, decompress/search done entirely via
+GitHub Contents/raw API + local zlib).
+
+**Not done / needs follow-up:**
+- No real `league-*.json` picks backup exists yet in any repo — if backup verification (option 5) is
+  meant to check something real, either the backup job needs to write one, or the instruction should
+  point at `chains-dgpt-data/backups/firebase-2026-07-29.json`'s `users/*/picks` (not `leagues/*/picks`)
+  structure instead. Left as a note for the next run rather than guessing at scope.
+- Did not touch the Design app / browser this run — no UI-facing work was in scope for the backend
+  track, and #43 (the only otherwise-actionable item) was already fixed.
+- Carried-over open items unchanged: #5, #6, #32, #34, #40 [needs-owner-decision], #41, #42;
+  playRounds/{id} write-scope gap [needs-owner-decision]; kyle's real test-account email still
+  unresolved (blocks the negative-test Firebase rules item, option 3).
+
+**Next:** (1) Resolve what "league-*.json" backup verification should actually check (owner input may be
+needed — logging as informational, not [needs-owner-decision] since it's not a Tier-3 change, just an
+ambiguous instruction). (2) Start a fresh Design chat for the next ROUND_QUEUE / ROADMAP Phase 2 item if
+browser is available next run. (3) Option 3 (negative-test permission rules) still blocked on kyle's
+real email.
