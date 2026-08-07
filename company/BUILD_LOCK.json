@@ -1,7 +1,1 @@
-{
-  "locked": true,
-  "by": "chains-field-tester",
-  "reason": "Direct backend/logic patch: playRounds/liveRounds owner field uses whoami() (app-level id) instead of authUid() (real Firebase auth.uid), causing 100% of Go Throw round writes to fail security rules silently. See FIELD_TEST_LOG.md.",
-  "startedAt": "2026-08-07T08:30:00Z",
-  "expiresAt": "2026-08-07T10:30:00Z"
-}
+{"locked": false}
