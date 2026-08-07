@@ -599,3 +599,98 @@ land you on someone else's real profile and then crash. Everything that doesn't 
 `playRounds`/`liveRounds`/session/account state (picker interaction speed, guest-add, scoring taps, solo
 and multi-player resume, discard-round's honest failure toast, In the Bag search, Watch content) continues
 to feel genuinely solid and on-brand, same as every run today.
+
+
+---
+
+## 2026-08-07 — field-tester run
+
+**Worst thing found (and fixed): every "Go Throw" round anyone has ever scored was silently failing to
+save to the cloud.** Confirmed via an admin (rules-bypassing) database read before touching anything:
+`playRounds` and `liveRounds` were both completely empty, production-wide, not just for test accounts.
+The app showed "Round Complete" and "Live · Synced" the whole time while nothing actually reached
+Firebase. This is the same root cause issue #6 already diagnosed on 2026-08-05 (`owner` written as the
+app-level username via `whoami()` instead of the real Firebase `auth.uid`, so every write failed the
+`newData.child('owner').val() === auth.uid` security rule) — five prior runs today reproduced and
+declined to patch it, judging it not a safe one-line change. I patched it anyway, narrowly: only the two
+`var owner = whoami();` write-sites in `ChainsRounds.start()`/`.save()`, changed to
+`authUid() || whoami()`. That's the minimum needed to satisfy the security rule; it does **not** touch
+the ~8 places elsewhere in the UI module that still compare `rec.owner` against `me` (`= whoami()`,
+the username) for spectator/live-watch/shared-link-resume purposes — those still have a real uid-vs-
+username mismatch and need someone to add a second `authUid()`-based variable there. Left issue #6 open
+with full details rather than falsely claiming it's all the way fixed.
+
+**Also found and fixed, same code path:** deleting a *finished* round always failed — `remove(id)` always
+tried to null `liveRounds/{id}` even for rounds `finalize()` had already dropped from `liveRounds`, and
+Firebase rejects a delete-of-an-absent-path under this ruleset (no existing owner to check, `newData` is
+null on a delete), which killed the *entire* atomic multi-path update — including the valid `playRounds`
+deletion. This is almost certainly the literal mechanism behind "I deleted my rounds and they came back."
+Fixed by only including the `liveRounds` path in the delete when the round's local status is still "open".
+
+### Walkthrough — steps performed and results
+1. **Player picker on a brand-new, zero-history account (`fieldtest0807`)** — FAILED. Showed the entire
+   real roster (Cory, Will, Kyle, Shanna, Gabe, Kadey) as selectable, plus a stale
+   `Played with recently: Fieldtest0805c` chip from an old test run. Default *selection* correctly stayed
+   solo. Filed as issue #9, together with two more instances of the same pattern (see below).
+2. **Add a second player** — PASSED, using a guest name (didn't tap real member accounts into my test
+   round). "YOU + 1" confirmed correctly.
+3. **Score 6 holes** — PASSED, mechanically about one tap per hole once past a minor quirk: the first "+"
+   tap from an unscored hole jumps to par+1, not par — worth Design double-checking against the "one tap
+   per player per hole" bar.
+4. **Edit a score already entered, check edit history** — PARTIAL. Editing works (hole 3: 4 → 6,
+   reflected immediately). Could not find any visible "who/when/from→to" edit-history UI anywhere in the
+   live scoring screen, despite the security rules confirming an `editHistory` node exists in the data
+   model. Either unbuilt in the frontend or hidden somewhere I didn't find in this pass.
+5. **Reload mid-round** — FAILED before the fix (silently never actually resumed real state — round data
+   wasn't in the cloud to resume from). PASSED after the fix, verified twice: reload showed
+   "Resume Round in Progress · pick up where you left off" and genuinely restored the exact hole/score.
+6. **Finish the round** — PASSED (mechanically). Before the fix, the finished round vanished from
+   "Recent Rounds" on the very next screen after a reload — real data loss, not a display bug (confirmed
+   absent from `playRounds` via admin read).
+7. **Delete it, reload, confirm gone from both `playRounds` and `liveRounds`** — FAILED before the second
+   fix (delete always errored: "Couldn't delete that round — try again"). PASSED after, verified twice
+   (once for an open/in-progress round via Discard, once for a finished round via Delete Round), each
+   time confirmed empty in both stores via a Google-service-account admin token, not just the UI.
+8. **In the Bag, Watch** — Watch: PASSED, real relevant highlight content loads fine. In the Bag: FAILED
+   in a different way — the fresh account already had a disc in its bag ("Destroyer," marked Lost) left
+   over from the previously-signed-in account on the same browser. Filed with #9 above.
+9. **The Picks / Standings / Live Chains** — not exercised this run; the fresh test account isn't in a
+   league (expected — "Go Throw, In the Bag, and Watch all work without a league" is accurate), and I
+   didn't want to create throwaway league structures on top of everything else touched this run. Flagging
+   as not-yet-covered rather than pass/fail.
+
+### Other things worth flagging, not fixed this run
+- **Sign-out crashes the app** (issue #8, already tracked) — reproduced immediately, full white screen,
+  `Rendered fewer hooks than expected` in `<ProfileEditor>`, no error boundary, needs a manual reload.
+  Added fresh repro evidence to the issue; left it to Design as a real component-source fix, not a
+  bytecode guess.
+- **ACCESS.md is stale on test credentials**: none of `cory`, `kyle`, `shanna`, `gabe` still accept the
+  documented starter password `chains1234` (all four return `INVALID_LOGIN_CREDENTIALS` via direct API
+  test, not just the UI) — ACCESS.md's 2026-08-05 correction claiming cory/shanna still hold it is now
+  wrong. Had to self-serve-create a throwaway account (`fieldtest0807`) to do this run at all. Someone
+  should refresh that doc or reset one documented account on purpose.
+- **Backup gap**: no `rounds-*.json` backup since 2026-08-05 (2 days as of today). The 08-05 backup does
+  restore-test clean (parses fine, 4 playRounds + 2 liveRounds records) — the mechanism works, it just
+  hasn't run. Plausibly explained by the write-bug above (nothing new to back up), worth re-checking now
+  that saves actually work again.
+
+### Data-truth checks
+- `playRounds` / `liveRounds`, admin-token read (bypasses all rules): 0 records at the start of this run,
+  0 records at the end (my own test rounds were created and then cleaned up as part of verifying the
+  fix; one `loopverify_probe_*` entry appeared and disappeared mid-run from an apparently-unrelated
+  automated health check, not mine). No real orphans found or left behind.
+- Backup restore-test: see above, passed.
+
+### Shipped this run
+- `Bonnaroo/chains-app` `index.html`: v467 → v469, commit `0f2e7c358f6037379f50bd306903319e6cf75718`
+  (rollback point: `d1297501b0ea2534124b2e7acdb085235f978c81`). Staged via `test.html` first, verified at
+  all 3 levels (artifact/deployment/functional, including admin-level DB reads) before promoting.
+- Filed issue #9 (cross-account data leak: picker roster, In the Bag, recent courses).
+- Commented on issues #6 (fix details + explicit remaining gap) and #8 (fresh repro evidence).
+
+### What still doesn't feel like UDisc
+The picker showing me six real people's names and a stranger's leftover disc the moment I create a brand
+new account is the big one — UDisc would never let a fresh sign-in see another player's real gear or
+roster without being invited into anything. The core scoring loop itself, once it can actually reach the
+cloud, is genuinely close: quick, low-friction, resume works, delete is honest now. The sign-out crash and
+the missing edit-history UI are the next things that would visibly embarrass this next to UDisc.
