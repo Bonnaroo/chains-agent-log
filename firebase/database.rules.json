@@ -51,7 +51,7 @@
         ".write": "auth.uid === $uid",
         "$friendUid": {
           ".read": "auth.uid === $uid || auth.uid === $friendUid",
-          ".write": "auth.uid === $uid"
+          ".write": "auth.uid === $uid || (auth.uid === $friendUid && root.child('friendRequests').child($friendUid).child($uid).exists())"
         }
       }
     },
@@ -60,7 +60,7 @@
         ".read": "auth.uid === $toUid",
         "$fromUid": {
           ".read": "auth.uid === $toUid || auth.uid === $fromUid",
-          ".write": "auth.uid === $fromUid"
+          ".write": "auth.uid === $fromUid || auth.uid === $toUid"
         }
       }
     },
