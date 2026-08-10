@@ -1,87 +1,98 @@
-# HANDOFF — 2026-08-05 03:44 UTC — [GPT] CEO
+# HANDOFF — 2026-08-10 20:10 UTC — [GPT] CEO
 
 ## LAST WORKER / ROLE / UTC / TASK
 
-- `[GPT]` / CEO / 2026-08-05 03:44 UTC / post-QA v456 launch-state reconciliation plus T-C07 routing.
-- Lock claim: `ACTIVE 2026-08-05T03:30:56Z GPT/dispatcher clock-in`; exact claim was re-fetched after 15 seconds.
-- Lock commit: `2db4516a9d06ba1ef2bcee7a0ce032b95183b507`.
-- Board-start commit: `6ce2bc360f7c330beb8b7381d3c6e69c697c09ba`.
-- CEO routing/evidence commit: `e13f4d1d26e9f88f378bf226f9331d0731714556`.
-- Reusable-method commit: `56ffb520a735eb17d2b791055394a0edca9bd70d`.
-- CEO log commit: `baac7073dd696e7f6b3dbf055573a5288233325b`.
+- `[GPT]` / CEO / 2026-08-10 20:10 UTC / replace expired T15 state with current T16 readiness, file release-integrity issue #10, and route nine open app issues.
+- Lock claim: `ACTIVE 2026-08-10T19:53:05Z GPT/dispatcher clock-in`; exact claim was re-fetched after 15 seconds.
+- Lock commit: `ba42b3d2e86a9e9794ac297591d76c1ef7d900b4`.
+- Board commit: `8d2fd37aabe0e8fc379a5abaaf2dc6c895de4c3c`.
+- Event-readiness commit: `4220dcc44e8f888011192e25d2a7e3269c4c8c4b`.
+- Owner-alert commit: `0d6a4c6e311f252949ad63cfa7d87ba7aaa39a14`.
+- CEO-log commit: `f864031f68994bbc928c133a54299dc664a0a07e`.
+- Deploy-playbook commit: `ba69a8b6afa80b01ac97d659ef398b9cceaedfaa`.
+- Lessons commit: `e4b64f4693d8e7278ce4262bb4c641d63debb8f7`.
 
 ## WHAT CHANGED
 
-- [GPT] filed `Bonnaroo/chains-app` issue #3 from verified [CLAUDE] evidence in office commit
-  `980a3877f29c892c8f7b971180408356c2174380`: an authenticated member could PATCH a disposable field onto another
-  member's `playRounds/{id}` record (HTTP 200). Claude deleted only the probe field and verified it null with the
-  rest of the round unchanged. GPT did not repeat the live write and omitted credentials from the public issue.
-- Routed issue #3 as BOARD T-C07, blocked on owner-controlled rules backup and Emulator/non-production remediation.
-  Updated `TO_OWNER.md`, `DECISIONS.md`, and `REPORT.md` with exact owner and team actions.
-- Corrected current app identity and T-C04. App main/live are v456 at
-  `d48d0b83c7bd91b7a131f6aa2796e33f06c12c1d`, not v476. The newest [CLAUDE] company log's unanchored `v476`
-  match came from a long encoded payload; explicit `window.CHAINS_VERSION` and production UI both report v456.
-- Kept #43 / ROUND_QUEUE #2 open. Current Discard creates/adopts a missing round ID, then calls
-  `ChainsRounds.remove(cloudIdRef.current)` without await/return/result handling, clears local state, and exits.
-  The callee starts `Promise.all(jobs)` but returns `Promise.race([settle, timeout])`, where timeout resolves
-  optimistic `true` at eight seconds.
-- Refreshed T15 readiness to current v456 and issue #3. `field.json` remains event 96415 / 116 MPO and current PDGA
-  remains 116 MPO / 168 total; readiness stays AMBER.
+- [GPT] filed `Bonnaroo/chains-app` issue #10:
+  https://github.com/Bonnaroo/chains-app/issues/10. Main HEAD
+  `7c1f1125f1a24bdec94de43f6443d3c9cf286b28` is titled v475, but cache-busted production explicitly renders
+  `FANTASY DGPT V469`. Current main blobs also diverge: `index.html`
+  `25942ab735ba54b02feb4a4d04f88c0f1388631c` vs `test.html`
+  `b72986887d300a341f86d4e499341563df1aad21`.
+- Added provenance to #10 from office commit `94e89207e7020fa532388d84016b8dc3d43c9536`: its engineer log records v474
+  as a byte-swapped rebuild of deployed v473 when Design did not produce a compiled export. v475 then changed only
+  `index.html` by +2/-2. Current protocol forbids another deployed-file repair; recovery must start from the
+  existing authoritative Claude Design project.
+- Replaced stale T15 readiness with T16 DGPT Doubles Championship at The Preserve. BOARD T-C08 owns the empty field
+  recovery, T-C09 owns release lineage, and T-C10 routes the nine-open-issue launch queue.
+- Moved `EVENT_READINESS.md` to RED. Official PDGA event `96416` is Aug 14–16 in Clearwater with 156 total /
+  112 MPO, but current `chains-dgpt-data/data/field.json` identifies no event and contains zero players.
+- Updated `TO_OWNER.md`: outside testers remain blocked by cleanup-backed security/account issues #1, #3, #4, #5,
+  and #9. Owner action is current rules/data-scope backups plus an Emulator/non-production allow-deny and rollback
+  path; no credential exchange is requested.
+- Added the reusable immutable-provenance method to `kb/deploy.md` and `kb/LESSONS.md`.
 
 ## VERIFICATION / EVIDENCE
 
-- PASS: cache-busted `https://bonnaroo.github.io/chains-app/?cb=202608050337#dashboard` visibly rendered
-  `Fantasy DGPT v456`, current league/standings data, Discmania Challenge, and `Picks open`; no initialization hang.
-- PASS: app `index.html` and `test.html` are byte-identical, 2,369,279 bytes, git blob
-  `e0918ffe0cb133ce9aad91214387b0ac17532af8`, SHA-256
-  `C5AE3BE195536B2740F9B4E4B59A6C166EDF56BF096E6B205F785E564DF3F4F3`.
-- FAIL: decompressed immutable v456 contains one active-round fire-and-forget remove caller followed by local clear
-  and `onBail()`, plus one optimistic eight-second `Promise.race` in the callee. This is contrary evidence to the
-  [CLAUDE] callee-only/#43-closed conclusion; the useful missing-ID fix is preserved but acceptance is not met.
-- PASS: GitHub issue #3 is open at `https://github.com/Bonnaroo/chains-app/issues/3`; connector re-fetch returns
-  the stamped [GPT]/[CLAUDE] attribution, cleanup proof, credential omission, no-reprobe rule, remediation matrix,
-  and closing conditions.
-- PASS: PDGA event 96415 still lists Aug 7–9, 168 total / 116 MPO, last updated
-  `04-Aug-2026 11:53:02 CDT`. Data blob `e79e2eace48faed4146e9e4f09b6d85d7143b231` remains 116 players,
-  updated `2026-08-05T01:04:52.730048+00:00`, roster hash `46e7cea96c95`, stable 6.7h.
-- OPEN: `data/events/96415-MPO.json` is absent; no official first-player tee-time table is present; regular-member
-  pick controls and duplicate Go Throw cards retain the prior QA blockers.
+- PASS: cache-busted https://bonnaroo.github.io/chains-app/?cb=202608101958#dashboard loaded current league
+  standings, Preserve Championship Aug 14–16, and `PICKS OPEN`; the explicit visible version is v469.
+- PASS: app main HEAD is `7c1f1125f1a24bdec94de43f6443d3c9cf286b28`; its commit page shows one changed file
+  (`index.html`, +2/-2) and 3/3 green checks.
+- FAIL: main/live release identity. The v475 title, visible v469 marker, and unequal index/test blobs cannot all
+  describe one promoted immutable Design artifact. Issue #10 contains the exact close evidence.
+- PASS: PDGA https://www.pdga.com/tour/event/96416 listed 156 total / 112 MPO, updated
+  `10-Aug-2026 07:02:02 CDT`. DGPT
+  https://www.dgpt.com/event/2026-dgpt-doubles-championship-at-the-preserve/ confirms two best-shot rounds plus
+  alternate-shot round three.
+- FAIL: `chains-dgpt-data/data/field.json` blob `c1d121ae8a676dee42d6e4c92f3a38cf16bf463f`, updated
+  `2026-08-10T19:14:24.067382+00:00`, has null event IDs, note `No upcoming event found.`, and zero players.
+- PASS: connector re-fetch verified BOARD blob `0280f91c6665d2c214b93f08e37079100436e80e`, EVENT_READINESS blob
+  `bb4fbd7e1db17fdbb3ef9a40f3cb6e1dcc0b2b5a`, TO_OWNER blob `5981c11a4c6bab8b505f4b35e44bc102b52e90bc`,
+  and CEO log blob `faeb6c8d92ee9089f0dbf97e622d8c11ef2c36ae`.
 
 ## DATA / SAFETY
 
-- GPT changed only `chains-app` issue #3 and shared-office Markdown.
-- No app, Design project, Firebase node/rule, user, pick, score, round, deployment, deletion, backup, or legacy
-  `chains-fantasy /league` data changed by GPT.
-- GPT did not repeat either the legacy-fantasy unauthenticated probe (issue #1) or Claude's `playRounds` cross-user
-  probe (issue #3). No `_trash/<timestamp>` backup was created because GPT performed no data mutation or deletion.
-- Issue #3 intentionally omits member credentials. Do not copy credentials from company logs into public surfaces.
+- [GPT] changed `chains-app` issue #10 and shared-office Markdown only.
+- No app source, Design project, Firebase node/rule, user, pick, score, round, workflow, deployment, deletion,
+  backup, or legacy `chains-fantasy /league` data changed.
+- [GPT] did not repeat any live security write behind issues #1/#3/#4/#5/#9. Their cleanup-backed evidence remains
+  shared memory until a relevant rules/build change requires owner-authorized non-production regression.
+- No `_trash/<timestamp>` backup was created because no Firebase mutation or deletion occurred.
+- Betting remains removed; no deployed-file-only patch was made.
 
 ## REUSABLE METHOD FOR THE OTHER AI
 
-- [GPT] reused [CLAUDE]'s verified request/response/cleanup evidence instead of rediscovering the permission gap.
-  Use issue #3 as shared memory until a rules change makes re-testing necessary.
-- [GPT] improved build identification: never accept an unanchored `vNNN` match in a self-contained export. Require
-  explicit `window.CHAINS_VERSION`, main commit, git blob, SHA-256, stage/live byte comparison, and cache-busted UI.
-- Verify async repairs as a caller/callee pair. Callee `Promise.all` does not pass when the caller exits
-  fire-and-forget or the callee races optimistic success. This method is now in `kb/LESSONS.md` and `kb/testing.md`.
+- [GPT] reused the shared exact-build-identity method and [CLAUDE]'s/no-reprobe shared security findings instead of
+  rediscovering them. Prior verified findings were treated as memory; only state made stale by later commits was
+  re-checked.
+- [GPT] improved release acceptance: inspect the claimed deploy commit's changed-file scope and its parent
+  provenance in addition to version text and hashes. Reject a deployed-bundle descendant even if its commit title
+  and checks are green. Require one authoritative Design export, export hash, stage blob/hash, live blob/hash,
+  explicit version marker, main SHA, and cache-busted production observation.
+- The repeatable method is recorded in `kb/deploy.md` commit `ba69a8b6afa80b01ac97d659ef398b9cceaedfaa`
+  and `kb/LESSONS.md` commit `e4b64f4693d8e7278ce4262bb4c641d63debb8f7`.
 
 ## WHAT'S NEXT AND WHO OWNS IT
 
-1. **Owner / Security [BLOCKING T-C05 + T-C07]:** export and date-back-up the exact current `chains-fantasy` and
-   `chains-app-f38f8` rules; approve Emulator/non-production remediation and rollback paths. Do not send credentials.
-2. **PM + Engineer:** in the authoritative Design source, retain v456's missing-ID fix but make Discard await and
-   branch on a real non-optimistic result; separately fix issue #2's league-code failure visibility.
-3. **Security/PM + QA after owner approval:** scope top-level `playRounds` writes to owner and participant writes to
-   their authorized player subtree; prove owner/participant/unrelated/unauthenticated allow-deny matrix plus full
-   resume/live/finish/discard regression before outside testers.
-4. **Data + QA:** keep event 96415 current through tee-off, resolve/document missing `96415-MPO.json`, obtain the
-   official first-player tee time, verify regular-member own-picks-only, and triage duplicate round cards safely.
+1. **Data + QA — T-C08 (CRITICAL):** repair current-event discovery for PDGA `96416`, publish the current MPO
+   roster with exact blob/hash/count/timestamp, document doubles-team mapping, and independently compare to PDGA.
+2. **Engineer + independent QA — T-C09 / issue #10:** recover from the existing authoritative Design project,
+   stage the exact export, and prove Design/stage/main/live identity. Do not patch or byte-swap `index.html`.
+3. **Owner + Security — T-C10 security slice:** date-back-up current rules/approved scopes and authorize
+   Emulator/non-production allow-deny plus rollback for #1/#3/#4/#5/#9 before outside testers.
+4. **PM + Engineer + QA — T-C10 functional slice:** independently verify #6 on the exact deployed build; fix and
+   verify #7 dashboard membership and #8 2/2 sign-out hook crash in the authoritative source.
+5. **QA:** after the feed and lineage gates pass, verify live Registered/Picks, regular-member own-picks-only,
+   commissioner behavior, and official first-player pick-lock proof before moving readiness from RED.
 
 ## WATCH OUT FOR
 
-- Live is v456, not v476. Search explicit version assignment; encoded assets contain misleading version-like text.
-- Do not close #43 from Design prose, filename, call presence, or callee-only inspection. Awaited non-optimistic
-  caller behavior and backed-up destructive persistence QA are both required.
-- Do not repeat issue #1 or #3 live writes. Do not deploy rules without dated backups, offline review, regression
-  matrix, rollback, and owner-controlled authorization.
-- Never touch legacy `chains-fantasy /league`; keep betting removed and protect owner-confirmed-good behavior.
+- The dashboard's `PICKS OPEN` label does not make a zero-player/no-event backend artifact launch-ready.
+- The event is doubles. Do not silently map a PDGA team row as an ordinary singles event.
+- A `Deploy vNNN` title or green checks are not proof of an authoritative Design build; v474/v475 provenance is
+  specifically suspect and issue #10 is the shared record.
+- Do not close issue #6 from its v469 commit message alone; independent QA must verify the exact deployed version.
+- Do not repeat live security probes or deploy rules without dated backups, offline/Emulator matrices, rollback,
+  and owner-controlled authorization.
+- Never touch legacy `chains-fantasy /league`; keep betting removed and protect confirmed-good behavior.
