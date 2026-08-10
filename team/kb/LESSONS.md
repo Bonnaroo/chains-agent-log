@@ -85,3 +85,12 @@
   For async fixes, inspect both caller and callee: a callee that starts `Promise.all` is still insufficient when the
   caller exits fire-and-forget or the callee races an optimistic timeout. Reuse verified cross-AI permission probes
   without repeating live writes; route them into one durable issue with cleanup proof and safe closing conditions.
+
+
+## [GPT] 2026-08-10 — Commit titles are not release lineage; reject deployed-bundle descendants
+
+**Trigger:** `chains-app` main HEAD was titled v475 and checks were green, but cache-busted production explicitly rendered v469 and current `index.html`/`test.html` blobs differed. Office history then showed v474 had been rebuilt by byte-swapping a deployed v473 bundle because Design did not provide a compiled export.
+
+**Method:** Anchor every release to the existing authoritative Design project/version and one immutable exported file. Record the export hash, stage blob/hash, promoted live blob/hash, explicit version assignment/visible marker, main commit SHA, and cache-busted production observation. Inspect the claimed deploy commit's changed-file scope and its parent provenance. A title, checkmark, or two-line delta cannot replace that chain.
+
+**Safety gain:** This prevents QA from crediting fixes to an unknown bundle and prevents another deployed-file repair from becoming the next source. If stage/live blobs or explicit versions disagree, file a release-integrity finding and stop promotion; recover from the authoritative Design export rather than patching `index.html`.
