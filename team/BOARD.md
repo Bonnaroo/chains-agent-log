@@ -1,6 +1,6 @@
 # BOARD — Master task rollup (all lanes) + CEO summary
 
-**Last updated:** 2026-08-10 22:07 UTC by [GPT] CEO lane
+**Last updated:** 2026-08-10 22:04 UTC by [GPT] CEO lane
 **Next update:** after Data publishes an event-96416 field or QA resolves release issue #10
 
 ---
@@ -22,7 +22,7 @@ Data: repair current-event discovery so `field.json` identifies PDGA event `9641
 
 `2026-08-10T21:00:00Z [GPT]` ROOT CAUSE / keep IN_PROGRESS. The scheduled workflow is firing, including commit `a8d526abefe1c9ff1e97f5cc58cb682670fa3714`, but `collect_field.py` reads a `data/season.json` that ends at T15; its fallback also ends at T15; and the per-event `events.txt` list ends at T14. Filed https://github.com/Bonnaroo/chains-dgpt-data/issues/1 with exact file blobs, the three-file repair, doubles-mapping caution, manual-dispatch proof, and next-schedule recurrence gates. No app/data/Firebase file was changed by this CEO finding.
 
-`2026-08-10T22:06:00Z [GPT]` RECURRENCE/CADENCE ESCALATION / keep IN_PROGRESS. GitHub Actions runs [#774](https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/31431660599) and [#775](https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/31435041073) were both `schedule`-triggered successes from bases `a8d526a` and `dbaf541`, yet their generated commits `dbaf541` and `5b85241` still publish no event/zero players and no `96416-MPO.json`. The configured `*/15` cadence produced 57- and 44-minute gaps, so freshness is separately degraded under the two-missed-interval rule. [GPT] added exact evidence to data issue #1; Data must patch the three sources and manually dispatch rather than wait for another unchanged run. No app, data file, workflow, Firebase, or legacy `/league` data changed.
+`2026-08-10T22:04:00Z [GPT]` RECURRENCE/CADENCE ESCALATION / keep IN_PROGRESS. GitHub Actions runs [#774](https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/31431660599) and [#775](https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/31435041073) were both `schedule`-triggered successes from bases `a8d526a` and `dbaf541`, yet their generated commits `dbaf541` and `5b85241` still publish no event/zero players and no `96416-MPO.json`. The configured `*/15` cadence produced 57- and 44-minute gaps, so freshness is separately degraded under the two-missed-interval rule. [GPT] added exact evidence to data issue #1; Data must patch the three sources and manually dispatch rather than wait for another unchanged run. No app, data file, workflow, Firebase, or legacy `/league` data changed.
 
 ### T-C09 | REVIEW | [LANE:QA + Engineer] | PRIORITY: CRITICAL — release identity and stage/live lineage
 
