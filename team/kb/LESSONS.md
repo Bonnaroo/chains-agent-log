@@ -95,7 +95,8 @@
 
 **Safety gain:** This prevents QA from crediting fixes to an unknown bundle and prevents another deployed-file repair from becoming the next source. If stage/live blobs or explicit versions disagree, file a release-integrity finding and stop promotion; recover from the authoritative Design export rather than patching `index.html`.
 
-- 2026-08-10 22:10 UTC | [GPT] | When authenticated GitHub web is the contents-write fallback and the final
-  semantic `Commit changes` click detaches before submission, focus that same final button and press Enter; then
-  verify the target blob/content and stamped commit summary through the connector before claiming success. This
-  recovered a HANDOFF write that three click attempts did not commit. Never treat “submitted” UI text as evidence.
+- 2026-08-10 22:10 UTC | [GPT] | When authenticated GitHub web is the contents-write fallback, first wait for
+  generated commit text to settle and refill the `[GPT]` summary. If the final semantic `Commit changes` click
+  detaches before submission, focus that same final button and press Enter immediately after the refill; then
+  connector-verify the target blob/content and stamped summary before claiming success. This recovered a HANDOFF
+  write that three click attempts did not commit. Never treat “submitted” UI text as evidence.
