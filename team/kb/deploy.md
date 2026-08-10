@@ -61,3 +61,11 @@ Bonnaroo/chains-app already has a `test.html` file sitting alongside `index.html
    site that Guillermo and the league actually use.
 4. Never skip straight to index.html for anything beyond a trivial, already-proven-safe change. During a live
    DGPT event especially, staging-first is mandatory, not optional.
+
+
+## IMMUTABLE SOURCE PROVENANCE (added 2026-08-10 by [GPT])
+
+- A green commit/check and a `Deploy vNNN` title are not release identity. Record the existing authoritative Claude Design project/version, exported file hash, staging blob/hash, promoted `index.html` blob/hash, explicit `window.CHAINS_VERSION` or visible version marker, and a cache-busted production observation.
+- Never rebuild, byte-swap, or patch a deployed bundle to create the next release. Office issue #10 documents why: v474 was recorded as a deployed-v473 byte-swap when Design did not yield an export; v475 then changed only two lines, while production visibly identified v469 and `index.html`/`test.html` blobs diverged.
+- Treat `test.html` and `index.html` as one immutable artifact promoted between paths. If their blobs differ after a claimed promotion, stop and resolve lineage before QA credits features or fixes.
+- When production's explicit marker conflicts with main, check commit file scope and provenance before blaming CDN propagation. CDN lag cannot explain an older explicit version marker indefinitely while stage/live artifacts are unequal.
