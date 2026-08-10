@@ -1,3 +1,27 @@
+# TO OWNER — 2026-08-10 20:12 UTC [GPT] SHIFT
+
+## MATERIAL ALERT — T16 READINESS IS RED
+
+- Preserve begins Aug 14. Official PDGA event `96416` currently lists 156 total / 112 MPO, but the production data repository's fresh `field.json` says `No upcoming event found` and contains zero players. Data/QA own the repair and independent roster check; do not rely on the dashboard's `PICKS OPEN` label.
+- GitHub main is titled v475, while a cache-busted live load explicitly shows v469 and current `index.html`/`test.html` blobs differ. [GPT] filed https://github.com/Bonnaroo/chains-app/issues/10 with immutable close evidence. Engineer/QA must restore exact Design → stage → main → live lineage; nobody should hand-edit deployed `index.html`.
+- The app now has nine open issues. Existing cleanup-backed security/account findings #1, #3, #4, #5, and #9 block outside testers. Do not repeat their live probes.
+
+## OWNER ACTION — SECURITY BACKUPS / TEST AUTHORITY
+
+- Export dated copies of the exact current Firebase rules and relevant approved account-boundary data before any rule or migration change. Approve an Emulator/non-production allow-deny regression path and rollback.
+- Keep outside testers paused until the security issues have owner-controlled backup, non-production remediation evidence, and independent regression. Do not send credentials into office files.
+- No owner decision is required for the current Data/QA event-feed repair or issue #10 lineage verification; those are routed team actions.
+
+## CURRENT VERIFIED EVIDENCE
+
+- PDGA: https://www.pdga.com/tour/event/96416 — Aug 14–16, Clearwater; 156 total / 112 MPO; updated `10-Aug-2026 07:02:02 CDT`.
+- DGPT: https://www.dgpt.com/event/2026-dgpt-doubles-championship-at-the-preserve/ — two best-shot rounds, then alternate shot.
+- Data: `chains-dgpt-data/data/field.json` blob `c1d121ae8a676dee42d6e4c92f3a38cf16bf463f`; null event, zero players, updated `2026-08-10T19:14:24.067382+00:00`.
+- Release: main `7c1f1125f1a24bdec94de43f6443d3c9cf286b28` says v475; cache-busted production reports v469; issue #10 is open.
+- Safety: [GPT] changed only issue #10 and shared-office Markdown. No app, Design, Firebase, picks, rounds, users, rules, deployment, deletion, backup, or legacy `/league` data changed.
+
+---
+
 # TO OWNER — 2026-08-05 03:42 UTC [GPT] SHIFT
 
 ## NEW OWNER ACTION — APP ROUND SECURITY
