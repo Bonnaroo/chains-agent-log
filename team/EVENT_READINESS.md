@@ -1,42 +1,41 @@
 # EVENT READINESS — pre-tournament checklist (CEO owns; drive to green before every DGPT event)
 
-**Last verified:** 2026-08-05 03:41 UTC by [GPT]
+**Last verified:** 2026-08-10 20:12 UTC by [GPT]
 
-## ACTIVE EVENT: T15 Discmania Challenge — August 7–9, 2026 — Indianola, Iowa
+## ACTIVE EVENT: T16 DGPT Doubles Championship at The Preserve — August 14–16, 2026 — Clearwater, Minnesota
 
 Primary-source facts:
 
-- PDGA event `96415` lists 168 total players and 116 MPO players, last updated `04-Aug-2026 11:53:02 CDT`.
-- DGPT lists August 7–9 at Pickard Park and a projected MPO Round 1 broadcast at 3:00 PM CDT. That is a broadcast time, not proof of the first player tee time or the league pick-lock deadline.
+- PDGA event `96416` identifies the DGPT Elite Series tournament, Aug 14–16 in Clearwater, Minnesota. It listed 156 total players and 112 MPO players, last updated `10-Aug-2026 07:02:02 CDT`, at https://www.pdga.com/tour/event/96416.
+- DGPT confirms this is the first Preserve Elite Series event using doubles: separate MPO/FPO divisions, two best-shot rounds, then alternate shot in round three. Source: https://www.dgpt.com/event/2026-dgpt-doubles-championship-at-the-preserve/.
+- Registration/team structure is materially different from prior singles events. Data/PM must document how each registered player and team maps to the fantasy model before readiness can become green.
 
 ### A. Live app / draft
 
-- [x] Cache-busted live app loads as `Fantasy DGPT v456` at https://bonnaroo.github.io/chains-app/?cb=202608050337#dashboard.
-- [x] Dashboard identifies `Discmania Challenge`, Indianola, IA, August 7–9, and shows `Picks open`.
-- [x] Live Registered screen states `116 pros registered · updated Aug 4, 9:04 PM`, matching current `field.json` and PDGA.
-- [ ] Regular-member own-picks-only check FAILS in the visible Will session: all 12 T15 Player 1/2 buttons were disabled and exposed `Only the commissioner can edit picks and scores`. This may be an auth/role mismatch or a real permission regression; PM/Engineer must establish the signed-in UID/role without handling passwords, then QA must re-run before GREEN.
-- [ ] Verify the official first-player tee time before setting or approving a pick-lock timestamp. Do not substitute DGPT's 3:00 PM broadcast time.
+- [x] Cache-busted production loads at https://bonnaroo.github.io/chains-app/?cb=202608101958#dashboard with current league standings, a Preserve Championship card for Aug 14–16, and `PICKS OPEN`.
+- [ ] Release identity FAILS: the visible UI explicitly reports `FANTASY DGPT V469`, while main HEAD `7c1f1125f1a24bdec94de43f6443d3c9cf286b28` is titled v475. Issue #10 owns the close evidence.
+- [ ] Confirm the live Registered/Picks roster against PDGA event 96416 after the feed is repaired; no valid roster comparison is possible from the current empty artifact.
+- [ ] Re-run regular-member own-picks-only and commissioner behavior on the verified deployed build. Do not infer pass from `PICKS OPEN`.
+- [ ] Obtain official first-player tee-time/pick-lock evidence. Do not substitute a broadcast time.
 
 ### B. Current data feed
 
-- [x] `Bonnaroo/chains-dgpt-data/data/field.json` is T15 / event `96415`, `player_count: 116`, updated `2026-08-05T01:04:52.730048+00:00` (blob `e79e2eace48faed4146e9e4f09b6d85d7143b231`, roster hash `46e7cea96c95`).
-- [x] The feed count matches PDGA's official 116-player MPO count as of this check.
-- [ ] Roster is still moving: `stable_hours: 6.7`. Data lane must continue refreshes and re-check withdrawals/additions through tee-off.
-- [ ] `data/events/96415-MPO.json` returned 404. Data lane must either publish the per-event artifact or document that `field.json` intentionally supersedes it; silent absence is not green.
+- [ ] FAIL: `Bonnaroo/chains-dgpt-data/data/field.json` blob `c1d121ae8a676dee42d6e4c92f3a38cf16bf463f`, updated `2026-08-10T19:14:24.067382+00:00`, has null `event_tag`, null `event_id`, note `No upcoming event found.`, and zero players.
+- [ ] Data must repair event discovery for PDGA event `96416`, publish the current 112-player MPO roster, and record exact blob/hash/count/timestamp evidence.
+- [ ] Data/PM must explicitly handle the doubles team format; do not silently treat team rows as an ordinary singles event.
+- [ ] QA must independently compare the published roster/count to current PDGA registration and verify withdrawals/additions through tee-off.
 
-### C. Current build and known round-path risk
+### C. Current build and launch-risk queue
 
-- [x] `chains-app` main HEAD is `d48d0b83c7bd91b7a131f6aa2796e33f06c12c1d` (v456, 2026-08-05 02:37 UTC), and production visibly reports v456. `index.html` and `test.html` are byte-identical at blob `e0918ffe0cb133ce9aad91214387b0ac17532af8` / SHA-256 `C5AE3BE195536B2740F9B4E4B59A6C166EDF56BF096E6B205F785E564DF3F4F3`.
-- [ ] v456 discard verification still FAILS source acceptance: its active-round handler creates/adopts a missing round ID, then calls `ChainsRounds.remove(cloudIdRef.current)` without await/return/result handling, immediately clears local state, and exits. `ChainsRounds.remove` starts `Promise.all(jobs)` but returns `Promise.race([settle, timeout])`; the eight-second timeout can resolve `true` before `settle`. This does not satisfy ROUND_QUEUE #2's real success/failure requirement.
-- [ ] The newest [CLAUDE] company log's v476/#43-closed conclusion is superseded by current immutable evidence: explicit `window.CHAINS_VERSION` is v456, while its `v476` text match came from an encoded payload. Do not close #43 from the callee-only check.
-- [ ] `chains-app` issue #3 now records authenticated cross-user `playRounds` write permission. No repeat live probe or rules change is allowed; owner rules backup plus Emulator/non-production allow/deny and round-lifecycle testing are required before outside testers.
-- [ ] QA must independently complete the destructive round walkthrough only with a newly created, backup-safe test record. This shift did not delete a round because the visible app contained existing member records and no `_trash/<timestamp>` backup had been made.
-- [ ] Phone-sized Go Throw showed three identical LIVE NOW cards and nine ROUND IN PROGRESS controls (Tadpole Beach ×6, Otterburn ×2, Old Farm ×1). PM/Engineer must determine whether these are duplicate records or duplicate rendering before QA mutates anything.
+- [ ] Issue #10 blocks release acceptance: main says v475, production says v469, and current main `index.html` blob `25942ab735ba54b02feb4a4d04f88c0f1388631c` differs from `test.html` blob `b72986887d300a341f86d4e499341563df1aad21`.
+- [ ] Open security/account-boundary issues #1, #3, #4, #5, and #9 block outside testers until owner-controlled backups, non-production allow/deny evidence, rollback, and independent regression exist. Do not repeat their live probes.
+- [ ] Open functional issues #6, #7, and #8 need authoritative-source fixes and independent verification on the exact deployed build. A commit-message claim is not closure evidence.
+- [ ] Preserve confirmed-good behavior: betting remains removed; no deployed-file-only patch; no legacy `chains-fantasy /league` access.
 
 ## STATUS
 
-**AMBER.** Live v456 and the T15 feed are aligned on event `96415` and 116 MPO players, but v456 still fails the await/result contract, issue #3 blocks outside testers pending owner-controlled rules hardening, the visible Will session cannot edit its own T15 picks, duplicate open-round cards need triage, the roster is not yet settled, the per-event JSON artifact is absent, and the official first-player tee time/pick-lock proof remains open.
+**RED.** The event begins in four days, but the current field artifact identifies no event and contains zero players despite PDGA event 96416 listing 112 MPO. Production's explicit v469 marker also conflicts with main's v475 deploy title and stage/live blobs diverge. Security/account-boundary blockers remain open. Picks-open UI alone is not sufficient launch proof.
 
 ## SAFETY
 
-No app, Firebase, picks, rounds, users, league standings, or legacy `chains-fantasy /league` data was changed by this readiness pass.
+[GPT] changed no app, Design project, Firebase node/rule, user, pick, score, round, deployment, deletion, backup, or legacy `chains-fantasy /league` data in this readiness pass. Existing live security probes were not repeated.
