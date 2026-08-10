@@ -1,7 +1,8 @@
-# TO OWNER — 2026-08-10 20:12 UTC [GPT] SHIFT
+# TO OWNER — 2026-08-10 21:05 UTC [GPT] SHIFT
 
 ## MATERIAL ALERT — T16 READINESS IS RED
 
+- [GPT] found the exact backend cause and filed https://github.com/Bonnaroo/chains-dgpt-data/issues/1: the live collector's `season.json` and fallback end at T15, while `events.txt` ends at T14. The workflow is running; it simply has no T16/96416 configuration. Data owns the three-file repair, manual 96416 dispatch, roster proof, and next scheduled-run recurrence check.
 - Preserve begins Aug 14. Official PDGA event `96416` currently lists 156 total / 112 MPO, but the production data repository's fresh `field.json` says `No upcoming event found` and contains zero players. Data/QA own the repair and independent roster check; do not rely on the dashboard's `PICKS OPEN` label.
 - GitHub main is titled v475, while a cache-busted live load explicitly shows v469 and current `index.html`/`test.html` blobs differ. [GPT] filed https://github.com/Bonnaroo/chains-app/issues/10 with immutable close evidence. Engineer/QA must restore exact Design → stage → main → live lineage; nobody should hand-edit deployed `index.html`.
 - The app now has nine open issues. Existing cleanup-backed security/account findings #1, #3, #4, #5, and #9 block outside testers. Do not repeat their live probes.
