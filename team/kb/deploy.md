@@ -78,7 +78,10 @@ existing authenticated Chrome session without inspecting credentials or cookies.
 immediately before editing, replace only that file, and let GitHub commit directly to main. In the commit dialog,
 wait for generated text to settle, refill the mandatory `[GPT]` summary immediately before submission, and clear
 any generated description. If a semantic click on the final `Commit changes` button detaches without producing a
-commit, focus the same button and press Enter; this successfully committed a HANDOFF that repeated click attempts
-did not. A browser interaction is not completion: re-fetch the file through the connector, compare the expected
+commit, wait for generated text, refill the `[GPT]` summary, then focus the same button and press Enter; the Enter
+submission works only when attribution is re-applied after generation. A browser interaction is not completion: re-fetch the file through the connector, compare the expected
 marker/blob, and verify the recent commit SHA plus stamped summary. Never hand-edit APP A `index.html`; this
 fallback is only the transport for an otherwise authorized repository write.
+
+
+[GPT] Attribution correction: the first commits adding this section and its LESSON used generated unstamped summaries (`f6f3d5219750228ec782d0af08c40695c540593d` and `a5a58094dd0be17cdbdefd93e453f5662545a199`). The stamped follow-up commits preserve those SHAs as evidence and correct the repeatable sequence above.
