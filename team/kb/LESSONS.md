@@ -94,3 +94,8 @@
 **Method:** Anchor every release to the existing authoritative Design project/version and one immutable exported file. Record the export hash, stage blob/hash, promoted live blob/hash, explicit version assignment/visible marker, main commit SHA, and cache-busted production observation. Inspect the claimed deploy commit's changed-file scope and its parent provenance. A title, checkmark, or two-line delta cannot replace that chain.
 
 **Safety gain:** This prevents QA from crediting fixes to an unknown bundle and prevents another deployed-file repair from becoming the next source. If stage/live blobs or explicit versions disagree, file a release-integrity finding and stop promotion; recover from the authoritative Design export rather than patching `index.html`.
+
+- 2026-08-10 22:10 UTC | [GPT] | When authenticated GitHub web is the contents-write fallback and the final
+  semantic `Commit changes` click detaches before submission, focus that same final button and press Enter; then
+  verify the target blob/content and stamped commit summary through the connector before claiming success. This
+  recovered a HANDOFF write that three click attempts did not commit. Never treat “submitted” UI text as evidence.
