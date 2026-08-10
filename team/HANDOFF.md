@@ -1,98 +1,90 @@
-# HANDOFF — 2026-08-10 20:10 UTC — [GPT] CEO
+# HANDOFF — 2026-08-10 21:01 UTC — [GPT] CEO
 
 ## LAST WORKER / ROLE / UTC / TASK
 
-- `[GPT]` / CEO / 2026-08-10 20:10 UTC / replace expired T15 state with current T16 readiness, file release-integrity issue #10, and route nine open app issues.
-- Lock claim: `ACTIVE 2026-08-10T19:53:05Z GPT/dispatcher clock-in`; exact claim was re-fetched after 15 seconds.
-- Lock commit: `ba42b3d2e86a9e9794ac297591d76c1ef7d900b4`.
-- Board commit: `8d2fd37aabe0e8fc379a5abaaf2dc6c895de4c3c`.
-- Event-readiness commit: `4220dcc44e8f888011192e25d2a7e3269c4c8c4b`.
-- Owner-alert commit: `0d6a4c6e311f252949ad63cfa7d87ba7aaa39a14`.
-- CEO-log commit: `f864031f68994bbc928c133a54299dc664a0a07e`.
-- Deploy-playbook commit: `ba69a8b6afa80b01ac97d659ef398b9cceaedfaa`.
-- Lessons commit: `e4b64f4693d8e7278ce4262bb4c641d63debb8f7`.
+- `[GPT]` / CEO / 2026-08-10 21:01 UTC / establish the deterministic T16 collector failure, file the data-repo blocker, and sharpen T-C08.
+- Lock claim: `ACTIVE 2026-08-10T20:54:05Z GPT/dispatcher clock-in`; exact claim was re-fetched after 15 seconds.
+- Lock commit: `6f8cfe767dacb1a4980380f19b29a78155eb413a`.
+- Data issue: https://github.com/Bonnaroo/chains-dgpt-data/issues/1.
+- Board commit: `bae4a7f71150f895487de6cf44792cb7be1dd76f`.
+- Event-readiness commit: `1ef195d0dc16bef926b3a045e4fb0eca24d493b7`.
+- Owner-update commit: `7f06a9ca2cfec3c631a96dce1ffe0efc20b1108a`.
+- CEO-log commit: `ce2ef8556171a4d7957f9100715f392512e88a74`.
 
 ## WHAT CHANGED
 
-- [GPT] filed `Bonnaroo/chains-app` issue #10:
-  https://github.com/Bonnaroo/chains-app/issues/10. Main HEAD
-  `7c1f1125f1a24bdec94de43f6443d3c9cf286b28` is titled v475, but cache-busted production explicitly renders
-  `FANTASY DGPT V469`. Current main blobs also diverge: `index.html`
-  `25942ab735ba54b02feb4a4d04f88c0f1388631c` vs `test.html`
-  `b72986887d300a341f86d4e499341563df1aad21`.
-- Added provenance to #10 from office commit `94e89207e7020fa532388d84016b8dc3d43c9536`: its engineer log records v474
-  as a byte-swapped rebuild of deployed v473 when Design did not produce a compiled export. v475 then changed only
-  `index.html` by +2/-2. Current protocol forbids another deployed-file repair; recovery must start from the
-  existing authoritative Claude Design project.
-- Replaced stale T15 readiness with T16 DGPT Doubles Championship at The Preserve. BOARD T-C08 owns the empty field
-  recovery, T-C09 owns release lineage, and T-C10 routes the nine-open-issue launch queue.
-- Moved `EVENT_READINESS.md` to RED. Official PDGA event `96416` is Aug 14–16 in Clearwater with 156 total /
-  112 MPO, but current `chains-dgpt-data/data/field.json` identifies no event and contains zero players.
-- Updated `TO_OWNER.md`: outside testers remain blocked by cleanup-backed security/account issues #1, #3, #4, #5,
-  and #9. Owner action is current rules/data-scope backups plus an Emulator/non-production allow-deny and rollback
-  path; no credential exchange is requested.
-- Added the reusable immutable-provenance method to `kb/deploy.md` and `kb/LESSONS.md`.
+- [GPT] filed `Bonnaroo/chains-dgpt-data` issue #1 with the exact cause of T-C08's empty field. The scheduled
+  workflow is healthy enough to run and commit, but the source lists do not include T16.
+- `collect_field.py` blob `7b939337e3ca08e605dc4bac15d23fe072025178` reads `data/season.json`, whose blob
+  `dfbe589a9293bf35f2554c227e8635a4393d01d9` stops at T15 / event 96415. The collector's fallback list also
+  stops at T15, so fallback cannot recover.
+- `events.txt` blob `2020519f4df1f2924b7915f63a43780bdbccebd8` stops at T14 / 96414. The workflow's
+  per-event loop therefore omits both T15 and T16; `data/events/96416-MPO.json` remains absent.
+- The issue gives a bounded three-file repair: add T16/96416 to `season.json` and fallback, add 96415+96416 to
+  `events.txt`, document doubles-team mapping, manually dispatch 96416, then require the next genuine schedule
+  run to preserve the repair.
+- Updated BOARD T-C08, EVENT_READINESS, TO_OWNER, and the CEO log with the root cause, current blobs, exact issue,
+  remaining gates, and owners. Readiness remains RED; no build or data artifact was treated as repaired.
 
 ## VERIFICATION / EVIDENCE
 
-- PASS: cache-busted https://bonnaroo.github.io/chains-app/?cb=202608101958#dashboard loaded current league
-  standings, Preserve Championship Aug 14–16, and `PICKS OPEN`; the explicit visible version is v469.
-- PASS: app main HEAD is `7c1f1125f1a24bdec94de43f6443d3c9cf286b28`; its commit page shows one changed file
-  (`index.html`, +2/-2) and 3/3 green checks.
-- FAIL: main/live release identity. The v475 title, visible v469 marker, and unequal index/test blobs cannot all
-  describe one promoted immutable Design artifact. Issue #10 contains the exact close evidence.
-- PASS: PDGA https://www.pdga.com/tour/event/96416 listed 156 total / 112 MPO, updated
-  `10-Aug-2026 07:02:02 CDT`. DGPT
-  https://www.dgpt.com/event/2026-dgpt-doubles-championship-at-the-preserve/ confirms two best-shot rounds plus
-  alternate-shot round three.
-- FAIL: `chains-dgpt-data/data/field.json` blob `c1d121ae8a676dee42d6e4c92f3a38cf16bf463f`, updated
-  `2026-08-10T19:14:24.067382+00:00`, has null event IDs, note `No upcoming event found.`, and zero players.
-- PASS: connector re-fetch verified BOARD blob `0280f91c6665d2c214b93f08e37079100436e80e`, EVENT_READINESS blob
-  `bb4fbd7e1db17fdbb3ef9a40f3cb6e1dcc0b2b5a`, TO_OWNER blob `5981c11a4c6bab8b505f4b35e44bc102b52e90bc`,
-  and CEO log blob `faeb6c8d92ee9089f0dbf97e622d8c11ef2c36ae`.
+- PASS: shared lock claim remained exact after the mandatory 15-second re-fetch.
+- PASS: `chains-dgpt-data` scheduled commit `a8d526abefe1c9ff1e97f5cc58cb682670fa3714` was created at
+  2026-08-10 20:02:38 UTC, proving the workflow is firing.
+- FAIL: its fresh `data/field.json` blob `0eb6c6b3298382bba1083da2dc571c980bd6ff82`, updated
+  `2026-08-10T20:02:37.630389+00:00`, still has null event IDs, note `No upcoming event found.`, and zero
+  players. `data/events/96416-MPO.json` returned 404.
+- PASS: source inspection establishes every missing configuration link: season ends T15, fallback ends T15, and
+  per-event input ends T14. `.github/workflows/collect.yml` explicitly runs `events.txt` then
+  `collect_field.py`; the failure is not an inferred cron outage.
+- PASS: connector re-fetch verified data issue #1 is open with the [GPT] evidence and closing conditions.
+- PASS: connector re-fetch verified BOARD blob `7ba81e71089110fcb406f2dc944aefb8e620b66d`, EVENT_READINESS blob
+  `4489b3da7404c1f05bdf5101977a7fc0fb47de86`, TO_OWNER blob
+  `ead8cedb8849025fcd78e0b532ea71b98160d1f4`, and CEO-log blob
+  `93f242b601d380d0638ae7e4dfdaa2aad62a6958`.
+- OPEN: app main remains `7c1f1125f1a24bdec94de43f6443d3c9cf286b28`; release-integrity issue #10 remains
+  unresolved from the prior [GPT] shift. This shift did not re-run that already-current evidence.
 
 ## DATA / SAFETY
 
-- [GPT] changed `chains-app` issue #10 and shared-office Markdown only.
-- No app source, Design project, Firebase node/rule, user, pick, score, round, workflow, deployment, deletion,
-  backup, or legacy `chains-fantasy /league` data changed.
-- [GPT] did not repeat any live security write behind issues #1/#3/#4/#5/#9. Their cleanup-backed evidence remains
-  shared memory until a relevant rules/build change requires owner-authorized non-production regression.
-- No `_trash/<timestamp>` backup was created because no Firebase mutation or deletion occurred.
-- Betting remains removed; no deployed-file-only patch was made.
+- [GPT] changed `chains-dgpt-data` issue #1 and shared-office Markdown only.
+- No app, Claude Design project, workflow, data file, Firebase node/rule, user, pick, score, round, deployment,
+  deletion, backup, or legacy `chains-fantasy /league` data changed.
+- No live security probe was repeated. No `_trash/<timestamp>` backup was created because no Firebase mutation or
+  deletion occurred.
+- Betting remains removed; no `index.html` edit or deploy occurred.
 
 ## REUSABLE METHOD FOR THE OTHER AI
 
-- [GPT] reused the shared exact-build-identity method and [CLAUDE]'s/no-reprobe shared security findings instead of
-  rediscovering them. Prior verified findings were treated as memory; only state made stale by later commits was
-  re-checked.
-- [GPT] improved release acceptance: inspect the claimed deploy commit's changed-file scope and its parent
-  provenance in addition to version text and hashes. Reject a deployed-bundle descendant even if its commit title
-  and checks are green. Require one authoritative Design export, export hash, stage blob/hash, live blob/hash,
-  explicit version marker, main SHA, and cache-busted production observation.
-- The repeatable method is recorded in `kb/deploy.md` commit `ba69a8b6afa80b01ac97d659ef398b9cceaedfaa`
-  and `kb/LESSONS.md` commit `e4b64f4693d8e7278ce4262bb4c641d63debb8f7`.
+- [GPT] reused the existing `kb/testing.md` collector/artifact/recurrence method: check the active PDGA ID in the
+  season source and fallback, check the per-event input, inspect the generated artifacts, and distinguish a firing
+  schedule from a complete configuration.
+- This method exposed a green-looking repeated workflow that could never discover T16. No new lesson/playbook entry
+  was added because the existing [GPT] playbook already prescribes this exact source → artifact → recurrence trace.
+- Prior [GPT] release-provenance and cross-AI no-reprobe methods remain in force; nothing in this shift contradicted
+  them.
 
 ## WHAT'S NEXT AND WHO OWNS IT
 
-1. **Data + QA — T-C08 (CRITICAL):** repair current-event discovery for PDGA `96416`, publish the current MPO
-   roster with exact blob/hash/count/timestamp, document doubles-team mapping, and independently compare to PDGA.
-2. **Engineer + independent QA — T-C09 / issue #10:** recover from the existing authoritative Design project,
-   stage the exact export, and prove Design/stage/main/live identity. Do not patch or byte-swap `index.html`.
-3. **Owner + Security — T-C10 security slice:** date-back-up current rules/approved scopes and authorize
-   Emulator/non-production allow-deny plus rollback for #1/#3/#4/#5/#9 before outside testers.
-4. **PM + Engineer + QA — T-C10 functional slice:** independently verify #6 on the exact deployed build; fix and
-   verify #7 dashboard membership and #8 2/2 sign-out hook crash in the authoritative source.
-5. **QA:** after the feed and lineage gates pass, verify live Registered/Picks, regular-member own-picks-only,
-   commissioner behavior, and official first-player pick-lock proof before moving readiness from RED.
+1. **Data — T-C08 / data issue #1:** add T16/96416 to `data/season.json` and the collector fallback; add 96415 and
+   96416 to `events.txt`; review doubles mapping; commit exact files/blobs.
+2. **Data:** manually dispatch `Collect DGPT Data` for event 96416 and verify both `data/field.json` and
+   `data/events/96416-MPO.json` at the generated commit.
+3. **QA:** independently reconcile PDGA-number sets/counts, then require the next genuine schedule run and verify
+   live Registered/Picks before moving EVENT_READINESS from RED.
+4. **Engineer + independent QA — issue #10:** restore authoritative Design → stage → main → live identity; never
+   patch or byte-swap deployed `index.html`.
+5. **Owner + Security:** current rules/data-scope backups and non-production allow-deny/rollback remain required
+   before outside testers for app issues #1/#3/#4/#5/#9.
 
 ## WATCH OUT FOR
 
-- The dashboard's `PICKS OPEN` label does not make a zero-player/no-event backend artifact launch-ready.
-- The event is doubles. Do not silently map a PDGA team row as an ordinary singles event.
-- A `Deploy vNNN` title or green checks are not proof of an authoritative Design build; v474/v475 provenance is
-  specifically suspect and issue #10 is the shared record.
-- Do not close issue #6 from its v469 commit message alone; independent QA must verify the exact deployed version.
-- Do not repeat live security probes or deploy rules without dated backups, offline/Emulator matrices, rollback,
-  and owner-controlled authorization.
+- The workflow is firing; another run without the three-file schedule repair will only republish the same empty
+  field. Do not call cron success a roster repair.
+- `events.txt` also omits T15. Add both 96415 and 96416 so per-event history is not silently incomplete.
+- Preserve is a doubles event. Prove the app's individual fantasy-player mapping instead of silently flattening team
+  rows.
+- The current shared primary-source record is 112 MPO / 156 total, but QA must re-fetch PDGA at repair time because
+  registration can still move.
+- Release issue #10 remains open; a repaired backend field does not make an unproven app artifact launch-ready.
 - Never touch legacy `chains-fantasy /league`; keep betting removed and protect confirmed-good behavior.
