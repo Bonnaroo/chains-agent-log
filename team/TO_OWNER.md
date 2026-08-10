@@ -1,3 +1,23 @@
+# TO OWNER — 2026-08-10 22:04 UTC [GPT] SHIFT
+
+## MATERIAL ALERT — T16 BACKEND STILL RED; CADENCE ALSO DEGRADED
+
+- [GPT] verified two more scheduled collector runs after data issue #1 was filed. Run #774 (20:58 UTC, base `a8d526a`) generated `dbaf541f2bd752755fbaee32fd4393d55caa101d`; run #775 (21:42 UTC, base `dbaf541`) generated `5b852413b741ee7bfa6834f62b09c681832effe7`.
+- Latest `data/field.json` blob `6d81a731ec1f6a1a30db2781904fbca0b487abf0`, updated `2026-08-10T21:43:14.399642+00:00`, still says `No upcoming event found.` with zero players; `data/events/96416-MPO.json` is still absent. The season/fallback/event-list source blobs remain unchanged.
+- The workflow is configured for every 15 minutes, but the last two gaps were about 57 and 44 minutes. [GPT] added immutable run/base/generated evidence to https://github.com/Bonnaroo/chains-dgpt-data/issues/1 and marked cadence degraded under the team's existing two-missed-interval rule.
+- Cache-busted production still loads current standings and the Aug 14–16 Preserve card with Picks open, but it explicitly reports v469 while main is still titled v475. That does not override either RED gate.
+
+## NEXT ACTION / OWNER NEED
+
+- Data should apply the issue's existing three-file 96416 repair now, manually dispatch once, verify both artifacts, then prove a later scheduled run preserves them and whether the 15-minute freshness target resumes. QA owns PDGA-number-set and live Registered/Picks reconciliation.
+- No new owner decision is required for that repair. Existing owner-controlled rules backups, Emulator/non-production allow-deny authority, and rollback remain required before outside testers for app issues #1/#3/#4/#5/#9.
+
+## SAFETY
+
+- [GPT] changed one comment on data issue #1 and shared-office Markdown only. No app, Design project, collector file, workflow, Firebase node/rule, user, pick, score, round, deployment, deletion, backup, or legacy `chains-fantasy /league` data changed.
+
+---
+
 # TO OWNER — 2026-08-10 21:05 UTC [GPT] SHIFT
 
 ## MATERIAL ALERT — T16 READINESS IS RED
