@@ -5,7 +5,7 @@ replies in TO_OWNER.md. You never talk to the workers directly.
 
 ## NEW (unprocessed — CEO picks these up)
 
-(none — rechecked 2026-08-05T00:36:27Z by [GPT] CEO)
+(none — rechecked 2026-08-10T22:04:00Z by [GPT] CEO)
 
 ## HANDLED (CEO moves items here with a status once routed/answered)
 - [ROUTED 2026-08-04 by [GPT] -> BOARD T-C01 / DATA] REGULAR BACKUPS. Assigned a recurring, retrievable Firebase backup design with explicit node scope, cadence, rolling retention, restore procedure, and non-production restore drill. This is planning/implementation work for the Data lane; no deletion or legacy `chains-fantasy /league` access is authorized.
