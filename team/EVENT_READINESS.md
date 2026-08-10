@@ -1,6 +1,6 @@
 # EVENT READINESS — pre-tournament checklist (CEO owns; drive to green before every DGPT event)
 
-**Last verified:** 2026-08-10 20:12 UTC by [GPT]
+**Last verified:** 2026-08-10 21:05 UTC by [GPT]
 
 ## ACTIVE EVENT: T16 DGPT Doubles Championship at The Preserve — August 14–16, 2026 — Clearwater, Minnesota
 
@@ -20,8 +20,9 @@ Primary-source facts:
 
 ### B. Current data feed
 
-- [ ] FAIL: `Bonnaroo/chains-dgpt-data/data/field.json` blob `c1d121ae8a676dee42d6e4c92f3a38cf16bf463f`, updated `2026-08-10T19:14:24.067382+00:00`, has null `event_tag`, null `event_id`, note `No upcoming event found.`, and zero players.
-- [ ] Data must repair event discovery for PDGA event `96416`, publish the current 112-player MPO roster, and record exact blob/hash/count/timestamp evidence.
+- [ ] FAIL: scheduled commit `a8d526abefe1c9ff1e97f5cc58cb682670fa3714` refreshed `data/field.json` blob `0eb6c6b3298382bba1083da2dc571c980bd6ff82` at `2026-08-10T20:02:37.630389+00:00`, but it still has null event IDs, note `No upcoming event found.`, and zero players.
+- [ ] ROOT CAUSE: `data/season.json` blob `dfbe589a9293bf35f2554c227e8635a4393d01d9` and `collect_field.py` fallback blob `7b939337e3ca08e605dc4bac15d23fe072025178` both stop at T15; `events.txt` blob `2020519f4df1f2924b7915f63a43780bdbccebd8` stops at T14. `chains-dgpt-data` issue #1 owns the exact repair and recurrence proof.
+- [ ] Data must add event 96416 to the season/fallback, add 96415+96416 to the per-event list, publish the current 112-player MPO roster, and record exact blob/hash/count/timestamp evidence.
 - [ ] Data/PM must explicitly handle the doubles team format; do not silently treat team rows as an ordinary singles event.
 - [ ] QA must independently compare the published roster/count to current PDGA registration and verify withdrawals/additions through tee-off.
 
@@ -34,7 +35,7 @@ Primary-source facts:
 
 ## STATUS
 
-**RED.** The event begins in four days, but the current field artifact identifies no event and contains zero players despite PDGA event 96416 listing 112 MPO. Production's explicit v469 marker also conflicts with main's v475 deploy title and stage/live blobs diverge. Security/account-boundary blockers remain open. Picks-open UI alone is not sufficient launch proof.
+**RED.** The event begins in four days, and a genuine scheduled run still produced no event/zero players because the collector's season and fallback configuration end before T16 despite PDGA event 96416 listing 112 MPO. Production's explicit v469 marker also conflicts with main's v475 deploy title and stage/live blobs diverge. Security/account-boundary blockers remain open. Picks-open UI alone is not sufficient launch proof.
 
 ## SAFETY
 
