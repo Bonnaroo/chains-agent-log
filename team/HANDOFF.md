@@ -1,12 +1,14 @@
-# HANDOFF — 2026-08-10 22:07 UTC — [GPT] CEO
+# HANDOFF — 2026-08-10 22:13 UTC — [GPT] CEO
 
 ## LAST WORKER / ROLE / UTC / TASK
 
-- `[GPT]` / CEO / 2026-08-10 22:07 UTC / escalate T-C08 with immutable scheduled-recurrence and cadence evidence after Data left issue #1 unchanged.
+- `[GPT]` / CEO / 2026-08-10 22:13 UTC / escalate T-C08 with immutable scheduled-recurrence and cadence evidence after Data left issue #1 unchanged.
 - Lock content: `ACTIVE 2026-08-10T21:55:26Z GPT/dispatcher clock-in`; exact claim was re-fetched after 15 seconds at blob `6846965c394e5d86c81a75683298c4c04d27ee51`.
 - Lock claim commit: `4178e3491461c8a8cadaaa229056dbd4e873921b`. GitHub auto-generated its unstamped summary despite the stamped lock content; later shift commits were visibly re-filled and verified as `[GPT]`.
 - Data issue evidence: https://github.com/Bonnaroo/chains-dgpt-data/issues/1#issuecomment-5246527498.
 - Board commits: `81c0e439b978d79540a810c13f0cea0cc1674fd1`, then timestamp correction `988330faebf36038a22f3e19c89a337cf3180a5a`.
+- Handoff initial commit: `de99e9302a833e9c4453ae18ec0f239027b30347`; GitHub replaced its summary with unstamped generated text. This stamped follow-up records the correction.
+- LESSONS initial commit: `a5a58094dd0be17cdbdefd93e453f5662545a199`; deploy-playbook initial commit: `f6f3d5219750228ec782d0af08c40695c540593d`. Both summaries were auto-replaced and are retained as disclosed attribution failures. Stamped correction commits are LESSONS `27067cf1b0fbaa91fca78d1ef36d5c309d5d22c9` and deploy playbook `36b295501f952b9493f3fd392f880c679c54c8ba`.
 - Event-readiness commit: `f52b93d9b25626d1e4804ce63ea190b4aa7bd5ab`.
 - Owner-update commit: `1bd8eedc4c08731403dfa74567f89d24f40d321b`.
 - Owner-desk recheck commit: `1603e7fa8aa5b8ec89785c9082f301349ff5cf3c`.
@@ -30,6 +32,7 @@
 - FAIL: configured 15-minute cadence. The observed 57- and 44-minute gaps exceed two intervals; issue #1 now requires Data to report whether freshness resumes after repair or route a backstop/alert.
 - PASS: cache-busted production https://bonnaroo.github.io/chains-app/?cb=202608102200#dashboard loaded current standings, the Preserve Championship Aug 14–16 card, and `Picks open`.
 - OPEN/FAIL: production still explicitly shows `Fantasy DGPT v469`; app main remains `7c1f1125f1a24bdec94de43f6443d3c9cf286b28`, titled v475. Release issue https://github.com/Bonnaroo/chains-app/issues/10 remains open and unchanged.
+- PASS: connector re-fetch verified the corrected LESSONS blob `623d4f4d78689be9909d46ab188b14108710af02` and deploy-playbook blob `0144174055075b47021ea25a10f7625e8b12d48b`, with stamped correction commit summaries.
 - PASS: connector re-fetch verified data issue comment `5246527498`, BOARD blob `67bb2e48febaca3bdf1a72b9152289afa4e79163`, EVENT_READINESS blob `6ad075af93b51609bc55b37d598381d16dd7cf8a`, TO_OWNER blob `3f202a791e42c495398b59385274699a6823b3c7`, FROM_OWNER blob `7f7462b8391ffed373210d112b903b0ae78857f2`, and CEO-log blob `27115955caca76f1aeb5efb9d1aad144bf9d5cc2`.
 
 ## DATA / SAFETY
@@ -42,7 +45,8 @@
 ## REUSABLE METHOD FOR THE OTHER AI
 
 - [GPT] reused the existing `kb/testing.md` source → artifact → genuine-schedule recurrence trace and the 2026-07-27 two-missed-interval cadence lesson.
-- This shift sharpened the existing issue with exact run/base/generated SHAs and separated operational run success from artifact correctness and configured freshness. No new LESSONS/playbook entry was added because both decisions are already explicitly documented.
+- This shift sharpened the existing issue with exact run/base/generated SHAs and separated operational run success from artifact correctness and configured freshness.
+- [GPT] added a new GitHub-write recovery lesson and deploy-playbook section after repeated modal-click detachment. The corrected method is: wait for generated commit text, refill `[GPT]`, submit the focused final button with Enter if clicking detaches, then connector-verify both blob and stamped summary.
 - Prior [GPT] release-provenance and shared no-reprobe methods remain in force; nothing this shift contradicted verified [CLAUDE] findings.
 
 ## WHAT'S NEXT AND WHO OWNS IT
