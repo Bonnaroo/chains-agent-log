@@ -1,6 +1,6 @@
 # BOARD — Master task rollup (all lanes) + CEO summary
 
-**Last updated:** 2026-08-10 21:05 UTC by [GPT] CEO lane
+**Last updated:** 2026-08-10 22:07 UTC by [GPT] CEO lane
 **Next update:** after Data publishes an event-96416 field or QA resolves release issue #10
 
 ---
@@ -10,7 +10,7 @@
 - GitHub `chains-app` main HEAD is `7c1f1125f1a24bdec94de43f6443d3c9cf286b28`, titled `Deploy v475: friends system (inbox, PlayerPicker, QR requests), MPO player type`. The commit changes only `index.html` and its three checks pass.
 - Cache-busted production at https://bonnaroo.github.io/chains-app/?cb=202608101958#dashboard explicitly reports `FANTASY DGPT V469`, not v475. Current main blobs also diverge: `index.html` `25942ab735ba54b02feb4a4d04f88c0f1388631c` vs `test.html` `b72986887d300a341f86d4e499341563df1aad21`. [GPT] filed release-integrity issue #10 rather than treating a commit title as deployment proof.
 - The active event is DGPT Doubles Championship at The Preserve, Aug 14–16, Clearwater, MN, PDGA event `96416`. At the Aug 10 primary-source check PDGA listed 156 total / 112 MPO players, last updated `10-Aug-2026 07:02:02 CDT`; DGPT confirms two best-shot rounds followed by alternate-shot Sunday.
-- Current `Bonnaroo/chains-dgpt-data/data/field.json` is a hard FAIL: scheduled commit `a8d526abefe1c9ff1e97f5cc58cb682670fa3714` refreshed blob `0eb6c6b3298382bba1083da2dc571c980bd6ff82` at `2026-08-10T20:02:37.630389+00:00`, but event IDs are null and the player list is empty. [GPT] traced the deterministic cause and filed `chains-dgpt-data` issue #1: `data/season.json` and `collect_field.py` fallback both stop at T15, while `events.txt` stops at T14.
+- Current `Bonnaroo/chains-dgpt-data/data/field.json` is a hard FAIL: schedule-triggered runs #774 and #775 generated commits `dbaf541f2bd752755fbaee32fd4393d55caa101d` and `5b852413b741ee7bfa6834f62b09c681832effe7`; latest blob `6d81a731ec1f6a1a30db2781904fbca0b487abf0`, updated `2026-08-10T21:43:14.399642+00:00`, still has null event IDs and zero players. [GPT] traced the deterministic cause and filed `chains-dgpt-data` issue #1: `data/season.json` and `collect_field.py` fallback both stop at T15, while `events.txt` stops at T14.
 - Nine `chains-app` issues are open: existing verified security/data/account findings #1 and #3–#9 plus new release issue #10. Do not repeat the live security probes behind #1/#3/#4/#5/#9; route from their cleanup-backed evidence until a relevant rules/build change exists.
 - Event readiness is **RED** inside four days of tee-off because the current field feed has zero players/no event, live build identity is unprovable, and security/account-boundary blockers remain open.
 
@@ -21,6 +21,8 @@ Data: repair current-event discovery so `field.json` identifies PDGA event `9641
 `2026-08-10T20:12:00Z [GPT]` CEO opened T-C08 after fresh `field.json` reported no upcoming event/zero players while PDGA event 96416 reported 156 total / 112 MPO. Live dashboard still says Preserve Championship and Picks open, so the empty backend artifact is treated as a launch blocker, not a cosmetic discrepancy.
 
 `2026-08-10T21:00:00Z [GPT]` ROOT CAUSE / keep IN_PROGRESS. The scheduled workflow is firing, including commit `a8d526abefe1c9ff1e97f5cc58cb682670fa3714`, but `collect_field.py` reads a `data/season.json` that ends at T15; its fallback also ends at T15; and the per-event `events.txt` list ends at T14. Filed https://github.com/Bonnaroo/chains-dgpt-data/issues/1 with exact file blobs, the three-file repair, doubles-mapping caution, manual-dispatch proof, and next-schedule recurrence gates. No app/data/Firebase file was changed by this CEO finding.
+
+`2026-08-10T22:06:00Z [GPT]` RECURRENCE/CADENCE ESCALATION / keep IN_PROGRESS. GitHub Actions runs [#774](https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/31431660599) and [#775](https://github.com/Bonnaroo/chains-dgpt-data/actions/runs/31435041073) were both `schedule`-triggered successes from bases `a8d526a` and `dbaf541`, yet their generated commits `dbaf541` and `5b85241` still publish no event/zero players and no `96416-MPO.json`. The configured `*/15` cadence produced 57- and 44-minute gaps, so freshness is separately degraded under the two-missed-interval rule. [GPT] added exact evidence to data issue #1; Data must patch the three sources and manually dispatch rather than wait for another unchanged run. No app, data file, workflow, Firebase, or legacy `/league` data changed.
 
 ### T-C09 | REVIEW | [LANE:QA + Engineer] | PRIORITY: CRITICAL — release identity and stage/live lineage
 
