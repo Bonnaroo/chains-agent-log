@@ -1,19 +1,36 @@
 # BOARD — Master task rollup (all lanes) + CEO summary
 
-**Last updated:** 2026-08-05 03:35 UTC by [GPT] CEO lane
-**Next update:** after Owner/Security route T-C05 or Data/QA close a T15 readiness gate
+**Last updated:** 2026-08-10 20:12 UTC by [GPT] CEO lane
+**Next update:** after Data publishes an event-96416 field or QA resolves release issue #10
 
 ---
 
-## [GPT] CURRENT ROLLUP — T15 DISCMANIA CHALLENGE
+## [GPT] CURRENT ROLLUP — T16 DGPT DOUBLES CHAMPIONSHIP AT THE PRESERVE
 
-- Live App A is `v456`, commit `d48d0b83c7bd91b7a131f6aa2796e33f06c12c1d` (2026-08-05 02:37 UTC). [GPT] opened the cache-busted production URL at 03:37 UTC and observed `Fantasy DGPT v456`, current league data, T15 `Picks open`, and no initialization hang. `index.html` and `test.html` are byte-identical at blob `e0918ffe0cb133ce9aad91214387b0ac17532af8` / SHA-256 `C5AE3BE195536B2740F9B4E4B59A6C166EDF56BF096E6B205F785E564DF3F4F3`. The active-round Discard caller still exits without awaiting or branching on deletion, so #43 / ROUND_QUEUE #2 is not closed.
-- Next event is T15 Discmania Challenge, August 7–9, PDGA event `96415`.
-- Official PDGA state at the 2026-08-04 check: 168 total registrations, 116 MPO, last updated `04-Aug-2026 11:53:02 CDT`.
-- Current `chains-dgpt-data/data/field.json` blob `e79e2eace48faed4146e9e4f09b6d85d7143b231`: T15 / `96415`, 116 players, updated `2026-08-05T01:04:52.730048+00:00`; count and roster hash `46e7cea96c95` match the prior refresh. `stable_hours: 6.7`, so the field is not yet treated as settled.
-- Three open `chains-app` issues are routed below: T-C05 (critical legacy-fantasy rules incident; owner-controlled), T-C06 (league-code failure visibility; Design-source fix + QA), and T-C07 (authenticated cross-user `playRounds` writes; owner-controlled rules hardening).
-- `chains-dgpt-data/data/events/96415-MPO.json` is absent (404). This is now a concrete Data-lane readiness finding, not an inferred app failure.
-- Existing sections below are retained as Ledgestone-era history. Where they conflict with this current rollup, this section and `EVENT_READINESS.md` are authoritative.
+- GitHub `chains-app` main HEAD is `7c1f1125f1a24bdec94de43f6443d3c9cf286b28`, titled `Deploy v475: friends system (inbox, PlayerPicker, QR requests), MPO player type`. The commit changes only `index.html` and its three checks pass.
+- Cache-busted production at https://bonnaroo.github.io/chains-app/?cb=202608101958#dashboard explicitly reports `FANTASY DGPT V469`, not v475. Current main blobs also diverge: `index.html` `25942ab735ba54b02feb4a4d04f88c0f1388631c` vs `test.html` `b72986887d300a341f86d4e499341563df1aad21`. [GPT] filed release-integrity issue #10 rather than treating a commit title as deployment proof.
+- The active event is DGPT Doubles Championship at The Preserve, Aug 14–16, Clearwater, MN, PDGA event `96416`. At the Aug 10 primary-source check PDGA listed 156 total / 112 MPO players, last updated `10-Aug-2026 07:02:02 CDT`; DGPT confirms two best-shot rounds followed by alternate-shot Sunday.
+- Current `Bonnaroo/chains-dgpt-data/data/field.json` is a hard FAIL: updated `2026-08-10T19:14:24.067382+00:00`, but `event_tag` and `event_id` are null, note is `No upcoming event found.`, and `players` is empty. This contradicts current PDGA event 96416 and the live dashboard's Preserve card.
+- Nine `chains-app` issues are open: existing verified security/data/account findings #1 and #3–#9 plus new release issue #10. Do not repeat the live security probes behind #1/#3/#4/#5/#9; route from their cleanup-backed evidence until a relevant rules/build change exists.
+- Event readiness is **RED** inside four days of tee-off because the current field feed has zero players/no event, live build identity is unprovable, and security/account-boundary blockers remain open.
+
+### T-C08 | IN_PROGRESS | [LANE:DATA + QA] | PRIORITY: CRITICAL — T16 Preserve readiness recovery
+
+Data: repair current-event discovery so `field.json` identifies PDGA event `96416` and publishes the official current MPO roster; document how the new doubles/team format maps into the existing fantasy-player model before any destructive or schema-changing operation. QA: independently compare the artifact to PDGA's current 112 MPO list and verify cache-busted live Registered/Picks behavior. Done only when exact event ID, timestamps, counts, hashes, source URLs, and pass/fail evidence move `EVENT_READINESS.md` from RED. No legacy `chains-fantasy /league` access is authorized.
+
+`2026-08-10T20:12:00Z [GPT]` CEO opened T-C08 after fresh `field.json` reported no upcoming event/zero players while PDGA event 96416 reported 156 total / 112 MPO. Live dashboard still says Preserve Championship and Picks open, so the empty backend artifact is treated as a launch blocker, not a cosmetic discrepancy.
+
+### T-C09 | REVIEW | [LANE:QA + Engineer] | PRIORITY: CRITICAL — release identity and stage/live lineage
+
+Issue #10 records the mismatch between main commit title v475, visible production v469, and unequal current `index.html`/`test.html` blobs. Engineer must use the existing authoritative Claude Design project, export/stage without hand-editing `index.html`, and record the Design version plus immutable stage hash. Independent QA must prove stage/main/live byte identity and an explicit visible/version marker on a cache-busted load before issue #10 can close.
+
+`2026-08-10T20:05:00Z [GPT]` Filed https://github.com/Bonnaroo/chains-app/issues/10 with the exact main SHA, blobs, cache-busted URL, impact, closing evidence, and safety scope. No app source, deployment, Design project, Firebase node, or user data changed.
+
+### T-C10 | ASSIGNED | [LANE:PM + Engineer + Security + QA] | PRIORITY: CRITICAL — route the nine-issue launch queue
+
+- Owner/Security: #1, #3, #4, #5, and #9 require dated current rules/data-scope backups, offline/Emulator allow-deny matrices, rollback evidence, and independent regression before outside testers. Do not repeat prior live probes.
+- Engineer/QA: #6 (Go Throw owner UID sync/delete), #7 (dashboard league-membership mismatch), and #8 (2/2 sign-out hook crash) need authoritative-source fixes plus independent live verification. A v469 commit message claims #6 fixed, but the issue stays open until independent QA proves the deployed version.
+- QA/Engineer: #10 owns release identity. Issue #2 is closed and should not be reopened without contrary evidence.
 
 ### T-C01 | ASSIGNED | [LANE:DATA] | PRIORITY: HIGH — recurring retrievable backups
 
