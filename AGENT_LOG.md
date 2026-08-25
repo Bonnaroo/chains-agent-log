@@ -704,3 +704,12 @@ rounds from Firebase (backed up to _trash). Created this repo as persistent agen
 - Also today: doubles event T16 scored in league data; T17 Worlds field (97344, 208 players) published; season.json completed T16–T22; live_A/B/C crons now include Wednesdays.
 
   - Addendum: a stale client re-fired the autopick minutes after the revert (kyle p1 -> Richard Wysocki again). Left in place: kyle's legitimate 4h deadline (~08:29Z) would autopick the same top-rated player anyway. Kyle can swap via his own row while on the clock, or Will via Fix a pick. The stale-deadline race remains the root bug to fix.
+
+## 2026-08-25 — v471 deploy: open picks, autopick removed (Cowork/Claude)
+
+- **Owner report:** members (kadey, kyle, will) could not pick from their own apps; phantom picks kept appearing (e.g. Adam Hammes on cory's row). Members were texting picks instead of using the app.
+- **Root causes:** (1) on-the-clock turn gate hard-locked every row except one, so anyone off-turn concluded the app was broken; (2) the opportunistic 4h autopick computed deadlines from stale cached timestamps and repeatedly wrote picks nobody made.
+- **v471 changes (picks module):** turn gate removed — a member can ALWAYS edit their own row while picks are open (draft order stays displayed as guidance; commissioner corrects queue-jumpers via Fix a pick). Autopick fully disabled; empty slots at lock are filled by the commissioner.
+- **Deploy:** chains-app/index.html commit bd9c863e (v471), staged and functionally verified on test.html (as owner: exactly own two slots enabled, others read-only; unlock path intact).
+- **Rollback:** revert index.html to parent of bd9c863e.
+- **Note:** clients still running v469/v470 with the picks screen open can fire one last stale autopick until they reload; any phantom pick after everyone reloads would be a new bug.
