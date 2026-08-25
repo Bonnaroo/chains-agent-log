@@ -693,3 +693,12 @@ SENT betting/money strip prompt to Design; build in progress. | Next: OI-1.
 returns sparse holeScores as objects) via Design -> v401 (toArr/fixRound + error boundary, verified in
 preview). Found v401 RoundDetail regression; fix requested from Design (was building). Deleted 3 stale test
 rounds from Firebase (backed up to _trash). Created this repo as persistent agent memory. | Next: verify.
+
+## 2026-08-25 — v470 deploy: commissioner can draft own picks (Cowork/Claude)
+
+- **Bug:** `canEdit()` in the picks module short-circuited for the commissioner (`isCommish() -> unlockEdit` only), so the commissioner could NEVER make his own draft pick without "Fix a pick". Reported by Will after having to fix-a-pick his own T17 selection.
+- **Fix:** commish+unlock still returns true; otherwise the commissioner now falls through to the same member rules for his OWN row (turn order intact). `memberCanDraft` no longer excludes the commissioner.
+- **Deploy:** chains-app/index.html commit 9c883194 (v470), staged + verified on test.html first (artifact blob-63 decompress check, live URL check, functional check in browser: dropdown/search works, fix-a-pick unlock+relock works, fresh-load lock state correct, no console errors).
+- **Rollback:** revert index.html to the parent of 9c883194.
+- **Incident during verification:** the 4h autopick clock fired prematurely for kyle (T17 p1 -> Richard Wysocki at 04:49:55Z) ~20 min after will's pick — a client computed the turn deadline from stale/absent p1At. Reverted kyle's p1 to null in Firebase. KNOWN BUG (pre-existing, #44 autopick): deadline can be computed from stale prior-pick timestamps; needs a guard (e.g. skip autopick when prev pick's p1At is missing/newer than cache, or double-read before write).
+- Also today: doubles event T16 scored in league data; T17 Worlds field (97344, 208 players) published; season.json completed T16–T22; live_A/B/C crons now include Wednesdays.
