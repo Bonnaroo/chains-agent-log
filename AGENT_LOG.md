@@ -702,3 +702,5 @@ rounds from Firebase (backed up to _trash). Created this repo as persistent agen
 - **Rollback:** revert index.html to the parent of 9c883194.
 - **Incident during verification:** the 4h autopick clock fired prematurely for kyle (T17 p1 -> Richard Wysocki at 04:49:55Z) ~20 min after will's pick — a client computed the turn deadline from stale/absent p1At. Reverted kyle's p1 to null in Firebase. KNOWN BUG (pre-existing, #44 autopick): deadline can be computed from stale prior-pick timestamps; needs a guard (e.g. skip autopick when prev pick's p1At is missing/newer than cache, or double-read before write).
 - Also today: doubles event T16 scored in league data; T17 Worlds field (97344, 208 players) published; season.json completed T16–T22; live_A/B/C crons now include Wednesdays.
+
+  - Addendum: a stale client re-fired the autopick minutes after the revert (kyle p1 -> Richard Wysocki again). Left in place: kyle's legitimate 4h deadline (~08:29Z) would autopick the same top-rated player anyway. Kyle can swap via his own row while on the clock, or Will via Fix a pick. The stale-deadline race remains the root bug to fix.
