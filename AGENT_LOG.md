@@ -713,3 +713,34 @@ rounds from Firebase (backed up to _trash). Created this repo as persistent agen
 - **Deploy:** chains-app/index.html commit bd9c863e (v471), staged and functionally verified on test.html (as owner: exactly own two slots enabled, others read-only; unlock path intact).
 - **Rollback:** revert index.html to parent of bd9c863e.
 - **Note:** clients still running v469/v470 with the picks screen open can fire one last stale autopick until they reload; any phantom pick after everyone reloads would be a new bug.
+
+## 2026-08-26 — T16 roster correction + v472 draft-order tiebreak (Cowork/Claude)
+
+**1. T16 (Preserve doubles) roster corrected — owner report.** Kyle's first doubles team was
+Wysocki/Hammes, not Anttila/Babcock. Swapped: kyle p1 = Ricky Wysocki / Adam Hammes (-36),
+cory p1 = Niklas Anttila / Gavin Babcock (-33). Second picks unchanged.
+
+**2. Data corruption found and repaired.** cory's T16 p1 had been overwritten with
+"Aaron Gossage" / s1 = +22 — a stale pre-v471 client wrote a T17-style autopick onto the
+*T16* key. Whole T16 record rewritten from the PDGA-verified rosters. This is more evidence
+the autopick (disabled in v471) was the phantom-pick source.
+
+New T16: gabe -61 (1st), shanna -61 (1st), kyle -60 (3rd), cory -55 (4th), will -47 (5th),
+kadey -43 (6th). Season after: cory 63, kyle 59, will 59, gabe 57, kadey 55, shanna 53.
+
+**3. v472 — draft-order tiebreak now uses season points.** `draftOrder()` broke ties on
+last-event place/total with `name.localeCompare`, so Gabe sorted ahead of Shanna despite
+leading her on season points. League rule: worst finish picks first, and among members tied
+in that event, FEWER season points picks earlier / the season leader picks last. Basis
+(previous event's finish order) is unchanged — only the tiebreak.
+
+- Deploy: chains-app/index.html commit a65dadb7 (v472), staged and verified on test.html.
+- T17 order before: kadey, will, kyle, cory, gabe, shanna -> after: kadey, will, cory, kyle, shanna, gabe.
+- Rollback: revert index.html to parent of a65dadb7.
+- NOTE for verification: raw.githubusercontent served a stale copy for ~2 min after the push and
+  falsely reported the marker missing. The git BLOB API (`/git/blobs/<sha>` with Accept:
+  application/vnd.github.raw) is the authoritative read — use it, not download_url, right after a push.
+
+**4. v471 confirmed working in the wild.** gabe, shanna and kyle all recorded T17 picks from
+their own devices (timestamps 08/26 04:35-04:38) with no commissioner involvement — the
+turn-lockout removal fixed the "app is broken, I'll text you my pick" problem.
