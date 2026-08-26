@@ -744,3 +744,42 @@ in that event, FEWER season points picks earlier / the season leader picks last.
 **4. v471 confirmed working in the wild.** gabe, shanna and kyle all recorded T17 picks from
 their own devices (timestamps 08/26 04:35-04:38) with no commissioner involvement — the
 turn-lockout removal fixed the "app is broken, I'll text you my pick" problem.
+
+## 2026-08-26 (later) — Live Chains restored during Worlds (Cowork/Claude)
+
+**Symptom:** during round 1 of Worlds, Live Chains showed "Between tournaments — LWS Open at
+Idlewild, 8 days". THREE independent faults stacked:
+
+1. **`collect_live.py` had the event hardcoded** (`DEFAULT_EVENT = "97339"`, June's European
+   Open), only overridable by a hand-made `live_event.txt`. Since June it re-fetched a finished
+   June tournament every run. Now derives the event from `data/season.json` by date window
+   (same source collect_field.py uses), with the manual override still honoured and an explicit
+   idle payload when nothing is being played.
+2. **Multi-pool events crashed both collectors.** PDGA returns `data` as a dict for a
+   single-pool event but a LIST of pool objects when the field is split across courses (Worlds:
+   pool A Black Locust, pool B Toboggan, 104 each). `rdata.get(...)` threw `'list' object has
+   no attribute 'get'` every cycle. Both `collect_live.py` and `poller.py` now flatten pools,
+   tag each player with `pool`, and expose a `pools` array (per-pool course + hole pars);
+   `holes` still holds pool A's layout for backward compatibility.
+3. **The Live screen doesn't read the GitHub file at all.** It reads Firebase `/live`
+   (`LIVE_JSON` in the live module), written by `poller.py` — an always-on loop that ran on a
+   personal machine and stopped on 2026-08-24, freezing `/live` on Discmania (96415, T15).
+   Because T15 is scored, the screen's `liveEvScored` branch rolled the view forward to the
+   next event: exactly the Idlewild countdown.
+
+**Fixes shipped:** `poller_once.py` added (single-cycle, schedule-driven, multi-pool aware) and
+`collect_live.py` now calls it each run inside a try/except, so the existing every-5-min
+workflow keeps Firebase `/live` fresh with no machine babysitting.
+
+**Also fixed:** `live_C.yml` had a stray `3,` prepended to line 1 from an earlier browser edit,
+making the whole file invalid YAML — it had been failing every run (workflow showed as a file
+path instead of "Live Scores C"). Repaired.
+
+**Known limitation:** GitHub Actions cron is best-effort; observed >1h between runs today
+despite `*/5`. For real-time coverage during an event, run the local poller (25s):
+`chains_poller.py` + `START_CHAINS_POLLER.bat` delivered to the owner's Downloads. The
+workflow remains the unattended fallback.
+
+**T16 rosters** re-verified against the owner's own numbers: gabe -61, shanna -61, cory -58,
+kyle -57, will -47, kadey -43. Season: cory 64, will 59, kyle 58, gabe 57, kadey 55, shanna 53.
+T17 draft order: kadey, will, kyle, cory, shanna, gabe.
