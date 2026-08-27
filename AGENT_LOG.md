@@ -783,3 +783,35 @@ workflow remains the unattended fallback.
 **T16 rosters** re-verified against the owner's own numbers: gabe -61, shanna -61, cory -58,
 kyle -57, will -47, kadey -43. Season: cory 64, will 59, kyle 58, gabe 57, kadey 55, shanna 53.
 T17 draft order: kadey, will, kyle, cory, shanna, gabe.
+
+## 2026-08-26 (Worlds, cont.) — v473 multi-course + round-count fixes (Cowork/Claude)
+
+Owner, on site at Worlds: "why does it say round two of two? This is a five round tournament.
+It's two different courses." All three complaints were real and distinct.
+
+**1. "Round 2 of 2" on a 5-round major.** `build_rounds_list()` skipped every round with
+`n > latest` ("real rounds only"), so `round_count` meant "rounds played so far". PDGA's
+`RoundsList` carries the whole schedule up front — for 97344 that's rounds 1,2,3,4 plus
+**Finals numbered 12** (`Finals: yes`, `FinalRound: 12`, `Rounds: 4` = 4 regulation + finals =
+5). Now returns every scheduled round with a `played` flag. Reads "Round 2 · 2 of 5".
+The app already tolerated a tab whose archive isn't written (loadPastRound catches -> "none").
+
+**2. Distances were wrong by a factor of 3.28.** PDGA reports these layouts with
+`Units: "Feet"`, but the poller emitted no per-hole `unit` and the app's parseLive defaults
+`unit: h.unit || "m"`, then converts m->ft. A 528 ft par 3 rendered as "528 m / 1732 ft".
+Poller now stamps each hole with the layout's unit (normalised to ft/m) plus per-pool
+`par_total` / `length_total`. Data-only fix — no deploy needed for this one.
+
+**3. Two courses, shown as one, unlabelled.** Worlds splits MPO across Toboggan MPO
+(par 66, 11,125 ft) and Black Locust MPO (par 65, 10,859 ft), and **the pools SWAP courses each
+round** (R1: A=Black Locust; R2: A=Toboggan). The Course tab rendered `holes` = pool A only,
+with no label — right for half the field, and silently a different course each round.
+v473 adds a course/pool selector: picks the pool's layout, shows its par + total length, and
+filters the field to that pool so hole difficulty and "who's on this hole" are per-course.
+
+- Deploy: chains-app/index.html commit eaa8ce0e (v473). Staged on test.html and verified by
+  toggling pools and reading rendered distances: Toboggan 528/686/892, Black Locust 463/774/400 —
+  both match the PDGA layout exactly. No console errors.
+- Rollback: revert index.html to parent of eaa8ce0e.
+- Note: switching pools repaints 18 illustrated hole cards and can block the renderer for a few
+  seconds on a slow machine; it is a repaint, not a hang (DOM and console stay clean).
