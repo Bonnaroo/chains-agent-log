@@ -844,3 +844,23 @@ before the round ended.
   `workflow_dispatch` via API returns 403 â€” trigger runs from the Actions page in the browser instead.
 - The Cowork cloud sandbox cannot push to Bonnaroo repos (git proxy 403) â€” pushes were done from the owner's
   PC via Desktop Commander (`Downloads\chains_fix\repo`).
+
+## 2026-08-29 (Worlds R4, later) — v474: per-course field filter actually filters (Cowork/Claude)
+
+**Bug found during functional verification of the feed fix:** with the feed live, BOTH pool tabs on the
+Course screen showed the same players (Toboggan hole 2 listed Black Locust players and vice versa).
+Root cause: v473 added the pool selector and filtered `field` by `p.pool`, but `parseLive()` never
+copied `pool` from the feed onto the player object, so `p.pool == null` matched everyone.
+
+**Fix (v474):** one line in the Course view module's `parseLive` — `pool: p.pool != null ? String(p.pool) : null`.
+Patched directly against the live v473 bundle (single compressed module re-encoded; every other byte identical).
+- chains-app `5d59d53` staged test.html, `3644341` promoted to index.html.
+- Verified: raw + Pages md5 `6e4e0bb4014c09d8239a307c07e0e2de`; decompressed module contains the line;
+  functional on test.html then production: Pool A tab shows only Toboggan cards, Pool B only Black Locust,
+  `ROUND 4 · 4 OF 5 · LIVE`, no console errors.
+- Rollback: revert index.html to `eaa8ce0ec3f4062b3c147a439e9c7fb6936706f0` (v473).
+
+Release record: {"version":"v474","commit":"364434108f4efc8681682a25df85a21bfa22728a","previousCommit":"eaa8ce0ec3f4062b3c147a439e9c7fb6936706f0","deployedAt":"2026-08-29T14:30:00Z","verified":true}
+
+**Lesson:** a hash-only navigation (typing `#course`) showed a stale "Round 3 · final" view for minutes
+after the feed went live; a real reload was correct. Rule 12 in OPERATING_RULES applies to verification too.
