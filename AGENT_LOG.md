@@ -815,3 +815,32 @@ filters the field to that pool so hole difficulty and "who's on this hole" are p
 - Rollback: revert index.html to parent of eaa8ce0e.
 - Note: switching pools repaints 18 illustrated hole cards and can block the renderer for a few
   seconds on a slow machine; it is a repaint, not a hang (DOM and console stay clean).
+
+## 2026-08-29 (Worlds R4 morning) — Live map stale: feed pipeline fixed, not the app (Cowork/Claude)
+
+**Symptom (owner, on site):** Live Chains Course tab not showing who's on what hole / pixel golfers.
+
+**Diagnosis:** the app (v473) was fine. Firebase `/live` — the ONLY source every Live view reads — was
+updating 1-2x per hour: the `*/5` cron workflows (live_A/B/C) are best-effort and GitHub was dropping most
+firings (Fri R3 had a 5-hour gap, 12:xx-17:xx UTC). The Railway "worker" (project bubbly-truth) that the
+brief describes as the 25s poller is not running. Side effect: R1/R2 archives (`/rounds/97344-r1,-r2`)
+froze mid-round (52 / 80 players incomplete) because the last cron before the round flipped was hours
+before the round ended.
+
+**Fixes:**
+1. Stopgap poller from the Cowork workspace (25s) from 13:15 UTC so R4 was covered immediately.
+2. `/rounds/97344-r1..r3` rewritten with final data (208/208 completed each).
+3. chains-dgpt-data `8705ffc` — `poller_loop.py` (long-running loop) + `poller_once.finalize_previous_round()`
+   (re-fetches the previous round's archive until every player is completed).
+4. chains-dgpt-data `1fadfeb` — `.github/workflows/live_poller.yml`: ONE job stays alive 5.5h, polls every
+   25s, re-dispatches itself, hourly cron heartbeat, concurrency group `live-poller` (never two at once).
+   Outside an event window it does one cycle and exits. Run #1 started 13:31:59 UTC. Also `collect.yml`
+   now rebases before push (the daily "Run failed: Collect DGPT Data" emails were push races with live_*).
+- Rollback: delete `.github/workflows/live_poller.yml` (the live_A/B/C crons still run) or revert `1fadfeb`.
+
+**Access notes (important for future runs):**
+- The `chains-agents` fine-grained PAT EXPIRED 2026-08-28 (GitHub email). Owner regenerated it today;
+  it needed **Workflows: read/write** added to push workflow files. It still lacks **Actions: write**, so
+  `workflow_dispatch` via API returns 403 — trigger runs from the Actions page in the browser instead.
+- The Cowork cloud sandbox cannot push to Bonnaroo repos (git proxy 403) — pushes were done from the owner's
+  PC via Desktop Commander (`Downloads\chains_fix\repo`).
