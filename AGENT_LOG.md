@@ -892,3 +892,25 @@ shows "No rounds yet" despite a real round scored in Sept (round data loss). Acc
 0 leagues with Sept PERMISSION_DENIED errors - the multi-league migration ("Phase 2") is unfinished.
 Will's scope decisions: drop the coin/betting economy; "Classic" is just the league; friends must be
 robust; Console minimal.
+
+## 2026-10-20 (later) — v486 season wrap, READMEs, accounts-DB fresh start (Cowork/Claude)
+
+- **v486 (chains-app):** when every event is scored and there is no next/live event, the dashboard's
+  next-event slot becomes SeasonWrapCard: champion with avatar, how the tiebreak was decided (points →
+  total strokes), top-3 podium with wins/top-3s, and an off-season note ("waiting for the 2027 schedule;
+  picks reopen 36 h before the first event") with a button to Standings. Live Chains' empty state now says
+  "2026 season complete". Modules 8 (dashboard), 47 (shell: passes onGoStandings), 64 (live).
+  Staged on test.html; verified engine condition (22/22, no next, Kyle/Cory tie → strokes) and a clean
+  console. Rollback: parent of this commit.
+- **READMEs** written for chains-app, chains-dgpt-data, chains-poller, chains-agent-log (what/why/how it
+  fits). chains-dgpt-assets and chains-site need the token extended to those repos.
+- **Accounts DB (chains-app-f38f8) fresh start, per Will:** deleted playRounds, roundsByPlayer,
+  sharedRounds, liveRounds, ledger (coins), _trash, diagnostics. Kept users (~20), usernames, friends,
+  friendCodes, friendRequests, joinCodes, leagueCodes, leagues, sharedBags, admins, config, bugReports.
+- **Rules fix (Will to publish):** admin `.read` on `users` and `leagues`; `ledger` write → false. Root
+  cause of the owner Console showing 0 accounts/leagues and the Sept PERMISSION_DENIED errors.
+- **Course scout:** existed as a Cowork scheduled task (runs #7–#14, Aug 1–3): SCOUT_PLAYBOOK.md,
+  COURSE_EXPANSION.md, data/courses/*.json; ~1,430 courses in 7 states, MI complete with hole data.
+  Stalled on JS-rendered directories (PDGA, DiscGolfScene), geocoder timeouts, and desktop-only runtime.
+  Off-season: rebuild as a weekly server job with a headless browser; UDisc is manual-only (terms).
+- **UDisc observation (public page data):** per-hole tee + basket GPS and doglegs are the gap vs our catalog.
