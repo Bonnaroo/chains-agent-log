@@ -914,3 +914,32 @@ robust; Console minimal.
   Stalled on JS-rendered directories (PDGA, DiscGolfScene), geocoder timeouts, and desktop-only runtime.
   Off-season: rebuild as a weekly server job with a headless browser; UDisc is manual-only (terms).
 - **UDisc observation (public page data):** per-hole tee + basket GPS and doglegs are the gap vs our catalog.
+
+## 2026-10-20 — Go Throw end-to-end run → v487
+
+**What was tested (live app, Will's Chrome, WILL-C):** solo singles round at Otterburn: course search →
+"Who's playing" → 18 holes with the real +/−/Par buttons → Finish → Verify & sign → Done → Recent
+Rounds → round detail (scorecard, verified chip, weather) → Save & exit → hard reload → Resume →
+tap-to-fix on the scorecard → Discard. Firebase `chains-app-f38f8` checked after each step
+(`playRounds`, `sharedRounds`, `roundsByPlayer/will`, `courseStats`, `liveRounds`).
+
+**Worked as designed:** hole guard (won't advance a hole with no explicit score), running totals,
+finish summary math (55 strokes = +1, 12/18 at par or better), signing (`verified.will` timestamp),
+weather capture, round detail, tap-to-fix, discard cleanup (all five nodes), badges.
+
+**Bugs found + fixed in v487 (module 45, `index.html` commit be1e75c):**
+1. `resumeRound()` dropped `cloudId` → resuming after an app reopen started a second cloud record;
+   the first stayed `status:open` forever and counted as a round. Now carries cloudId/format/
+   handicaps/weather/owner; local pointer saves them too.
+2. Home-screen Rounds/Best/stats counted open rounds (My Stats and badges already excluded them).
+3. Finish card "last time here you shot X — matched it" on a first-ever round: compared to itself.
+4. Course picker showed the Recent course twice.
+5. Removed the dev "Clean up · delete my solo test rounds" button from the home screen.
+
+Verified after deploy: resume keeps the same id (thru 2 → thru 3 on one record), in-progress round
+not counted, second round shows "last time here you shot +1 — new best here!". All test rounds
+deleted afterwards; Will's Go Throw history is empty for his real round today.
+
+**Not tested yet:** two-phone shared card, doubles/scramble/skins formats, guest players, invites,
+share-watch link, Firebase rules for non-owner participants. Note: `drafted_winner` badge is earned
+from fantasy data and shows with zero rounds — expected.
