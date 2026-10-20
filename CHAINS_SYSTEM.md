@@ -133,8 +133,13 @@ mirror while open (that's how friends see you playing now); `roundsByPlayer/{key
 | Commissioner couldn't make own picks | `canEdit` short-circuited for commish | Fixed v470 |
 | Draft tiebreak wrong (Gabe before Shanna) | ties broke **alphabetically** | Fixed v472: season points |
 | Green Mountain scored on round-3 totals; Powerball scored on round-4 totals | `event_final` set early: PDGA's `HighestCompletedRound` is unreliable (GMC reported 13, Powerball 5 before the last round teed off) and nobody had `status:"I"` yet; "never overwrite" then locked it | **Open** — needs scorer rewrite |
-| MVP Open and USDGC never scored | server scorer refuses while any player has `status:"I"` — PDGA leaves that flag on after rounds end, so it skips every event | **Open** — needs scorer rewrite |
-| Picks closed the evening before round 1 | deadline = `start_date 00:00Z` − 0 h | **Open** — use first tee time |
+| MVP Open and USDGC never scored | server scorer refuses while any player has `status:"I"` — PDGA leaves that flag on after rounds end, so it skips every event | Fixed: poller v2 scores from PDGA official results + `Completed`, lock-before-rescore |
+| Picks closed the evening before round 1 | deadline = `start_date 00:00Z` − 0 h | Fixed: poller v2 deadline = first round-1 tee time (event timezone) |
+| Go Throw: "Save & exit" then reopen app left an orphaned open round; stats showed 2 rounds | `resumeRound()` rebuilt the draft without `cloudId`, so ScoreBoard called `ChainsRounds.start()` again | Fixed v487: resume carries cloudId/format/handicaps/weather |
+| Go Throw: in-progress round counted in Rounds/Best/stats on the home screen | home `myRounds` didn't filter `status==="open"` (My Stats + badges already did) | Fixed v487 |
+| Go Throw: finish card said "last time here you shot X — matched it" on a first-ever round | `rounds` is refreshed with the just-finished round before the card renders, so it compared to itself | Fixed v487: excludes `result.cloudId` |
+| Go Throw: course picker listed the Recent course twice | Recent row + same course at the top of the catalog | Fixed v487 |
+| Go Throw: "Clean up · delete my solo test rounds" button on the home screen | dev-era leftover; deleted every solo round a user had | Removed v487 (function kept, button hidden) |
 | GitHub Actions cron late by up to an hour | best-effort scheduling | Known; long-running poller mitigates |
 | `live_C.yml` silently failing | stray characters from a browser edit → invalid YAML | Fixed |
 | Workflow files can't be edited via API | token lacks `workflow` scope | Regenerate token with Workflows scope |
@@ -179,7 +184,11 @@ observable patterns, not code; do not decompile their app or hit their private A
    → standings. Lets us test year-round and onboard beta testers.
 4. **Go Throw** — own-round scoring with friends. No PDGA dependency, so it's off-season work.
    Needs a real data model and a tested backup/restore before anything else (round data has
-   silently vanished before).
+   silently vanished before). **Status 2026-10-20 (v487):** solo end-to-end verified in a real
+   browser — course pick → 18 holes → finish → verify & sign → Done → round detail; tap-to-fix;
+   Save & exit → reload → resume on the same record; discard deletes `playRounds`, `sharedRounds`,
+   `roundsByPlayer`, `courseStats`, `liveRounds`. Not yet field-tested: multi-player cards (two
+   phones), doubles/scramble formats, guest players, invites, share-watch link.
 5. **Release path** — free tier first, validate with real leagues, then decide on paid.
 6. **Scope cuts (Will, 2026-10-20):** remove the coin/betting economy (flag off, then strip the code);
    "Classic" is just the league; two league types (snake draft; pick-your-own-team); Console stays
