@@ -1023,3 +1023,31 @@ bags are searchable by mold/plastic/color. Two copies of a mold are allowed when
 
 Verified on test.html (phone iframe) then promoted. Test data removed (Will's bag = Destroyer only;
 featured badge cleared for him to pick).
+
+## 2026-10-21 — v492–v496: bag shelf, Leagues tab, Console out, email prompt, shame badges, maps
+
+- **v492:** the disc list IS the bag count (manual count only until discs are listed); "On the shelf"
+  state (`disc.shelf`, `ChainsBag.setShelf/inBag/onShelf`) for discs you own but don't carry; Disc
+  counter follows the bag live. **Leagues** is a top-level nav tab (My Leagues hub). **Owner Console
+  removed** from the shipped app (nav + route). One-time **email prompt** (`EmailPrompt`, snoozes 7 d,
+  skips accounts with `profile.recoveryEmail`; writes `profile/notify.email`). Friends **Invite** sheet:
+  text message (`sms:`), email (`mailto:`), native share, copy link.
+- **Security:** proposed rules `firebase/chains-app-f38f8.rules.v2.json` (also in Downloads) — per-user
+  isolation using identity = `users/{uid}/profile.memberId | profile.username | users/{uid}.username`
+  (paths are keyed by member key, not auth uid). Not yet published — Will publishes rules. Live
+  write-probe was blocked by the Cowork classifier; audit done statically.
+- **v493:** badges round 3 — tier visuals (bronze flat → silver metal → gold shine → platinum/diamond
+  sparkles), **Hall of Shame** category (Snowman, Big number, Blow-up hole, Bogey train, Double
+  trouble, Ice cold, Ran out of gas, Early exit, Donated to the course), trophy points (1/2/3/5/8 per
+  tier), 62 badges.
+- **v494–v496 maps:** `ChainsGeo` (haversine, bearing, GPS mark, `courseGeo/{courseId}/holes/{n}`
+  tee/basket/doglegs, crowd-sourced); illustrated **HoleCard** (tee-sign style: course, big number,
+  ft, par, procedural fairway) with Mark tee / Mark basket and a live rangefinder; **satellite caddie
+  view** via MapLibre GL (lazy-loaded from unpkg) + **USGS public-domain imagery** (no token), map
+  bearing = tee→basket so the tee sits at the bottom, white/orange path, blue dot = you. Otterburn:
+  course facts (GPS pin, address, play order 2..9,1,10..18, hole notes, amenities) in `courses.json`;
+  **play-order sequencing** in the scoring screen (`course.play_order`); hole notes under the header;
+  catalog cache versioned (`CAT_VER`); Recent course rows merge the live catalog entry. Otterburn
+  tee/basket **seed** from Will's data pack → `data/geo/mi-otterburn.json` + Firebase `courseGeo`
+  (18 holes; measured 229 ft on hole 1 matches). Decision: no bulk UDisc scraping — seeds are
+  one-offs, in-app re-marking and OSM are the ongoing sources.
