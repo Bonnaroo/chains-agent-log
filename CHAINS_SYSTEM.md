@@ -140,6 +140,9 @@ mirror while open (that's how friends see you playing now); `roundsByPlayer/{key
 | Go Throw: finish card said "last time here you shot X — matched it" on a first-ever round | `rounds` is refreshed with the just-finished round before the card renders, so it compared to itself | Fixed v487: excludes `result.cloudId` |
 | Go Throw: course picker listed the Recent course twice | Recent row + same course at the top of the catalog | Fixed v487 |
 | Go Throw: "Clean up · delete my solo test rounds" button on the home screen | dev-era leftover; deleted every solo round a user had | Removed v487 (function kept, button hidden) |
+| Go Throw: editing an earlier hole "kept jumping" on the phone | old scoring screen stacked scorecard + editor + steppers; opening the editor / changing label widths moved everything under the thumb | Fixed v488: rebuilt scoring screen (fixed-size steppers, editor in a reserved slot, hole strip, `touch-action: manipulation`) |
+| Go Throw: "Round finished, but the cloud didn't update" toast on a saved round | `finalize()` removes the `liveRounds` mirror; when it was never written the rules refuse the no-op remove | Fixed v488: only reported if the mirror still exists |
+| Go Throw: Will's real round didn't count in stats | he tapped "Mark as practice"; practice rounds are excluded from stats/badges by design | Not a bug — un-flag on the round page |
 | GitHub Actions cron late by up to an hour | best-effort scheduling | Known; long-running poller mitigates |
 | `live_C.yml` silently failing | stray characters from a browser edit → invalid YAML | Fixed |
 | Workflow files can't be edited via API | token lacks `workflow` scope | Regenerate token with Workflows scope |
@@ -189,6 +192,17 @@ observable patterns, not code; do not decompile their app or hit their private A
    Save & exit → reload → resume on the same record; discard deletes `playRounds`, `sharedRounds`,
    `roundsByPlayer`, `courseStats`, `liveRounds`. Not yet field-tested: multi-player cards (two
    phones), doubles/scramble formats, guest players, invites, share-watch link.
+   **v488 (2026-10-21) — UDisc-class flow in Chains style** (Will's reference: 15 UDisc screenshots;
+   match features/flows, never their visual design/code): course picker ("Where are you playing?",
+   Recent/All) → Cardmates (Frequent/Recent/Name, rounds-played counts, Add new cardmate sheet:
+   friend / Chains username / guest) → scoring screen (hole header, fixed-size −/+ rows with "E (6)",
+   bottom hole strip, scorecard toggle with tap-to-fix in a reserved slot, round menu sheet) →
+   finish overview (score hero, player overview with birdie bars, Dist/Par scorecard, confetti, new
+   badge reveal). Badges (module 32) are now a tiered trophy case: 38 badges, Bronze→Platinum ladders,
+   `compute()` returns value/level/progress/next/tier; `diff()` tracks new unlocks via
+   `localStorage chains_badges_seen_v2:<me>`. Module 45 helpers: `GuestAddSheet`, `ScoreHero`,
+   `PlayerOverview`, `ScorecardTable`, `NewBadgesReveal`, `BadgeShelf`, `withLine`, `myDisplayName`.
+   Catalog has no GPS, so "Nearby" courses and layout maps are blocked on course data.
 5. **Release path** — free tier first, validate with real leagues, then decide on paid.
 6. **Scope cuts (Will, 2026-10-20):** remove the coin/betting economy (flag off, then strip the code);
    "Classic" is just the league; two league types (snake draft; pick-your-own-team); Console stays
