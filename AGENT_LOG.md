@@ -1240,3 +1240,22 @@ featured badge cleared for him to pick).
   (14 earned, Ace 0).
 - Will on scoring: tapping the number for par was fine — the pain was moving back and forth
   between holes. index.html v511.
+
+## 2026-10-21 — v512: rating pinned per course, leagues decluttered, weekly challenges, feed pruning
+
+- **Rating:** `course.rating = { ssa, ppt }` in courses.json overrides the length model; default
+  points-per-throw ×1.35 (casual short-course rounds read high vs UDisc). Otterburn pinned to
+  Will's feel: ssa 41.5, ppt 20 → −4 ≈ 830, E ≈ 750, −9 ≈ 930. Tiers: Touring pro line / Advanced
+  / Intermediate / Recreational / Weekend warrior (≥780) / Getting reps. CAT_VER v512.
+- **Leagues tab:** "Create a league" chooser shows Fantasy as "opens spring 2027" for members
+  (commissioner still gets the format builder); the empty "Fantasy leagues" card and the sample
+  leagues toggle are gone for members. Hero copy now describes course leagues.
+- **Weekly challenges (Home):** three per week built from your own rounds — "Play 2 rounds this
+  week", "Birdie hole N at <home course>" (a hole you've never birdied, seeded by week), "Beat your
+  average at <home course>" (or generic ones with no history). Progress from this week's rounds;
+  completions saved locally + `users/{uid}/challenges/{week}`; **Challenger** badge (weeks with a
+  challenge done: 1/4/12/30). `window.ChainsChallenges`.
+- **Data:** shared notifications feed prunes entries older than 45 days on load (≤15 per visit).
+- Health: Firebase (both projects) reads/writes verified during tests; GitHub Pages deploys
+  verified at every version; Railway poller still writing `/live` (last 13:39Z today).
+- index.html v512.
