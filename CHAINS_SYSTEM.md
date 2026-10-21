@@ -63,12 +63,38 @@ T20 96419 MVP Open, T21 97346 USDGC, T22 96421 Powerball Cup.
 
 ---
 
-### Firebase `chains-app-f38f8` — nodes (after the 2026-10-20 cleanup)
-`users/{uid}`, `usernames`, `friends`, `friendCodes`, `friendRequests`, `joinCodes`, `leagueCodes`,
-`leagues`, `sharedBags`, `admins`, `config` (feature flags), `bugReports`. Deleted 2026-10-20 (start
-fresh): `playRounds`, `liveRounds`, `roundsByPlayer`, `sharedRounds`, `ledger` (coins), `_trash`,
-`diagnostics`. ~20 accounts exist. The owner Console shows 0 users/leagues because the rules let each
-user read only their own record — fix: add an admin `.read` on `users` and `leagues`.
+### Firebase `chains-app-f38f8` — nodes (as of v502, 2026-10-21)
+Identity: Firebase auth uid (`wp1yw…`) + **member key** (`will`, = `users/{uid}/profile.memberId` or
+`.username`). Most nodes are keyed by member key, so rules map `auth.uid → key` via the profile.
+
+| Node | Written by | Read by | Purpose |
+|---|---|---|---|
+| `users/{uid}` (profile, bag, rounds index, hiddenRounds, badgeSnap) | owner | owner (+admins) | private account record |
+| `usernames/{key}` {uid,name,disc,badge} | owner (every login) | signed-in | public profile + featured badge |
+| `friends/{key}/{other}`, `friendRequests/{to}/{from}`, `friendCodes/{code}` | both sides per rules | signed-in | friends |
+| `playRounds/{id}` (owner-only mirror), `sharedRounds/{id}` (every phone on the card), `liveRounds/{id}` (open rounds), `roundsByPlayer/{key}/{id}`, `courseStats/{course}/{id}` | ChainsRounds (module 31) | signed-in | Go Throw rounds |
+| `sharedBags/{key}` | owner | signed-in | In the Bag (plastic/color/weight/shelf/lost) |
+| `courseGeo/{courseId}/holes/{n}` {tee,basket,doglegs} | anyone signed-in (Mark tee/basket; seeds) | signed-in | course maps |
+| `courseCommunity/{courseId}/ratings/{key}`, `…/notes/{id}` | owner / author | signed-in | course pages |
+| `messages/{a~b}/{id}`, `threads/{key}/{other}` | participants | participants | direct messages |
+| `passwordResetRequests/{id}` | unauthenticated, create-only | reset worker (Admin SDK) | Forgot password |
+| `admin/passwordResets` | admins | reset worker | commissioner resets (legacy queue) |
+| `leagues`, `joinCodes`, `leagueCodes`, `admins`, `config`, `bugReports` | per rules v2 | | fantasy leagues / flags |
+
+**Rules:** the live rules still let any signed-in user write most top-level nodes. The proposed
+replacement is `firebase/chains-app-f38f8.rules.v2.json` (chains-agent-log; copy in Downloads) —
+**Will must publish it** in the Firebase console, then smoke-test: add a friend, start a round with
+Kyle, open the bag, send a message, rate Otterburn.
+
+**Auth:** username + password (`username@chains.app`), recovery email in Settings (prompted once at
+login if missing). "Forgot password?" on the sign-in screen writes `passwordResetRequests`; the
+Railway worker (`chains-poller/reset_worker.py`, runs inside the poller loop) sets a temporary
+password with the Admin SDK and emails it — **needs Railway env vars** `FIREBASE_SERVICE_ACCOUNT_JSON`
+(service-account key for chains-app-f38f8), `SMTP_HOST/PORT/USER/PASS`, `MAIL_FROM`. Until those are
+set, requests queue up harmlessly.
+
+**Device-local only (by design):** disc-counter heading-out state, recent courses, show-map toggle,
+badge-unlock snapshot cache (also mirrored to `users/{uid}/badgeSnap`), email-prompt snooze.
 
 ### Go Throw round model (module 31) — keep, it's sound
 `playRounds/{id}` = {owner, course{id,name,city,parTotal}, date, players{key:{name,disc,holeScores[18],
