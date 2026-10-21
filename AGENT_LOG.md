@@ -1131,3 +1131,21 @@ featured badge cleared for him to pick).
 - Maps: loader retries (tap to retry), attribution reduced to a tiny "© Esri" overlay (attribution
   still present as required). King wording: "Only player so far" when one player.
 - Verified on test.html then promoted.
+
+## 2026-10-21 — v507: inline map arrows, scorecard under Next, four crowns, home shortcuts
+
+- **Inline hole map (scoring screen):** no popup button on the map any more — the picture changes
+  in place as the hole changes. Throw-direction arrows ("➤" HTML markers, rotated to each segment's
+  bearing, `rotationAlignment: map`) drawn along the tee→basket line (doglegs supported). Footer:
+  one line (hole length · par) + a "Hole card" text link that opens the existing popup unchanged.
+- **Scorecard on the scoring screen:** sits directly under the Prev/Next buttons as a
+  Scorecard · Show/Hide strip (state remembered); the old top-of-screen toggle is gone. Menu entry
+  reads "Scorecard · fix any score".
+- **Territory:** `ChainsRounds.courseTerritory` now returns four crowns — King (most rounds),
+  Record (lowest round), Birdie King (most birdies), Steady (best average, 3+ rounds). courseStats
+  entries carry `birdies`/`bogeys`; existing entries were backfilled on first load ("backfilled 1").
+- **Home:** shortcuts row (Start a round · Courses · Friends · Leagues · My bag) + "What's new"
+  card fed from `chains-dgpt-data/data/news.json`.
+- Verified in the 400px iframe: arrows=2 on Otterburn hole 1, scorecard table under the nav
+  buttons, no popup button on the inline map. Test round removed from liveRounds afterwards.
+  Commit 946ce0e1 (index.html); test.html e906fcca.
