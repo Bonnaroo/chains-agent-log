@@ -80,6 +80,7 @@ Identity: Firebase auth uid (`wp1yw…`) + **member key** (`will`, = `users/{uid
 | `passwordResetRequests/{id}` | unauthenticated, create-only | reset worker (Admin SDK) | Forgot password |
 | `admin/passwordResets` | admins | reset worker | commissioner resets (legacy queue) |
 | `leagues`, `joinCodes`, `leagueCodes`, `admins`, `config`, `bugReports` | per rules v2 | | fantasy leagues / flags |
+| `courseLeagues/{id}` {name, courseId, format best/avg/rounds, startAt, endAt, public, owner uid, code, members{key}}, `courseLeagueCodes/{CODE}`=id | owner; members write own key; owner/member add members | signed-in | course leagues (v508) — standings are computed from `courseStats` inside the window, nothing stored twice. `players[k].total` in courseStats is TO PAR; `strokes` is raw |
 
 **Rules:** the live rules still let any signed-in user write most top-level nodes. The proposed
 replacement is `firebase/chains-app-f38f8.rules.v2.json` (chains-agent-log; copy in Downloads) —
