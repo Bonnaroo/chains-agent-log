@@ -1112,3 +1112,22 @@ featured badge cleared for him to pick).
   Home (Go Throw) · Courses · ⊕ Play · Friends · Leagues · More (dashboard, picks, standings, live, bag,
   watch, settings). Top swipe strip removed on mobile; phones land on Go Throw. `chains:play-nav`
   event drives browse/start/home inside PlayView. LeagueBar hidden on Go Throw/Friends/Bag.
+
+## 2026-10-21 — v506: no fail-open sign-in, leagues hub, hole card cleanup
+
+- **Root cause of "it let me pick Will / no map / no satellite":** Will was NOT signed in. The AuthGate
+  had two fail-open paths (Firebase "unavailable" → open the app; leftover local identity → open the
+  app without an account) and the login screen still had the old "pick a name" mode. All removed:
+  unavailable → "Can't reach Chains · Try again"; no account → sign-in screen, always. The forced
+  re-sign-in now keys off `ChainsAuth.onChange` (`chains_relogin_v2`) instead of a 10-second poll
+  that could miss slow phones.
+- Home shows "Signed in as Will · @will" with avatar + Account link.
+- **Leagues hub:** "Season league" card reads "Chains · 2026 · Final · Champion: Kyle"; inside: quick
+  links to Dashboard / Standings / The Picks / Live Chains (fantasy screens stay reachable). "Live"
+  badges only when `seasonMeta().live`. Champion taken from `standings()[0].id`.
+- **Hole card:** footer is a Card | Satellite toggle + hole note; Mark tee/basket moved under a
+  "Pins look wrong? Fix the map" link; no distance text (position shows on the map; "N ft out" only
+  when on the hole). Inline panel: "Loading map…" vs "No satellite map yet"; readouts row removed.
+- Maps: loader retries (tap to retry), attribution reduced to a tiny "© Esri" overlay (attribution
+  still present as required). King wording: "Only player so far" when one player.
+- Verified on test.html then promoted.
