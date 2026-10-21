@@ -1092,3 +1092,23 @@ featured badge cleared for him to pick).
   now has the node table, auth/reset flow, rules status, device-local list.
 - **Still on Will:** publish rules v2; Railway env for the reset worker; run the OSM workflow;
   two-phone card test.
+
+## 2026-10-21 — v503–v505: maps polish, re-sign-in + notify prefs, territory, activity feed, phone-first nav
+
+- **v503:** imagery → **Esri World Imagery** (USGS stopped at z16 around Otterburn → 8× upscale = the
+  grain Will saw); hole card defaults to the illustrated **card** view, Satellite is a button; distance
+  readouts only within 2,000 ft ("You're not on this hole yet" otherwise — the 13,473 ft was the PC's
+  location); **all modals/sheets render through a body portal** (the app container has a transform, so
+  `position:fixed` children were pinned to the document bottom — that's why the hole card "didn't pop
+  up" on the phone). **One-time forced re-sign-in** (`chains_relogin_v1`), so the email prompt catches
+  everyone; Settings → **Notifications**: email on/off, text on/off + optional phone
+  (`users/{uid}/profile/notify`). Delivery still needs the Railway worker + SMTP env.
+- **v504 territory + feed:** `ChainsRounds.courseTerritory(board, me)` (King = most full rounds, tie →
+  better avg; Record = lowest full-round score, tie → earlier) and `allCourseStats()`; course page gets a
+  **Territory** card (king, record, "N more rounds to take the crown", everyone's rounds/best/avg);
+  Go Throw home gets **Your territory** chips and **What's happening** (aces, rounds finished, hot /
+  not over 14 days, record holders, kings). Removed a phantom ace logged by a scripted test.
+- **v505 phone-first nav:** the dormant `BottomNav`/`MoreSheet` are now the mobile nav (via portal):
+  Home (Go Throw) · Courses · ⊕ Play · Friends · Leagues · More (dashboard, picks, standings, live, bag,
+  watch, settings). Top swipe strip removed on mobile; phones land on Go Throw. `chains:play-nav`
+  event drives browse/start/home inside PlayView. LeagueBar hidden on Go Throw/Friends/Bag.
