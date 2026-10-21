@@ -130,6 +130,20 @@
           }
         }
       }
+    },
+    "messages": {
+      "$tid": {
+        ".read": "auth != null && ($tid.beginsWith(root.child('users').child(auth.uid).child('profile').child('memberId').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('profile').child('memberId').val()) || $tid.beginsWith(root.child('users').child(auth.uid).child('profile').child('username').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('profile').child('username').val()) || $tid.beginsWith(root.child('users').child(auth.uid).child('username').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('username').val()))",
+        ".write": "auth != null && ($tid.beginsWith(root.child('users').child(auth.uid).child('profile').child('memberId').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('profile').child('memberId').val()) || $tid.beginsWith(root.child('users').child(auth.uid).child('profile').child('username').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('profile').child('username').val()) || $tid.beginsWith(root.child('users').child(auth.uid).child('username').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('username').val()))"
+      }
+    },
+    "threads": {
+      "$key": {
+        ".read": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())",
+        "$other": {
+          ".write": "auth != null && (($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val()) || ($other === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $other === root.child('users').child(auth.uid).child('profile').child('username').val() || $other === root.child('users').child(auth.uid).child('username').val()))"
+        }
+      }
     }
   }
 }
