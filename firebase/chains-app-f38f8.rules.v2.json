@@ -2,37 +2,34 @@
   "rules": {
     ".read": false,
     ".write": false,
-
     "users": {
       "$uid": {
         ".read": "auth != null && ($uid === auth.uid || root.child('admins').child(auth.uid).val() === true)",
         ".write": "auth != null && $uid === auth.uid"
       }
     },
-
     "admins": {
-      "$uid": { ".read": "auth != null && $uid === auth.uid", ".write": false }
+      "$uid": {
+        ".read": "auth != null && $uid === auth.uid",
+        ".write": false
+      }
     },
-
     "config": {
       ".read": "auth != null",
       ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
     },
-
     "usernames": {
       ".read": "auth != null",
       "$username": {
         ".write": "auth != null && ((!data.exists() && newData.child('uid').val() === auth.uid) || data.child('uid').val() === auth.uid)"
       }
     },
-
     "friendCodes": {
       "$code": {
         ".read": "auth != null",
         ".write": "auth != null && (!data.exists() || data.val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.val() === root.child('users').child(auth.uid).child('username').val())"
       }
     },
-
     "friends": {
       "$key": {
         ".read": "auth != null",
@@ -41,7 +38,6 @@
         }
       }
     },
-
     "friendRequests": {
       "$to": {
         ".read": "auth != null && ($to === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $to === root.child('users').child(auth.uid).child('profile').child('username').val() || $to === root.child('users').child(auth.uid).child('username').val())",
@@ -51,64 +47,89 @@
         }
       }
     },
-
     "playRounds": {
       ".read": "auth != null",
       "$id": {
         ".write": "auth != null && ((!data.exists() && newData.child('owner').val() === auth.uid) || data.child('owner').val() === auth.uid)"
       }
     },
-
     "liveRounds": {
       ".read": "auth != null",
       "$id": {
         ".write": "auth != null && ((!data.exists() && (newData.child('owner').val() === auth.uid || !newData.exists())) || data.child('owner').val() === auth.uid || root.child('playRounds').child($id).child('owner').val() === auth.uid)"
       }
     },
-
     "sharedRounds": {
       ".read": "auth != null",
       "$id": {
         ".write": "auth != null && (!data.exists() || data.child('owner').val() === auth.uid || data.child('participants').child(root.child('users').child(auth.uid).child('profile').child('memberId').val()).exists() || data.child('participants').child(root.child('users').child(auth.uid).child('profile').child('username').val()).exists() || data.child('participants').child(root.child('users').child(auth.uid).child('username').val()).exists())"
       }
     },
-
     "roundsByPlayer": {
       ".read": "auth != null",
-      "$key": { "$id": { ".write": "auth != null" } }
+      "$key": {
+        "$id": {
+          ".write": "auth != null"
+        }
+      }
     },
-
     "courseStats": {
       ".read": "auth != null",
-      "$course": { "$id": { ".write": "auth != null" } }
+      "$course": {
+        "$id": {
+          ".write": "auth != null"
+        }
+      }
     },
-
     "sharedBags": {
       ".read": "auth != null",
       "$key": {
         ".write": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())"
       }
     },
-
     "leagues": {
       ".read": "auth != null",
       "$leagueId": {
         ".write": "auth != null && (!data.exists() || data.child('commissioner').val() === auth.uid || root.child('admins').child(auth.uid).val() === true)",
-        "members": { "$uid": { ".write": "auth != null && ($uid === auth.uid || data.parent().parent().child('commissioner').val() === auth.uid)" } }
+        "members": {
+          "$uid": {
+            ".write": "auth != null && ($uid === auth.uid || data.parent().parent().child('commissioner').val() === auth.uid)"
+          }
+        }
       }
     },
     "joinCodes": {
       ".read": "auth != null",
-      "$code": { ".write": "auth != null && (!data.exists() || root.child('leagues').child(data.val()).child('commissioner').val() === auth.uid)" }
+      "$code": {
+        ".write": "auth != null && (!data.exists() || root.child('leagues').child(data.val()).child('commissioner').val() === auth.uid)"
+      }
     },
     "leagueCodes": {
       ".read": "auth != null",
-      "$code": { ".write": "auth != null && (!data.exists() || root.child('leagues').child(data.val()).child('commissioner').val() === auth.uid)" }
+      "$code": {
+        ".write": "auth != null && (!data.exists() || root.child('leagues').child(data.val()).child('commissioner').val() === auth.uid)"
+      }
     },
-
     "bugReports": {
       ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
-      "$id": { ".write": "auth != null && !data.exists()" }
+      "$id": {
+        ".write": "auth != null && !data.exists()"
+      }
+    },
+    "courseGeo": {
+      ".read": "auth != null",
+      "$course": {
+        "holes": {
+          "$n": {
+            "tee": {
+              ".write": "auth != null"
+            },
+            "basket": {
+              ".write": "auth != null"
+            }
+          }
+        }
+      }
     }
   }
 }
