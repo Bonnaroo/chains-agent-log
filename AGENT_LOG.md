@@ -1217,3 +1217,26 @@ featured badge cleared for him to pick).
 - Verified on test.html in the phone iframe: pad=7 buttons, tap 2 → birdie cheer + Thru 1 −1,
   Next → hole 2 shows "–", tap 4 then 3 → cloud holeScores [2,3]. Test round removed.
   index.html 8149c3b7.
+
+## 2026-10-21 — v511: realistic rating, floating hole bar, ace mis-tap protection
+
+- **Rating:** the old formula anchored 1000 at PAR (and then blended toward the crew's average),
+  so Will's −4 at Otterburn read "1010 Pro line". A 1000-rated player shoots well under par on a
+  short course, so the baseline is now what such a player expects on these holes: from hole
+  lengths (≈1.9 + 0.0024/ft per hole) when the catalog has them, else by par (2.65/3.55/4.55);
+  `course.ssa` in courses.json overrides for a course we know. Otterburn (4,893 ft, par 54) →
+  baseline ≈ 45.6, ~12 pts/stroke: −4 → ~950 (Advanced), E → ~900, +6 → ~825. Module 57 is in
+  the build set now; `ratingFor()` in Go Throw pulls lengths/ssa from the catalog.
+- **Hole navigation:** the Prev/Next row is now a floating bar portaled above the app's bottom
+  tabs (measures the tab bar's height), always visible: "‹ Hole 2" · "Next · Hole 4 ›" (reads
+  "Score hole N" until everyone has a score; "Finish round" on the last hole). The in-flow row
+  is gone; an 84px spacer keeps the strip clear.
+- **Ace mis-tap:** Will's real round had an accidental 1 on hole 8 (fixed to 3) — the ace had
+  already gone to the feed + crew notification + Ace badge. Now the live tap-detect waits 8 s
+  (fires only if the 1 is still there), a logged 1 that's changed calls `ChainsAces.retract`
+  (removes local + cloud, tells the crew "false alarm"), and the finish-time pass is unchanged.
+  Cleaned up: both phantom aces (the 14:13 one from this morning's scripted test and the 17:48
+  one), their two "ACE!" notifications to Cory/Gabe/Kyle, the test rounds; badge snapshot rebuilt
+  (14 earned, Ace 0).
+- Will on scoring: tapping the number for par was fine — the pain was moving back and forth
+  between holes. index.html v511.
