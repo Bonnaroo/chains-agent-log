@@ -144,6 +144,31 @@
           ".write": "auth != null && (($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val()) || ($other === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $other === root.child('users').child(auth.uid).child('profile').child('username').val() || $other === root.child('users').child(auth.uid).child('username').val()))"
         }
       }
+    },
+    "courseCommunity": {
+      ".read": "auth != null",
+      "$course": {
+        "ratings": {
+          "$key": {
+            ".write": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())"
+          }
+        },
+        "notes": {
+          "$id": {
+            ".write": "auth != null && (!data.exists() ? (newData.child('by').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || newData.child('by').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || newData.child('by').val() === root.child('users').child(auth.uid).child('username').val()) : (data.child('by').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.child('by').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.child('by').val() === root.child('users').child(auth.uid).child('username').val()))"
+          }
+        }
+      }
+    },
+    "passwordResetRequests": {
+      ".read": false,
+      "$id": {
+        ".write": "!data.exists() && newData.hasChildren(['username','email','requestedAt']) && newData.child('status').val() === 'pending'"
+      }
+    },
+    "admin": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
     }
   }
 }
