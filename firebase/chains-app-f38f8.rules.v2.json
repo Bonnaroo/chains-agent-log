@@ -169,6 +169,23 @@
     "admin": {
       ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
       ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    },
+    "courseLeagues": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('owner').val() === auth.uid) || data.child('owner').val() === auth.uid)",
+        "members": {
+          "$key": {
+            ".write": "auth != null && (data.parent().parent().child('owner').val() === auth.uid || ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val()) || (newData.exists() && data.parent().parent().child('members').child(root.child('users').child(auth.uid).child('profile').child('memberId').val()).exists()))"
+          }
+        }
+      }
+    },
+    "courseLeagueCodes": {
+      ".read": "auth != null",
+      "$code": {
+        ".write": "auth != null && (!data.exists() || root.child('courseLeagues').child(data.val()).child('owner').val() === auth.uid)"
+      }
     }
   }
 }
