@@ -1177,3 +1177,24 @@ featured badge cleared for him to pick).
 - Verified on test.html: create → league page → standings picked up Will's 10/20 round once the
   window covered it (−1 (53), 3 birdies) → Add friends sheet → public toggle → delete. Test league
   and code removed. Promoted: index.html b6005544.
+
+## 2026-10-21 — v509 + pre-round live check on index.html
+
+- **Live check (production, signed in as Will, v508):** Home → Start scoring now → Otterburn → Start
+  my round. Scored hole 1 par via the number, −/+ for birdie/bogey, Next; went back to hole 2 from
+  the strip and fixed it — stayed on hole 2, no jump. After every tap: `liveRounds` (thru/toPar),
+  `sharedRounds.players.will.holeScores`, `playRounds`, `roundsByPlayer` all matched. Next refuses
+  to advance with no score ("No score for hole N"). Finished 18: finish card "Under par! −1 (53)",
+  badges revealed; `playRounds` status final, `liveRounds` mirror gone, `courseStats` entry
+  {total:-1, strokes:53, birdies:1, bogeys:0}, territory recomputed (king/record/birdie king).
+  Test round removed with `ChainsRounds.remove` — all five nodes gone — and the badge snapshot
+  rebuilt from real data (11 earned).
+- **Found & fixed (v509):** the finish card re-announced badges Will already had ("10 new") because
+  `readSnap` preferred a stale LOCAL snapshot over the cloud one. Now merges local + cloud, max
+  per badge.
+- **Course leagues:** fourth format **Best 3 rounds** (three best to-par rounds added up; shows
+  "(n of 3)" until you have three; players with 3 rank above players with fewer). Format picker is
+  a 2×2 grid on phones.
+- Firebase instructions sent to Will: publish rules v2 after the round (History → Restore as the
+  rollback), then the service-account key + Railway SMTP vars for the reset worker.
+- index.html 72bbba2f (v509).
