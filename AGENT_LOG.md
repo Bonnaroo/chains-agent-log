@@ -990,3 +990,36 @@ test rounds deleted afterwards (Kyle's index empty again). Will's real 2026-10-2
 
 **Still to do:** two-phone shared card test; team formats on the new screen; friends screen (module
 68) restyle to match; QR/link join; "Nearby" courses (catalog has no GPS); layout maps.
+
+## 2026-10-21 — v489–v491: trophies round 2, friends, In the Bag
+
+**Will's asks:** more/fun badges (turkeys with first → bronze → gold at 10, course explorer bronze at ~4,
+solo-rounds trophy "crazy nice" at 50/100), a way to "badge yourself up", friends must be solid, In the
+Bag needs plastics (new + old), missing molds (Buzzz OS/SS, Zone OS/SS), colors, searchable friend bags.
+
+**v489 (modules 32, 45, 70):** 53 badges. Renamed Three-peat → **Turkey** (First turkey → Bronze 3 →
+Silver 5 → Gold 10 → Platinum 25). New: Lone wolf (solo rounds 1/10/50/100/250, Diamond top rung),
+Big bird, Birdie fest, Damage control, Even Steven, Dialed in, Marathon day, Repeat customer, Local
+legend, Good sport, Hype man, Podium, Week winner, Both under, Season champion (secret). Course
+explorer bronze now 4. Ladders support any number of rungs + per-badge names/colors. **Featured badge:**
+☆ Feature in the trophy case stores {id, icon, name, tier, color} in localStorage and
+`usernames/{me}/badge` (public), shown as a ring chip next to the name on home, cardmates, player
+overview, feed cards and the friends list. Practice rounds excluded from the hero count too.
+
+**v490 (modules 68, 45):** Friends screen rebuilt: live people search (username + friend code) with
+one-tap Add, your code + QR + Share (Web Share), requests, "In your league · not friends yet"
+suggestions (Kadey, Shanna), friends with rounds-together counts, Score (seeds last group → Go Throw),
+See bag, Remove. Backend probed from Will's account: username search, code resolve, request write,
+mutual friends, loadGroup via `roundsByPlayer` all OK — the back end was already sound. Go Throw home
+gained **"Your crew's rounds"** (friends' finished rounds you weren't on; RoundRow now narrates from
+the owner's side).
+
+**v491 (modules 17, 19 + chains-dgpt-data):** `data/plastics.json` (curated lines for ~45 brands,
+current + older; edit freely), `update_discs.py` dedupes brand|mold (DiscIt returns every disc twice —
+2414 → 1207), app also dedupes the cached catalog. Bag entries carry plastic / color / weight / notes;
+picking a disc opens an "Add to my bag" sheet (plastic chips per brand + Other, 17 color swatches,
+weight, note); rows show a color dot + "Z · 175g · Discraft"; DiscDetail has Edit; own bag and friend
+bags are searchable by mold/plastic/color. Two copies of a mold are allowed when plastic/color differ.
+
+Verified on test.html (phone iframe) then promoted. Test data removed (Will's bag = Destroyer only;
+featured badge cleared for him to pick).
