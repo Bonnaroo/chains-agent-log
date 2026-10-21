@@ -203,6 +203,13 @@ observable patterns, not code; do not decompile their app or hit their private A
    `localStorage chains_badges_seen_v2:<me>`. Module 45 helpers: `GuestAddSheet`, `ScoreHero`,
    `PlayerOverview`, `ScorecardTable`, `NewBadgesReveal`, `BadgeShelf`, `withLine`, `myDisplayName`.
    Catalog has no GPS, so "Nearby" courses and layout maps are blocked on course data.
+   **v489–v491 (2026-10-21):** 53 tiered badges (Turkey 1/3/5/10/25, Lone wolf 1/10/50/100/250 …) +
+   featured badge (`usernames/{me}/badge`, `ChainsFriends.setFeaturedBadge`, `BadgeChip`); Friends
+   screen rebuilt (module 68: live search, league suggestions, share link, rounds together) + "Your
+   crew's rounds" feed on Go Throw home; In the Bag: `data/plastics.json` (curated per brand),
+   deduped `discs.json` (DiscIt duplicates), bag entries carry plastic/color/weight/notes
+   (`ChainsBag.addDiscObj(d, extra)`, `updateDisc`, `loadPlastics`, `plasticsFor`, `COLORS`),
+   `AddDiscSheet`, searchable own/friend bags.
 5. **Release path** — free tier first, validate with real leagues, then decide on paid.
 6. **Scope cuts (Will, 2026-10-20):** remove the coin/betting economy (flag off, then strip the code);
    "Classic" is just the league; two league types (snake draft; pick-your-own-team); Console stays
