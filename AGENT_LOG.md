@@ -943,3 +943,50 @@ deleted afterwards; Will's Go Throw history is empty for his real round today.
 **Not tested yet:** two-phone shared card, doubles/scramble/skins formats, guest players, invites,
 share-watch link, Firebase rules for non-owner participants. Note: `drafted_winner` badge is earned
 from fantasy data and shows with zero rounds — expected.
+
+## 2026-10-21 — v488: Go Throw refresh (UDisc-class flow, Chains style)
+
+**Why:** Will scored a real round on v487 ("everything looks really good") but: editing an earlier
+hole "kept jumping every time I put the score in"; wants more/better badges (Audible-style tiers);
+wants scoring a round to feel exciting; friends + adding people to a card must be seamless; sent 15
+UDisc screenshots as the layout/feature reference ("get really close, in our own style").
+
+**Shipped (index.html v488, commit 6e5bbf0; modules 31, 32, 45):**
+- **Scoring screen rebuilt** — one job per screen: top bar (Exit · course · ☰), big "Hole N · ft ·
+  Par", per-player rows with fixed-size 50px −/+ round buttons and a running "E (6)", bottom hole
+  strip (tap any hole; scrolls itself horizontally only), Next/Finish. The scorecard is a toggle
+  view with the tap-to-fix editor in a reserved fixed-height slot ABOVE the table, so opening it
+  never moves the table (measured 457/457/457 px before/open/after a tap). `touch-action:
+  manipulation` on every Go Throw button. Round menu sheet: scorecard, add a player mid-round
+  (friend / username / guest via `ChainsRounds.addPlayer`), adjust par, note, order by tee position,
+  save & exit, finish partial, discard.
+- **Celebrations:** BIRDIE! / EAGLE! / ACE! overlay with pop animation (+confetti for eagle/ace),
+  streak text ("3 in a row 🔥"), haptic on Android; fires once per hole, not on edits.
+- **Cardmates screen:** "Who's playing?" with search, Frequent / Recent / Name tabs, rounds-played
+  counts, tap-to-toggle rows, "Add new cardmate" sheet (friends → Chains username search via public
+  `usernames` index (auto-befriends on add) → guest by name). Round type chips, handicaps, "Customize
+  your round" (starting hole), "Start my round · N players".
+- **Course picker:** "Where are you playing?", Recent / All courses, rows with holes · par · length ·
+  est. time · "you've played here N times". Remembers last 6 courses.
+- **Round overview** (finish + round detail): headline ("Under par!" / "New best here!"), dark
+  score hero "+1 (55)" with rating + facts, "last time here" line, Player overview with
+  birdie/par/bogey bars and %, scorecard with Dist/Par rows, share, verify & sign. Confetti burst
+  on finish, **New badge unlocked** reveal (diff vs `chains_badges_seen_v2:<me>` snapshot).
+- **Badges → tiered trophy case (module 32):** 38 badges, Bronze/Silver/Gold/Platinum ladders with
+  value/progress/next, categories Rounds · Weather · Scoring · Social · Courses · Fantasy, 2 secret
+  (Par machine, Photo finish). Home shows earned rings + "closest to unlocking"; "See all" sheet
+  lists every ladder with progress bars. Old ids kept (first_round, first_birdie, …) so nothing
+  that read `earned`/`detail` breaks. Practice rounds excluded.
+- **Home:** "Happy discing, Will!" + this-month strip (rounds, holes, birdies, throws), round feed
+  cards ("Will with Katie and Kyle · today · you won 👑 · −2 (10)").
+- **finalize() false alarm fixed (module 31):** the `liveRounds` mirror remove was reported as
+  "cloud didn't update" when the mirror never existed; now only reported if it's still there.
+
+**Verified** on test.html in a 400px iframe (phone layout) then promoted: course → cardmates (friend
++ guest) → 4 holes with celebrations → scorecard tap-to-fix → menu → finish partial → overview →
+Done → home feed + trophy case; Firebase: both records final, `roundsByPlayer/kyle` indexed, all
+test rounds deleted afterwards (Kyle's index empty again). Will's real 2026-10-20 round untouched
+(note: he marked it "practice", so it is excluded from stats/badges until un-flagged).
+
+**Still to do:** two-phone shared card test; team formats on the new screen; friends screen (module
+68) restyle to match; QR/link join; "Nearby" courses (catalog has no GPS); layout maps.
