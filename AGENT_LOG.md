@@ -1051,3 +1051,22 @@ featured badge cleared for him to pick).
   tee/basket **seed** from Will's data pack → `data/geo/mi-otterburn.json` + Firebase `courseGeo`
   (18 holes; measured 229 ft on hole 1 matches). Decision: no bulk UDisc scraping — seeds are
   one-offs, in-app re-marking and OSM are the ongoing sources.
+
+## 2026-10-21 — v497–v500: hole 1 first, inline map, OSM pipeline, messaging, UDisc import
+
+- **v497:** Otterburn plays 1–18 (Will); `play_order` is opt-in per course (`use_play_order`).
+- **v498:** inline map on the scoring screen (`LiveHolePanel`, pin button, remembered): satellite
+  caddie view + blue dot + **tee → you / you → basket** readouts from `watchPosition`.
+- **Course-data decision (open, no login):** OSM via Overpass (ODbL) → `collect_osm_geo.py` +
+  weekly workflow `collect-osm-geo.yml` writing `data/geo/osm/<courseId>.json` (ref'd holes assigned,
+  the rest as candidates); in-app Mark tee/basket as the primary source; USGS imagery; PDGA/our catalog
+  for course-level discovery. **No bulk UDisc scraping** (Will's scraper + county sample received and
+  declined). Otterburn seed from Will's pack kept as a one-off. Token lacks Actions scope → first run
+  on Monday or via "Run workflow".
+- **v499 messaging:** `ChainsChat` (module 70): `messages/{a~b}`, `threads/{key}/{other}`
+  {last, at, from, unread}, bell notification on send; Friends screen: Messages section, 💬 per
+  friend with unread badge, chat sheet; nav pulse includes unread. Rules v2 updated (messages/threads).
+- **v500 UDisc:** nothing can be pushed into UDisc (no API). "Import from UDisc" parses UDisc's
+  scorecard CSV export (Par row + player rows, Hole1..N) → `ChainsRounds.importRound` (final, original
+  date, cardmates as guests, course matched by name, dedupe by date+course); "Export CSV" writes the
+  same shape. Verified on staging with a sample card; sample removed.
