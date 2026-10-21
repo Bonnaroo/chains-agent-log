@@ -1070,3 +1070,25 @@ featured badge cleared for him to pick).
   scorecard CSV export (Par row + player rows, Hole1..N) → `ChainsRounds.importRound` (final, original
   date, cardmates as guests, course matched by name, dedupe by date+course); "Export CSV" writes the
   same shape. Verified on staging with a sample card; sample removed.
+
+## 2026-10-21 — v501–v502: course pages, review pass, forgot-password backend
+
+- **v501 course pages:** Go Throw home → "Courses · maps, ratings & notes" → pick a course →
+  `CourseView`: header + star average, **overview map** of every mapped hole (MapLibre + USGS, HTML
+  markers for numbers), Play here, your rounds/best/avg here, hole list (mapped? your average; tap →
+  hole card), About the course (facts from courses.json: address, status, fees, tees/baskets,
+  difficulty, amenities, established, hole notes), crew records, **Rate it** (1–5), **Player notes**
+  (whole course or per hole, delete your own). Storage `courseCommunity/{courseId}`. Verified on
+  Otterburn (18/18 mapped); test rating/note removed.
+- **Review pass findings + fixes (v502):** (1) **Forgot password was a dead end** — synthetic
+  `@chains.app` auth emails, reset queue only reachable from the removed Console, no server ever
+  processed it. Now: "Forgot password?" on the sign-in screen → `passwordResetRequests` (create-only,
+  unauthenticated) → `chains-poller/reset_worker.py` (Admin SDK sets a temp password + mustChangePassword,
+  emails it to the account's recovery email; rejects silently on mismatch; also services the legacy
+  `admin/passwordResets` queue). Runs inside the poller loop when `FIREBASE_SERVICE_ACCOUNT_JSON` is
+  set; **Will must add the Railway env vars** (service account + SMTP). (2) Badge-unlock snapshot was
+  per device → mirrored to `users/{uid}/badgeSnap`. (3) Featured badge for yourself on a new phone →
+  falls back to the public `usernames/{me}.badge`. (4) Settings copy updated. (5) CHAINS_SYSTEM.md
+  now has the node table, auth/reset flow, rules status, device-local list.
+- **Still on Will:** publish rules v2; Railway env for the reset worker; run the OSM workflow;
+  two-phone card test.
