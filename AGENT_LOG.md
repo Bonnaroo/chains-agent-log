@@ -1198,3 +1198,22 @@ featured badge cleared for him to pick).
 - Firebase instructions sent to Will: publish rules v2 after the round (History → Restore as the
   rollback), then the service-account key + Railway SMTP vars for the reset worker.
 - index.html 72bbba2f (v509).
+
+## 2026-10-21 — v510: score pad + crash fix (after Will's second real round)
+
+- Will's round saved correctly (−4 / 50, 4 birdies, 18 holes, final) but he hit
+  "undefined is not an object (evaluating 'h.name.split')" on the phone and said the score input
+  is not intuitive.
+- **Crash:** `holeRecs[i].name` can be undefined (a player entry with no name) → the course-record
+  card's `h.name.split(" ")` threw. Fixed at the source (`courseAggregate` falls back to the key)
+  and every `.name.split(` in Go Throw now goes through `__fn()` (safe first name); Avatar initials
+  guarded too (module 24 now in the build set).
+- **Score pad (replaces the − [par] + stepper):** each player is a row (tap a row to pick who
+  you're scoring — highlighted; solo rounds skip that), the score shows big on the right or "–"
+  until entered (no phantom par), and below is a pad 1–7 (8+ expands to 12) labelled ace / birdie /
+  par / bogey / double… with par ringed. Tapping a number records it, celebrates birdies as
+  before, and in a group moves the pad to the next unscored player. Re-tapping another number
+  fixes it. Next hole still refuses with a clear note if someone has no score.
+- Verified on test.html in the phone iframe: pad=7 buttons, tap 2 → birdie cheer + Thru 1 −1,
+  Next → hole 2 shows "–", tap 4 then 3 → cloud holeScores [2,3]. Test round removed.
+  index.html 8149c3b7.
