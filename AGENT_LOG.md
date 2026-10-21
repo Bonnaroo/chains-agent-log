@@ -1149,3 +1149,31 @@ featured badge cleared for him to pick).
 - Verified in the 400px iframe: arrows=2 on Otterburn hole 1, scorecard table under the nav
   buttons, no popup button on the inline map. Test round removed from liveRounds afterwards.
   Commit 946ce0e1 (index.html); test.html e906fcca.
+
+## 2026-10-21 — v508: course leagues (second league type)
+
+- **Leagues tab → "Create a league"** now asks which kind: **Course league** (friends play a real
+  course by a deadline) or **Fantasy league** (draft pros; the existing test-format builder).
+- **Course league builder** (one screen): course (Otterburn pre-picked, searchable), optional name,
+  format (Best round · Best average · Most rounds), play-by (3 days / 1 week / 2 weeks / month or a
+  date), "Open to anyone" toggle, tick friends to add. Friends are in immediately and get an inbox
+  note: "Will added you to <league> — Otterburn · play by <date>. Any round you score there counts."
+- **League page:** ink hero (days left, window, "<name> leads" / "<name> wins" / "Nobody's on the
+  board yet"), **Play <course> now** (jumps to Go Throw with the course preselected), standings
+  (rank, avatar, rounds · birdies, stat per format: to-par (strokes) / to-par avg / rounds),
+  Add friends sheet (portaled), Share code (native share or clipboard; link `#courseleague=CODE`
+  auto-joins after sign-in), Leave / Delete (owner) / Open-to-anyone toggle (owner).
+- **Standings come straight from `courseStats/{course}`** — every finished Go Throw round at the
+  course with `date` inside [startAt, endAt], members only. Nothing is entered twice. Note: in
+  courseStats `players[k].total` is TO PAR and `strokes` is raw — standings use both.
+- Data: `courseLeagues/{id}` {name, courseId, courseName, parTotal, holes, format, startAt, endAt,
+  public, owner(uid), ownerKey, ownerName, code, members{key:{name,disc,uid,joinedAt,invitedBy}}}
+  and `courseLeagueCodes/{CODE}` = id. `window.ChainsCourseLeagues` (watch/mine/open/create/join/
+  joinByCode/leave/addMembers/remove/update/standings) + `window.CourseLeagues` UI. The hub's
+  "Your leagues" block is now labelled "Fantasy leagues". `window.ChainsCatalog` exposes the
+  course catalog to other modules.
+- Rules v2 updated with `courseLeagues` (owner writes; members write their own key; owner or an
+  existing member can add members) and `courseLeagueCodes` — still unpublished (Will).
+- Verified on test.html: create → league page → standings picked up Will's 10/20 round once the
+  window covered it (−1 (53), 3 birdies) → Add friends sheet → public toggle → delete. Test league
+  and code removed. Promoted: index.html b6005544.
