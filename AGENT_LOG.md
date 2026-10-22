@@ -1366,3 +1366,18 @@ featured badge cleared for him to pick).
   (`course-pipeline.yml`, manual run available). `SOURCES.md` lists every source and licence, incl. what
   Google Places allows (place_id only), imagery licensing, and the three licence emails for Will.
 - Not used: UDisc (decision), Kaggle PDGA scrape (CC0 label can't cover PDGA's rights — reference only).
+
+## 2026-10-22 — v516: structure uplift (tiles · Go Throw hub · Me), pipeline readiness
+
+- **Home** is now: greeting + this month's numbers → **Start a round** → 8 tiles (Go Throw · Courses ·
+  Leagues · Names · Friends · Bag · Live Chains ("Back for the 2027 season") · Me) → this week's challenges →
+  Your names → What's new → activity feed → "All rounds, stats & trophies →". The old shortcut strip, hero
+  card, stats cards, territory strip, crew rounds, rivalries, aces wall, badge shelf and recent rounds moved
+  to the **Go Throw hub** (stage "throw"). **Me** (stage "me"): photo/name/@user/featured badge, rounds ·
+  best · names · trophies, rows to Profile photo & account, Trophies, Your names, Bag, Friends, Settings,
+  Sign out. More sheet grouped: Go Throw (Bag · Names · Watch) / Season 2026 (Dashboard · Picks · Standings ·
+  Live Chains) / Account (Settings). Live Chains shows a "Between seasons" card with links when not live.
+- **Pipeline readiness:** catalog cache key now rolls every Monday (`CAT_VER = "v516-<monday>"`), so
+  courses added by the weekly pipeline reach phones without a release. Courses with `needs_review` show a
+  "community" tag in the picker and a "Community course… be its Pioneer" note on the course page.
+- Bottom bar unchanged (Home · Courses · Play · Friends · Leagues · More). index.html v516.
