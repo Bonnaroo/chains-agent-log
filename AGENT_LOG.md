@@ -1282,3 +1282,35 @@ featured badge cleared for him to pick).
   icon; WhoBadge re-renders on `chains:friends`. Rules v2 file: `territory` node added.
 - Verified on test.html: Otterburn board 2 rounds with hs → Will holds 18/18, sync wrote the map,
   turf line + tiles render; photo save → header shows it; remove → gone. index.html v513.
+
+## 2026-10-22 — v514: Takeover hub + crews + race, lost & found, 86 trophies, leagues v2, HANDOFF.md
+
+- **Takeover v2 (module 31 + 45):** `territoryLog/{YYYY-MM}` records every change of owner (to/from/hole/
+  course); `meta.sweptBy` when one player owns every hole; `users/{uid}/takeover` counters (taken, from,
+  sweeps) mirrored to localStorage for badges; crews (`crews/{id}`, `crewByUser/{key}`, `crewCodes`):
+  create / join by code / leave, one crew per player, holes pool to the crew. **Takeover hub** (More →
+  Takeover, Home shortcut, "Takeover →" on the turf line): hero (holes · courses · swept · taken, crew
+  line), tabs **<Month> race** (holes taken this month per player, crews, latest moves, who holds the most
+  now) · **Courses** (every course with owners/swept, tap → course page) · **Crews** (start/join/share/
+  leave). `chains:play-nav` accepts `course:<id>` to open a course page.
+- **Lost & found (module 45):** per-course board under Player notes. Lost / Found post with description,
+  hole, contact, optional photo (≤320 px JPEG), friends get an inbox note; author can mark returned or
+  delete; 60-day auto-hide. `lostFound/{course}/{id}`. Good Samaritan badge counts returns.
+- **Trophies 63 → 86 (module 32):** State lines, Passport (countries), County lines, Every hole (birdied
+  every hole at a course), Under par everywhere, Course hopper, Throw count, Weekly habit (streak), Daily,
+  Busy month, All-season, This year, Opening statement (hole-1 birdies), Walk-off (last-hole birdies),
+  Rated round (800…1000), Cardmates, Ride or die, Good Samaritan, Land grab, Holding, Raider, Clean sweep,
+  Landlord. New category "Takeover". Needs `window.ChainsCatalog` (state/country from courses.json).
+- **Leagues v2 (module 68):** `minPlayers` + `signupBy` (status `signup` → live when reached, everyone
+  notified "<league> is on!"; `cancelled` if the date passes short), format **Handicap** (80 % of avg over
+  par from last 5 rounds at the course, set at create/join; net = round − hcp), `verifiedOnly` (round
+  counts only with another Chains player on the card; ✓ counts shown), `finalAt` + `judge`, `acePot` flag.
+  "More options" block on the create screen.
+- **HANDOFF.md** written (chains-agent-log): paste-in prompt, where everything lives, module map, gotchas,
+  workbench rebuild, ship workflow, data model, Will-only tasks, product rules, CURRENT STATE section.
+- Incident: a failed Python write truncated `module_045.js` to 0 bytes mid-session; recovered from the
+  just-built `app_v514.html`. Rule added to HANDOFF: validate `out.encode('utf-8')` before writing.
+- Rules v2 file: + `territoryLog`, `lostFound`, `crews`, `crewByUser`, `crewCodes`. Still unpublished.
+- Verified on test.html: hub renders with race/crews/latest moves (Will: 18 holes, 1 swept, crew
+  "Otter Crew" created for him); lost & found post → returned → delete; badges 86/21 earned; pledge league
+  status `signup`, handicap member field, standings; test league removed. index.html v514.
