@@ -1314,3 +1314,29 @@ featured badge cleared for him to pick).
 - Verified on test.html: hub renders with race/crews/latest moves (Will: 18 holes, 1 swept, crew
   "Otter Crew" created for him); lost & found post → returned → delete; badges 86/21 earned; pledge league
   status `signup`, handicap member field, standings; test league removed. index.html v514.
+
+## 2026-10-22 — v515: Names on the course, course-page tabs, in-round take moment, crews shape, branding
+
+- Will's steer: ownership can't be the only metric; firsts matter ("first to birdie every hole"); solo
+  players must never be overridden by crews; "the three guys to beat" on every course; the app is just
+  **Chains** (no Fantasy DGPT); he saw a stray `·` in the UI (module 8 champion panel) — fixed and
+  module 8 added to the build set; course page had too much on it.
+- **Names (module 31 `ChainsNames`, 45):** per course, FIRSTS are permanent and derived deterministically
+  from the shared board (earliest qualifying round): first round, first under par, first clean card, first
+  turkey, first ace, first −5, first birdie on each hole, first to 10/25/50 rounds, first to birdie every
+  hole. Stored `courseFirsts/{course}/{id}` (write-once); whoever finishes next fills empties; new firsts
+  notify their owner ("Your name's on Otterburn… That's permanent."). HOLDS are takeable: per hole owner
+  (best avg, 90 d), best ever, most birdies; per course record / most rounds / most birdies / best avg.
+  Course page **Names** tab: "The ones to beat" (top 3 by names held), Course records, Hole by hole (tap a
+  tile → owns it / best ever / most birdies / first birdie), Firsts list with easy/mid/hard/epic dots,
+  everyone-who's-played table. Otterburn: 104 names; Will holds 54 (9 firsts + 45 holds).
+- **Course page tabs:** Course (map, play, your numbers, about) · Holes · Names · Board (rate, notes, lost
+  & found). Tab remembered per session.
+- **In-round:** each hole shows "Owner: Kyle · 2.4 avg · shoot 2 to take it" / "You own this hole" /
+  "Open hole · par or better claims it" (from `territory/{course}/holes` + your last 4 plays). Tapping a
+  score that takes it fires "HOLE N IS YOURS" (after the birdie cheer if both). Finish card lists the
+  firsts you just earned ("Your name's on the course").
+- **Crews:** emblem (12 emoji), colour, cap 8 (`max`), owner can edit name/emblem/colour; join refuses a
+  full crew. Home line is now "Your names · N" (firsts + holes owned).
+- **Branding:** header/login subtitle "Disc golf, with your crew"; `<title>Chains</title>` (build.py
+  patches the shell). Rules v2 + `courseFirsts`. index.html v515.
