@@ -186,6 +186,12 @@
       "$code": {
         ".write": "auth != null && (!data.exists() || root.child('courseLeagues').child(data.val()).child('owner').val() === auth.uid)"
       }
+    },
+    "territory": {
+      ".read": "auth != null",
+      "$course": {
+        ".write": "auth != null"
+      }
     }
   }
 }
