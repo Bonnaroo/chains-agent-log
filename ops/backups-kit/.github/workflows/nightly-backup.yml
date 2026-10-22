@@ -1,0 +1,46 @@
+# Nightly full export of both Chains databases into THIS private repo. No AI involved.
+name: Nightly Chains backup
+on:
+  schedule:
+    - cron: "15 6 * * *"      # 06:15 UTC every day (~2:15 am Michigan)
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Sign in as the backup bot (optional — falls back to anonymous reads)
+        id: auth
+        env:
+          BOT_EMAIL: ${{ secrets.CHAINS_BACKUP_EMAIL }}
+          BOT_PASSWORD: ${{ secrets.CHAINS_BACKUP_PASSWORD }}
+        run: |
+          if [ -n "$BOT_EMAIL" ] && [ -n "$BOT_PASSWORD" ]; then
+            TOKEN=$(python3 - <<'PY'
+          import json, os, urllib.request
+          key = "AIzaSyAZ9T16EZSngQxNevsil-txb3xpEC4RKIE"
+          body = json.dumps({"email": os.environ["BOT_EMAIL"], "password": os.environ["BOT_PASSWORD"], "returnSecureToken": True}).encode()
+          req = urllib.request.Request(f"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={key}", data=body, headers={"Content-Type": "application/json"})
+          print(json.loads(urllib.request.urlopen(req).read())["idToken"])
+          PY
+          )
+            echo "::add-mask::$TOKEN"
+            echo "FIREBASE_ID_TOKEN=$TOKEN" >> "$GITHUB_ENV"
+            echo "signed in as bot"
+          else
+            echo "no bot secrets set — anonymous reads (users/ and friendRequests/ will be skipped)"
+          fi
+      - name: Export every node
+        run: python backup_all.py
+      - name: Commit
+        run: |
+          git config user.name "chains-backup-bot"
+          git config user.email "backup@chains.app"
+          git add data/backups
+          git diff --staged --quiet || git commit -m "Nightly backup $(date -u +%Y-%m-%d)"
+          git push
