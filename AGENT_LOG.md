@@ -1259,3 +1259,26 @@ featured badge cleared for him to pick).
 - Health: Firebase (both projects) reads/writes verified during tests; GitHub Pages deploys
   verified at every version; Railway poller still writing `/live` (last 13:39Z today).
 - index.html v512.
+
+## 2026-10-22 — v513: Takeover + profile photos (sandbox rebuilt from live v512 first)
+
+- Sandbox was wiped overnight; rebuilt /tmp/chains from the live index.html (72 modules), build.py
+  (mods set now 24,57,42,38,45,32,31,70,68,17,19,47,58,41; base = app_v512.html), esbuild. Nothing
+  outside the sandbox was affected — GitHub + Firebase are the source of truth.
+- **Takeover (INTVL-style territory, plain words — no crowns/kings):** every hole at every course
+  has one owner = best average on that hole over your last 5 plays there within 90 days (ties:
+  more plays, then name). `courseStats` entries now carry per-hole scores `hs` (finalize +
+  one-time backfill of your own finished rounds, flag `chains_takeover_backfill_v1:<me>`).
+  `ChainsTakeover.compute(board)`, `.sync(courseId, board, me, name)` persists
+  `territory/{course}/holes/{n}` {key,name,avg,plays,since}, `/held/{key}` {count,holes}, `/meta`,
+  and notifies anyone who lost holes ("Will took holes 3, 7 at Otterburn"). `.mine(me)` = turf
+  line. UI: course page "Takeover" tile grid (6×3, owner colour, "You"/first name/open, owner
+  chips, How-it-works), Home "Your turf · N holes at M courses" chips → course page, finish card
+  "Takeover · you hold N of 18 · Took holes … from … · Lost holes … to …" (sync runs there).
+  Course card renamed "Course leaders": Most rounds · Course record · Most birdies · Best average.
+- **Profile photos:** Account → Profile photo (Take a photo / Choose / Remove). Centre-cropped to
+  128px JPEG (~3 KB) → `usernames/{me}/photo` + `users/{uid}/profile/photo`. `ChainsFriends.photo /
+  photoByName / setPhoto / myName / onChange`; `Avatar` prefers a photo (by name) over the picked
+  icon; WhoBadge re-renders on `chains:friends`. Rules v2 file: `territory` node added.
+- Verified on test.html: Otterburn board 2 rounds with hs → Will holds 18/18, sync wrote the map,
+  turf line + tiles render; photo save → header shows it; remove → gone. index.html v513.
