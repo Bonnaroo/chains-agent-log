@@ -1340,3 +1340,15 @@ featured badge cleared for him to pick).
   full crew. Home line is now "Your names · N" (firsts + holes owned).
 - **Branding:** header/login subtitle "Disc golf, with your crew"; `<title>Chains</title>` (build.py
   patches the shell). Rules v2 + `courseFirsts`. index.html v515.
+
+## 2026-10-22 — repo hygiene: everything lives in GitHub now
+
+- Will: no files in his Downloads, ever — everything goes to GitHub, labelled, so any app/AI can be pointed
+  at the repo. Added `README.md` (start here), `ops/README.md`, **`ops/TODO.md` (the running to-do list —
+  update every session)**, `ops/backups-kit/` (nightly full-DB export: script + workflow + 6-step README;
+  needs a PRIVATE repo `chains-backups` that only Will can create — all four current repos are public, so
+  the full export must not be committed to any of them). Deleted the copies from his Downloads.
+- Declined (third time) a UDisc county/bulk scraper skill Will pasted: UDisc's course maps are their
+  user-contributed data and their terms forbid automated collection; a competing app built on it is a
+  legal and reputational risk. Kept what's ours: the course/layout/hole JSON + GeoJSON schema (now our own
+  format), OSM (ODbL) + in-app "add your course" as the way to every course.
