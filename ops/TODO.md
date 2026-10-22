@@ -26,6 +26,15 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [ ] `will` Sentry (crash reporting) + UptimeRobot (uptime) — I give exact steps when you say go
 - [ ] `later` Consider making chains-agent-log private (it holds system docs; no secrets, no user data)
 
+## Course data (the side project — `chains-dgpt-data/pipeline/`)
+- [ ] `will` Click **Run workflow** once on "Course data pipeline" in chains-dgpt-data (Actions tab) — then it runs every Sunday on its own
+- [ ] `will` Send the three licence emails in `pipeline/SOURCES.md` (PDGA, UDisc, DiscGolfMetrix)
+- [ ] `todo` App: course catalog cache key should roll weekly so phones pick up pipeline updates without a release
+- [ ] `todo` App: "Add your course" flow (name, holes, pars, lengths, mark tees/baskets) + Pioneer name for the mapper; show `needs_review` courses as "community course — help map it"
+- [ ] `todo` Imagery for production: Esri Location Platform key (or MapTiler) before App Store
+- [ ] `later` Google Places: store `place_id` only; show rating/reviews live when a key exists
+- [ ] `later` County/city GIS park layers for Michigan first
+
 ## Growth
 - [ ] `todo` Brand guidelines: name is just **Chains**; colours/type already in the app's CSS variables; logo, voice, the one-line pitch
 - [ ] `todo` Web page (landing: what it is, screenshots, download/open link, "Names on the course" pitch)
