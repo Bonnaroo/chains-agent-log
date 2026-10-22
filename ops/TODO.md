@@ -12,11 +12,11 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [ ] `will` Railway env vars + service-account key for the password-reset worker
 
 ## Structure / UI (the uplift)
-- [ ] `todo` Home as tiles: Go Throw · Leagues · Live Chains · Me; bottom bar to match
+- [x] `done v516` Home as tiles: Go Throw · Courses · Leagues · Names · Friends · Bag · Live Chains · Me
 - [ ] `todo` Leagues hub: your course leagues + "Season 2026" archive card (standings, champion) — picks/dashboard live there
-- [ ] `todo` Live Chains dormant screen until spring 2027 (shows last event, says when it's back)
-- [ ] `todo` Me: profile photo, trophies, names, settings in one place
-- [ ] `todo` Bag moves under Go Throw; Takeover folded into Go Throw/courses, not a top-level thing
+- [x] `done v516` Live Chains dormant screen until spring 2027
+- [x] `done v516` Me: profile photo, trophies, names, settings in one place
+- [x] `done v516` Bag and Names grouped under Go Throw in More; Names tab lives on each course page
 - [ ] `todo` Copy audit: plain words, no jargon, no stray escape text (one found and fixed in v515)
 - [ ] `todo` Trophies 86 → 100 (ideas in AGENT_LOG 2026-10-22 brainstorm)
 
@@ -29,8 +29,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 ## Course data (the side project — `chains-dgpt-data/pipeline/`)
 - [ ] `will` Click **Run workflow** once on "Course data pipeline" in chains-dgpt-data (Actions tab) — then it runs every Sunday on its own
 - [ ] `will` Send the three licence emails in `pipeline/SOURCES.md` (PDGA, UDisc, DiscGolfMetrix)
-- [ ] `todo` App: course catalog cache key should roll weekly so phones pick up pipeline updates without a release
-- [ ] `todo` App: "Add your course" flow (name, holes, pars, lengths, mark tees/baskets) + Pioneer name for the mapper; show `needs_review` courses as "community course — help map it"
+- [x] `done v516` App: course catalog cache key rolls weekly
+- [ ] `todo` App: "Add your course" flow (community courses from the pipeline already show with a Pioneer note) (name, holes, pars, lengths, mark tees/baskets) + Pioneer name for the mapper; show `needs_review` courses as "community course — help map it"
 - [ ] `todo` Imagery for production: Esri Location Platform key (or MapTiler) before App Store
 - [ ] `later` Google Places: store `place_id` only; show rating/reviews live when a key exists
 - [ ] `later` County/city GIS park layers for Michigan first
