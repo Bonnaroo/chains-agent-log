@@ -1,9 +1,14 @@
-# chains-agent-log — the diary and the source of truth
+# chains-agent-log — the brain of Chains
 
-- `CHAINS_SYSTEM.md` — **read this first.** Architecture, data flow, Firebase schema, every known bug and its cause,
-  operating procedures, the off-season plan.
-- `AGENT_LOG.md` — dated entry for every production change and incident. Append, never rewrite.
-- `ROADMAP.md`, `PROGRESS.md` — direction and status.
-- `firebase/` — rules and deployment notes (the live rules in the Firebase console are authoritative; this copy lags).
-- `archive/2026-09-agent-company/` — the September multi-agent "company" experiment (workers, boards, inboxes,
-  playbooks). It looped on itself and was retired; kept for reference. Nothing in it is a live instruction.
+Chains is a disc golf app (score rounds, names on every course, leagues, your crew). The app itself is the
+single file `index.html` in `Bonnaroo/chains-app`; data files live in `Bonnaroo/chains-dgpt-data`; the
+scoring poller in `Bonnaroo/chains-poller`. **This repo is where any person, app or AI should start.**
+
+1. `HANDOFF.md` — read first. What it is, where everything lives, how to build, ship and test.
+2. `CHAINS_SYSTEM.md` — architecture and data model.
+3. `AGENT_LOG.md` — what changed, when, and why (newest at the bottom).
+4. `ops/TODO.md` — the running to-do list. `ops/` — procedures and kits.
+5. `firebase/` — database rules.
+
+Owner: Will (commissioner). Rules of the road: ship to `test.html` first, verify in a real browser, then
+`index.html`; log every deploy; keep words plain; nothing from UDisc is copied.
