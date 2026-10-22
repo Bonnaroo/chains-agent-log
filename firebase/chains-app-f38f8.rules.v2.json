@@ -231,6 +231,14 @@
       "$code": {
         ".write": "auth != null && !data.exists()"
       }
+    },
+    "courseFirsts": {
+      ".read": "auth != null",
+      "$course": {
+        "$id": {
+          ".write": "auth != null && !data.exists()"
+        }
+      }
     }
   }
 }
