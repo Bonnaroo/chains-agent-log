@@ -1352,3 +1352,17 @@ featured badge cleared for him to pick).
   user-contributed data and their terms forbid automated collection; a competing app built on it is a
   legal and reputational risk. Kept what's ours: the course/layout/hole JSON + GeoJSON schema (now our own
   format), OSM (ODbL) + in-app "add your course" as the way to every course.
+
+## 2026-10-22 — course-data pipeline (side project) in chains-dgpt-data/pipeline
+
+- Legal sources only. `collect_osm_courses.py`: one Overpass query per US state (or world regions),
+  courses (`leisure=disc_golf_course` / `sport=disc_golf`) + every `disc_golf=tee|basket` node; true state
+  from Census polygons (public domain, cached); nodes attached to the nearest course ≤1.5 km.
+  `merge_courses.py`: folds into `data/courses.json` with provenance (`osm`, `source_osm`, `attribution`),
+  never deletes, hand-made fields win, new courses get `needs_review`, writes `data/geo/osm/<id>.json`
+  for courses with 9+ baskets (ref= numbers assign holes). Test MI+OH: 270 OSM courses (MI 72), 41 with
+  geometry; merge into the 473-course catalog → 610 (58 matched, 137 added, 54 geometry files).
+  Worldwide OSM has ~2,800 courses / ~11,000 tees+baskets (taginfo). Weekly workflow Sundays 08:00 UTC
+  (`course-pipeline.yml`, manual run available). `SOURCES.md` lists every source and licence, incl. what
+  Google Places allows (place_id only), imagery licensing, and the three licence emails for Will.
+- Not used: UDisc (decision), Kaggle PDGA scrape (CC0 label can't cover PDGA's rights — reference only).
