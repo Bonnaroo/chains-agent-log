@@ -12,6 +12,11 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [ ] `will` Railway env vars + service-account key for the password-reset worker
 
 ## Structure / UI (the uplift)
+- [x] `done v519` DESIGN.md rulebook; real icons; 4 Home tiles; bar Home·Courses·Play·Challenges·More; More = rarely used; Names → Challenges/Territory; season page cleanup; reveal capped
+- [ ] `todo` "Show all" stats page: make it worth opening (month/year numbers, trends, best rounds, recent trophies)
+- [ ] `todo` Go Throw hub: trim to rounds + stats + trophies; move rivalries/aces/crew rounds behind their own rows
+- [ ] `todo` Trophies: "Next up" progression card; steeper tiers after the first so earning feels rare by month two
+- [ ] `todo` Leagues: many more options — schedule/weeks, divisions, scoring per week, reminders, calendar
 - [x] `done v516` Home as tiles: Go Throw · Courses · Leagues · Names · Friends · Bag · Live Chains · Me
 - [ ] `todo` Leagues hub: your course leagues + "Season 2026" archive card (standings, champion) — picks/dashboard live there
 - [x] `done v516` Live Chains dormant screen until spring 2027
