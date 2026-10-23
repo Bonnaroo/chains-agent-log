@@ -37,7 +37,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [ ] `will` Click **Run workflow** once on "Course data pipeline" in chains-dgpt-data (Actions tab) — then it runs every Sunday on its own
 - [ ] `will` Send the three licence emails in `pipeline/SOURCES.md` (PDGA, UDisc, DiscGolfMetrix)
 - [x] `done v516` App: course catalog cache key rolls weekly
-- [ ] `todo` App: "Add your course" flow (community courses from the pipeline already show with a Pioneer note) (name, holes, pars, lengths, mark tees/baskets) + Pioneer name for the mapper; show `needs_review` courses as "community course — help map it"
+- [x] `done v531` App: "Add your course" (name, town, holes, pars, GPS) → playerCourses, merged into the catalog, community note on the page
+- [ ] `todo` Pipeline: promote reviewed playerCourses into courses.json (weekly job reads Firebase); lengths + tee/basket mapping from the Holes tab
 - [ ] `todo` Imagery for production: Esri Location Platform key (or MapTiler) before App Store
 - [ ] `later` Google Places: store `place_id` only; show rating/reviews live when a key exists
 - [ ] `later` County/city GIS park layers for Michigan first
@@ -47,7 +48,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [ ] `todo` Web page (landing: what it is, screenshots, download/open link, "Names on the course" pitch)
 - [ ] `todo` **Course stickers with a QR code** — posted at courses: "Think you own this course? Prove it." / "Every hole here has a name on it. Is it yours?" → QR opens the app at that course (link `#course=<id>`)
 - [ ] `todo` App Store: PWA first (Add to Home Screen, icon, offline shell), then Capacitor wrapper → Apple ($99/yr) + Google ($25)
-- [ ] `todo` "Add your course" flow so players can create a course page in two minutes (hole count, pars, lengths, mark tees/baskets on site) — how we get every course without copying anyone's data
+- [x] `done v531` "Add your course" flow (two minutes: name, town, holes, pars, location)
 - [ ] `later` Bag tags (crew ladder), call-outs (hole challenges between two players)
 
 ## Challenges & trophies (CHALLENGES.md build order)
