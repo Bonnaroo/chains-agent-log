@@ -13,9 +13,10 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 
 ## Structure / UI (the uplift)
 - [x] `done v519` DESIGN.md rulebook; real icons; 4 Home tiles; bar Home·Courses·Play·Challenges·More; More = rarely used; Names → Challenges/Territory; season page cleanup; reveal capped
-- [ ] `todo` "Show all" stats page: make it worth opening (month/year numbers, trends, best rounds, recent trophies)
-- [x] `done v521` Go Throw hub: menu of rows, each feature on its own screen
-- [ ] `todo` Trophies: "Next up" progression card; steeper tiers after the first so earning feels rare by month two
+- [x] `done v527` My stats: rating hero + trend, scoring mix, last six months, home course numbers
+- [ ] `todo` Go Throw hub: trim to rounds + stats + trophies; move rivalries/aces/crew rounds behind their own rows
+- [x] `done v525` Trophies: "Next up" progression card · `done v526` SVG glyphs, no emoji anywhere in trophies
+- [ ] `todo` Steeper tiers after the first so earning feels rare by month two (Will: ~30 early trophies too easy)
 - [ ] `todo` Leagues: many more options — schedule/weeks, divisions, scoring per week, reminders, calendar
 - [x] `done v516` Home as tiles: Go Throw · Courses · Leagues · Names · Friends · Bag · Live Chains · Me
 - [ ] `todo` Leagues hub: your course leagues + "Season 2026" archive card (standings, champion) — picks/dashboard live there
@@ -27,7 +28,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 
 ## Ops (policies, procedures, backups)
 - [ ] `will` Create PRIVATE repo `chains-backups` and follow `ops/backups-kit/README.md` (6 steps) — until then the nightly rounds backup in chains-dgpt-data is the only one, and that repo is public
-- [ ] `todo` OPERATIONS.md: release procedure, backup/restore, incident steps, data retention, who does what
+- [x] `done 2026-10-23` OPERATIONS.md: release procedure, rollback, backup/restore, incident steps, weekly checks, who does what
 - [ ] `will` Sentry (crash reporting) + UptimeRobot (uptime) — I give exact steps when you say go
 - [ ] `later` Consider making chains-agent-log private (it holds system docs; no secrets, no user data)
 
@@ -48,7 +49,20 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [ ] `todo` "Add your course" flow so players can create a course page in two minutes (hole count, pars, lengths, mark tees/baskets on site) — how we get every course without copying anyone's data
 - [ ] `later` Bag tags (crew ladder), call-outs (hole challenges between two players)
 
+## Challenges & trophies (CHALLENGES.md build order)
+- [x] `done v524` Home course + mastery map + "What moved" recap
+- [x] `done v525` Week · Month · Trophies tabs, month set + Month complete ladder, points, streak freeze
+- [x] `done v527` Trophy points board (everyone on Chains)
+- [ ] `todo` Titles: pick one earned tier name to show under your name (profile + friends list)
+- [ ] `todo` Crowns v2 on the course page: course champion (season), local regular (distinct days, 90 d), birdie leader (distinct holes), most improved; dated achievement when lost
+- [ ] `later` Crew challenges (crew birdie map, team improvement) once there are local players
+- [ ] `later` Practice tracking (opt-in; putting / range) — never claims causation
+
 ## Done recently
+- `done v527` My stats rebuilt, trophy points board, rating pin used everywhere (Me view showed 965, now 830)
+- `done v526` SVG trophy glyphs, duplicate ladder id fixed · `v525` Challenges tabs, month set, points, streak freeze
+- `done v524` home course + mastery map · `v523` Home = progress/last round/trophies/this week · `v522` Challenges rebuilt, scoreboard
+- `done v519` DESIGN.md + de-gimmick pass · `v517-518` group scoring rows, finish-now, scorecard strip fix
 - `done v515` Names on the course (firsts + holds), course page tabs, in-round owner target + "hole is yours", crews emblem/colour/cap, branding = Chains
 - `done v514` Takeover hub + crews + monthly race, lost & found, 86 trophies, leagues v2 (pledge/handicap/verified/final/ace pot), HANDOFF.md
 - `done v513` Takeover v1, profile photos · `v512` rating pinned per course, weekly challenges · `v511` floating hole bar, ace mis-tap protection · `v510` score pad
