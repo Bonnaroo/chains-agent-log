@@ -1576,3 +1576,19 @@ featured badge cleared for him to pick).
   restore, incident checklist, weekly checks, data policy, who does what, Will's standing actions. README
   reading order updated. ops/TODO.md refreshed (v525–v527 ticked; Challenges section added).
 - index.html **v528**.
+
+## 2026-10-23 — v529: first tiers steeper, titles, the Me page gets a door
+
+- **Trophy tiers** (module 32 `FIRST_TIER`): ladders that were "it happened once" now need 3 for the first
+  tier (cheers given: 5). Real firsts stay at 1 (first round, first birdie, first ace, first eagle, first
+  under-par round, first clean card, course record, new state/country, perfect week, month complete, lost &
+  found return...). Will's three rounds went from 27 earned to 19. Later tiers untouched.
+- **Titles**: the featured trophy is now shown as a *title* — plain text under the username on the Me page
+  ("Birdie machine · Bronze", in the tier colour; no emoji), and under each name on the Trophy points
+  board (reads the public `usernames/{key}/badge`). Trophy case buttons read "Make it my title" / "Your
+  title". Will's title was left unset (the harness test set and cleared it).
+- **Me page had no way in** since the uplift (Home → Profile went to account settings). Home → Profile now
+  opens the Me page (photo, name, title, rounds/best/trophies/points, rows for account, trophies,
+  territory, bag, friends, settings); "Profile photo & account" inside it goes to settings.
+- Header chip no longer shows " · C" after the commissioner's name (jargon).
+- index.html **v529**.
