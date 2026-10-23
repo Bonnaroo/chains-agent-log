@@ -143,7 +143,7 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 
 ## 9. CURRENT STATE — update this every deploy
 
-- **Live:** index.html **v532** (2026-10-23). Staging test.html v532. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
+- **Live:** index.html **v533** (2026-10-23). Staging test.html v533. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
 - **Just shipped:** Takeover hub (month race, courses, crews), lost & found per course, 86 trophies,
   leagues v2 (pledge-to-start, handicap, verified-only, final/judge, ace pot), profile photos.
 - **Known gaps / next:** second test account for two-player checks (none exists yet — create one via the
