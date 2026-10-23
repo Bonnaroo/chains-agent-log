@@ -1558,3 +1558,21 @@ featured badge cleared for him to pick).
   calling `ChainsRating.playerRating` on raw records, which ignored the Otterburn pin and showed 965
   "Advanced"; now 830 "Weekend warrior" on both, matching the finish card.
 - index.html **v527**.
+
+## 2026-10-23 — v528: crowns v2 on the course page; OPERATIONS.md
+
+- **Course records card** (course page → Territory) now has seven lines: Course record · **Course champion
+  <year>** (best full round this calendar year; resets in January) · **Local regular** (most different days
+  played here in the last 90 days, 3+ to qualify) · **Birdie leader <year>** (most *different* holes birdied
+  this year) · Most rounds · Most birdies · Best average. Computed in `ChainsRounds.courseTerritory(board,
+  me, fallbackPars)` (module 31); entries without `pars` use the catalog's `hole_pars`.
+- **Persisted + dated**: `ChainsTakeover.sync` (runs when a round finishes) writes
+  `territory/{course}/crowns/{record|champion|regular|birdieLeader}` = {key, name, title, since}. When a
+  crown changes hands the previous holder gets a `territory/{course}/heldLog/{player}/{id}-{since}` line
+  (title, from, to, lostTo) and a bell notice ("<name> took course champion 2026 at Otterburn. You held it
+  since Sep 3."). The card shows "You held — <title> · <from> to <to> · taken by <name>".
+- The "ones to beat" tally counts the three new crowns (names per course = N×4 + 7 + firsts).
+- **OPERATIONS.md** written in chains-agent-log: inventory, release procedure, rollback, backups table +
+  restore, incident checklist, weekly checks, data policy, who does what, Will's standing actions. README
+  reading order updated. ops/TODO.md refreshed (v525–v527 ticked; Challenges section added).
+- index.html **v528**.
