@@ -1467,3 +1467,23 @@ featured badge cleared for him to pick).
 - Verified in the harness: 5 rows, each section opens and returns, 0 console errors. index.html v521.
 - Harness note: a frozen renderer after long sessions — navigate the tab to a fresh harness URL and rebuild
   the iframe rather than retrying the same tab state.
+
+## 2026-10-23 — v522: Challenges rebuilt around personal weekly challenges + a community scoreboard
+
+- Will on v521: "Your territory / Otter crew / latest moves" made no sense; owning all 18 holes off one
+  visit was cheesy; he wants personal weekly challenges that get people out, a reward for doing them all,
+  and a scoreboard of who completed them and who had the best round.
+- **Challenges screen** = week header → **This week** (3 challenges) → perfect weeks · streak · total →
+  **This week on Chains** (challenges completed per player, best rounds this week, most rounds).
+  Territory/crews/latest moves removed from the screen (course-page Territory tab stays; crew code dormant).
+- **Progressive targets:** rounds = round(last-4-weeks average + 0.6) clamped 1–4; birdies = round(max(1.5,
+  your birdies-per-round) × rounds + 1) clamped 2–24; third rotates (never-birdied hole at home · beat
+  your average · clean nine). Progress bars on the card. Perfect week = all three; `perfectWeeks()` and
+  `perfectStreak()`; new trophies **Perfect week** (1/4/12/30) and **Streak** (2/4/8/16) → 88 trophies.
+- **Scoreboard data:** each client writes a small public card `weekly/{YYYY-Www}/{key}` {name, done, total,
+  rounds, best, bestCourse} when it changes; best/most rounds come from `courseStats` filtered to the week.
+  Rules v2 + `weekly` (own key). Completions stay private in `users/{uid}/challenges`.
+- **Ownership rule:** `ChainsTakeover.MIN = 3` plays on a hole before anyone can own it. Otterburn re-synced:
+  all 18 open; Will's held/counters cleared; territoryLog cleared. Deleted the "Otter Crew" I had created.
+- Home tiles are now Go Throw · Leagues (Courses and Challenges are on the bar). Will's challenge history
+  reset to the new ids (2 of 3 this week). index.html v522.
