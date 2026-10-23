@@ -1422,3 +1422,25 @@ featured badge cleared for him to pick).
   Dashboard with window error / unhandledrejection / console.error hooks: 0 errors.
 - Harness note: the Chrome extension's renderer can time out (45 s) on a long iframe script; split into
   shorter batches. index.html v518.
+
+## 2026-10-23 — v519: DESIGN.md + de-gimmick pass (Will's walkthrough)
+
+- Will's walkthrough of v518: too many tiles, emoji icons gimmicky ("Me 🙂"), "Names" is the wrong word,
+  Friends/Bag don't belong up front, More duplicated the bar, Leagues/Go Throw don't need bar slots, ~30
+  trophies at once felt cheap (but the reveal felt good), league creation needs far more (scheduler), the
+  season page still offered add-members/pool/invites, Show-all stats page is plain, Go Throw hub is busy.
+- **DESIGN.md** written (chains-agent-log): hard rules (no emoji icons — `Icons.*` only; one accent;
+  one type family and 5 sizes; 8-px grid; ≥44 px targets; back control everywhere; nothing auto-moves;
+  no stray text; portals), structure (bar = Home · Courses · Play · Challenges · More; Home = 4 tiles;
+  More = rarely used), components, scoring-screen layout, trophies (reveal ≤5), copy, ship checklist.
+- **App:** module 46 gained Home/Flag/Map/Backpack/User/Compass/Layers/Tv icons (in build set). Bottom bar
+  now Home · Courses · Play · Challenges · More. Home = greeting, month numbers (SVG icons), Start a round,
+  4 tiles (Go Throw · Courses · Leagues · Challenges), week, territory line, news, feed. "Names" →
+  **Challenges** (screen: this week's challenges + "Your territory" + month race/courses/crew) and the course
+  tab is **Territory**. More = You (Bag · Friends & messages · Profile & settings) / Play (Leagues · Watch)
+  / Season 2026 (Dashboard · Picks · Standings · Live Chains) + Sign out. Me rows use icons. Season page
+  hides add-members/pool/invites once the season is done. Trophy reveal shows the top 5 by tier + "+N more
+  in your trophy case".
+- Verified in the harness: bar labels, no emoji on Home, Challenges and More render, 0 console errors.
+  index.html v519. Still to do from the walkthrough: Show-all stats page content, Go Throw hub trim,
+  "Next up" trophy progression, league options + scheduler.
