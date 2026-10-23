@@ -57,6 +57,12 @@ Goal: a free app people come back to because of trophies + territory, then a rea
   per-hole array (used by Takeover).
 - **Gotcha #4:** `raw.githubusercontent.com` ignores query strings for cache busting; bump `CAT_VER` in
   module 45 and wait.
+- **Gotcha #5:** Python edit scripts — check every anchor (`assert s.count(a) == 1`) *before* any replace,
+  and write the file once at the end. A script that crashes on a later anchor leaves the earlier
+  replacements unwritten, and the next build silently ships half a change (v530 "kind is not defined").
+  Validate `out.encode('utf-8')` before writing. No trailing commas on edit tuples.
+- **Gotcha #6:** DESIGN.md §3 — no emoji as icons. Trophies render through `BadgeIcon` (`ChainsBadges.glyphName`);
+  the `icon` field in ladder data is never shown.
 - Identity: a player is a **member key** (`will`, `kyle`…) = lowercase username; auth uid lives at
   `users/{uid}/profile.memberId`. Public per-player card: `usernames/{key}` {uid,name,disc,badge,photo}.
 
@@ -102,10 +108,16 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 - Rounds: `playRounds/{id}` (owner), `sharedRounds/{id}` (everyone on the card), `liveRounds/{id}` (open
   only), `roundsByPlayer/{key}/{id}`, `courseStats/{course}/{id}` (per-course aggregate incl. `hs`).
 - Takeover: `territory/{course}/holes/{n}` {key,name,avg,plays,since}, `/held/{key}`, `/meta`
-  {sweptBy…}; `territoryLog/{YYYY-MM}/{id}`; `users/{uid}/takeover` counters; crews: `crews/{id}`,
-  `crewByUser/{key}`, `crewCodes/{CODE}`.
+  {sweptBy…}, `/crowns/{record|champion|regular|birdieLeader}` {key,name,title,since},
+  `/heldLog/{key}/{id-since}` {title,from,to,lostTo}; `territoryLog/{YYYY-MM}/{id}`; `courseFirsts/{course}`;
+  `users/{uid}/takeover` counters; crews (dormant): `crews/{id}`, `crewByUser/{key}`, `crewCodes/{CODE}`.
 - Leagues: `courseLeagues/{id}` (+ `minPlayers`, `signupBy`, `finalAt`, `judge`, `acePot`, `verifiedOnly`,
-  `members{key}.hcp`), `courseLeagueCodes/{CODE}`.
+  `members{key}.hcp|.division`, weekly: `format:"weekly"`, `schedule{day,time,weeks,firstAt,countBest,dayOnly}`,
+  `divisions`), `courseLeagueCodes/{CODE}`.
+- Challenges: `weekly/{YYYY-Www}/{key}` public weekly card, `users/{uid}/challenges/{week|month}`,
+  `usernames/{key}.points` (trophy points, public), `usernames/{key}.badge` (= the player's title).
+- Courses: catalog = courses.json (chains-dgpt-data) + `playerCourses/{pc-id}` (player-added, merged on
+  load), `users/{uid}/profile/homeCourse`.
 - Community: `courseCommunity/{course}/{ratings|notes}`, `lostFound/{course}/{id}`, `courseGeo/{course}`.
 - People: `users/{uid}`, `usernames/{key}`, `friends`, `friendRequests`, `friendCodes`, `messages/{a~b}`,
   `threads`, `users/{uid}/badgeSnap`, `users/{uid}/challenges/{week}`.
