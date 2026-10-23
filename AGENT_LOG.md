@@ -1453,3 +1453,17 @@ featured badge cleared for him to pick).
 - Scoring screen order is now strip → hole header (30 px number) → map (170 px) → player rows → hint →
   floating bar. Measured in the 400×760 harness: row bottom 582 < bar top 614 — the whole thing fits
   without scrolling. index.html v520.
+
+## 2026-10-23 — v521: Go Throw hub trimmed (one feature per screen)
+
+- Will's reference boards (golf/sports score apps) → DESIGN.md §11: one idea per screen, big single number,
+  avatar·name·number lists, scorecards as coloured grids, one accent used sparingly, 4–5 tab bar with a
+  raised centre, cards don't nest. His instruction: trim, don't overwhelm, features clearly separated.
+- **Go Throw hub** is now: Start a round · Plan a round · live-now cards (only when any) · lifetime numbers ·
+  a menu of rows — My rounds (recent list + UDisc import/export), My stats, Trophy case, Your territory,
+  Rivalries & aces, Your crew's rounds (only when any). Each row opens its own screen with a back control
+  (`throwSec` state). The old stacked hub (hero, three big buttons, territory strip, crew, rivalries, aces,
+  shelf, recent rounds all on one page) is gone.
+- Verified in the harness: 5 rows, each section opens and returns, 0 console errors. index.html v521.
+- Harness note: a frozen renderer after long sessions — navigate the tab to a fresh harness URL and rebuild
+  the iframe rather than retrying the same tab state.
