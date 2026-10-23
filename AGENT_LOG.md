@@ -1592,3 +1592,28 @@ featured badge cleared for him to pick).
   territory, bag, friends, settings); "Profile photo & account" inside it goes to settings.
 - Header chip no longer shows " · C" after the commissioner's name (jargon).
 - index.html **v529**.
+
+## 2026-10-23 — v530: weekly leagues (the league builder Will asked for)
+
+- **Kind of league** on the create form: *One window* (the old "play by a date" with the five formats) or
+  **Weekly league**: pick the league night (Sun–Sat), a tee time (free text, shown to players), the first
+  night (defaults to the next one), how many weeks (4/6/8/10/12). Best N of M weeks count (N = M minus a
+  quarter), so missing a week or two is fine. Options: *Only rounds on league night count* (off = any round
+  that week) and *Divisions by rating* (Open 900+ · Intermediate 850–899 · Recreational under 850, assigned
+  from the player's Chains rating when they create/join; stored on `members/{k}.division`).
+- Record: `format: "weekly"`, `schedule: { day, time, weeks, firstAt, countBest, dayOnly }`, `divisions`;
+  `startAt/endAt` derived. Engine (module 68): `weeksOf`, `currentWeek`, `weeklyStandings` (best round per
+  week per member → season = sum of best N; incomplete players sort below complete ones), `divisionFor`,
+  `remindMe`.
+- **League page**: header says "every Fri 6:00 pm · 8 weeks"; a **Weeks** grid (this week highlighted,
+  your score per week once played, the night's date before), standings grouped by division when on,
+  **Add to calendar** (an .ics with a weekly RRULE — opens in the phone calendar).
+- **Reminders**: when the app loads the leagues node, a bell note to yourself the day before and the day of
+  each league night ("Otterburn Fri league is tomorrow — week 3 of 8 at 6:00 pm"), once per week per league.
+- Share text and the invite note describe the schedule. Harness test created and deleted an 8→4-week
+  league at Otterburn (0 console errors). `window.playerRatingFor` is now exposed from module 45 for
+  divisions.
+- Gotcha for future edits: a Python edit script that asserts *after* earlier replacements and crashes
+  before writing leaves those earlier replacements unapplied — the second v530 build was missing the form
+  state ("kind is not defined") for that reason. Write once, at the end, and re-check all anchors first.
+- index.html **v530**.
