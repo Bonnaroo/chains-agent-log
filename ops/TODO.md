@@ -17,7 +17,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [ ] `todo` Go Throw hub: trim to rounds + stats + trophies; move rivalries/aces/crew rounds behind their own rows
 - [x] `done v525` Trophies: "Next up" progression card · `done v526` SVG glyphs, no emoji anywhere in trophies
 - [x] `done v529` First tiers steeper (event ladders need 3); 27 → 19 earned on Will's three rounds
-- [ ] `todo` Leagues: many more options — schedule/weeks, divisions, scoring per week, reminders, calendar
+- [x] `done v530` Weekly leagues: league night + weeks, best N of M, league-night-only option, divisions by rating, week grid, reminders, calendar file
+- [ ] `todo` Leagues next: points-per-week scoring (10/8/6…), doubles/partner format, commissioner can edit the schedule after creation, per-week card view
 - [x] `done v516` Home as tiles: Go Throw · Courses · Leagues · Names · Friends · Bag · Live Chains · Me
 - [ ] `todo` Leagues hub: your course leagues + "Season 2026" archive card (standings, champion) — picks/dashboard live there
 - [x] `done v516` Live Chains dormant screen until spring 2027
