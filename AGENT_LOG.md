@@ -1617,3 +1617,20 @@ featured badge cleared for him to pick).
   before writing leaves those earlier replacements unapplied — the second v530 build was missing the form
   state ("kind is not defined") for that reason. Write once, at the end, and re-check all anchors first.
 - index.html **v530**.
+
+## 2026-10-23 — v531: add your course (how we get every course without copying anyone's data)
+
+- **Courses → "Course not listed? Add it in two minutes"**: name, town + state, holes (9/18/24/27), pars
+  (tap a hole: 3 → 4 → 5), optional location from the phone's GPS. Saves to **`playerCourses/{pc-id}`**
+  (name, city, state, holes, hole_pars, par_total, lat/lng, community: true, needs_review: true, addedBy,
+  addedUid, addedName, createdAt, source: "player") and opens the course page immediately — the adder is
+  its first name (firsts work as on any course).
+- `loadCatalog()` now loads `playerCourses` alongside courses.json and merges them (`ChainsPlayerCourses`
+  in module 45: load / merge / add). Everyone sees a player-added course at once; the weekly pipeline can
+  later promote reviewed ones into courses.json.
+- Course page shows "Community course · added by <name>. Pars from the player; map it on the Holes tab."
+- Rules v2 file: `playerCourses` (read signed-in; write by creator; must have name/holes/hole_pars/
+  addedUid). Backup kit NODES: + playerCourses, weekly. Current (v1) rules already accepted the write in
+  the harness (created and deleted "HARNESS Test Course", 9 holes, par 27; 0 console errors).
+- Web app manifest name is now just "Chains" (was "Chains · Fantasy DGPT").
+- index.html **v531**.
