@@ -1444,3 +1444,12 @@ featured badge cleared for him to pick).
 - Verified in the harness: bar labels, no emoji on Home, Challenges and More render, 0 console errors.
   index.html v519. Still to do from the walkthrough: Show-all stats page content, Go Throw hub trim,
   "Next up" trophy progression, league options + scheduler.
+
+## 2026-10-23 — v520: scoring screen laid out per DESIGN.md §10
+
+- Will supplied a golf-app UI brief; adopted/not-adopted written into DESIGN.md §10 (adopted: hole tracker
+  on top, score controls in the thumb zone, oversized type only for score/hole, rank-change arrows,
+  feed tab, visible "saved" state, opt-in telemetry; rejected: auto-advance, second accent, glow shadows).
+- Scoring screen order is now strip → hole header (30 px number) → map (170 px) → player rows → hint →
+  floating bar. Measured in the 400×760 harness: row bottom 582 < bar top 614 — the whole thing fits
+  without scrolling. index.html v520.
