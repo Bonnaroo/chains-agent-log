@@ -1647,3 +1647,14 @@ featured badge cleared for him to pick).
   `courseLeagues/{id}.winner` the first time a member opens it after the end).
 - Count is exactly 100, no duplicate ids; Will: 19 of 100 earned. 0 console errors, 0 emoji.
 - index.html **v532**.
+
+## 2026-10-23 — v533: emoji sweep (DESIGN.md §3)
+
+- Walked every screen in the 400-px harness counting emoji in rendered text. Replaced: the friends-list
+  message button (Icons.Chat), the share sheet rows (Chat/Send/Pin), course facts (Pin/Target/Layers),
+  the finish summary ("⛳ strokes · 🐦 birdies · ☀️" → plain words "Rain/Cloudy/Clear"), territory
+  markers on the course list ("🥏/🏆" → "Most rounds", "Record"), the "Bird" column header, hole-note
+  markers (📍 → "note"), lost & found pills and icons (Search/Disc), round-detail facts.
+- Left on purpose: the ★ star rating control (a rating widget, not an icon) and reaction emoji people
+  pick themselves (cheers) — both allowed by DESIGN.md.
+- index.html **v533**.
