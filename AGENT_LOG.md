@@ -1381,3 +1381,21 @@ featured badge cleared for him to pick).
   courses added by the weekly pipeline reach phones without a release. Courses with `needs_review` show a
   "community" tag in the picker and a "Community course… be its Pioneer" note on the course page.
 - Bottom bar unchanged (Home · Courses · Play · Friends · Leagues · More). index.html v516.
+
+## 2026-10-23 — v517: scoring with a card, short rounds (after Will + Kyle's 9-hole round)
+
+- Will's 10/22 round with Kyle (pr-mvjun, Otterburn, 9 holes each) is still OPEN in liveRounds: the pad's
+  auto-advance to the next player confused them ("it would start on me"), and there was no visible way to
+  close a 9-hole round. Kyle's side is fine: he's a participant, `roundsByPlayer/kyle` indexed, account exists.
+- **Scoring rows:** back to one self-contained row per player — [−] [score] [+]; the score box shows the par
+  dashed ("tap for par 3") until tapped, then colours by result with a word under it (birdie/par/bogey…).
+  Nothing moves on its own; the floating bar's Next is the only way forward. Pad removed. Take-moment and
+  ace logic unchanged (through `tap()`).
+- **Finish now:** when at least one hole is scored and it's not the last hole, the floating bar shows
+  "Playing fewer holes? Finish now" → confirm "Finish after 9 of 18 holes?" → saves as a 9-hole round
+  (unplayed holes blank; courseStats only counts full rounds, so names/records aren't affected).
+- **Holes to play** at round setup (Customize): All 18 / Front 9 / Back 9 → sets the start hole and an
+  `endHole` so the bar says "Finish round" at hole 9 or 18. History rows show "9 of 18 holes".
+- Chrome extension was offline, so this build was syntax-checked and load-tested (modules load clean on
+  test.html) but not driven through the scoring screen — Will to resume the open round and tap Finish now.
+- Sandbox rebuilt from live v516 (second time); build.py now patches the `<title>` too. index.html v517.
