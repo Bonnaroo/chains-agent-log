@@ -7,7 +7,8 @@ scoring poller in `Bonnaroo/chains-poller`. **This repo is where any person, app
 1. `HANDOFF.md` — read first. What it is, where everything lives, how to build, ship and test.
 2. `CHAINS_SYSTEM.md` — architecture and data model.
 3. `AGENT_LOG.md` — what changed, when, and why (newest at the bottom).
-4. `ops/TODO.md` — the running to-do list. `ops/` — procedures and kits.
+4. `DESIGN.md` (how screens must look) and `CHALLENGES.md` (how trophies, challenges, home course and crowns fit together).
+5. `ops/TODO.md` — the running to-do list. `ops/` — procedures and kits.
 5. `firebase/` — database rules.
 
 Owner: Will (commissioner). Rules of the road: ship to `test.html` first, verify in a real browser, then
