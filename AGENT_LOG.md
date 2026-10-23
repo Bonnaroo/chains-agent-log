@@ -1634,3 +1634,16 @@ featured badge cleared for him to pick).
   the harness (created and deleted "HARNESS Test Course", 9 holes, par 27; 0 console errors).
 - Web app manifest name is now just "Chains" (was "Chains · Fantasy DGPT").
 - index.html **v531**.
+
+## 2026-10-23 — v532: 100 trophies
+
+- Eleven new ladders (module 32, all with SVG glyphs): **Front nine collected** / **Back nine collected**
+  (birdie every hole of that nine at a course, lifetime), **Problem solved** (a hole that averaged +1 or
+  worse over your first three plays, now par-or-better on 3 of your last 5 — needs 6+ plays), **Beat your
+  ghost** (beat your recent 5-round average at a course by 2+; needs 3 prior full rounds there), **Birdie
+  run** (five in a row), **Dime** (ten birdies in a round), **Nine counts** (full 9-hole rounds, 3/10/30),
+  **Long haul** (24-hole-plus courses), **Return visit** (back at a course after 30+ days), **League
+  player** (course leagues joined), **League winner** (first in an ended league — the league page writes
+  `courseLeagues/{id}.winner` the first time a member opens it after the end).
+- Count is exactly 100, no duplicate ids; Will: 19 of 100 earned. 0 console errors, 0 emoji.
+- index.html **v532**.
