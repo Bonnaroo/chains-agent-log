@@ -25,7 +25,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done v516` Me: profile photo, trophies, names, settings in one place
 - [x] `done v516` Bag and Names grouped under Go Throw in More; Names tab lives on each course page
 - [ ] `todo` Copy audit: plain words, no jargon, no stray escape text (one found and fixed in v515)
-- [ ] `todo` Trophies 86 → 100 (ideas in AGENT_LOG 2026-10-22 brainstorm)
+- [x] `done v532` Trophies → 100 (collections, problem solved, beat your ghost, birdie run, dime, nine counts, long haul, return visit, league player/winner)
 
 ## Ops (policies, procedures, backups)
 - [ ] `will` Create PRIVATE repo `chains-backups` and follow `ops/backups-kit/README.md` (6 steps) — until then the nightly rounds backup in chains-dgpt-data is the only one, and that repo is public
