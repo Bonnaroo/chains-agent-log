@@ -1399,3 +1399,10 @@ featured badge cleared for him to pick).
 - Chrome extension was offline, so this build was syntax-checked and load-tested (modules load clean on
   test.html) but not driven through the scoring screen — Will to resume the open round and tap Finish now.
 - Sandbox rebuilt from live v516 (second time); build.py now patches the `<title>` too. index.html v517.
+- 2026-10-23 later: Chrome extension back; v517 driven on test.html signed in as Will: Front 9 chosen at
+  setup → hole 1 "tap for par" → Next · Hole 2 → + then − on the same row (stayed on hole 2, nothing moved)
+  → hole 3 shows "Finish now" → hole 9 bar reads "Finish round" → Finish now from hole 3 → confirm → finish
+  card "E (12) thru 4". Test round removed; badge snapshot rebuilt (25 earned). Will + Kyle's open round
+  (pr-mvjun, thru 9) untouched — Will closes it with Finish now.
+- Point-in-time zip of all four repos written to Will's Desktop/Chains-backup/ (he asked for a copy on the
+  computer as well as GitHub). GitHub stays the source of truth.
