@@ -1487,3 +1487,20 @@ featured badge cleared for him to pick).
   all 18 open; Will's held/counters cleared; territoryLog cleared. Deleted the "Otter Crew" I had created.
 - Home tiles are now Go Throw · Leagues (Courses and Challenges are on the bar). Will's challenge history
   reset to the new ids (2 of 3 this week). index.html v522.
+
+## 2026-10-23 — v523: Home reworked, challenge pool expanded
+
+- Will: keep the month progress; add last round + recent badges; drop the Start button (Play is on the
+  bar); Home must reach everything without More; the specific-hole challenge must be a HARD hole; more
+  challenges, some required and some to go after; Home course idea; look at WoW/Audible for retention.
+- **Home** = greeting · month numbers · **everything row** (Go Throw · Leagues · Live · Trophies · Friends ·
+  Bag · Courses · Profile, 4×2 icon buttons) · **Last round** card (course, when, with whom, score) ·
+  **Newest trophies** (last 8 unlocks stored at reveal time, `chains_recent_badges_v1`) · **This week** ·
+  What's new · feed. HomeTiles retired.
+- **Challenges:** the hole challenge now picks from your three hardest holes at home (worst average over
+  par, 2+ plays). New **bonus** section "Go after it" (2 per week, seeded, not needed for a perfect week)
+  from a pool of 11: three different courses, a course you've never played, full round under par, turkey,
+  clean card, play with a friend, tee off before 8 am, 36 holes in a day, eight birdies in a round, new
+  personal best at home, hit an ace. Brand-new players get the three only. Perfect week = the three
+  required.
+- index.html v523.
