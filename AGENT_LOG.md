@@ -1521,3 +1521,22 @@ featured badge cleared for him to pick).
 - **Finish card "What moved"**: vs your recent average here (last 5 full rounds), new personal best here,
   first birdie / first par on specific holes, birdie collection count here. Up to 4 lines.
 - index.html v524.
+
+## 2026-10-23 — v525–v526: Challenges tabs, month set, points, streak freeze, SVG trophy glyphs
+
+- **Challenges screen = three tabs**: This week · <Month> · Trophies (segmented control; `ctab` state).
+- **Month set** (`ChainsChallenges.monthEval/persistMonth/monthsCompleted`): 4 targets built from the last
+  three months a little above pace — rounds, birdies, courses, three perfect weeks. Finish all four in the
+  month → **Month complete** ladder (`season_finisher`, 1/3/6/12). Stored under `users/{uid}/challenges`.
+- **Streak freeze**: `perfectStreak` allows one missed week per 4 weeks (Duolingo-style) so a rainy week
+  doesn't zero the streak; `prevWeek` helper.
+- **Points**: Me view stats now rounds · best · trophies · points; points published to
+  `usernames/{key}/points` for the leaderboard to come.
+- **Next up** card on the Trophies tab: the 3 ladders closest to their next tier, with progress bars.
+- **v526 — no more emoji anywhere in trophies** (DESIGN.md §3): `ChainsBadges.glyphName(b)` maps every
+  ladder (by id, falling back to category) to an `Icons.*` SVG; `BadgeIcon` renders it in the reveal, the
+  shelf ring, Next up, Recent trophies on Home and the profile chip. The emoji field stays in the data but
+  is never rendered. Activity feed icons → Icons.Disc / Icons.Star.
+- Fixed duplicate ladder id `perfect_week` (the fantasy one is now `both_under`) — it was the React
+  duplicate-key warning.
+- Verified in the 400-px harness: 0 console errors, 0 emoji on Home and Trophies. index.html **v526**.
