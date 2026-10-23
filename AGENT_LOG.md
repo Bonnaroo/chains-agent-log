@@ -1540,3 +1540,21 @@ featured badge cleared for him to pick).
 - Fixed duplicate ladder id `perfect_week` (the fantasy one is now `both_under`) — it was the React
   duplicate-key warning.
 - Verified in the 400-px harness: 0 console errors, 0 emoji on Home and Trophies. index.html **v526**.
+
+## 2026-10-23 — v527: My stats rebuilt, trophy points board, one rating everywhere
+
+- **My stats** (Me → My stats) now opens with the player's rating hero (tier, "best N of your last M",
+  change vs the previous five rounds, a 10-bar sparkline of recent rated rounds), then **How you score a
+  hole** (birdie-or-better / par / bogey / double-or-worse share + birdies a round), **Last six months**
+  (rounds per month with the average to par under each), **Home course** (rounds · best · average · last
+  five), then the existing Career / Streaks / By course / Hot & cold holes. `statsExtra()` in module 45.
+- **Trophy points** card on Challenges → Trophies: everyone on Chains ranked by points (top 8 + you),
+  read from the public `usernames/{key}/points`. Points are published whenever the Trophies tab or the Me
+  view computes the set (`publishPoints`).
+- **One trophy computation** (`loadBadges(me)` = rounds + 2026 fantasy season) so the shelf, the Trophies
+  tab and the Me view agree on points (they disagreed 23 vs 31 before).
+- **One rating everywhere**: `playerRatingFor(rounds, me)` computes the player rating through
+  `ratingFor()` (which applies the per-course pin from the catalog). The Me view and stats page were
+  calling `ChainsRating.playerRating` on raw records, which ignored the Otterburn pin and showed 965
+  "Advanced"; now 830 "Weekend warrior" on both, matching the finish card.
+- index.html **v527**.
