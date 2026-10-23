@@ -54,7 +54,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done v525` Week · Month · Trophies tabs, month set + Month complete ladder, points, streak freeze
 - [x] `done v527` Trophy points board (everyone on Chains)
 - [ ] `todo` Titles: pick one earned tier name to show under your name (profile + friends list)
-- [ ] `todo` Crowns v2 on the course page: course champion (season), local regular (distinct days, 90 d), birdie leader (distinct holes), most improved; dated achievement when lost
+- [x] `done v528` Crowns v2 on the course page: course champion (year), local regular (distinct days, 90 d), birdie leader (distinct holes); held log + notice when lost
+- [ ] `todo` Most improved crown (needs 10+ rounds; biggest sustained drop in 5-round average)
 - [ ] `later` Crew challenges (crew birdie map, team improvement) once there are local players
 - [ ] `later` Practice tracking (opt-in; putting / range) — never claims causation
 
