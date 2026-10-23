@@ -24,7 +24,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done v516` Live Chains dormant screen until spring 2027
 - [x] `done v516` Me: profile photo, trophies, names, settings in one place
 - [x] `done v516` Bag and Names grouped under Go Throw in More; Names tab lives on each course page
-- [ ] `todo` Copy audit: plain words, no jargon, no stray escape text (one found and fixed in v515)
+- [x] `done v533` Emoji sweep of every screen (only the ★ rating control and user-picked reactions remain)
+- [ ] `todo` Copy audit: plain words, no jargon (read every string on every screen once, slowly)
 - [x] `done v532` Trophies → 100 (collections, problem solved, beat your ghost, birdie run, dime, nine counts, long haul, return visit, league player/winner)
 
 ## Ops (policies, procedures, backups)
