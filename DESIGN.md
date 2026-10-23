@@ -97,3 +97,20 @@ Not adopted, on purpose:
 - A second accent (neon green) — one accent (orange). Green stays reserved for "under par".
 - Blurred/glow card shadows — flat cards with a 1-px border; shadows only on things that float.
 Dark mode: the app has themes; the default stays light (reads in sunlight); dark is a user choice.
+
+## 11. What the reference screenshots do consistently (Will's image boards, 2026-10-23)
+Looked across ~40 golf / sports-score app shots (Dribbble, Behance, UI8, Avid Golf, GolfBooker, Strava-style):
+- **One idea per screen.** A screen is a hero number + one list, or one list, or one form. Never three features
+  stacked. If we have more, it's a row that opens its own screen.
+- **Big single number, small everything else.** Score, hole number, or rating at 40–60 px; two or three small
+  labels under it; whitespace around it.
+- **Lists are avatar · name · one number.** Leaderboards/standings: rank, avatar, name, score to par in colour,
+  maybe a thru/holes count — nothing more per row.
+- **Scorecards are grids of circles/squares** coloured by result; the player's row is one line.
+- **One accent, used sparingly** (a lime or green on dark; a green on white). Controls are mostly neutral; the
+  accent marks the one thing to tap.
+- **Bottom bar of 4–5 with a raised centre action** — exactly ours.
+- **Dark or light, never half.** We stay light by default (sunlight), dark as the user's theme choice.
+- **Cards don't nest.** A card holds rows or one block; it doesn't hold other cards.
+Applied: Go Throw is a short menu (Start a round · Plan · live now · lifetime numbers · rows: My rounds, My
+stats, Trophy case, Your territory, Rivalries & aces, Crew's rounds) and each row opens its own screen.
