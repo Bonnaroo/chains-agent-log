@@ -1406,3 +1406,19 @@ featured badge cleared for him to pick).
   (pr-mvjun, thru 9) untouched — Will closes it with Finish now.
 - Point-in-time zip of all four repos written to Will's Desktop/Chains-backup/ (he asked for a copy on the
   computer as well as GitHub). GitHub stays the source of truth.
+
+## 2026-10-23 — v518: scorecard strip clear of the hole bar; sweep; Will + Kyle's round is final
+
+- Will closed the round: `pr-mvjunr6gseuj` is final — Kyle −4 (23 on 9 holes), Will +1 (28); liveRounds
+  empty; `roundsByPlayer/kyle` indexed; it is not in courseStats (9 of 18 holes — only full rounds count
+  for names/records). From Will's session, computing badges as Kyle over the shared rounds gives 8 earned
+  (Welcome to the Chains, First birdie, Challenger, State lines, Passport…) — Kyle sees the same the moment
+  he opens the app (his snapshot diff will announce them).
+- **Fix:** the Scorecard Show/Hide strip (and the opened table) sat under the floating hole bar + bottom
+  tabs. The 84 px spacer was above the strip; now a 110 px spacer sits after it. Measured at full scroll:
+  strip bottom 548 < bar top 614; open table bottom 529.
+- **Sweep:** walked Home, Go Throw hub, My stats, Courses, Otterburn (Course/Holes/Names/Board), Leagues,
+  New course league, Friends, More, Names hub (race/courses/crews), Bag, Me, Settings, Live Chains,
+  Dashboard with window error / unhandledrejection / console.error hooks: 0 errors.
+- Harness note: the Chrome extension's renderer can time out (45 s) on a long iframe script; split into
+  shorter batches. index.html v518.
