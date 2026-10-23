@@ -239,6 +239,14 @@
           ".write": "auth != null && !data.exists()"
         }
       }
+    },
+    "weekly": {
+      ".read": "auth != null",
+      "$week": {
+        "$key": {
+          ".write": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())"
+        }
+      }
     }
   }
 }
