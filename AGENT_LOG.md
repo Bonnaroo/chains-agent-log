@@ -1504,3 +1504,20 @@ featured badge cleared for him to pick).
   personal best at home, hit an ace. Brand-new players get the three only. Perfect week = the three
   required.
 - index.html v523.
+
+## 2026-10-23 — v524: home course + mastery map + "What moved" recap; CHALLENGES.md
+
+- Will shared an engagement brainstorm (personal/peer/open tracks, home-course mastery, fair crowns, crew
+  birdie map, specific recaps, trust tiers, WoW/Audible/Duolingo mechanics). Written up as
+  **CHALLENGES.md** in chains-agent-log (sections: four things a player gets, three time scales, three
+  tracks, home course + mastery, crowns table, crew, challenge catalogue, rewards/moments, trust, metrics,
+  build order).
+- **Home course** (`ChainsHome`): set from the course page Holes tab ("Make this my home course"), stored
+  locally + `users/{uid}/profile/homeCourse`; default most played; the weekly hole challenge and
+  "beat your average" use it. Will's is Otterburn.
+- **Mastery map** on the Holes tab: per hole your last-5 average, best, birdies, and the next target —
+  Play it / First birdie here / Par it on 2 of your next 5 (fix) / Birdie it N more times / Owned — with a
+  summary line ("7 of 18 holes birdied · nothing beating you right now").
+- **Finish card "What moved"**: vs your recent average here (last 5 full rounds), new personal best here,
+  first birdie / first par on specific holes, birdie collection count here. Up to 4 lines.
+- index.html v524.
