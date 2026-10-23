@@ -78,3 +78,22 @@ one line per screen.
 Back control present · one primary action · no emoji icons · 8-px spacing · ≥ 44 px targets · reads in
 sunlight (contrast ≥ 4.5:1 for text) · nothing fixed outside a portal · tested in the 400-px harness ·
 no console errors · words a stranger understands.
+
+## 10. From the golf-app brief Will supplied (2026-10-23) — adopted / not adopted
+Adopted:
+- Scoring screen order, top to bottom: **hole tracker strip** (done holes show the score, current hole
+  highlighted) → hole header (number, distance, par, owner/target line) → map card → **player rows in the
+  thumb zone** (bottom 40 %) → floating Back/Next bar. Oversized − / + flanking the score.
+- Oversized type only for the total score and the current hole number; everything else on the 5 sizes.
+- Standings tables show rank change (▲ green / ▼ red next to the position), thru-hole progress, score
+  coloured by par (under = green, over = red).
+- A feed tab beside standings in leagues (activity + reactions) — the activity feed exists; wire it per league.
+- "Saved" reassurance: the header sync pill already reads "Live · synced" / "Saved on this phone"; keep it
+  visible on the scoring screen, never hide it.
+- Secondary per-hole telemetry (putts, fairway, OB) as small pills **only** when the player opts in
+  (Settings → "Track putts and OB"); off by default so the row stays one tap.
+Not adopted, on purpose:
+- **Auto-advance to the next hole** — Will's rule: nothing moves on its own.
+- A second accent (neon green) — one accent (orange). Green stays reserved for "under par".
+- Blurred/glow card shadows — flat cards with a 1-px border; shadows only on things that float.
+Dark mode: the app has themes; the default stays light (reads in sunlight); dark is a user choice.
