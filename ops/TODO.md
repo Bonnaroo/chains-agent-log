@@ -16,7 +16,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done v527` My stats: rating hero + trend, scoring mix, last six months, home course numbers
 - [ ] `todo` Go Throw hub: trim to rounds + stats + trophies; move rivalries/aces/crew rounds behind their own rows
 - [x] `done v525` Trophies: "Next up" progression card · `done v526` SVG glyphs, no emoji anywhere in trophies
-- [ ] `todo` Steeper tiers after the first so earning feels rare by month two (Will: ~30 early trophies too easy)
+- [x] `done v529` First tiers steeper (event ladders need 3); 27 → 19 earned on Will's three rounds
 - [ ] `todo` Leagues: many more options — schedule/weeks, divisions, scoring per week, reminders, calendar
 - [x] `done v516` Home as tiles: Go Throw · Courses · Leagues · Names · Friends · Bag · Live Chains · Me
 - [ ] `todo` Leagues hub: your course leagues + "Season 2026" archive card (standings, champion) — picks/dashboard live there
@@ -53,7 +53,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done v524` Home course + mastery map + "What moved" recap
 - [x] `done v525` Week · Month · Trophies tabs, month set + Month complete ladder, points, streak freeze
 - [x] `done v527` Trophy points board (everyone on Chains)
-- [ ] `todo` Titles: pick one earned tier name to show under your name (profile + friends list)
+- [x] `done v529` Titles: featured trophy shows as a text title on the Me page + points board
 - [x] `done v528` Crowns v2 on the course page: course champion (year), local regular (distinct days, 90 d), birdie leader (distinct holes); held log + notice when lost
 - [ ] `todo` Most improved crown (needs 10+ rounds; biggest sustained drop in 5-round average)
 - [ ] `later` Crew challenges (crew birdie map, team improvement) once there are local players
