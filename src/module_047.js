@@ -41,7 +41,7 @@
           <span style={{ display: "block", fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 14, color: active ? "var(--bone-50)" : "var(--chain-300)" }}>{label}</span>
           {desc && <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 10.5, color: active ? "var(--chain-400)" : "var(--chain-600)", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{desc}</span>}
         </span>
-        {active && <span style={{ marginLeft: "auto", width: 6, height: 6, borderRadius: "50%", background: "var(--ace-500)", flexShrink: 0 }} />}
+        {active && <span style={{ marginLeft: "auto", width: 6, height: 6, borderRadius: "50%", background: "var(--ace-700)", flexShrink: 0 }} />}
       </button>
     );
   }
@@ -404,7 +404,7 @@
       return (
         <button onClick={onClick} aria-label={label} aria-current={active ? "page" : undefined}
           style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, minHeight: 54, padding: "7px 2px 0", border: "none", background: "transparent", cursor: "pointer", position: "relative", WebkitTapHighlightColor: "transparent" }}>
-          {active && <span style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 26, height: 3, borderRadius: "0 0 3px 3px", background: "var(--ace-500)" }} />}
+          {active && <span style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 26, height: 3, borderRadius: "0 0 3px 3px", background: "var(--ace-700)" }} />}
           <span style={{ position: "relative", width: 23, height: 23, display: "inline-flex", alignItems: "center", justifyContent: "center", color: active ? "var(--ace-400)" : "var(--chain-400)", transition: "color var(--dur-fast), transform var(--dur-fast)", transform: active ? "translateY(-1px)" : "none" }}>
             {icon}
             {pulse && <span className="cw-livedot" style={{ position: "absolute", top: -2, right: -3, width: 8, height: 8, borderRadius: "50%", background: "var(--clay-500, #d2502f)", boxShadow: "0 0 0 2px var(--bg-ink-deep)" }} />}
@@ -416,7 +416,7 @@
     return (
       <nav style={{ position: "fixed", left: 0, right: 0, bottom: 0, zIndex: 85, display: "flex", alignItems: "stretch", background: "var(--bg-ink-deep)", borderTop: "1px solid var(--border-ink)", paddingBottom: "env(safe-area-inset-bottom, 0px)", boxShadow: "0 -6px 20px rgba(0,0,0,.18)" }}>
         {primary.map((n) => n.accent
-          ? <button key={n.id} onClick={() => onTab(n.id)} aria-label="Start scoring" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: "none", background: "transparent", cursor: "pointer", padding: "4px 2px 0" }}><span style={{ width: 46, height: 46, borderRadius: "50%", background: "linear-gradient(180deg, var(--ace-400), var(--ace-500))", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 16px -6px var(--ace-500)", marginTop: -14, border: "3px solid var(--bg-ink-deep)" }}>{n.icon}</span><span style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".02em", fontSize: 9.5, color: "var(--chain-300)", marginTop: 2 }}>{n.label}</span></button>
+          ? <button key={n.id} onClick={() => onTab(n.id)} aria-label="Start scoring" style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", border: "none", background: "transparent", cursor: "pointer", padding: "4px 2px 0" }}><span style={{ width: 46, height: 46, borderRadius: "50%", background: "var(--ace-700)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 16px -6px var(--ace-500)", marginTop: -14, border: "3px solid var(--bg-ink-deep)" }}>{n.icon}</span><span style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".02em", fontSize: 9.5, color: "var(--chain-300)", marginTop: 2 }}>{n.label}</span></button>
           : <Tab key={n.id} active={view === n.id} label={n.label} icon={n.icon} pulse={n.id === "friends" && friendReqs > 0} onClick={() => onTab(n.id)} />)}
         <Tab active={moreActive} label="More" icon={<Icons.Grid size={18} />} onClick={onMore} />
       </nav>
@@ -513,7 +513,7 @@
           <div style={{ fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--chain-300)", margin: "8px auto 0", maxWidth: 300, lineHeight: 1.5 }}>Make it yours — pick a theme, color and icon. You can change these anytime in Settings.</div>
 
           <button onClick={randomize}
-            style={{ display: "inline-flex", alignItems: "center", gap: 7, margin: "16px auto 4px", padding: "9px 16px", background: "var(--ace-500)", border: "none", borderRadius: "var(--radius-pill)", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 12, color: "#fff" }}>
+            style={{ display: "inline-flex", alignItems: "center", gap: 7, margin: "16px auto 4px", padding: "9px 16px", background: "var(--ace-700)", border: "none", borderRadius: "var(--radius-pill)", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 12, color: "#fff" }}>
             <span style={{ width: 15, height: 15, display: "inline-flex" }}><Icons.Refresh size={15} /></span> Surprise me
           </button>
 
@@ -584,7 +584,7 @@
           <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 34, color: "var(--bone-50)", lineHeight: 0.95, letterSpacing: "-.01em" }}>Chains</div>
           <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".2em", fontSize: 10, color: "var(--ace-400)", marginTop: 5, marginBottom: 22 }}>Disc golf, with your crew</div>
           {upcoming && <div style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "5px 12px", borderRadius: "var(--radius-pill)", background: "var(--bg-ink)", border: "1px solid var(--border-ink)", marginBottom: 22 }}>
-            <span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--ace-500)" }} />
+            <span style={{ width: 6, height: 6, borderRadius: 99, background: "var(--ace-700)" }} />
             <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 10.5, color: "var(--chain-300)" }}>Up next · {upcoming.name}</span>
           </div>}
 
@@ -701,7 +701,7 @@
         <button ref={btnRef} onClick={toggleMenu} title="Notifications" aria-label="Notifications"
           style={{ position: "relative", display: "inline-flex", alignItems: "center", justifyContent: "center", width: 36, height: 36, borderRadius: "50%", border: "1px solid " + (dark ? "var(--border-ink)" : "var(--border-default)"), background: "transparent", cursor: "pointer", color: dark ? "var(--chain-300)" : "var(--text-muted)" }}>
           <span style={{ width: 17, height: 17, display: "inline-flex" }}><Icons.Bell size={17} /></span>
-          {unread > 0 && <span style={{ position: "absolute", top: -2, right: -2, minWidth: 16, height: 16, padding: "0 4px", borderRadius: 99, background: "var(--ace-500)", color: "#fff", fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 9.5, display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 2px " + (dark ? "var(--bg-ink-deep)" : "var(--bg-page)") }}>{unread}</span>}
+          {unread > 0 && <span style={{ position: "absolute", top: -2, right: -2, minWidth: 16, height: 16, padding: "0 4px", borderRadius: 99, background: "var(--ace-700)", color: "#fff", fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 9.5, display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 0 2px " + (dark ? "var(--bg-ink-deep)" : "var(--bg-page)") }}>{unread}</span>}
         </button>
         {open && pos && ReactDOM.createPortal(
           <React.Fragment>
@@ -709,7 +709,7 @@
             <div role="menu" style={{ position: "fixed", left: pos.left, top: pos.top != null ? pos.top : "auto", bottom: pos.bottom != null ? pos.bottom : "auto", zIndex: 1001, width: 300, maxWidth: "calc(100vw - 16px)", background: "var(--bg-elevated)", border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)", boxShadow: "var(--shadow-lg)", overflow: "hidden", animation: "chains-fade .16s var(--ease-out, ease) both" }}>
               <div style={{ padding: "10px 14px", borderBottom: "1px solid var(--border-subtle)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
                 <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 12, color: "var(--text-strong)" }}>Notifications</span>
-                {list.length > 0 && <button onClick={() => { ChainsNotify.clearAll(); }} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 10.5, color: "var(--ace-600, #d24f1a)" }}>Clear all</button>}
+                {list.length > 0 && <button onClick={() => { ChainsNotify.clearAll(); }} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 10.5, color: "var(--ace-700, #c23e10)" }}>Clear all</button>}
               </div>
               <div style={{ maxHeight: 320, overflowY: "auto" }}>
                 {list.length === 0 ? (
@@ -1297,7 +1297,7 @@
           {err ? <div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--score-over, #c23a33)", marginTop: 6 }}>{err}</div> : null}
           <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
             <button onClick={later} style={{ flex: 1, height: 48, borderRadius: "var(--radius-md)", border: "1px solid var(--border-default)", background: "transparent", color: "var(--text-muted)", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14 }}>Not now</button>
-            <button onClick={save} disabled={busy} style={{ flex: 2, height: 48, borderRadius: "var(--radius-md)", border: "none", background: "var(--ace-500)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 15, opacity: busy ? .6 : 1 }}>{busy ? "Saving…" : "Turn on alerts"}</button>
+            <button onClick={save} disabled={busy} style={{ flex: 2, height: 48, borderRadius: "var(--radius-md)", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 15, opacity: busy ? .6 : 1 }}>{busy ? "Saving…" : "Turn on alerts"}</button>
           </div>
         </div>
       </div></__Portal>
