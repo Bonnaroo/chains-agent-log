@@ -1702,3 +1702,25 @@ featured badge cleared for him to pick).
   · 4th 5 · 5th 4 · everyone else who played 3; ties share the higher place; best N weeks' points added
   up; highest wins. `schedule.scoring`. The week grid shows "8p" per week; standings show "42 pts".
 - index.html **v536**.
+
+## 2026-10-24 — v537: the app no longer compiles itself on your phone (−39% download, faster start)
+
+- **Finding** (data-usage audit): the biggest blob in index.html was **Babel standalone** (3 MB raw,
+  640 KB gzipped) — the in-browser JSX compiler. Every load downloaded it and compiled 27 JSX modules on
+  the phone. Revisits were already 304s (ETag), but every new version cost 1.9 MB.
+- **Build change** (`build.py`, old one kept as `build_legacy.py` / `--babel`): the 27 `text/babel`
+  modules are compiled with esbuild (`--loader=jsx --target=es2018`) at build time, their script tags
+  become plain `<script src>`, the inline `ReactDOM.createRoot(...).render(<AuthGate />)` is compiled
+  too, and the Babel blob is removed from the manifest. Result: **1.9 MB → 1.15 MB gzipped**, no compile
+  step on the phone. `build.py vNNN local` builds without pushing.
+- **Latent bugs this exposed**: Babel's env preset turned `const` into `var`, hiding two
+  use-before-declaration bugs (`[me]` in a PlayViewInner effect; `[notes]` in a ScoreBoard effect). Both
+  fixed. New workbench check **`tdz.js`** (espree + eslint-scope): flags const/let used before their
+  declaration in the same function, including inside synchronous callbacks (map/useMemo/IIFE). Run it on
+  every compiled module before building: `esbuild mods/module_NNN.js --loader:.js=jsx > /tmp/c.js && node
+  tdz.js /tmp/c.js` → must print `clean`. All 27 JSX modules are clean.
+- Emoji sweep part 3 (finish headline, "new best here", in-round cheer icons → Icons.Star/Flag/Pin,
+  course facts (status/fees/amenities/established), hole-note marker, "you hold it", photo buttons, disc
+  check-in, ace wall, round invite title).
+- Full scoring flow tested on test.html (start → 3 holes → Finish now → finish card → trophies reveal),
+  test rounds deleted. index.html **v537**.
