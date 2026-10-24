@@ -254,6 +254,15 @@
         ".write": "auth != null && (!data.exists() || data.child('addedUid').val() === auth.uid)",
         ".validate": "newData.hasChildren(['name','holes','hole_pars','addedUid'])"
       }
+    },
+    "callouts": {
+      ".read": "auth != null",
+      ".indexOn": [
+        "week"
+      ],
+      "$id": {
+        ".write": "auth != null"
+      }
     }
   }
 }
