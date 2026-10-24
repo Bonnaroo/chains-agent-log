@@ -45,9 +45,9 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [ ] `later` County/city GIS park layers for Michigan first
 
 ## Growth
-- [ ] `todo` Brand guidelines: name is just **Chains**; colours/type already in the app's CSS variables; logo, voice, the one-line pitch
-- [ ] `todo` Web page (landing: what it is, screenshots, download/open link, "Names on the course" pitch)
-- [ ] `todo` **Course stickers with a QR code** — posted at courses: "Think you own this course? Prove it." / "Every hole here has a name on it. Is it yours?" → QR opens the app at that course (link `#course=<id>`)
+- [x] `done 2026-10-24` BRAND.md (name, pitch, voice, colours, type, logo, stickers, website, store listing)
+- [x] `done 2026-10-24` about.html landing page (chains-app) · `todo` real phone screenshots once Will likes the look
+- [x] `done v534` First sticker (stickers/chains-sticker-otterburn.svg) + `#course=<id>` deep link · `will` print a few and post one at Otterburn
 - [ ] `todo` App Store: PWA first (Add to Home Screen, icon, offline shell), then Capacitor wrapper → Apple ($99/yr) + Google ($25)
 - [x] `done v531` "Add your course" flow (two minutes: name, town, holes, pars, location)
 - [ ] `later` Bag tags (crew ladder), call-outs (hole challenges between two players)
