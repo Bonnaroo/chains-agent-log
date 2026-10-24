@@ -61,6 +61,12 @@ Goal: a free app people come back to because of trophies + territory, then a rea
   and write the file once at the end. A script that crashes on a later anchor leaves the earlier
   replacements unwritten, and the next build silently ships half a change (v530 "kind is not defined").
   Validate `out.encode('utf-8')` before writing. No trailing commas on edit tuples.
+- **Gotcha #7:** silent `try {} catch {}` around Firebase writes hid a ReferenceError for days (v542). When a
+  write "doesn't happen", check the console for `[ChainsRounds] write refused / bad write / courseStats
+  build failed` first; never add a bare catch around a write.
+- **Gotcha #8:** blob *order* changed in v537 — the live manifest no longer has the Babel entry, so a
+  workbench rebuilt from live index.html numbers blobs ≥5 one lower than `src/module_NNN.js`. Match by
+  uuid: `ops/blob_ids.json` maps the original index → uuid.
 - **Gotcha #6:** DESIGN.md §3 — no emoji as icons. Trophies render through `BadgeIcon` (`ChainsBadges.glyphName`);
   the `icon` field in ladder data is never shown.
 - Identity: a player is a **member key** (`will`, `kyle`…) = lowercase username; auth uid lives at
@@ -154,7 +160,7 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 
 ## 9. CURRENT STATE — update this every deploy
 
-- **Live:** index.html **v541** (2026-10-24). Staging test.html v541. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
+- **Live:** index.html **v542** (2026-10-24). Staging test.html v542. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
 - **Just shipped:** Takeover hub (month race, courses, crews), lost & found per course, 86 trophies,
   leagues v2 (pledge-to-start, handicap, verified-only, final/judge, ace pot), profile photos.
 - **Known gaps / next:** second test account for two-player checks (none exists yet — create one via the
