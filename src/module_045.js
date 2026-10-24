@@ -147,7 +147,7 @@
   }
   const onCard = (r, me) => !!(r && me && ((r.players && r.players[me]) || (r.participants && r.participants[me]) || (r.keys && [].concat(r.keys).indexOf(me) >= 0)));
   function fmtPar(v) { return v == null ? "E" : v === 0 ? "E" : v > 0 ? "+" + v : String(v); }
-  function parColor(v) { return v == null || v === 0 ? "var(--text-strong)" : v < 0 ? "var(--score-under, #1f8a5b)" : "var(--score-over, #c23a33)"; }
+  function parColor(v) { return v == null || v === 0 ? "var(--text-strong)" : v < 0 ? "var(--score-under, #1a7a50)" : "var(--score-over, #c23a33)"; }
   // Firebase returns sparse arrays as objects ({"2":3}) — restore a real array,
   // each score kept at its hole index so pars stay aligned. Gaps become null.
   function toArr(hs) { if (Array.isArray(hs)) return hs; if (!hs || typeof hs !== "object") return []; const out = []; Object.keys(hs).forEach((k) => { const i = Math.floor(Number(k)); if (isFinite(i) && i >= 0) out[i] = hs[k]; }); for (let j = 0; j < out.length; j++) if (out[j] === undefined) out[j] = null; return out; }
@@ -414,7 +414,7 @@
             {cheers.length && comments.length ? " · " : ""}
             {comments.length ? comments.length + (comments.length === 1 ? " comment" : " comments") + (comments.length ? ": “" + comments[comments.length - 1].text + "”" : "") : ""}
           </span>
-          <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", fontSize: 10, color: "var(--ace-600)" }}>Open</span>
+          <span style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", fontSize: 10, color: "var(--ace-700)" }}>Open</span>
         </button>
       );
     }
@@ -490,7 +490,7 @@
                   <div style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)", marginTop: 1 }}>{r.course}{r.city ? " · " + r.city : ""} · thru {r.thru || 0}{me && r.keys && [].concat(r.keys).indexOf(me) >= 0 ? <span style={{ color: "var(--fairway-700)", fontWeight: 700 }}> · you're on this card</span> : null}</div>
                 </div>
                 <div style={{ textAlign: "right", flexShrink: 0 }}>
-                  <div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 18, color: (r.toPar || 0) < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)" }}>{fmtPar(r.toPar || 0)}</div>
+                  <div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 18, color: (r.toPar || 0) < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)" }}>{fmtPar(r.toPar || 0)}</div>
                   <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 9, color: "var(--live-600, #c23a33)" }}>{me && r.keys && [].concat(r.keys).indexOf(me) >= 0 ? "Score →" : "Watch →"}</div>
                 </div>
               </button>
@@ -574,7 +574,7 @@
                       <td style={{ position: "sticky", left: 0, background: "var(--bg-elevated)", padding: "7px 10px", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12, color: "var(--text-strong)", whiteSpace: "nowrap" }}>{__fn(p.name)}</td>
                       {Array.from({ length: Math.min(N, maxThru) }, (_, i) => {
                         const s = (p.holeScores || [])[i], d = (s != null && pars[i] != null) ? s - pars[i] : null;
-                        const bg = d == null ? "transparent" : d < 0 ? "var(--score-under, #1f8a5b)" : d > 0 ? "var(--score-over, #c23a33)" : "transparent";
+                        const bg = d == null ? "transparent" : d < 0 ? "var(--score-under, #1a7a50)" : d > 0 ? "var(--score-over, #c23a33)" : "transparent";
                         const fg = d != null && d !== 0 ? "#fff" : "var(--text-strong)";
                         return <td key={i} style={{ textAlign: "center", padding: "6px 7px", fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 12.5, background: bg, color: s == null ? "var(--text-faint)" : fg }}>{s == null ? "·" : s}</td>;
                       })}
@@ -728,13 +728,13 @@
     } else {
       const lost = state.start - state.end;
       body = E("div", { style: { display: "flex", flexDirection: "column", gap: 10, alignItems: "center", textAlign: "center" } },
-        E("div", { style: { fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 22, color: lost > 0 ? "var(--score-over, #c23a33)" : lost < 0 ? "var(--ace-600)" : "var(--score-under, #1f8a5b)" } }, lost > 0 ? "Missing " + lost + " disc" + (lost > 1 ? "s" : "") + "" : lost < 0 ? "Up " + (-lost) + " disc" + (-lost > 1 ? "s" : "") + "" : "All " + state.start + " accounted for"),
+        E("div", { style: { fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 22, color: lost > 0 ? "var(--score-over, #c23a33)" : lost < 0 ? "var(--ace-600)" : "var(--score-under, #1a7a50)" } }, lost > 0 ? "Missing " + lost + " disc" + (lost > 1 ? "s" : "") + "" : lost < 0 ? "Up " + (-lost) + " disc" + (-lost > 1 ? "s" : "") + "" : "All " + state.start + " accounted for"),
         E("div", { style: { fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" } }, "Out with " + state.start + " · back with " + state.end + (lost > 0 ? " · check the water hazard" : "")),
         E("button", { onClick: () => save(null), style: { padding: "11px 20px", borderRadius: "var(--radius-md)", border: "1px solid var(--border-default)", background: "var(--bg-elevated)", color: "var(--text-strong)", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 13 } }, "Done"));
     }
     return E("div", { style: { padding: "13px 15px", borderRadius: "var(--radius-lg)", border: "1px solid " + (state && !state.done ? "var(--fairway-400, #6fae84)" : "var(--border-subtle)"), background: "var(--bg-elevated)" } },
       E("div", { style: { display: "flex", alignItems: "center", gap: 8, marginBottom: 10 } },
-        E("span", { style: { width: 18, height: 18, color: "var(--ace-600)" } }, E(Icons.Disc, { size: 18 })),
+        E("span", { style: { width: 18, height: 18, color: "var(--ace-700)" } }, E(Icons.Disc, { size: 18 })),
         E("span", { style: { fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 12, color: "var(--text-muted)" } }, "Disc counter"),
         state && !state.done ? E("span", { style: { marginLeft: "auto", fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 10, color: "var(--fairway-700)" } }, "● Out on a round") : null),
       body);
@@ -761,7 +761,7 @@
           E("div", { style: { flex: 1, minWidth: 0 } },
             E("div", { style: { fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", fontSize: 14, color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, "vs ", r.name),
             E("div", { style: { fontFamily: "var(--font-sans)", fontSize: 11, color: "var(--text-faint)" } }, edge > 0 ? "you lead" : edge < 0 ? "you trail" : "all square", r.ties ? " · " + r.ties + " tied" : "")),
-          E("span", { style: { fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 18, color: edge > 0 ? "var(--score-under, #1f8a5b)" : edge < 0 ? "var(--score-over, #c23a33)" : "var(--text-strong)" } }, r.wins, "\u2013", r.losses));
+          E("span", { style: { fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 18, color: edge > 0 ? "var(--score-under, #1a7a50)" : edge < 0 ? "var(--score-over, #c23a33)" : "var(--text-strong)" } }, r.wins, "\u2013", r.losses));
       })));
   }
 
@@ -787,7 +787,7 @@
           E("div", { style: { flex: 1, minWidth: 0 } },
             E("div", { style: { fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", fontSize: 13.5, color: "var(--text-strong)" } }, a.name, a.who === me ? " (you)" : "", " aced hole ", a.hole),
             E("div", { style: { fontFamily: "var(--font-sans)", fontSize: 11.5, color: "var(--text-muted)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" } }, a.course + " · " + (a.date || ""))),
-          E("span", { style: { display: "inline-flex", color: "var(--ace-600)" } }, E(Icons.Star, { size: 20 }))))));
+          E("span", { style: { display: "inline-flex", color: "var(--ace-700)" } }, E(Icons.Star, { size: 20 }))))));
   }
 
   // Badges — derived from your rounds/aces/rivalries. Earned ones pop; locked ones dim.
@@ -843,9 +843,9 @@
               </div>
               {mix.n > 0 && (
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 8, paddingLeft: 30 }}>
-                  <span style={{ fontFamily: "var(--font-sans)", fontSize: 11.5, color: "var(--text-muted)", width: 72, flexShrink: 0 }}><b style={{ color: "var(--score-under, #1f8a5b)" }}>{mix.pct}%</b> birdies</span>
+                  <span style={{ fontFamily: "var(--font-sans)", fontSize: 11.5, color: "var(--text-muted)", width: 72, flexShrink: 0 }}><b style={{ color: "var(--score-under, #1a7a50)" }}>{mix.pct}%</b> birdies</span>
                   <div style={{ flex: 1, display: "flex", height: 18, borderRadius: 9, overflow: "hidden", background: "var(--bg-sunken)" }}>
-                    {mix.under > 0 && <span style={{ width: (100 * mix.under / mix.n) + "%", background: "var(--score-under, #1f8a5b)", color: "#fff", fontFamily: "var(--font-mono)", fontSize: 10.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{mix.under}</span>}
+                    {mix.under > 0 && <span style={{ width: (100 * mix.under / mix.n) + "%", background: "var(--score-under, #1a7a50)", color: "#fff", fontFamily: "var(--font-mono)", fontSize: 10.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{mix.under}</span>}
                     {mix.par > 0 && <span style={{ width: (100 * mix.par / mix.n) + "%", background: "var(--bone-200, #e6e1d6)", color: "var(--text-strong)", fontFamily: "var(--font-mono)", fontSize: 10.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{mix.par}</span>}
                     {mix.over > 0 && <span style={{ width: (100 * mix.over / mix.n) + "%", background: "var(--score-over, #c23a33)", color: "#fff", fontFamily: "var(--font-mono)", fontSize: 10.5, fontWeight: 700, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{mix.over}</span>}
                   </div>
@@ -883,7 +883,7 @@
                     {Array.from({ length: b - a }, (_, k) => {
                       const h = a + k; const v = p.hs ? p.hs[h] : null; const d = v != null && pars && pars[h] != null ? v - pars[h] : null;
                       const isSel = sel && sel.gid === p.id && sel.i === h;
-                      const bg = d == null ? "transparent" : d <= -2 ? "var(--gold-500, #d4a017)" : d < 0 ? "var(--score-under, #1f8a5b)" : d > 0 ? (d >= 2 ? "var(--score-over, #c23a33)" : "var(--bogey-100, #f7d9d6)") : "transparent";
+                      const bg = d == null ? "transparent" : d <= -2 ? "var(--gold-500, #d4a017)" : d < 0 ? "var(--score-under, #1a7a50)" : d > 0 ? (d >= 2 ? "var(--score-over, #c23a33)" : "var(--bogey-100, #f7d9d6)") : "transparent";
                       const fg = d == null ? "var(--text-faint)" : d < 0 || d >= 2 ? "#fff" : "var(--text-strong)";
                       return <td key={h} style={{ padding: 1 }}><span onClick={onCell ? () => onCell(p.id, h) : undefined} style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", width: "100%", minWidth: 26, height: 28, borderRadius: 8, background: bg, color: fg, fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 12.5, border: isSel ? "2px solid var(--ace-500)" : "1px solid transparent", cursor: onCell ? "pointer" : "default" }}>{v == null ? "·" : v}</span></td>;
                     })}
@@ -916,7 +916,7 @@
     const tc = (b) => (window.ChainsBadges && ChainsBadges.tierColor ? ChainsBadges.tierColor(b) : null) || "var(--fairway-600)";
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 13, color: "var(--ace-600)", textAlign: "center" }}>{items.length === 1 ? "New badge unlocked" : items.length + " new badges unlocked"}</div>
+        <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 13, color: "var(--ace-700)", textAlign: "center" }}>{items.length === 1 ? "New badge unlocked" : items.length + " new badges unlocked"}</div>
         {items.map((b, i) => (
           <div key={b.id} className="gt-pop" style={{ animationDelay: (i * 0.25) + "s", display: "flex", alignItems: "center", gap: 14, padding: "12px 14px", borderRadius: "var(--radius-lg)", background: "var(--bg-elevated)", border: "2px solid " + tc(b), boxShadow: "0 10px 30px -16px " + tc(b) }}>
             <span style={{ width: 54, height: 54, borderRadius: "50%", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: "linear-gradient(145deg, " + tc(b) + ", var(--bg-sunken))", boxShadow: "inset 0 0 0 3px var(--bg-elevated)", color: "#fff" }}><BadgeIcon b={b} size={26} /></span>
@@ -979,7 +979,7 @@
             <div onClick={(e) => e.stopPropagation()} className="gt-sheet" style={{ width: "100%", maxWidth: 600, maxHeight: "88vh", overflowY: "auto", background: "var(--bg-page, #f6f4ee)", borderRadius: "22px 22px 0 0", paddingBottom: "env(safe-area-inset-bottom, 12px)" }}>
               <div style={{ display: "flex", alignItems: "center", padding: "14px 16px 6px", position: "sticky", top: 0, background: "var(--bg-page, #f6f4ee)", zIndex: 1 }}>
                 <span style={{ flex: 1, minWidth: 0 }}><span style={{ display: "block", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 18, color: "var(--text-strong)" }}>Trophy case · {earned.length}/{data.badges.length}</span><span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-faint)" }}>{data.points || 0} trophy points · Bronze 1 · Silver 2 · Gold 3 · Platinum 5 · Diamond 8 · tap ☆ Feature to wear one</span></span>
-                <button onClick={() => setOpen(false)} style={{ height: 40, padding: "0 10px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-600)" }}>Done</button>
+                <button onClick={() => setOpen(false)} style={{ height: 40, padding: "0 10px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-700)" }}>Done</button>
               </div>
               {data.cats.map((cat) => (
                 <div key={cat} style={{ padding: "6px 16px 10px" }}>
@@ -1004,7 +1004,7 @@
         )}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
           <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)" }}>Trophy case <span style={{ fontWeight: 500, fontSize: 12.5, color: "var(--text-muted)" }}>· {data.points || 0} pts</span></span>
-          <button onClick={() => setOpen(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--ace-600)" }}>{earned.length}/{data.badges.length} · See all →</button>
+          <button onClick={() => setOpen(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--ace-700)" }}>{earned.length}/{data.badges.length} · See all →</button>
         </div>
         <div onClick={() => setOpen(true)} style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", padding: 14, cursor: "pointer" }}>
           {earned.length ? (
@@ -1103,14 +1103,14 @@
       }
       setBusy(false); setDone({ n, skipped }); if (onDone) onDone();
     };
-    const T = { btn: { height: 46, padding: "0 18px", borderRadius: "var(--radius-md)", border: "none", background: "var(--ace-500)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 14 } };
+    const T = { btn: { height: 46, padding: "0 18px", borderRadius: "var(--radius-md)", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 14 } };
     return (
       <Portal><div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 210, background: "rgba(10,20,14,.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
         <div onClick={(e) => e.stopPropagation()} className="gt-sheet" style={{ width: "100%", maxWidth: 560, maxHeight: "88vh", overflowY: "auto", background: "var(--bg-elevated)", borderRadius: "22px 22px 0 0", padding: "18px 16px calc(16px + env(safe-area-inset-bottom, 0px))" }}>
-          <div style={{ display: "flex", alignItems: "center" }}><span style={{ flex: 1, fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 18, color: "var(--text-strong)" }}>Import from UDisc</span><button onClick={onClose} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-600)" }}>Done</button></div>
+          <div style={{ display: "flex", alignItems: "center" }}><span style={{ flex: 1, fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 18, color: "var(--text-strong)" }}>Import from UDisc</span><button onClick={onClose} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-700)" }}>Done</button></div>
           <div style={{ fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-muted)", marginTop: 6, lineHeight: 1.5 }}>In UDisc: <b>You → Settings → Export scorecards</b> gives you a CSV. Drop it here and every round becomes a Chains round — your stats, course records and trophies count all of it. Cardmates come in as guests.</div>
           {!parsed && !done && (
-            <label style={{ display: "block", marginTop: 14, padding: "22px 14px", border: "2px dashed var(--border-default)", borderRadius: "var(--radius-lg)", textAlign: "center", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--ace-600)" }}>
+            <label style={{ display: "block", marginTop: 14, padding: "22px 14px", border: "2px dashed var(--border-default)", borderRadius: "var(--radius-lg)", textAlign: "center", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--ace-700)" }}>
               Choose the CSV file
               <input type="file" accept=".csv,text/csv" onChange={(e) => { const f = e.target.files && e.target.files[0]; if (f) onFile(f); }} style={{ display: "none" }} />
             </label>
@@ -1234,7 +1234,7 @@
     const nm = (k, n) => k === me ? "You" : __fn(n);
     const card = { background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" };
     const lbl = { fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 15, color: "var(--text-strong)", margin: "4px 0 8px" };
-    const chip = (text, tone) => <span style={{ display: "inline-flex", alignItems: "center", padding: "2px 8px", borderRadius: 10, background: tone === "me" ? "var(--ace-500)" : tone === "open" ? "transparent" : "var(--bg-sunken, #eef2ef)", border: tone === "open" ? "1px dashed var(--border-default)" : "none", color: tone === "me" ? "#fff" : tone === "open" ? "var(--text-faint)" : "var(--text-strong)", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 11.5 }}>{text}</span>;
+    const chip = (text, tone) => <span style={{ display: "inline-flex", alignItems: "center", padding: "2px 8px", borderRadius: 10, background: tone === "me" ? "var(--ace-700)" : tone === "open" ? "transparent" : "var(--bg-sunken, #eef2ef)", border: tone === "open" ? "1px dashed var(--border-default)" : "none", color: tone === "me" ? "#fff" : tone === "open" ? "var(--text-faint)" : "var(--text-strong)", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 11.5 }}>{text}</span>;
     const firstRows = (firsts && firsts.defs ? firsts.defs : []).map((d) => ({ d, f: firsts.all[d.id] || null }));
     const tierOrder = { easy: 0, mid: 1, hard: 2, epic: 3 };
     const firstsShown = showAll ? firstRows : firstRows.filter((x) => x.f || x.d.tier !== "easy" || x.d.hole == null).slice(0, 14);
@@ -1303,7 +1303,7 @@
           <div style={card}>
             {firstsShown.map(({ d, f }, i) => (
               <div key={d.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 14px", borderTop: i ? "1px solid var(--border-subtle)" : "none" }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: d.tier === "easy" ? "var(--score-under, #1f8a5b)" : d.tier === "mid" ? "var(--gold-500, #d4a017)" : d.tier === "hard" ? "var(--ace-500)" : "#8e44ad", flexShrink: 0 }} title={d.tier} />
+                <span style={{ width: 8, height: 8, borderRadius: "50%", background: d.tier === "easy" ? "var(--score-under, #1a7a50)" : d.tier === "mid" ? "var(--gold-500, #d4a017)" : d.tier === "hard" ? "var(--ace-500)" : "#8e44ad", flexShrink: 0 }} title={d.tier} />
                 <div style={{ flex: 1, minWidth: 0 }}><div style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13.5, color: "var(--text-strong)" }}>{d.label}</div>{f ? <div style={{ fontFamily: "var(--font-sans)", fontSize: 11.5, color: "var(--text-muted)" }}>{f.date}</div> : null}</div>
                 {f ? chip(nm(f.key, f.name), f.key === me ? "me" : "") : chip("nobody yet", "open")}
               </div>))}
@@ -1356,7 +1356,7 @@
     return (
       <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", padding: "10px 14px" }}>
         <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>What moved</div>
-        {lines.map((l, i) => <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-body)", marginTop: 6 }}><span style={{ width: 16, height: 16, color: "var(--score-under, #1f8a5b)", display: "inline-flex" }}><Icons.Check size={16} /></span>{l}</div>)}
+        {lines.map((l, i) => <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-body)", marginTop: 6 }}><span style={{ width: 16, height: 16, color: "var(--score-under, #1a7a50)", display: "inline-flex" }}><Icons.Check size={16} /></span>{l}</div>)}
       </div>
     );
   }
@@ -1377,7 +1377,7 @@
         <div style={{ fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-strong)", marginTop: 4 }}>{tookTxt || lostTxt ? [tookTxt, lostTxt].filter(Boolean).join(" · ") : (mine ? "Held everything you had." : "No holes yet — beat someone's average on a hole to take it.")}</div>
         {(r.crownsTaken && r.crownsTaken.length) || (r.crownsLost && r.crownsLost.length) ? (
           <div style={{ marginTop: 8, fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-strong)" }}>
-            {(r.crownsTaken || []).map((c) => <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ color: "var(--ace-600)", display: "inline-flex" }}><Icons.Flag size={16} /></span><span><b>{c.title}</b> is yours{c.from ? " — taken from " + __fn(c.from) : ""}.</span></div>)}
+            {(r.crownsTaken || []).map((c) => <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ color: "var(--ace-700)", display: "inline-flex" }}><Icons.Flag size={16} /></span><span><b>{c.title}</b> is yours{c.from ? " — taken from " + __fn(c.from) : ""}.</span></div>)}
             {(r.crownsLost || []).map((c) => <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--text-muted)" }}><span style={{ display: "inline-flex" }}><Icons.Flag size={16} /></span><span>{c.title} went to {__fn(c.to)}.</span></div>)}
           </div>
         ) : null}
@@ -1452,10 +1452,10 @@
         </React.Fragment>}
         {ctab === "month" && mev && (
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            <div style={{ background: "var(--bg-elevated)", border: "1px solid " + (mev.complete ? "var(--score-under, #1f8a5b)" : "var(--border-subtle)"), borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
-              <div style={{ display: "flex", alignItems: "center", padding: "10px 14px 6px" }}><span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>{mev.name}</span><span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: 12, color: mev.complete ? "var(--score-under, #1f8a5b)" : "var(--text-muted)" }}>{mev.complete ? "Complete" : mev.done + " of " + mev.list.length + " · " + mev.daysLeft + " days left"}</span></div>
-              {mev.list.map((c) => <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderTop: "1px solid var(--border-subtle)", opacity: c.done ? .7 : 1 }}><span style={{ width: 24, height: 24, color: c.done ? "var(--score-under, #1f8a5b)" : "var(--fairway-600)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{c.icon === "rounds" ? <Icons.Disc size={20} /> : c.icon === "birdie" ? <Icons.Flag size={20} /> : c.icon === "map" ? <Icons.Map size={20} /> : <Icons.Target size={20} />}</span><span style={{ flex: 1, fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--text-strong)", textDecoration: c.done ? "line-through" : "none" }}>{c.title}</span>{c.done ? <span style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--score-under, #1f8a5b)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icons.Check size={14} /></span> : <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}><span style={{ width: 54, height: 6, borderRadius: 3, background: "var(--bg-sunken, #eef2ef)", overflow: "hidden" }}><span style={{ display: "block", width: Math.round(100 * c.n / c.goal) + "%", height: "100%", background: "var(--fairway-500)" }} /></span><span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)", minWidth: 36, textAlign: "right" }}>{c.n}/{c.goal}</span></span>}</div>)}
-              <div style={{ padding: "9px 14px", borderTop: "1px solid var(--border-subtle)", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", display: "flex", gap: 10, alignItems: "center" }}><span style={{ width: 18, height: 18, color: "var(--gold-600, #b8860b)", display: "inline-flex" }}><Icons.Medal size={18} /></span><span>{mev.complete ? "Month complete — the " + mev.name + " trophy is yours." : "Finish all four by the end of " + mev.name + " for the " + mev.name + " trophy. It can only be earned this month."}{ChainsChallenges.monthsCompleted() ? " " + ChainsChallenges.monthsCompleted() + " month" + (ChainsChallenges.monthsCompleted() === 1 ? "" : "s") + " completed so far." : ""}</span></div>
+            <div style={{ background: "var(--bg-elevated)", border: "1px solid " + (mev.complete ? "var(--score-under, #1a7a50)" : "var(--border-subtle)"), borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+              <div style={{ display: "flex", alignItems: "center", padding: "10px 14px 6px" }}><span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>{mev.name}</span><span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: 12, color: mev.complete ? "var(--score-under, #1a7a50)" : "var(--text-muted)" }}>{mev.complete ? "Complete" : mev.done + " of " + mev.list.length + " · " + mev.daysLeft + " days left"}</span></div>
+              {mev.list.map((c) => <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderTop: "1px solid var(--border-subtle)", opacity: c.done ? .7 : 1 }}><span style={{ width: 24, height: 24, color: c.done ? "var(--score-under, #1a7a50)" : "var(--fairway-600)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{c.icon === "rounds" ? <Icons.Disc size={20} /> : c.icon === "birdie" ? <Icons.Flag size={20} /> : c.icon === "map" ? <Icons.Map size={20} /> : <Icons.Target size={20} />}</span><span style={{ flex: 1, fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--text-strong)", textDecoration: c.done ? "line-through" : "none" }}>{c.title}</span>{c.done ? <span style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--score-under, #1a7a50)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icons.Check size={14} /></span> : <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}><span style={{ width: 54, height: 6, borderRadius: 3, background: "var(--bg-sunken, #eef2ef)", overflow: "hidden" }}><span style={{ display: "block", width: Math.round(100 * c.n / c.goal) + "%", height: "100%", background: "var(--fairway-500)" }} /></span><span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)", minWidth: 36, textAlign: "right" }}>{c.n}/{c.goal}</span></span>}</div>)}
+              <div style={{ padding: "9px 14px", borderTop: "1px solid var(--border-subtle)", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", display: "flex", gap: 10, alignItems: "center" }}><span style={{ width: 18, height: 18, color: "#8F6A08", display: "inline-flex" }}><Icons.Medal size={18} /></span><span>{mev.complete ? "Month complete — the " + mev.name + " trophy is yours." : "Finish all four by the end of " + mev.name + " for the " + mev.name + " trophy. It can only be earned this month."}{ChainsChallenges.monthsCompleted() ? " " + ChainsChallenges.monthsCompleted() + " month" + (ChainsChallenges.monthsCompleted() === 1 ? "" : "s") + " completed so far." : ""}</span></div>
             </div>
             <div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}>Targets are built from your last three months, a little above your pace.{mev.best != null ? " Best full round this month: " + fmtPar(mev.best) + "." : ""}</div>
           </div>
@@ -1547,7 +1547,7 @@
                   <span style={{ width: 46, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 13, color: "var(--text-strong)" }}>{p.rounds}</span>
                   <span style={{ width: 44, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 13, color: p.best == null ? "var(--text-faint)" : parColor(p.best) }}>{p.best == null ? "—" : fmtPar(p.best)}</span>
                   <span style={{ width: 44, textAlign: "right", fontFamily: "var(--font-mono)", fontSize: 12.5, color: "var(--text-muted)" }}>{p.avg == null ? "—" : (p.avg > 0 ? "+" : "") + (Math.round(p.avg * 10) / 10)}</span>
-                  <span style={{ width: 40, textAlign: "right", fontFamily: "var(--font-mono)", fontSize: 12.5, color: "var(--score-under, #1f8a5b)" }}>{p.birdies || 0}</span>
+                  <span style={{ width: 40, textAlign: "right", fontFamily: "var(--font-mono)", fontSize: 12.5, color: "var(--score-under, #1a7a50)" }}>{p.birdies || 0}</span>
                 </div>
               ))}
               {sortedPlayers.length > 6 && <button onClick={() => setAllPlayers((v) => !v)} style={{ width: "100%", padding: "9px 12px", border: "none", borderTop: "1px solid var(--border-subtle)", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--fairway-700)" }}>{allPlayers ? "Show fewer" : "Show all " + sortedPlayers.length + " players"}</button>}
@@ -1768,29 +1768,29 @@
     const streak = ChainsChallenges.perfectStreak(), perfect = ChainsChallenges.perfectWeeks();
     const icon = (c) => c.icon === "rounds" ? <Icons.Disc size={20} /> : c.icon === "birdie" ? <Icons.Flag size={20} /> : (c.icon === "avg" || c.icon === "trend") ? <Icons.TrendUp size={20} /> : c.icon === "map" ? <Icons.Map size={20} /> : c.icon === "users" ? <Icons.Users size={20} /> : c.icon === "sun" ? <Icons.Sun size={20} /> : c.icon === "trophy" ? <Icons.Trophy size={20} /> : <Icons.Target size={20} />;
     return (
-      <div style={{ background: "var(--bg-elevated)", border: "1px solid " + (allDone ? "var(--score-under, #1f8a5b)" : "var(--border-subtle)"), borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
+      <div style={{ background: "var(--bg-elevated)", border: "1px solid " + (allDone ? "var(--score-under, #1a7a50)" : "var(--border-subtle)"), borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
         <div style={{ display: "flex", alignItems: "center", padding: "10px 14px 6px" }}>
           <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>This week</span>
-          <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: 12, color: allDone ? "var(--score-under, #1f8a5b)" : "var(--text-muted)" }}>{allDone ? "Perfect week" : doneN + " of " + req.length + " · " + (endsIn <= 1 ? "ends today" : endsIn + " days left")}</span>
+          <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: 12, color: allDone ? "var(--score-under, #1a7a50)" : "var(--text-muted)" }}>{allDone ? "Perfect week" : doneN + " of " + req.length + " · " + (endsIn <= 1 ? "ends today" : endsIn + " days left")}</span>
         </div>
         {req.map((c) => (
           <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderTop: "1px solid var(--border-subtle)", opacity: c.done ? .7 : 1 }}>
-            <span style={{ width: 24, height: 24, color: c.done ? "var(--score-under, #1f8a5b)" : "var(--fairway-600)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon(c)}</span>
+            <span style={{ width: 24, height: 24, color: c.done ? "var(--score-under, #1a7a50)" : "var(--fairway-600)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon(c)}</span>
             <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--text-strong)", textDecoration: c.done ? "line-through" : "none" }}>{c.title}</span>
-            {c.done ? <span style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--score-under, #1f8a5b)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icons.Check size={14} /></span>
+            {c.done ? <span style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--score-under, #1a7a50)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icons.Check size={14} /></span>
               : c.goal > 1 ? <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}><span style={{ width: 54, height: 6, borderRadius: 3, background: "var(--bg-sunken, #eef2ef)", overflow: "hidden" }}><span style={{ display: "block", width: Math.round(100 * c.n / c.goal) + "%", height: "100%", background: "var(--fairway-500)" }} /></span><span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)", minWidth: 32, textAlign: "right" }}>{c.n}/{c.goal}</span></span> : <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-faint)" }}>–</span>}
           </div>
         ))}
         {bonus.length > 0 && <div style={{ padding: "9px 14px 4px", borderTop: "1px solid var(--border-subtle)", fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", fontSize: 10.5, color: "var(--text-faint)" }}>Go after it <span style={{ fontWeight: 500, textTransform: "none", letterSpacing: 0 }}>· bonus, not needed for a perfect week</span></div>}
         {bonus.map((c) => (
           <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 14px", opacity: c.done ? .7 : 1 }}>
-            <span style={{ width: 24, height: 24, color: c.done ? "var(--score-under, #1f8a5b)" : "var(--gold-600, #b8860b)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon(c)}</span>
+            <span style={{ width: 24, height: 24, color: c.done ? "var(--score-under, #1a7a50)" : "var(--gold-600, #b8860b)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon(c)}</span>
             <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontSize: 14, color: "var(--text-strong)", textDecoration: c.done ? "line-through" : "none" }}>{c.title}</span>
-            {c.done ? <span style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--score-under, #1f8a5b)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icons.Check size={14} /></span> : c.goal > 1 ? <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)" }}>{c.n}/{c.goal}</span> : null}
+            {c.done ? <span style={{ width: 24, height: 24, borderRadius: "50%", background: "var(--score-under, #1a7a50)", color: "#fff", display: "inline-flex", alignItems: "center", justifyContent: "center" }}><Icons.Check size={14} /></span> : c.goal > 1 ? <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)" }}>{c.n}/{c.goal}</span> : null}
           </div>
         ))}
         <div style={{ padding: "9px 14px", borderTop: "1px solid var(--border-subtle)", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", display: "flex", gap: 10, alignItems: "center" }}>
-          <span style={{ width: 18, height: 18, color: "var(--gold-600, #b8860b)", display: "inline-flex" }}><Icons.Medal size={18} /></span>
+          <span style={{ width: 18, height: 18, color: "#8F6A08", display: "inline-flex" }}><Icons.Medal size={18} /></span>
           <span>{allDone ? "All three done — that's a perfect week" + (streak > 1 ? ", " + streak + " in a row" : "") + "." : "Finish all three for a perfect week" + (streak ? " and keep your " + streak + "-week streak" : "") + "."}{perfect ? " " + perfect + " perfect " + (perfect === 1 ? "week" : "weeks") + " so far." : ""}</span>
         </div>
       </div>
@@ -1808,7 +1808,7 @@
     return (
       <div style={{ background: "var(--bg-elevated)", border: "1px solid " + (fresh ? "var(--ace-200, #f5ddd1)" : "var(--border-subtle)"), borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
         <button onClick={() => { setOpen((v) => !v); try { localStorage.setItem(seenKey, latest.date + latest.title); } catch (e) {} }} style={{ display: "flex", alignItems: "center", width: "100%", padding: "10px 14px", border: "none", background: "transparent", cursor: "pointer" }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>What's new{fresh ? <span style={{ marginLeft: 8, padding: "1px 8px", borderRadius: 10, background: "var(--ace-500)", color: "#fff", fontSize: 10.5, fontWeight: 800 }}>NEW</span> : null}</span>
+          <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>What's new{fresh ? <span style={{ marginLeft: 8, padding: "1px 8px", borderRadius: 10, background: "var(--ace-700)", color: "#fff", fontSize: 10.5, fontWeight: 800 }}>NEW</span> : null}</span>
           <span style={{ marginLeft: "auto", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}>{open ? "Less" : "All updates"}</span>
         </button>
         {list.map((n, i) => <div key={i} style={{ padding: "8px 14px 12px", borderTop: "1px solid var(--border-subtle)" }}><div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 13.5, color: "var(--text-strong)" }}>{n.title} <span style={{ fontWeight: 400, fontSize: 11.5, color: "var(--text-faint)" }}>· {n.date}</span></div><div style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-muted)", marginTop: 3, lineHeight: 1.45 }}>{n.body}</div></div>)}
@@ -1970,7 +1970,7 @@
           {mapped ? <CourseOverviewMap course={course} holes={geo} /> : <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 6, color: "#f3eedc", fontFamily: "var(--font-sans)", fontSize: 13.5, textAlign: "center", padding: 16, background: "linear-gradient(160deg, #2f6b44, #1b2a20)" }}><span style={{ display: "inline-flex" }}><Icons.Map size={28} /></span>No holes mapped yet. Mark tees and baskets while you play and the map builds itself.</div>}
           <div style={{ position: "absolute", top: 10, left: 10, zIndex: 2, padding: "4px 10px", borderRadius: 12, background: "rgba(31,77,51,.9)", color: "#f3eedc", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 11.5 }}>{mapped}/{N} holes mapped</div>
         </div>
-        <button className="cw-press" onClick={() => onPlay(course)} style={{ height: 54, borderRadius: "var(--radius-lg)", border: "none", background: "linear-gradient(180deg, var(--ace-400), var(--ace-500))", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 16, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>Play here</button>
+        <button className="cw-press" onClick={() => onPlay(course)} style={{ height: 54, borderRadius: "var(--radius-lg)", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 16, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>Play here</button>
         {course.needs_review && (
           <div style={Object.assign({}, T.card, { padding: "12px 14px", fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-body)", lineHeight: 1.45 })}>
             <b>Community course.</b> Added from OpenStreetMap{course.attribution ? "" : ""} — no hole data yet. Play it, mark the tees and baskets from the hole card, and you're its Pioneer: first name on the course, for good.
@@ -2070,7 +2070,7 @@
     const tile = { display: "flex", alignItems: "center", gap: 12, padding: "14px", borderRadius: "var(--radius-lg)", border: "1px solid var(--border-subtle)", background: "var(--bg-elevated)", cursor: "pointer", textAlign: "left", minHeight: 68 };
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        <button onClick={onPlay} className="cw-press" style={{ height: 56, borderRadius: "var(--radius-lg)", border: "none", background: "linear-gradient(180deg, var(--ace-400), var(--ace-500))", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 17, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>Start a round</button>
+        <button onClick={onPlay} className="cw-press" style={{ height: 56, borderRadius: "var(--radius-lg)", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 17, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>Start a round</button>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
           {T.map(([ic, t, d, fn]) => (
             <button key={t} onClick={fn} style={tile}>
@@ -2154,7 +2154,7 @@
             <button onClick={onCourse ? () => onCourse(home) : undefined} style={rowS}>
               {ic(Icons.Flag, chase.item.open ? "var(--ace-500)" : "var(--fairway-600)")}
               <span style={{ flex: 1, minWidth: 0 }}>
-                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)" }}>{chase.item.title}{chase.item.holder ? <span style={{ fontWeight: 500, color: "var(--text-muted)" }}> · {__fn(chase.item.holder.name)} holds it</span> : <span style={{ fontWeight: 500, color: "var(--ace-600)" }}> · open</span>}</span>
+                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)" }}>{chase.item.title}{chase.item.holder ? <span style={{ fontWeight: 500, color: "var(--text-muted)" }}> · {__fn(chase.item.holder.name)} holds it</span> : <span style={{ fontWeight: 500, color: "var(--ace-700)" }}> · open</span>}</span>
                 <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", marginTop: 2 }}>{chase.item.gapText}</span>
               </span>
               <span style={{ color: "var(--text-faint)", display: "inline-flex" }}><Icons.ChevRight size={18} /></span>
@@ -2163,10 +2163,10 @@
           <div style={lbl}>Your next breakthrough</div>
           {goal && !picking ? (
             <button onClick={() => setPicking(true)} style={rowS}>
-              {ic(ev.done ? Icons.Check : Icons.Target, ev.done ? "var(--score-under, #1f8a5b)" : "var(--fairway-600)")}
+              {ic(ev.done ? Icons.Check : Icons.Target, ev.done ? "var(--score-under, #1a7a50)" : "var(--fairway-600)")}
               <span style={{ flex: 1, minWidth: 0 }}>
                 <span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)", textDecoration: ev.done ? "line-through" : "none" }}>{goal.title}</span>
-                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12.5, color: ev.done ? "var(--score-under, #1f8a5b)" : "var(--text-muted)", marginTop: 2 }}>{ev.done ? "Done. Pick the next one." : ev.note || goal.how}</span>
+                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12.5, color: ev.done ? "var(--score-under, #1a7a50)" : "var(--text-muted)", marginTop: 2 }}>{ev.done ? "Done. Pick the next one." : ev.note || goal.how}</span>
                 {!ev.done && <span style={{ display: "block", marginTop: 6, width: "100%", height: 5, borderRadius: 3, background: "var(--bg-sunken, #eef2ef)", overflow: "hidden" }}><span style={{ display: "block", width: Math.round(ev.progress * 100) + "%", height: "100%", background: "var(--fairway-500)" }} /></span>}
               </span>
               <span style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-faint)", flexShrink: 0 }}>Change</span>
@@ -2561,7 +2561,7 @@
         <div>
           <div style={{ display: "flex", alignItems: "center", marginBottom: 10 }}>
             <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)" }}>Recent rounds</span>
-            <button onClick={() => setUdisc(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--ace-600)" }}>Import from UDisc</button>
+            <button onClick={() => setUdisc(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--ace-700)" }}>Import from UDisc</button>
             {myRounds.length > 0 ? <button onClick={() => exportRoundsCSV(rounds, me)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--text-muted)", marginLeft: 12 }}>Export CSV</button> : null}
           </div>
           {udisc ? <UDiscImport rounds={rounds} me={me} onClose={() => setUdisc(false)} onDone={() => loadRounds().then(setRounds)} /> : null}
@@ -2596,7 +2596,7 @@
       return (
         <div className="gt-root" style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           <FlowHead title="Go Throw" sub="Score rounds, keep every stat, earn trophies" onBack={() => setStage("home")} />
-          <button onClick={beginRound} className="cw-press" style={{ height: 56, borderRadius: "var(--radius-lg)", border: "none", background: "linear-gradient(180deg, var(--ace-400), var(--ace-500))", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 17, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>Start a round</button>
+          <button onClick={beginRound} className="cw-press" style={{ height: 56, borderRadius: "var(--radius-lg)", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 17, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>Start a round</button>
           <button onClick={() => setStage("plan")} style={{ height: 46, borderRadius: "var(--radius-lg)", border: "1px solid var(--border-default)", background: "var(--bg-elevated)", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--text-strong)", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8 }}><span style={{ width: 18, height: 18, display: "inline-flex", color: "var(--fairway-700)" }}><Icons.Calendar size={18} /></span>Plan a round and invite friends</button>
         <LiveNow me={me} onWatch={(id) => onResumeId(id)} mobile={mobile} />
         {cloudActive && cloudActive.filter((r) => !(active && active.course && active.cloudId === r.id)).map((r) => {
@@ -2699,12 +2699,12 @@
                 })()}
                 <div style={{ display: "flex", padding: "13px 10px", borderBottom: "1px solid var(--border-subtle)" }}>
                   {cell("Rounds", st.rounds)}
-                  {cell("Best", st.best == null ? "—" : fmtPar(st.best), st.best != null && st.best < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)")}
-                  {cell("Avg", st.avg == null ? "—" : (st.avg > 0 ? "+" : "") + (Math.round(st.avg * 10) / 10), st.avg != null && st.avg < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)")}
+                  {cell("Best", st.best == null ? "—" : fmtPar(st.best), st.best != null && st.best < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)")}
+                  {cell("Avg", st.avg == null ? "—" : (st.avg > 0 ? "+" : "") + (Math.round(st.avg * 10) / 10), st.avg != null && st.avg < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)")}
                 </div>
                 <div style={{ display: "flex", gap: 6, padding: "11px 12px" }}>
                   {st.eagle > 0 && chip("Eagle+", st.eagle, "var(--ace-500, #2a6fdb)")}
-                  {chip("Birdie", st.birdie, "var(--score-under, #1f8a5b)")}
+                  {chip("Birdie", st.birdie, "var(--score-under, #1a7a50)")}
                   {chip("Par", st.par, "var(--text-faint)")}
                   {chip("Bogey", st.bogey, "var(--score-over, #c23a33)")}
                   {st.dbl > 0 && chip("Dbl+", st.dbl, "var(--clay-700, #8f2f1f)")}
@@ -2737,10 +2737,10 @@
         {/* v488 greeting + this month */}
         <div style={{ padding: "4px 2px 0" }}>
           <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: mobile ? 26 : 30, lineHeight: 1, color: "var(--text-strong)" }}>{firstName ? "Happy discing, " + firstName + "!" : "Happy discing!"}{me ? <BadgeChip uid={me} size={30} /> : null}</div>
-          {(() => { try { const u = window.ChainsAuth && ChainsAuth.current && ChainsAuth.current(); const mm = me && window.ChainsEngine && ChainsEngine.member ? ChainsEngine.member(me) : null; if (!u) return null; return <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6, fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}><Avatar name={myDisplayName(me) || "You"} color={(mm && mm.disc) || "#E8590C"} size={22} />Signed in as <b style={{ color: "var(--text-strong)" }}>{myDisplayName(me)}</b>{u.username ? " · @" + u.username : ""}<button onClick={() => { try { window.dispatchEvent(new CustomEvent("chains:navigate", { detail: "settings" })); } catch (e) {} }} style={{ marginLeft: "auto", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--ace-600)" }}>Account</button></div>; } catch (e) { return null; } })()}
+          {(() => { try { const u = window.ChainsAuth && ChainsAuth.current && ChainsAuth.current(); const mm = me && window.ChainsEngine && ChainsEngine.member ? ChainsEngine.member(me) : null; if (!u) return null; return <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6, fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}><Avatar name={myDisplayName(me) || "You"} color={(mm && mm.disc) || "#E8590C"} size={22} />Signed in as <b style={{ color: "var(--text-strong)" }}>{myDisplayName(me)}</b>{u.username ? " · @" + u.username : ""}<button onClick={() => { try { window.dispatchEvent(new CustomEvent("chains:navigate", { detail: "settings" })); } catch (e) {} }} style={{ marginLeft: "auto", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--ace-700)" }}>Account</button></div>; } catch (e) { return null; } })()}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10, marginBottom: 8 }}>
             <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>Your progress in {monthName}</span>
-            {myRounds.length > 0 && <button onClick={() => setShowStats(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--ace-600)" }}>Show all</button>}
+            {myRounds.length > 0 && <button onClick={() => setShowStats(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--ace-700)" }}>Show all</button>}
           </div>
           <div style={{ display: "flex", background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", padding: "14px 6px" }}>
             {[["Rounds", monthStats.rounds, <Icons.Disc size={14} />], ["Holes", monthStats.holes, <Icons.Target size={14} />], ["Birdies", monthStats.birdies, <Icons.Flag size={14} />], ["Throws", monthStats.throwsN, <Icons.TrendUp size={14} />]].map(([l, v, ic]) => (
@@ -2905,7 +2905,7 @@
     const label = { fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".1em", fontSize: 11, color: "var(--text-muted)", marginBottom: 10 };
     const mono = (sz, col) => ({ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: sz, color: col || "var(--text-strong)", lineHeight: 1 });
     const cap = { fontFamily: "var(--font-sans)", fontSize: 11, color: "var(--text-muted)", marginTop: 4 };
-    const green = "var(--score-under, #1f8a5b)", red = "var(--score-over, #c23a33)";
+    const green = "var(--score-under, #1a7a50)", red = "var(--score-over, #c23a33)";
     const row = { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 13px", borderTop: "1px solid var(--border-subtle)" };
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -2981,8 +2981,8 @@
               <Card pad={0}>
                 <div style={{ display: "flex", padding: "14px 10px" }}>
                   <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: "var(--text-strong)" }}>{st.rounds}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>Rounds</div></div>
-                  <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: st.avg != null && st.avg < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)" }}>{st.avg == null ? "—" : fmtPar(Math.round(st.avg * 10) / 10)}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>Avg to par</div></div>
-                  <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: st.best != null && st.best < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)" }}>{st.best == null ? "—" : fmtPar(st.best)}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>Best round</div></div>
+                  <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: st.avg != null && st.avg < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)" }}>{st.avg == null ? "—" : fmtPar(Math.round(st.avg * 10) / 10)}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>Avg to par</div></div>
+                  <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: st.best != null && st.best < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)" }}>{st.best == null ? "—" : fmtPar(st.best)}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>Best round</div></div>
                 </div>
                 {st.bestRound && <div style={{ padding: "0 14px 13px", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)", textAlign: "center" }}>{st.bestRound.course}{st.bestRound.date ? " · " + st.bestRound.date : ""}</div>}
               </Card>
@@ -2991,7 +2991,7 @@
               <div style={label}>Streaks · sub-par rounds</div>
               <Card pad={0}>
                 <div style={{ display: "flex", padding: "14px 10px" }}>
-                  <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: st.curStreak > 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)" }}>{st.curStreak}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>Current</div></div>
+                  <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: st.curStreak > 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)" }}>{st.curStreak}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>Current</div></div>
                   <div style={{ flex: 1, textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: "var(--text-strong)" }}>{st.bestStreak}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>Best ever</div></div>
                 </div>
               </Card>
@@ -3007,8 +3007,8 @@
                         <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: "var(--text-faint)", marginTop: 1 }}>{c.rounds} round{c.rounds === 1 ? "" : "s"}{c.lastDate ? " · last " + c.lastDate : ""}</div>
                       </div>
                       <div style={{ display: "flex", gap: 16, flexShrink: 0 }}>
-                        <div style={{ textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 14, color: c.avg < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)" }}>{fmtPar(Math.round(c.avg * 10) / 10)}</div><div style={{ fontFamily: "var(--font-sans)", fontSize: 9, color: "var(--text-faint)" }}>avg</div></div>
-                        <div style={{ textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 14, color: c.best < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)" }}>{fmtPar(c.best)}</div><div style={{ fontFamily: "var(--font-sans)", fontSize: 9, color: "var(--text-faint)" }}>best</div></div>
+                        <div style={{ textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 14, color: c.avg < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)" }}>{fmtPar(Math.round(c.avg * 10) / 10)}</div><div style={{ fontFamily: "var(--font-sans)", fontSize: 9, color: "var(--text-faint)" }}>avg</div></div>
+                        <div style={{ textAlign: "center" }}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 14, color: c.best < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)" }}>{fmtPar(c.best)}</div><div style={{ fontFamily: "var(--font-sans)", fontSize: 9, color: "var(--text-faint)" }}>best</div></div>
                       </div>
                     </div>
                   ))}
@@ -3032,12 +3032,12 @@
                     </Card>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", fontSize: 11, color: "var(--score-under, #1f8a5b)", marginBottom: 6 }}>Best</div>
+                    <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", fontSize: 11, color: "var(--score-under, #1a7a50)", marginBottom: 6 }}>Best</div>
                     <Card pad={0}>
                       {st.bestHoles.map((h, i) => (
                         <div key={i} style={i === 0 ? { display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 13px" } : row}>
                           <span style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-strong)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{h.course} · Hole {h.hole}</span>
-                          <span style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 13, color: "var(--score-under, #1f8a5b)", flexShrink: 0, marginLeft: 8 }}>{fmtPar(Math.round(h.avg * 10) / 10)}</span>
+                          <span style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 13, color: "var(--score-under, #1a7a50)", flexShrink: 0, marginLeft: 8 }}>{fmtPar(Math.round(h.avg * 10) / 10)}</span>
                         </div>
                       ))}
                     </Card>
@@ -3312,7 +3312,7 @@
         <div style={lbl}>Location <span style={{ textTransform: "none", letterSpacing: 0, fontWeight: 500 }}>— optional, best done standing at the course</span></div>
         <button onClick={locate} disabled={locBusy} style={Object.assign({}, seg(!!pos), { width: "100%" })}>{locBusy ? "Finding you…" : pos ? "Location saved (" + pos.lat + ", " + pos.lng + ")" : "Use my location"}</button>
         {err ? <div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--score-over, #c23a33)", marginTop: 8 }}>{err}</div> : null}
-        <button onClick={save} disabled={!canGo} style={{ width: "100%", height: 54, marginTop: 14, border: "none", borderRadius: "var(--radius-md)", background: canGo ? "linear-gradient(135deg, var(--ace-500), var(--ace-600))" : "var(--bg-sunken, #eef2ef)", color: canGo ? "#fff" : "var(--text-faint)", cursor: canGo ? "pointer" : "default", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 15 }}>{busy ? "Saving…" : "Add the course"}</button>
+        <button onClick={save} disabled={!canGo} style={{ width: "100%", height: 54, marginTop: 14, border: "none", borderRadius: "var(--radius-md)", background: canGo ? "var(--ace-700)" : "var(--bg-sunken, #eef2ef)", color: canGo ? "#fff" : "var(--text-faint)", cursor: canGo ? "pointer" : "default", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 15 }}>{busy ? "Saving…" : "Add the course"}</button>
       </div>
     );
   }
@@ -3358,15 +3358,15 @@
             <Avatar name={e.name} color={e.key === me ? "var(--ace-500)" : "#9CA3AF"} size={22} />
             <span style={{ flex: 1, minWidth: 0, fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", fontSize: 12.5, color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{e.name}{e.key === me ? " (you)" : ""}</span>
             <span style={{ fontFamily: "var(--font-sans)", fontSize: 10.5, color: "var(--text-faint)" }}>{e.rounds}×</span>
-            <span style={{ minWidth: 34, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 15, color: e.best < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)" }}>{fpB(e.best)}</span>
+            <span style={{ minWidth: 34, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 15, color: e.best < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)" }}>{fpB(e.best)}</span>
           </div>
         ))}
         {board.me && board.me.rank > 3 && (
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "7px 14px", borderTop: "1px dashed var(--border-default)" }}>
-            <span style={{ width: 16, fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 13, color: "var(--ace-600)" }}>{board.me.rank}</span>
+            <span style={{ width: 16, fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 13, color: "var(--ace-700)" }}>{board.me.rank}</span>
             <span style={{ flex: 1, fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", fontSize: 12.5, color: "var(--text-strong)" }}>You</span>
             <span style={{ fontFamily: "var(--font-sans)", fontSize: 10.5, color: "var(--text-faint)" }}>of {board.me.of}</span>
-            <span style={{ minWidth: 34, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 15, color: board.me.best < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)" }}>{fpB(board.me.best)}</span>
+            <span style={{ minWidth: 34, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 15, color: board.me.best < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)" }}>{fpB(board.me.best)}</span>
           </div>
         )}
         {me && !board.me && <div style={{ padding: "6px 14px 10px", fontFamily: "var(--font-sans)", fontSize: 11, color: "var(--text-faint)" }}>Finish a full round here to get ranked.</div>}
@@ -3405,12 +3405,12 @@
           <div style={{ display: "flex", borderBottom: "1px solid var(--border-subtle)" }}>
             <div style={{ flex: 1, padding: "12px 14px", borderRight: "1px solid var(--border-subtle)" }}>
               <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 9.5, color: "var(--text-faint)" }}>Course record</div>
-              <div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: agg.hottest.toPar < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)", marginTop: 2 }}>{fp(agg.hottest.toPar)}</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: agg.hottest.toPar < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)", marginTop: 2 }}>{fp(agg.hottest.toPar)}</div>
               <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: "var(--text-muted)", marginTop: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{agg.hottest.name}</div>
             </div>
             <div style={{ flex: 1, padding: "12px 14px" }}>
               <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 9.5, color: "var(--text-faint)" }}>Your best here</div>
-              <div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: agg.myBest == null ? "var(--text-faint)" : agg.myBest < 0 ? "var(--score-under, #1f8a5b)" : "var(--text-strong)", marginTop: 2 }}>{agg.myBest == null ? "—" : fp(agg.myBest)}</div>
+              <div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, color: agg.myBest == null ? "var(--text-faint)" : agg.myBest < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)", marginTop: 2 }}>{agg.myBest == null ? "—" : fp(agg.myBest)}</div>
               <div style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: "var(--text-muted)", marginTop: 1 }}>{agg.myBest == null ? "no round yet" : agg.myBest <= agg.hottest.toPar ? "you hold it" : (agg.myBest - agg.hottest.toPar) + " off the record"}</div>
             </div>
           </div>
@@ -3497,7 +3497,7 @@
       meta: { fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-faint)", flexShrink: 0 },
       check: (on) => ({ width: 26, height: 26, borderRadius: "50%", flexShrink: 0, display: "inline-flex", alignItems: "center", justifyContent: "center", background: on ? "var(--fairway-600)" : "transparent", border: on ? "none" : "2px solid var(--border-default)", color: "#fff" }),
       seg: (on) => ({ flex: 1, height: 40, border: "none", borderRadius: 10, background: on ? "var(--fairway-700)" : "transparent", color: on ? "#fff" : "var(--text-body)", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13.5 }),
-      stepBtn: { width: 40, height: 40, borderRadius: "50%", border: "2px solid var(--ace-500)", background: "var(--bg-elevated)", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22, color: "var(--ace-600)", lineHeight: 1 },
+      stepBtn: { width: 40, height: 40, borderRadius: "50%", border: "2px solid var(--ace-500)", background: "var(--bg-elevated)", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 22, color: "var(--ace-700)", lineHeight: 1 },
     };
     return (
       <div className="gt-root" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -3522,7 +3522,7 @@
               <span style={{ position: "absolute", left: 12, top: 12, color: "var(--text-faint)", display: "inline-flex" }}><Icons.Search size={18} /></span>
               <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search your cardmates" style={{ width: "100%", height: 44, padding: "0 12px 0 38px", border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)", fontFamily: "var(--font-sans)", fontSize: 15, background: "var(--bg-elevated)", color: "var(--text-strong)", outline: "none", boxSizing: "border-box" }} />
             </div>
-            <button onClick={() => setAddOpen(true)} aria-label="Add new cardmate" title="Add new cardmate" style={{ width: 44, height: 44, flexShrink: 0, borderRadius: "50%", border: "none", background: "var(--ace-500)", color: "#fff", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px -4px var(--ace-500)" }}><Icons.Users size={20} /></button>
+            <button onClick={() => setAddOpen(true)} aria-label="Add new cardmate" title="Add new cardmate" style={{ width: 44, height: 44, flexShrink: 0, borderRadius: "50%", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px -4px var(--ace-500)" }}><Icons.Users size={20} /></button>
           </div>
           <div style={{ display: "flex", gap: 2, padding: 3, background: "var(--bg-sunken)", borderRadius: 12, marginBottom: 8 }}>
             <button style={T.seg(sort === "freq")} onClick={() => setSort("freq")}>Frequent</button>
@@ -3548,12 +3548,12 @@
             ); })}
             {list.length === 0 && (
               <div style={{ padding: "18px 14px", fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-muted)", lineHeight: 1.5, borderTop: "1px solid var(--border-subtle)" }}>
-                {ql ? <span>No cardmate named “{q}”. <button onClick={() => setAddOpen(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 13.5, color: "var(--ace-600)", padding: 0 }}>Add them →</button></span> : "Nobody on your list yet — tap the orange button to add a friend by username, or anyone as a guest."}
+                {ql ? <span>No cardmate named “{q}”. <button onClick={() => setAddOpen(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 13.5, color: "var(--ace-700)", padding: 0 }}>Add them →</button></span> : "Nobody on your list yet — tap the orange button to add a friend by username, or anyone as a guest."}
               </div>
             )}
-            <button onClick={() => setAddOpen(true)} style={Object.assign({}, T.row(false), { color: "var(--ace-600)" })}>
-              <span style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--ace-50, #FFF3EC)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--ace-600)", fontSize: 22, fontWeight: 700, flexShrink: 0 }}>+</span>
-              <span style={Object.assign({}, T.name, { color: "var(--ace-600)" })}>Add new cardmate<div style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: 12, color: "var(--text-faint)" }}>Find by username · or add a guest without the app</div></span>
+            <button onClick={() => setAddOpen(true)} style={Object.assign({}, T.row(false), { color: "var(--ace-700)" })}>
+              <span style={{ width: 36, height: 36, borderRadius: "50%", background: "var(--ace-50, #FFF3EC)", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--ace-700)", fontSize: 22, fontWeight: 700, flexShrink: 0 }}>+</span>
+              <span style={Object.assign({}, T.name, { color: "var(--ace-700)" })}>Add new cardmate<div style={{ fontFamily: "var(--font-sans)", fontWeight: 400, fontSize: 12, color: "var(--text-faint)" }}>Find by username · or add a guest without the app</div></span>
             </button>
           </div>
         </div>
@@ -3562,7 +3562,7 @@
         <div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
             <span style={T.label}>Round type</span>
-            <button onClick={() => setShowRules((s) => !s)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--ace-600)" }}>{showRules ? "Hide rules" : "How does this work?"}</button>
+            <button onClick={() => setShowRules((s) => !s)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--ace-700)" }}>{showRules ? "Hide rules" : "How does this work?"}</button>
           </div>
           <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4, scrollbarWidth: "none" }} className="gt-strip">
             {formats.map((f) => (
@@ -3578,7 +3578,7 @@
                   <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--text-strong)" }}>{g.name}</span>
                   <button onClick={() => setHandicaps((h) => Object.assign({}, h, { [g.id]: Math.max(0, (h[g.id] || 0) - 1) }))} style={T.stepBtn}>−</button>
                   <span style={{ minWidth: 30, textAlign: "center", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 18 }}>{handicaps[g.id] || 0}</span>
-                  <button onClick={() => setHandicaps((h) => Object.assign({}, h, { [g.id]: (h[g.id] || 0) + 1 }))} style={Object.assign({}, T.stepBtn, { background: "var(--ace-500)", color: "#fff", border: "none" })}>+</button>
+                  <button onClick={() => setHandicaps((h) => Object.assign({}, h, { [g.id]: (h[g.id] || 0) + 1 }))} style={Object.assign({}, T.stepBtn, { background: "var(--ace-700)", color: "#fff", border: "none" })}>+</button>
                 </div>
               ))}
             </div>
@@ -3604,12 +3604,12 @@
               <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontSize: 14.5, color: "var(--text-body)" }}>Starting hole</span>
               <button onClick={() => setStartHole((h) => Math.max(1, h - 1))} style={T.stepBtn}>−</button>
               <span style={{ minWidth: 34, textAlign: "center", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 20 }}>{startHole}</span>
-              <button onClick={() => setStartHole((h) => Math.min(totalHoles, h + 1))} style={Object.assign({}, T.stepBtn, { background: "var(--ace-500)", color: "#fff", border: "none" })}>+</button>
+              <button onClick={() => setStartHole((h) => Math.min(totalHoles, h + 1))} style={Object.assign({}, T.stepBtn, { background: "var(--ace-700)", color: "#fff", border: "none" })}>+</button>
             </div>
           )}
         </div>
 
-        <button className="cw-press" disabled={!group.length} onClick={() => onStart(group, "holes", format, handicaps, startHole - 1, holesPlan === "front" ? Math.ceil(totalHoles / 2) - 1 : holesPlan === "back" ? totalHoles - 1 : null)} style={{ height: 56, borderRadius: "var(--radius-lg)", border: "none", background: "linear-gradient(180deg, var(--ace-400), var(--ace-500))", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 17, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>
+        <button className="cw-press" disabled={!group.length} onClick={() => onStart(group, "holes", format, handicaps, startHole - 1, holesPlan === "front" ? Math.ceil(totalHoles / 2) - 1 : holesPlan === "back" ? totalHoles - 1 : null)} style={{ height: 56, borderRadius: "var(--radius-lg)", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 17, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>
           Start my round{group.length > 1 ? " · " + group.length + " players" : ""}
         </button>
       </div>
@@ -3865,7 +3865,7 @@
         </div>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "6px 12px", borderTop: "1px solid var(--border-subtle)" }}>
           <span style={{ fontFamily: "var(--font-sans)", fontSize: 11.5, color: "var(--text-faint)" }}>{pos && basket && meToBasket != null && meToBasket <= 2000 ? "You're on the hole · " + meToBasket + " ft out" : pos ? "Blue dot = you" : gpsErr || "Finding you…"}</span>
-          <button onClick={onOpenCard} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 12, color: "var(--ace-600)", padding: 0 }}>Hole card</button>
+          <button onClick={onOpenCard} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 12, color: "var(--ace-700)", padding: 0 }}>Hole card</button>
         </div>
 
       </div>
@@ -4241,19 +4241,19 @@
     const orderedGroup = teeOrder && group.length > 1 ? group.slice().sort((a, b) => toParThru(a) - toParThru(b)) : group;
     const S = {
       bar: { display: "flex", alignItems: "center", gap: 8, padding: "6px 4px" },
-      barBtn: { height: 40, minWidth: 40, padding: "0 10px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-600)", display: "inline-flex", alignItems: "center", gap: 4, borderRadius: "var(--radius-md)" },
+      barBtn: { height: 40, minWidth: 40, padding: "0 10px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-700)", display: "inline-flex", alignItems: "center", gap: 4, borderRadius: "var(--radius-md)" },
       round: (solid) => ({ width: 50, height: 50, flexShrink: 0, borderRadius: "50%", border: solid ? "none" : "2px solid var(--ace-500)", background: solid ? "var(--ace-500)" : "var(--bg-elevated)", color: solid ? "#fff" : "var(--ace-600)", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 28, lineHeight: 1, display: "inline-flex", alignItems: "center", justifyContent: "center", boxShadow: solid ? "0 4px 12px -4px var(--ace-500)" : "none" }),
-      num: (set, d) => ({ width: 56, flexShrink: 0, textAlign: "center", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 34, lineHeight: 1, color: !set ? "var(--text-faint)" : d < 0 ? "var(--score-under, #1f8a5b)" : d > 0 ? "var(--score-over, #c23a33)" : "var(--text-strong)", background: "transparent", border: "none", cursor: set ? "default" : "pointer", padding: 0, textDecoration: set ? "none" : "underline dotted", textUnderlineOffset: 6 }),
+      num: (set, d) => ({ width: 56, flexShrink: 0, textAlign: "center", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 34, lineHeight: 1, color: !set ? "var(--text-faint)" : d < 0 ? "var(--score-under, #1a7a50)" : d > 0 ? "var(--score-over, #c23a33)" : "var(--text-strong)", background: "transparent", border: "none", cursor: set ? "default" : "pointer", padding: 0, textDecoration: set ? "none" : "underline dotted", textUnderlineOffset: 6 }),
       chip: (cur, d, set) => ({ flexShrink: 0, width: 42, height: 56, boxSizing: "border-box", borderRadius: 12, border: cur ? "2px solid var(--ace-500)" : "1px solid var(--border-subtle)", background: cur ? "var(--ace-50, #FFF3EC)" : "var(--bg-elevated)", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3, padding: 0, color: cur ? "var(--ace-700)" : "var(--text-muted)", fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 13 }),
-      dot: (d, set) => ({ width: 18, height: 18, borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 10.5, color: !set ? "transparent" : d !== 0 ? "#fff" : "var(--text-strong)", background: !set ? "transparent" : d <= -2 ? "var(--gold-500, #d4a017)" : d < 0 ? "var(--score-under, #1f8a5b)" : d > 0 ? "var(--score-over, #c23a33)" : "var(--bg-sunken)", border: !set ? "1px dashed var(--border-default)" : "none" }),
+      dot: (d, set) => ({ width: 18, height: 18, borderRadius: "50%", display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 10.5, color: !set ? "transparent" : d !== 0 ? "#fff" : "var(--text-strong)", background: !set ? "transparent" : d <= -2 ? "var(--gold-500, #d4a017)" : d < 0 ? "var(--score-under, #1a7a50)" : d > 0 ? "var(--score-over, #c23a33)" : "var(--bg-sunken)", border: !set ? "1px dashed var(--border-default)" : "none" }),
       menuRow: (danger) => ({ display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", padding: "14px 16px", border: "none", borderTop: "1px solid var(--border-subtle)", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 500, fontSize: 15, color: danger ? "var(--clay-600, #b4452f)" : "var(--text-strong)" }),
     };
     const meTp = me ? toParThru({ id: me }) : null;
     const headline = "Thru " + thruOf({ id: meKey }) + (meTp != null ? " · You " + fmtPar(meTp) : "");
     const cheerEl = cheer ? (
       <div key={cheer.key} className="gt-cheer" style={{ position: "fixed", inset: 0, zIndex: 60, pointerEvents: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
-        {cheer.kind !== "birdie" && Array.from({ length: cheer.kind === "ace" ? 42 : 22 }, (_, i) => <span key={i} className="gt-confetti" style={{ left: (3 + (i * 37) % 94) + "%", animationDelay: (i % 7) * 0.09 + "s", background: ["var(--ace-500)", "var(--fairway-500)", "var(--gold-500, #d4a017)", "#fff", "var(--score-under, #1f8a5b)"][i % 5], transform: "rotate(" + (i * 53) % 360 + "deg)" }} />)}
-        <div className="gt-pop" style={{ textAlign: "center", padding: "22px 34px", borderRadius: 24, background: cheer.kind === "birdie" ? "var(--score-under, #1f8a5b)" : cheer.kind === "ace" ? "var(--gold-500, #d4a017)" : "var(--fairway-700)", color: "#fff", boxShadow: "0 24px 60px -20px rgba(0,0,0,.55)" }}>
+        {cheer.kind !== "birdie" && Array.from({ length: cheer.kind === "ace" ? 42 : 22 }, (_, i) => <span key={i} className="gt-confetti" style={{ left: (3 + (i * 37) % 94) + "%", animationDelay: (i % 7) * 0.09 + "s", background: ["var(--ace-500)", "var(--fairway-500)", "var(--gold-500, #d4a017)", "#fff", "var(--score-under, #1a7a50)"][i % 5], transform: "rotate(" + (i * 53) % 360 + "deg)" }} />)}
+        <div className="gt-pop" style={{ textAlign: "center", padding: "22px 34px", borderRadius: 24, background: cheer.kind === "birdie" ? "var(--score-under, #1a7a50)" : cheer.kind === "ace" ? "var(--gold-500, #d4a017)" : "var(--fairway-700)", color: "#fff", boxShadow: "0 24px 60px -20px rgba(0,0,0,.55)" }}>
           <div style={{ lineHeight: 1, display: "inline-flex", color: cheer.kind === "ace" ? "var(--ace-500)" : "var(--fairway-500)" }}>{cheer.kind === "ace" ? <Icons.Star size={44} /> : cheer.kind === "take" ? <Icons.Pin size={44} /> : <Icons.Flag size={44} />}</div>
           <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 38, lineHeight: 1.05, marginTop: 6 }}>{cheer.label}</div>
           <div style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 15, opacity: .92, marginTop: 4 }}>{cheer.sub}</div>
@@ -4302,7 +4302,7 @@
             {Array.from({ length: b - a }, (_, k) => {
               const h = a + k; const v = arr[h]; const d = v != null ? v - pars[h] : null;
               const cur = h === hole; const fix = fixCell && fixCell.h === h && fixCell.k === keyOf(g);
-              const bg = d == null ? "transparent" : d <= -2 ? "var(--gold-500, #d4a017)" : d < 0 ? "var(--score-under, #1f8a5b)" : d > 0 ? "var(--score-over, #c23a33)" : "var(--bg-sunken)";
+              const bg = d == null ? "transparent" : d <= -2 ? "var(--gold-500, #d4a017)" : d < 0 ? "var(--score-under, #1a7a50)" : d > 0 ? "var(--score-over, #c23a33)" : "var(--bg-sunken)";
               const fg = d == null ? "var(--text-faint)" : d !== 0 ? "#fff" : "var(--text-strong)";
               return (
                 <td key={h} style={{ padding: 1 }}>
@@ -4374,14 +4374,14 @@
             <span style={{ flex: 1, fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 16, color: "var(--text-strong)" }}>Round menu</span>
             <button onClick={() => setMenuOpen(false)} style={S.barBtn}>Done</button>
           </div>
-          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); if (!showCard) toggleCard(); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-600)" }}><Icons.Grid size={20} /></span>Scorecard · fix any score</button>
-          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); setMapOpen(true); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-600)" }}><Icons.Pin size={20} /></span>Hole map · rangefinder · mark tee & basket</button>
-          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); setAddOpen(true); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-600)" }}><Icons.Users size={20} /></span>Add a player to the card</button>
-          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); setView("score"); setParEdit(true); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-600)" }}><Icons.Target size={20} /></span>Adjust par for hole {hole + 1}<span style={{ marginLeft: "auto", fontFamily: "var(--font-mono)", color: "var(--text-muted)" }}>Par {par}</span></button>
-          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); setView("score"); setNoteOpen(true); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-600)" }}><Icons.Pin size={20} /></span>{notes[hole] ? "Edit note for hole " + (hole + 1) : "Add a note for hole " + (hole + 1)}</button>
-          {group.length > 1 && <button style={S.menuRow()} onClick={() => setTeeOrder((v) => !v)}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-600)" }}><Icons.Refresh size={20} /></span>Order players by tee position<span style={{ marginLeft: "auto", width: 44, height: 26, borderRadius: 13, background: teeOrder ? "var(--fairway-500)" : "var(--bone-300, #d9d4c7)", position: "relative", flexShrink: 0 }}><span style={{ position: "absolute", top: 3, left: teeOrder ? 21 : 3, width: 20, height: 20, borderRadius: "50%", background: "#fff", transition: "left .15s" }} /></span></button>}
-          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); onBail(); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-600)" }}><Icons.ChevLeft size={20} /></span>Save & exit · finish later</button>
-          {!isLast(hole) && <button style={S.menuRow()} onClick={() => { setMenuOpen(false); ChainsConfirm.show({ title: "Finish partial round?", message: "Holes without a score stay blank. The round is saved as played.", confirmLabel: "Finish round" }).then((ok) => { if (ok) finish(); }); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-600)" }}><Icons.Check size={20} /></span>Finish partial round</button>}
+          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); if (!showCard) toggleCard(); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-700)" }}><Icons.Grid size={20} /></span>Scorecard · fix any score</button>
+          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); setMapOpen(true); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-700)" }}><Icons.Pin size={20} /></span>Hole map · rangefinder · mark tee & basket</button>
+          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); setAddOpen(true); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-700)" }}><Icons.Users size={20} /></span>Add a player to the card</button>
+          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); setView("score"); setParEdit(true); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-700)" }}><Icons.Target size={20} /></span>Adjust par for hole {hole + 1}<span style={{ marginLeft: "auto", fontFamily: "var(--font-mono)", color: "var(--text-muted)" }}>Par {par}</span></button>
+          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); setView("score"); setNoteOpen(true); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-700)" }}><Icons.Pin size={20} /></span>{notes[hole] ? "Edit note for hole " + (hole + 1) : "Add a note for hole " + (hole + 1)}</button>
+          {group.length > 1 && <button style={S.menuRow()} onClick={() => setTeeOrder((v) => !v)}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-700)" }}><Icons.Refresh size={20} /></span>Order players by tee position<span style={{ marginLeft: "auto", width: 44, height: 26, borderRadius: 13, background: teeOrder ? "var(--fairway-500)" : "var(--bone-300, #d9d4c7)", position: "relative", flexShrink: 0 }}><span style={{ position: "absolute", top: 3, left: teeOrder ? 21 : 3, width: 20, height: 20, borderRadius: "50%", background: "#fff", transition: "left .15s" }} /></span></button>}
+          <button style={S.menuRow()} onClick={() => { setMenuOpen(false); onBail(); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-700)" }}><Icons.ChevLeft size={20} /></span>Save & exit · finish later</button>
+          {!isLast(hole) && <button style={S.menuRow()} onClick={() => { setMenuOpen(false); ChainsConfirm.show({ title: "Finish partial round?", message: "Holes without a score stay blank. The round is saved as played.", confirmLabel: "Finish round" }).then((ok) => { if (ok) finish(); }); }}><span style={{ width: 22, display: "inline-flex", color: "var(--ace-700)" }}><Icons.Check size={20} /></span>Finish partial round</button>}
           <button style={S.menuRow(true)} onClick={() => { setMenuOpen(false); discardRound(); }}><span style={{ width: 22, display: "inline-flex" }}><Icons.X size={20} /></span>{mine() ? "Discard round" : "Leave round"}</button>
         </div>
       </div>
@@ -4461,11 +4461,11 @@
                     <div style={{ fontFamily: "var(--font-mono)", fontSize: 12.5, color: thru ? parColor(tp) : "var(--text-faint)", marginTop: 2, whiteSpace: "nowrap", height: 16, lineHeight: "16px" }}>{thru ? fmtPar(tp) + " (" + totalHoleStrokes(g) + ") thru " + thru : "no holes yet"}</div>
                   </div>
                   <button onClick={() => { if (isSet && raw > 1) tap(g, hole, raw - 1); else if (!isSet) tap(g, hole, par - 1); }} aria-label={"Minus for " + g.name} style={{ width: 44, height: 44, borderRadius: "50%", border: "1px solid var(--border-default)", background: "var(--bg-elevated)", cursor: "pointer", fontSize: 22, color: "var(--text-strong)", flexShrink: 0, touchAction: "manipulation" }}>−</button>
-                  <button onClick={() => { if (!isSet) tap(g, hole, par); }} aria-label={isSet ? g.name + " score " + raw : "Tap for par " + par + " for " + g.name} style={{ width: 62, height: 52, borderRadius: 12, border: isSet ? "none" : "2px dashed var(--border-default)", background: isSet ? (d < 0 ? "var(--score-under, #1f8a5b)" : d === 0 ? "var(--fairway-700)" : "var(--score-over, #c23a33)") : "transparent", color: isSet ? "#fff" : "var(--text-muted)", cursor: isSet ? "default" : "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", lineHeight: 1, flexShrink: 0, touchAction: "manipulation" }}>
+                  <button onClick={() => { if (!isSet) tap(g, hole, par); }} aria-label={isSet ? g.name + " score " + raw : "Tap for par " + par + " for " + g.name} style={{ width: 62, height: 52, borderRadius: 12, border: isSet ? "none" : "2px dashed var(--border-default)", background: isSet ? (d < 0 ? "var(--score-under, #1a7a50)" : d === 0 ? "var(--fairway-700)" : "var(--score-over, #c23a33)") : "transparent", color: isSet ? "#fff" : "var(--text-muted)", cursor: isSet ? "default" : "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", lineHeight: 1, flexShrink: 0, touchAction: "manipulation" }}>
                     <span style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: isSet ? 24 : 18 }}>{isSet ? raw : par}</span>
                     <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 8.5, marginTop: 3, opacity: .9 }}>{lbl}</span>
                   </button>
-                  <button onClick={() => tap(g, hole, isSet ? raw + 1 : par + 1)} aria-label={"Plus for " + g.name} style={{ width: 44, height: 44, borderRadius: "50%", border: "none", background: "var(--ace-500)", color: "#fff", cursor: "pointer", fontSize: 22, flexShrink: 0, touchAction: "manipulation" }}>+</button>
+                  <button onClick={() => tap(g, hole, isSet ? raw + 1 : par + 1)} aria-label={"Plus for " + g.name} style={{ width: 44, height: 44, borderRadius: "50%", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontSize: 22, flexShrink: 0, touchAction: "manipulation" }}>+</button>
                 </div>
               );
             })}
@@ -4485,7 +4485,7 @@
                 {warn && !holeComplete
                   ? <button onClick={() => { setWarn(false); !isLast(hole) ? jump(nextOf(hole)) : finish(); }} style={{ flex: 1.4, height: 52, borderRadius: "var(--radius-md)", border: "2px solid var(--score-over, #c23a33)", background: "transparent", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 14, color: "var(--score-over, #c23a33)" }}>{!isLast(hole) ? "Skip to hole " + (nextOf(hole) + 1) : "Finish anyway"}</button>
                   : !isLast(hole)
-                    ? <button onClick={() => { if (!holeComplete) { setWarn(true); return; } jump(nextOf(hole)); }} className="cw-press" style={{ flex: 1.4, height: 52, borderRadius: "var(--radius-md)", border: "none", background: holeComplete ? "linear-gradient(180deg, var(--ace-400), var(--ace-500))" : "var(--chain-300)", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 15, color: "#fff", boxShadow: holeComplete ? "0 6px 16px -6px var(--ace-500)" : "none", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6 }}>{holeComplete ? "Next · Hole " + (nextOf(hole) + 1) : "Score hole " + (hole + 1)}<Icons.ChevRight size={20} /></button>
+                    ? <button onClick={() => { if (!holeComplete) { setWarn(true); return; } jump(nextOf(hole)); }} className="cw-press" style={{ flex: 1.4, height: 52, borderRadius: "var(--radius-md)", border: "none", background: holeComplete ? "var(--ace-700)" : "var(--chain-300)", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 15, color: "#fff", boxShadow: holeComplete ? "0 6px 16px -6px var(--ace-500)" : "none", display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 6 }}>{holeComplete ? "Next · Hole " + (nextOf(hole) + 1) : "Score hole " + (hole + 1)}<Icons.ChevRight size={20} /></button>
                     : <button onClick={() => { if (!holeComplete) { setWarn(true); return; } finish(); }} className="cw-press" style={{ flex: 1.4, height: 52, borderRadius: "var(--radius-md)", border: "none", background: "linear-gradient(180deg, var(--fairway-500), var(--fairway-700))", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 15, color: "#fff" }}>Finish round</button>}
               </div>
             </div>
@@ -4518,14 +4518,14 @@
     }, [ql]);
     const row = { display: "flex", alignItems: "center", gap: 12, width: "100%", textAlign: "left", padding: "12px 16px", border: "none", borderTop: "1px solid var(--border-subtle)", background: "transparent", cursor: "pointer" };
     const nm = { flex: 1, minWidth: 0, fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 15, color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" };
-    const plus = { fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 13, color: "var(--ace-600)" };
+    const plus = { fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 13, color: "var(--ace-700)" };
     const extra = (found || []).filter((p) => !(friends || []).some((f) => f.id === p.uid));
     return (
       <Portal><div onClick={onClose} style={{ position: "fixed", inset: 0, zIndex: 55, background: "rgba(10,20,14,.55)", display: "flex", alignItems: "flex-end", justifyContent: "center" }}>
         <div onClick={(e) => e.stopPropagation()} className="gt-sheet" style={{ width: "100%", maxWidth: 560, maxHeight: "84vh", display: "flex", flexDirection: "column", background: "var(--bg-elevated)", borderRadius: "22px 22px 0 0", paddingBottom: "env(safe-area-inset-bottom, 12px)" }}>
           <div style={{ display: "flex", alignItems: "center", padding: "14px 16px 10px" }}>
             <span style={{ flex: 1, fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 16, color: "var(--text-strong)" }}>Add to the card</span>
-            <button onClick={onClose} style={{ height: 40, padding: "0 10px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-600)" }}>Done</button>
+            <button onClick={onClose} style={{ height: 40, padding: "0 10px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-700)" }}>Done</button>
           </div>
           <div style={{ padding: "0 16px 10px" }}>
             <input autoFocus value={q} onChange={(e) => setQ(e.target.value)} placeholder="Friend, username, or a guest's name…" style={{ width: "100%", height: 46, padding: "0 14px", border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)", fontFamily: "var(--font-sans)", fontSize: 15, background: "var(--bg-sunken)", color: "var(--text-strong)", outline: "none", boxSizing: "border-box" }} />
@@ -4652,7 +4652,7 @@
     const headline = myTp == null ? "Round complete" : myTp < 0 ? ["Under par!", "Dialed in.", "That's the one."][Math.min(2, Math.abs(myTp) > 4 ? 2 : Math.abs(myTp) > 2 ? 1 : 0)] : myTp === 0 ? "Even. Clean." : lastHere != null && myTp < lastHere ? "New best here!" : "Round complete";
     return (
       <div className="gt-root" style={{ display: "flex", flexDirection: "column", gap: 14, position: "relative" }}>
-        {burst && <div style={{ position: "fixed", inset: 0, zIndex: 40, pointerEvents: "none", overflow: "hidden" }}>{Array.from({ length: 36 }, (_, i) => <span key={i} className="gt-confetti" style={{ left: (2 + (i * 29) % 96) + "%", animationDelay: (i % 9) * 0.12 + "s", animationDuration: (2.2 + (i % 4) * 0.3) + "s", background: ["var(--ace-500)", "var(--fairway-500)", "var(--gold-500, #d4a017)", "#fff", "var(--score-under, #1f8a5b)"][i % 5], transform: "rotate(" + (i * 47) % 360 + "deg)" }} />)}</div>}
+        {burst && <div style={{ position: "fixed", inset: 0, zIndex: 40, pointerEvents: "none", overflow: "hidden" }}>{Array.from({ length: 36 }, (_, i) => <span key={i} className="gt-confetti" style={{ left: (2 + (i * 29) % 96) + "%", animationDelay: (i % 9) * 0.12 + "s", animationDuration: (2.2 + (i % 4) * 0.3) + "s", background: ["var(--ace-500)", "var(--fairway-500)", "var(--gold-500, #d4a017)", "#fff", "var(--score-under, #1a7a50)"][i % 5], transform: "rotate(" + (i * 47) % 360 + "deg)" }} />)}</div>}
         <div style={{ textAlign: "center", padding: "6px 0 0" }}>
           <div className="gt-pop" style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 30, lineHeight: 1, color: "var(--text-strong)" }}>{headline}</div>
           <div style={{ fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-muted)", marginTop: 6 }}>{result.course.name}{fmtId !== "singles" ? " · " + fmtMeta.name : ""} · {dstr}</div>
