@@ -1788,3 +1788,10 @@ featured badge cleared for him to pick).
   weekly "best rounds", league standings unless the league is that short) use full rounds only.
   "Everyone who's played here" shows — for players with no full round.
 - index.html **v542**.
+
+## 2026-10-24 — v543: whoever taps Finish writes the course board
+
+- The courseStats write was owner-only; when a cardmate finished first and the owner's phone was closed,
+  nobody wrote it. Now any participant who finalizes writes the board (rules already allow it).
+  Verified end-to-end on test.html: a 9-hole finish lands in courseStats as `played 9, full false`
+  immediately. index.html **v543**.
