@@ -1543,7 +1543,7 @@
                   <Avatar name={p.name} color={(window.ChainsFriends && ChainsFriends.profile(p.key) || {}).disc || (p.key === me ? "var(--ace-500)" : "#9CA3AF")} size={24} />
                   <span style={{ flex: 1, minWidth: 0, fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13.5, color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{p.key === me ? "You" : p.name}{t.king && t.king.key === p.key ? " · most rounds" : ""}{t.record && t.record.key === p.key ? " · record" : ""}{t.birdieKing && t.birdieKing.key === p.key ? " · most birdies" : ""}{t.steady && t.steady.key === p.key ? " · best average" : ""}</span>
                   <span style={{ width: 46, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 13, color: "var(--text-strong)" }}>{p.rounds}</span>
-                  <span style={{ width: 44, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 13, color: parColor(p.best) }}>{fmtPar(p.best)}</span>
+                  <span style={{ width: 44, textAlign: "right", fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 13, color: p.best == null ? "var(--text-faint)" : parColor(p.best) }}>{p.best == null ? "—" : fmtPar(p.best)}</span>
                   <span style={{ width: 44, textAlign: "right", fontFamily: "var(--font-mono)", fontSize: 12.5, color: "var(--text-muted)" }}>{p.avg == null ? "—" : (p.avg > 0 ? "+" : "") + (Math.round(p.avg * 10) / 10)}</span>
                   <span style={{ width: 40, textAlign: "right", fontFamily: "var(--font-mono)", fontSize: 12.5, color: "var(--score-under, #1f8a5b)" }}>{p.birdies || 0}</span>
                 </div>
@@ -1742,10 +1742,10 @@
       const cards = d ? d.ref("weekly/" + w).get().then((s) => s.val() || {}).catch(() => ({})) : Promise.resolve({});
       const stats = (window.ChainsRounds && ChainsRounds.allCourseStats) ? ChainsRounds.allCourseStats().catch(() => ({})) : Promise.resolve({});
       return Promise.all([cards, stats]).then(([cv, all]) => {
-        const rounds = []; Object.keys(all || {}).forEach((cid) => (all[cid] || []).forEach((r) => { const dte = String(r.date || "").slice(0, 10); if (dte < from || dte > to) return; Object.keys(r.players || {}).forEach((k) => { const p = r.players[k]; if (p && p.total != null) rounds.push({ key: k, name: p.name || k, course: r.name, tp: p.total, strokes: p.strokes, date: r.date }); }); }));
+        const rounds = []; Object.keys(all || {}).forEach((cid) => (all[cid] || []).forEach((r) => { const dte = String(r.date || "").slice(0, 10); if (dte < from || dte > to) return; Object.keys(r.players || {}).forEach((k) => { const p = r.players[k]; if (p && p.total != null) rounds.push({ key: k, name: p.name || k, course: r.name, tp: p.total, strokes: p.strokes, date: r.date, full: p.full !== false }); }); }));
         const byPlayer = {}; rounds.forEach((r) => { const e = byPlayer[r.key] || (byPlayer[r.key] = { key: r.key, name: r.name, rounds: 0, best: null }); e.rounds++; if (e.best == null || r.tp < e.best.tp) e.best = r; });
         const completed = Object.keys(cv).map((k) => Object.assign({ key: k }, cv[k])).filter((c) => c.done > 0).sort((a, b) => b.done - a.done || (a.best == null ? 99 : a.best) - (b.best == null ? 99 : b.best));
-        const bestRounds = rounds.slice().sort((a, b) => a.tp - b.tp || String(a.date).localeCompare(String(b.date))).slice(0, 5);
+        const bestRounds = rounds.filter((r) => r.full).sort((a, b) => a.tp - b.tp || String(a.date).localeCompare(String(b.date))).slice(0, 5);
         const mostRounds = Object.values(byPlayer).sort((a, b) => b.rounds - a.rounds).slice(0, 5);
         return { completed, bestRounds, mostRounds, players: Object.keys(byPlayer).length };
       });
