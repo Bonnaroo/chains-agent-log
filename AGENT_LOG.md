@@ -1817,3 +1817,8 @@ featured badge cleared for him to pick).
   (CHALLENGES.md §6 crew birdie map). Leave the group. Groups never pool titles — the card says so.
   Not on Home, not on the Challenges tab (lanes stay separate); nothing nags you to make one.
 - Harness: created, saw stats and map, left; orphan group record removed. index.html **v546**.
+
+## 2026-10-24 — v547: small ones
+
+- "Nine counts" trophy: a nine on an 18-hole course counts (Will's 10/22 nine now shows 1/3).
+- Me → "Titles you hold" opens the titles list (it went to the Challenges tab). index.html **v547**.
