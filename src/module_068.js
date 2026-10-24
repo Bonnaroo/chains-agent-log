@@ -541,6 +541,58 @@
       </div></__Portal>
     );
   }
+  // v551 — Call-outs: challenge a friend for the week. Best full round this week (to par, any course) wins.
+  // callouts/{id} = { from, to, fromName, toName, week, createdAt, status: "open"|"done", winner }
+  const ChainsCallouts = (() => {
+    const wk = () => { const d = new Date(); const day = (d.getDay() + 6) % 7; const mon = new Date(d.getFullYear(), d.getMonth(), d.getDate() - day); return mon.getFullYear() + "-" + String(mon.getMonth() + 1).padStart(2, "0") + "-" + String(mon.getDate()).padStart(2, "0"); };
+    const range = (monISO) => { const [y, m, d] = monISO.split("-").map(Number); const iso = (x) => x.getFullYear() + "-" + String(x.getMonth() + 1).padStart(2, "0") + "-" + String(x.getDate()).padStart(2, "0"); return { from: iso(new Date(y, m - 1, d)), to: iso(new Date(y, m - 1, d + 6)) }; };
+    let _all = {}, _subs = [], _on = false;
+    const emit = () => _subs.forEach((f) => { try { f(); } catch (e) {} });
+    function watch() { const d = db(); if (!d || _on) return; _on = true; try { d.ref("callouts").orderByChild("week").startAt(wk()).on("value", (s) => { _all = s.val() || {}; emit(); }, () => { _on = false; }); } catch (e) { _on = false; } }
+    function mine() { const me = meKey(); const w = wk(); return Object.keys(_all).map((id) => Object.assign({ id }, _all[id])).filter((c) => c && c.week === w && (c.from === me || c.to === me)); }
+    function between(me, other) { return mine().find((c) => (c.from === me && c.to === other) || (c.from === other && c.to === me)) || null; }
+    function create(friend) {
+      const d = db(), me = meKey(); if (!d || !me || !friend || !friend.uid) return Promise.reject(new Error("Sign in first"));
+      if (between(me, friend.uid)) return Promise.resolve({ ok: false, err: "You two already have one on this week." });
+      const id = "co-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+      const rec = { from: me, to: friend.uid, fromName: meName(), toName: friend.name || friend.uid, week: wk(), createdAt: Date.now(), status: "open" };
+      return d.ref("callouts/" + id).set(rec).then(() => { notify([friend.uid], meName() + " challenged you this week", "Best full round by Sunday wins. Any course counts. Go throw."); return { ok: true, id }; });
+    }
+    // scores for a call-out from the shared course board (full rounds this week)
+    function score(c, all) {
+      const r = range(c.week); const best = {};
+      Object.keys(all || {}).forEach((cid) => (all[cid] || []).forEach((rd) => { const dte = String(rd.date || "").slice(0, 10); if (dte < r.from || dte > r.to) return; [c.from, c.to].forEach((k) => { const p = rd.players && rd.players[k]; if (!p || p.total == null || p.full === false) return; if (best[k] == null || p.total < best[k].tp) best[k] = { tp: p.total, course: rd.name, date: dte }; }); }));
+      const a = best[c.from] || null, b = best[c.to] || null;
+      let lead = null; if (a && b) lead = a.tp < b.tp ? c.from : b.tp < a.tp ? c.to : "tie"; else if (a) lead = c.from; else if (b) lead = c.to;
+      return { from: a, to: b, lead, over: new Date().toISOString().slice(0, 10) > r.to };
+    }
+    function settle(c, sc) { const d = db(); if (!d || !sc.over || c.status === "done") return; d.ref("callouts/" + c.id).update({ status: "done", winner: sc.lead || null, settledAt: Date.now() }).catch(() => {}); }
+    return { watch, subscribe: (f) => { _subs.push(f); watch(); return () => { _subs = _subs.filter((x) => x !== f); }; }, mine, between, create, score, settle, week: wk, range };
+  })();
+  window.ChainsCallouts = ChainsCallouts;
+  function CalloutsCard() {
+    const [, bump] = React.useState(0);
+    const [all, setAll] = React.useState(null);
+    React.useEffect(() => ChainsCallouts.subscribe(() => bump((n) => n + 1)), []);
+    React.useEffect(() => { let alive = true; if (window.ChainsRounds && ChainsRounds.allCourseStats) ChainsRounds.allCourseStats().then((a) => { if (alive) setAll(a || {}); }).catch(() => {}); return () => { alive = false; }; }, []);
+    const me = meKey(); const list = ChainsCallouts.mine();
+    if (!list.length) return null;
+    const tp = (n) => n > 0 ? "+" + n : n === 0 ? "E" : String(n);
+    return (
+      <div>
+        <div style={T.lbl}>This week's call-outs</div>
+        <div style={T.card}>
+          {list.map((c, i) => { const sc = all ? ChainsCallouts.score(c, all) : null; if (sc) ChainsCallouts.settle(c, sc); const other = c.from === me ? c.toName : c.fromName; const mineS = sc ? (c.from === me ? sc.from : sc.to) : null, theirs = sc ? (c.from === me ? sc.to : sc.from) : null; const leadTxt = !sc ? "" : sc.lead === "tie" ? "Tied" : sc.lead === me ? "You lead" : sc.lead ? __fn(other) + " leads" : "Nobody's played yet"; return (
+            <div key={c.id} style={{ padding: "10px 14px", borderTop: i ? "1px solid var(--border-subtle)" : "none" }}>
+              <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>You vs {__fn(other)}{c.status === "done" ? <span style={{ fontWeight: 500, color: "var(--text-muted)" }}> · over{c.winner === me ? ", you won" : c.winner === "tie" ? ", tied" : c.winner ? ", " + __fn(other) + " won" : ""}</span> : null}</div>
+              <div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", marginTop: 2 }}>{sc ? (mineS ? "You " + tp(mineS.tp) + " at " + String(mineS.course).replace(/ disc golf.*$/i, "") : "You: no full round yet") + " · " + (theirs ? __fn(other) + " " + tp(theirs.tp) : __fn(other) + ": nothing yet") + " · " + leadTxt : "Loading…"}</div>
+            </div>); })}
+          <div style={{ padding: "8px 14px", borderTop: "1px solid var(--border-subtle)", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)" }}>Best full round by Sunday wins. Any course counts.</div>
+        </div>
+      </div>
+    );
+  }
+  const __fn = (n) => String(n || "").split(" ")[0];
   // v546 — Groups (bones). Your own group of friends: a name, a code, who's in, what you did together this
   // month, and the group birdie map at the course you all play most. Uses the crews backend
   // (crews/, crewByUser/, crewCodes/). Groups never pool anyone's titles — those stay personal.
@@ -789,6 +841,7 @@
                 <span style={T.name}>{f.name}{window.BadgeChip ? React.createElement(window.BadgeChip, { uid: f.uid }) : null}<span style={T.sub}>{(together[f.uid] || 0) + (together[f.uid] === 1 ? " round together" : " rounds together")}</span></span>
                 <button style={Object.assign({}, T.icon, { position: "relative", color: "var(--ace-600)", borderColor: "var(--ace-200, #f5ddd1)" })} onClick={() => setChat(f)} title={"Message " + f.name} aria-label="Message"><Icons.Chat size={18} />{window.ChainsChat && ChainsChat.unreadWith(f.uid) ? <span style={{ position: "absolute", top: -4, right: -4, minWidth: 16, height: 16, borderRadius: 8, background: "var(--ace-500)", color: "#fff", fontSize: 10, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 4px" }}>{ChainsChat.unreadWith(f.uid)}</span> : null}</button>
                 <button style={T.pill(false)} onClick={() => scoreWith(f)} title="Start a round with them">Score</button>
+                <button style={T.pill(false)} onClick={() => ChainsCallouts.create(f).then((r) => { if (window.ChainsToast) ChainsToast.show(r.ok ? "Challenge sent — best full round by Sunday wins." : (r.err || "Didn't work."), r.ok ? "success" : "error"); })} title="Challenge them this week">Challenge</button>
                 <button style={T.icon} onClick={() => setBagFriend(f)} title={"See " + f.name + "'s bag"} aria-label="See bag"><Icons.Disc size={16} /></button>
                 <button style={T.icon} onClick={() => remove(f)} title="Remove friend" aria-label="Remove friend"><Icons.X size={14} /></button>
               </div>
@@ -808,6 +861,7 @@
             </div>
           </div></__Portal>
         )}
+        <CalloutsCard />
         <GroupCard mobile={mobile} />
         {invite && <InviteFriendsModal onClose={() => setInvite(false)} mobile={mobile} />}
         {full && <MyQRFullscreen code={code} onClose={() => setFull(false)} />}
