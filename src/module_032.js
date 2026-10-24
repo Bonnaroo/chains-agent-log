@@ -290,7 +290,7 @@
         var hs = myHoles(r, me), pr = parsOf(r); if (!hs || !pr) return;
         var cid = r.course && r.course.id != null ? String(r.course.id) : null; var day = dayOf(r);
         var played = hs.filter(function (x) { return x != null; }).length, full = played === pr.length;
-        if (pr.length === 9 && full) nineHole++;
+        if (played === 9 || (pr.length === 9 && full)) nineHole++;   // a nine on an 18 counts too
         if (pr.length >= 24 && full) longCourse++;
         var run = 0, rb = 0; for (var i = 0; i < pr.length; i++) { if (hs[i] == null) { run = 0; continue; } if (hs[i] < (pr[i] != null ? pr[i] : 3)) { run++; rb++; if (run === 5) birdieRuns++; } else run = 0; }
         if (rb >= 10) dimes++;
