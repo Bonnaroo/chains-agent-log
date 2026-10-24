@@ -1229,7 +1229,7 @@
     (board || []).forEach((r) => {
       const dte = String(r.date || "").slice(0, 10); const w = weeks.find((x) => dte >= x.from && dte <= x.to); if (!w) return;
       if (l.verifiedOnly && !isVerified(r)) return;
-      Object.keys(r.players || {}).forEach((k) => { const e = by[k]; const p = r.players[k]; if (!e || !p || p.total == null) return; e.rounds++; e.sum += p.total; e.birdies += p.birdies || 0; const cur = e.weeks[w.n]; if (cur == null || p.total < cur) e.weeks[w.n] = p.total; });
+      Object.keys(r.players || {}).forEach((k) => { const e = by[k]; const p = r.players[k]; if (!e || !p || p.total == null) return; if (p.full === false && !(l.holes && p.played >= l.holes)) return; e.rounds++; e.sum += p.total; e.birdies += p.birdies || 0; const cur = e.weeks[w.n]; if (cur == null || p.total < cur) e.weeks[w.n] = p.total; });
     });
     const points = l.schedule.scoring === "points";
     if (points) {
@@ -1359,6 +1359,7 @@
       Object.keys(r.players || {}).forEach((k) => {
         if (!(l.members && l.members[k])) return;
         const p = r.players[k]; if (!p || p.total == null) return;
+        if (p.full === false && !(l.holes && p.played >= l.holes)) return;   // v542: partial rounds don't count unless the league is that short
         const e = by[k] || (by[k] = { key: k, name: (l.members[k] && l.members[k].name) || p.name || k, disc: l.members[k] && l.members[k].disc, rounds: 0, sum: 0, best: null, bestStrokes: null, bestDate: null, birdies: 0 });
         e.rounds++; e.sum += p.total; e.birdies += p.birdies || 0; (e.all = e.all || []).push(p.total); if (ver) e.verified = (e.verified || 0) + 1; // total = to par, strokes = raw
         const hc = (l.members[k] && l.members[k].hcp) || 0; const net = Math.round((p.total - hc) * 10) / 10; if (e.bestNet == null || net < e.bestNet) { e.bestNet = net; e.hcp = hc; }
