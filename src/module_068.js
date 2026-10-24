@@ -519,7 +519,7 @@
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px", background: "var(--bg-elevated)", borderBottom: "1px solid var(--border-subtle)", borderRadius: "22px 22px 0 0" }}>
             <Avatar name={friend.name} color={friend.disc} size={34} />
             <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)" }}>{friend.name}</span>
-            <button onClick={onClose} style={{ height: 36, padding: "0 10px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-600)" }}>Done</button>
+            <button onClick={onClose} style={{ height: 36, padding: "0 10px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--ace-700)" }}>Done</button>
           </div>
           <div style={{ flex: 1, overflowY: "auto", padding: "12px 14px", display: "flex", flexDirection: "column", gap: 6 }}>
             {msgs == null ? <div style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-faint)", textAlign: "center", marginTop: 20 }}>Loading…</div>
@@ -823,7 +823,7 @@
                   <button key={r.f.uid} onClick={() => setChat(r.f)} style={Object.assign({}, T.row, { border: "none", borderTop: i ? "1px solid var(--border-subtle)" : "none", background: "transparent", cursor: "pointer", width: "100%", textAlign: "left" })}>
                     <Avatar name={r.f.name} color={r.f.disc} size={36} />
                     <span style={T.name}>{r.f.name}<span style={Object.assign({}, T.sub, { fontWeight: r.unread ? 700 : 400, color: r.unread ? "var(--text-strong)" : "var(--text-faint)" })}>{(r.from === ChainsFriends.myUid() ? "You: " : "") + (r.last || "")}</span></span>
-                    {r.unread ? <span style={{ minWidth: 22, height: 22, padding: "0 7px", borderRadius: 11, background: "var(--ace-500)", color: "#fff", fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 12, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{r.unread}</span> : <span style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: "var(--text-faint)" }}>{r.at ? new Date(r.at).toLocaleDateString([], { month: "short", day: "numeric" }) : ""}</span>}
+                    {r.unread ? <span style={{ minWidth: 22, height: 22, padding: "0 7px", borderRadius: 11, background: "var(--ace-700)", color: "#fff", fontFamily: "var(--font-sans)", fontWeight: 800, fontSize: 12, display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{r.unread}</span> : <span style={{ fontFamily: "var(--font-sans)", fontSize: 11, color: "var(--text-faint)" }}>{r.at ? new Date(r.at).toLocaleDateString([], { month: "short", day: "numeric" }) : ""}</span>}
                   </button>
                 ))}
               </div>
@@ -839,7 +839,7 @@
               <div key={f.uid} style={Object.assign({}, T.row, i === 0 ? { borderTop: "none" } : {})}>
                 <Avatar name={f.name} color={f.disc} size={36} ring />
                 <span style={T.name}>{f.name}{window.BadgeChip ? React.createElement(window.BadgeChip, { uid: f.uid }) : null}<span style={T.sub}>{(together[f.uid] || 0) + (together[f.uid] === 1 ? " round together" : " rounds together")}</span></span>
-                <button style={Object.assign({}, T.icon, { position: "relative", color: "var(--ace-600)", borderColor: "var(--ace-200, #f5ddd1)" })} onClick={() => setChat(f)} title={"Message " + f.name} aria-label="Message"><Icons.Chat size={18} />{window.ChainsChat && ChainsChat.unreadWith(f.uid) ? <span style={{ position: "absolute", top: -4, right: -4, minWidth: 16, height: 16, borderRadius: 8, background: "var(--ace-500)", color: "#fff", fontSize: 10, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 4px" }}>{ChainsChat.unreadWith(f.uid)}</span> : null}</button>
+                <button style={Object.assign({}, T.icon, { position: "relative", color: "var(--ace-700)", borderColor: "var(--ace-200, #f5ddd1)" })} onClick={() => setChat(f)} title={"Message " + f.name} aria-label="Message"><Icons.Chat size={18} />{window.ChainsChat && ChainsChat.unreadWith(f.uid) ? <span style={{ position: "absolute", top: -4, right: -4, minWidth: 16, height: 16, borderRadius: 8, background: "var(--ace-700)", color: "#fff", fontSize: 10, fontWeight: 800, display: "inline-flex", alignItems: "center", justifyContent: "center", padding: "0 4px" }}>{ChainsChat.unreadWith(f.uid)}</span> : null}</button>
                 <button style={T.pill(false)} onClick={() => scoreWith(f)} title="Start a round with them">Score</button>
                 <button style={T.pill(false)} onClick={() => ChainsCallouts.create(f).then((r) => { if (window.ChainsToast) ChainsToast.show(r.ok ? "Challenge sent — best full round by Sunday wins." : (r.err || "Didn't work."), r.ok ? "success" : "error"); })} title="Challenge them this week">Challenge</button>
                 <button style={T.icon} onClick={() => setBagFriend(f)} title={"See " + f.name + "'s bag"} aria-label="See bag"><Icons.Disc size={16} /></button>
