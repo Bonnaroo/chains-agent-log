@@ -15,7 +15,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 ## Structure / UI (the uplift)
 - [x] `done v519` DESIGN.md rulebook; real icons; 4 Home tiles; bar Home·Courses·Play·Challenges·More; More = rarely used; Names → Challenges/Territory; season page cleanup; reveal capped
 - [x] `done v527` My stats: rating hero + trend, scoring mix, last six months, home course numbers
-- [ ] `todo` Go Throw hub: trim to rounds + stats + trophies; move rivalries/aces/crew rounds behind their own rows
+- [x] `done v521/v545` Go Throw hub rows: My rounds · My stats · Trophy case · Titles you hold · Rivalries & aces · Friends' rounds
 - [x] `done v525` Trophies: "Next up" progression card · `done v526` SVG glyphs, no emoji anywhere in trophies
 - [x] `done v529` First tiers steeper (event ladders need 3); 27 → 19 earned on Will's three rounds
 - [x] `done v530` Weekly leagues: league night + weeks, best N of M, league-night-only option, divisions by rating, week grid, reminders, calendar file
@@ -58,7 +58,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 ## Challenges & trophies (CHALLENGES.md build order)
 - [x] `done v538` Chase on Home (title within reach · next breakthrough · this week) · `v540` hole birdie titles in the chase
 - [x] `done v539` Courses: Recent · Favourites · Nearby · All
-- [ ] `todo` Groups: your own crew (name, members), group challenges, group play — Will wants this after the single-player loop feels right
+- [x] `done v546` Groups bones on Friends (start/join by code, members, month together, group birdie map)
+- [ ] `todo` Groups next: group challenge of the month with a reward, group vs group at a course, group chat
 - [x] `done v541` Post-round recap names titles taken/lost
 - [x] `done v524` Home course + mastery map + "What moved" recap
 - [x] `done v525` Week · Month · Trophies tabs, month set + Month complete ladder, points, streak freeze
