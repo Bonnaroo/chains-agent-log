@@ -8,9 +8,10 @@ scoring poller in `Bonnaroo/chains-poller`. **This repo is where any person, app
 2. `CHAINS_SYSTEM.md` — architecture and data model.
 3. `AGENT_LOG.md` — what changed, when, and why (newest at the bottom).
 4. `DESIGN.md` (how screens must look) and `CHALLENGES.md` (how trophies, challenges, home course and crowns fit together).
-5. `OPERATIONS.md` — how it is run: release, rollback, backups, incidents, weekly checks, data policy.
-6. `ops/TODO.md` — the running to-do list. `ops/` — kits (backups).
-7. `firebase/` — database rules.
+5. `AUDIT-2026-10-24.md` — findings and the prioritized plan from the four research papers in `research/`.
+6. `OPERATIONS.md` — how it is run: release, rollback, backups, incidents, weekly checks, data policy.
+7. `ops/TODO.md` — the running to-do list. `ops/` — kits (backups).
+8. `firebase/` — database rules.
 
 Owner: Will (commissioner). Rules of the road: ship to `test.html` first, verify in a real browser, then
 `index.html`; log every deploy; keep words plain; nothing from UDisc is copied.
