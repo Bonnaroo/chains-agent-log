@@ -1692,3 +1692,13 @@ featured badge cleared for him to pick).
   UptimeRobot (3 monitors) and Sentry (snippet for app_base, no user identity) exact steps.
 - Takeover notice wording: "It was yours. Go get it back." (was "Your turf there just shrank").
 - index.html **v535**.
+
+## 2026-10-24 — v536: most improved, points-per-week leagues
+
+- **Most improved** crown on the course records card: 10+ full rounds at the course; first-five average
+  minus last-five average, biggest drop wins ("3.4 strokes better than when they started (12 rounds)").
+  Persisted and logged like the other crowns (`territory/{course}/crowns/improved`).
+- **Weekly league scoring choice**: *Strokes* (as before) or *Points* — each week 1st 10 · 2nd 8 · 3rd 6
+  · 4th 5 · 5th 4 · everyone else who played 3; ties share the higher place; best N weeks' points added
+  up; highest wins. `schedule.scoring`. The week grid shows "8p" per week; standings show "42 pts".
+- index.html **v536**.
