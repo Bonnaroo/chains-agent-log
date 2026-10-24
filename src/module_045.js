@@ -1375,6 +1375,12 @@
       <div style={{ background: "var(--bg-elevated)", border: "1px solid " + (r.took.length ? "var(--ace-200, #f5ddd1)" : "var(--border-subtle)"), borderRadius: "var(--radius-lg)", padding: "10px 14px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}><span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>Takeover</span><span style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}>you hold {mine} of {r.t.N} here</span></div>
         <div style={{ fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-strong)", marginTop: 4 }}>{tookTxt || lostTxt ? [tookTxt, lostTxt].filter(Boolean).join(" · ") : (mine ? "Held everything you had." : "No holes yet — beat someone's average on a hole to take it.")}</div>
+        {(r.crownsTaken && r.crownsTaken.length) || (r.crownsLost && r.crownsLost.length) ? (
+          <div style={{ marginTop: 8, fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-strong)" }}>
+            {(r.crownsTaken || []).map((c) => <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 8 }}><span style={{ color: "var(--ace-600)", display: "inline-flex" }}><Icons.Flag size={16} /></span><span><b>{c.title}</b> is yours{c.from ? " — taken from " + __fn(c.from) : ""}.</span></div>)}
+            {(r.crownsLost || []).map((c) => <div key={c.id} style={{ display: "flex", alignItems: "center", gap: 8, color: "var(--text-muted)" }}><span style={{ display: "inline-flex" }}><Icons.Flag size={16} /></span><span>{c.title} went to {__fn(c.to)}.</span></div>)}
+          </div>
+        ) : null}
         {myFirsts.length > 0 && (
           <div style={{ marginTop: 10, padding: "10px 12px", borderRadius: 12, background: "linear-gradient(135deg, var(--pine-700), var(--bg-ink-deep))", color: "var(--bone-50)" }}>
             <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 15 }}>Your name's on the course</div>
