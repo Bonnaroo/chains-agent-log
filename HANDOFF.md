@@ -97,7 +97,7 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 - The live index.html no longer contains Babel; the workbench rebuild still extracts modules the same way
   (blobs are gzip+base64; JSX modules in the live file are now *compiled* JS, so edit the JSX sources in
   `mods/` — keep them from the last session's `app_vNNN.html` or from git history before v537, or
-  recover from `chains-agent-log/ops/mods-snapshot/` once that exists).
+  take them from **`chains-agent-log/src/module_NNN.js`** — that folder is the source of truth now; push every edited module back there after each build).
 - `const`/`let` are real now (Babel used to turn them into `var`). Run `node tdz.js` on every compiled
   module before building; "used before its const" = a crash on that screen.
 - `build.py vNNN local "msg"` builds `app_vNNN.html` without pushing.
