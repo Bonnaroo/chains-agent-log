@@ -107,6 +107,11 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 - `const`/`let` are real now (Babel used to turn them into `var`). Run `node tdz.js` on every compiled
   module before building; "used before its const" = a crash on that screen.
 - `build.py vNNN local "msg"` builds `app_vNNN.html` without pushing.
+- **Cold start (v550+)**: `curl live index.html > /tmp/chains/app_base.html`; `ops/blob_ids.json` →
+  `/tmp/chains/blob_ids.json`; `src/module_NNN.js` → `/tmp/chains/mods/`; `ops/build.py` → `/tmp/chains/
+  build.py`; `ops/tdz.js`; `npm i esbuild@0.21.5 espree eslint-scope`; token → `/tmp/chains/tok`. The
+  build maps module numbers to blob uuids through blob_ids.json, so the live file (which has no Babel
+  entry) works as the base. Verified 2026-10-24.
 
 ## 5. Ship a change (the only workflow)
 
