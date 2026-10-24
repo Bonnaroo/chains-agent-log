@@ -1759,3 +1759,11 @@ featured badge cleared for him to pick).
 - The Chase card now also ranks per-hole birdie titles ("Most birdies on hole 8 · Kyle holds it · 2 more
   birdies on hole 8 takes it (3 to your 2)") against the course-wide ones, by how close you are. Open
   titles still come first. index.html **v540**.
+
+## 2026-10-24 — v541: the finish card says which titles moved
+
+- `ChainsTakeover.sync` now returns `crownsTaken` / `crownsLost` / `crownsHeld` alongside holes; the
+  Takeover block on the finish card lists them ("Course champion 2026 is yours — taken from Kyle." /
+  "Most rounds went to Kyle."). The holder notice on loss was already there (v528).
+- Harness: partial-round finish renders the block with no errors (titles only move on full rounds);
+  test round deleted. index.html **v541**.
