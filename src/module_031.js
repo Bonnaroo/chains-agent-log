@@ -212,8 +212,11 @@
       _indexParticipants(sh, ctx.id, rec.participants, true);
       _quiet(d, sh);
     }
-    if (d && rec.owner && rec.owner === au && rec.status === "final" && rec.course && rec.course.id != null) {
-      // v484: app-wide course board. FULL rounds only (every hole scored), per player.
+    // v543: whoever finishes the card writes the course board — the owner's phone may be closed when a
+    // cardmate taps Finish. (Rules: courseStats/{course}/{round} is writable by any signed-in player.)
+    var onCard = !!(owner && rec.participants && rec.participants[owner]);
+    if (d && rec.status === "final" && rec.course && rec.course.id != null && ((rec.owner && rec.owner === au) || onCard)) {
+      // v484: app-wide course board, per player (9+ holes since v542).
       try {
         var N0 = rec.course.holes || (rec.course.pars ? rec.course.pars.length : 18), ent = {}, any = false;
         var prs = rec.course.pars ? toArr(rec.course.pars) : null;   // v542 fix: was declared inside the loop, so the write below threw "prs is not defined" and NO courseStats were written since v51x
