@@ -2086,6 +2086,7 @@
   function ChaseCard({ rounds, me, onChallenges, onCourse }) {
     const [home, setHome] = React.useState(null);
     const [lead, setLead] = React.useState(null);
+    const [board, setBoard] = React.useState(null);
     const [goal, setGoalState] = React.useState(() => ChainsGoals.get());
     const [picking, setPicking] = React.useState(false);
     React.useEffect(() => { ChainsGoals.pull(); const t = setTimeout(() => setGoalState(ChainsGoals.get()), 1500); return () => clearTimeout(t); }, [me]);
@@ -2093,7 +2094,7 @@
       let alive = true;
       const hid = ChainsHome.get() || (() => { const c = {}; Object.values(rounds || {}).forEach((r) => { if (r && r.course_id != null && r.status !== "open") c[r.course_id] = (c[r.course_id] || 0) + 1; }); return Object.keys(c).sort((a, b) => c[b] - c[a])[0] || null; })();
       if (!hid) { setHome(null); return; }
-      loadCatalog().then((cat) => { const c = (cat || []).find((x) => x && String(x.id) === String(hid)); if (!alive || !c) return; setHome(c); if (window.ChainsRounds && ChainsRounds.courseBoard) ChainsRounds.courseBoard(c.id).then((b) => { if (alive) setLead(ChainsRounds.courseTerritory(b || [], me, c.hole_pars || null)); }).catch(() => {}); });
+      loadCatalog().then((cat) => { const c = (cat || []).find((x) => x && String(x.id) === String(hid)); if (!alive || !c) return; setHome(c); if (window.ChainsRounds && ChainsRounds.courseBoard) ChainsRounds.courseBoard(c.id).then((b) => { if (alive) { setBoard(b || []); setLead(ChainsRounds.courseTerritory(b || [], me, c.hole_pars || null)); } }).catch(() => {}); });
       return () => { alive = false; };
     }, [rounds, me]);
     const suggestions = React.useMemo(() => (home ? ChainsGoals.suggest(rounds, me, home) : []), [home, rounds, me]);
@@ -2114,10 +2115,18 @@
       else if (lead.birdieLeader.key !== me) { const myHoles = (lead.birdieLeaderMine != null) ? lead.birdieLeaderMine : null; add("Birdie leader " + lead.year, lead.birdieLeader, lead.birdieLeader.holes + " different holes birdied this year. Birdie holes you haven't yet.", lead.birdieLeader.holes); }
       if (!lead.regular) add("Local regular", null, "Play here on 3 different days in 90 days and it's yours.", 0, true);
       else if (lead.regular.key !== me) add("Local regular", lead.regular, lead.regular.days + " different days in the last 90. Keep showing up.", lead.regular.days);
+      // hole-level birdie titles ("2 more birdies on hole 8 takes Kyle's title there")
+      try {
+        if (board && window.ChainsNames && ChainsNames.holeMarks) {
+          const marks = ChainsNames.holeMarks(board); const myB = {}; const pars = home.hole_pars || [];
+          board.forEach((r) => { const p = r.players && r.players[me]; if (!p || !p.hs) return; const hs = toArr(p.hs); const pr = r.pars ? toArr(r.pars) : pars; hs.forEach((v, i) => { if (v != null && pr[i] != null && v < pr[i]) myB[i] = (myB[i] || 0) + 1; }); });
+          marks.forEach((m) => { if (!m.birdieLeader || m.birdieLeader.key === me) return; const gap = m.birdieLeader.n - (myB[m.hole - 1] || 0) + 1; add("Most birdies on hole " + m.hole, m.birdieLeader, gap + (gap === 1 ? " more birdie" : " more birdies") + " on hole " + m.hole + " takes it (" + m.birdieLeader.n + " to your " + (myB[m.hole - 1] || 0) + ").", gap); });
+        }
+      } catch (e) {}
       const held = [lead.record, lead.champion, lead.king, lead.birdieLeader, lead.regular, lead.improved].filter((x) => x && x.key === me).length;
       items.sort((a, b) => (b.open - a.open) || a.gapN - b.gapN);
       return { item: items[0] || null, held, short };
-    }, [lead, home, me]);
+    }, [lead, board, home, me]);
     if (!home) return null;
     const card = { background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" };
     const lbl = { fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", fontSize: 10.5, color: "var(--text-faint)", padding: "9px 14px 2px" };
