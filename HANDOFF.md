@@ -91,6 +91,17 @@ by blob index, rewrites the version marker, PUTs the file to the repo via the Co
 blob SHA. **Never write a module file with a Python `open(...,'w')` whose content might fail to encode —
 validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 
+## 4b. v537+: the build precompiles JSX (read this before the first build)
+`build.py` now compiles the 27 JSX modules with esbuild at build time and drops Babel from the bundle
+(reference copy: `ops/build.py` in chains-agent-log; `ops/tdz.js` next to it). Consequences:
+- The live index.html no longer contains Babel; the workbench rebuild still extracts modules the same way
+  (blobs are gzip+base64; JSX modules in the live file are now *compiled* JS, so edit the JSX sources in
+  `mods/` — keep them from the last session's `app_vNNN.html` or from git history before v537, or
+  recover from `chains-agent-log/ops/mods-snapshot/` once that exists).
+- `const`/`let` are real now (Babel used to turn them into `var`). Run `node tdz.js` on every compiled
+  module before building; "used before its const" = a crash on that screen.
+- `build.py vNNN local "msg"` builds `app_vNNN.html` without pushing.
+
 ## 5. Ship a change (the only workflow)
 
 1. Edit `mods/module_NNN.js`. Run esbuild on it (`--loader:.js=jsx`) — must be clean.
@@ -143,7 +154,7 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 
 ## 9. CURRENT STATE — update this every deploy
 
-- **Live:** index.html **v536** (2026-10-24). Staging test.html v536. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
+- **Live:** index.html **v537** (2026-10-24). Staging test.html v537. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
 - **Just shipped:** Takeover hub (month race, courses, crews), lost & found per course, 86 trophies,
   leagues v2 (pledge-to-start, handicap, verified-only, final/judge, ace pot), profile photos.
 - **Known gaps / next:** second test account for two-player checks (none exists yet — create one via the
