@@ -32,6 +32,44 @@
     },
   };
   window.ChainsHome = ChainsHome;
+  // v538 — Chase: the three things you're following (CHALLENGES.md §2b). Lane 2 of four:
+  // trophies (permanent) · goals (private, yours) · weekly challenges (short prompts) · titles (public).
+  const ChainsGoals = {
+    key: () => "chains_goal_v1:" + ((window.ChainsID && ChainsID.whoami && ChainsID.whoami()) || "_"),
+    get: () => { try { return JSON.parse(localStorage.getItem(ChainsGoals.key()) || "null"); } catch (e) { return null; } },
+    set: (g) => { try { if (g) localStorage.setItem(ChainsGoals.key(), JSON.stringify(g)); else localStorage.removeItem(ChainsGoals.key()); } catch (e) {} try { const u = window.ChainsAuth && ChainsAuth.current && ChainsAuth.current(); const d = cloudDb(); if (u && d) d.ref("users/" + u.uid + "/goal").set(g || null).catch(() => {}); } catch (e) {} },
+    pull: () => { try { const u = window.ChainsAuth && ChainsAuth.current && ChainsAuth.current(); const d = cloudDb(); if (u && d && !ChainsGoals.get()) d.ref("users/" + u.uid + "/goal").get().then((sn) => { const v = sn.val(); if (v) localStorage.setItem(ChainsGoals.key(), JSON.stringify(v)); }).catch(() => {}); } catch (e) {} },
+    // Suggestions from your own history at the home course (nothing generic: every one names the hole or the number).
+    suggest: (rounds, me, home) => {
+      const out = [];
+      if (!home || !me) return out;
+      const pars = home.hole_pars || home.pars || Array(home.holes || 18).fill(3);
+      const mine = Object.values(rounds || {}).filter((r) => r && r.status !== "open" && !r.practice && String(r.course_id) === String(home.id) && r.scores && r.scores[me] != null);
+      const full = mine.filter((r) => r.hole_scores && r.hole_scores[me] && toArr(r.hole_scores[me]).filter((x) => x != null).length >= pars.length);
+      const best = full.length ? Math.min(...full.map((r) => r.scores[me])) : null;
+      const short = String(home.name || "").replace(/ disc golf.*$/i, "");
+      const m = ChainsHome.mastery(rounds, me, home.id, pars);
+      if (best != null) out.push({ id: "beat_best", title: "Beat your best at " + short + " (" + fmtPar(best) + ")", test: "best", target: best - 1, course: home.id, how: "One full round lower than " + fmtPar(best) + "." });
+      if (best != null && best >= 0) out.push({ id: "under_par", title: "Shoot under par at " + short, test: "best", target: -1, course: home.id, how: "Your first full round in the red here." });
+      const hard = m.filter((h) => h.n >= 2 && h.avg != null && h.avg - h.par >= 0.8).sort((a, b) => (b.avg - b.par) - (a.avg - a.par)).slice(0, 2);
+      hard.forEach((h) => out.push({ id: "par_h" + h.hole, title: "Par hole " + h.hole + " at " + short, test: "hole_le", hole: h.hole, target: h.par, course: home.id, how: "You average " + (Math.round(h.avg * 10) / 10) + " there. Par or better once." }));
+      const noBird = m.filter((h) => h.n >= 2 && !h.birdies).sort((a, b) => a.hole - b.hole).slice(0, 2);
+      noBird.forEach((h) => out.push({ id: "bird_h" + h.hole, title: "First birdie on hole " + h.hole + " at " + short, test: "hole_le", hole: h.hole, target: h.par - 1, course: home.id, how: "You've played it " + h.n + " times without one." }));
+      if (full.length >= 3) { const last5 = full.slice(0, 5).map((r) => r.scores[me]); const avg = last5.reduce((a, b) => a + b, 0) / last5.length; out.push({ id: "raise_floor", title: "Three rounds in a row at or under " + fmtPar(Math.round(avg)) + " at " + short, test: "streak_le", target: Math.round(avg), count: 3, course: home.id, how: "Your recent average. Make it your floor." }); }
+      return out.slice(0, 6);
+    },
+    // Has the chosen goal been met since it was chosen?
+    evaluate: (goal, rounds, me) => {
+      if (!goal || !me) return { done: false, progress: 0 };
+      const since = goal.since || 0;
+      const mine = Object.values(rounds || {}).filter((r) => r && r.status !== "open" && !r.practice && String(r.course_id) === String(goal.course) && r.scores && r.scores[me] != null && (Date.parse(r.created_at || r.date || 0) || 0) >= since).sort((a, b) => String(a.date || "").localeCompare(String(b.date || "")));
+      if (goal.test === "best") { const hit = mine.find((r) => r.scores[me] <= goal.target && r.hole_scores && r.hole_scores[me]); const bestSince = mine.length ? Math.min(...mine.map((r) => r.scores[me])) : null; return { done: !!hit, progress: bestSince == null ? 0 : Math.max(0, Math.min(1, 1 - (bestSince - goal.target) / 5)), note: bestSince == null ? "No rounds there yet." : "Best since you picked it: " + fmtPar(bestSince) + "." }; }
+      if (goal.test === "hole_le") { let plays = 0, hit = false; mine.forEach((r) => { const hs = r.hole_scores && r.hole_scores[me] ? toArr(r.hole_scores[me]) : null; const v = hs ? hs[goal.hole - 1] : null; if (v != null) { plays++; if (v <= goal.target) hit = true; } }); return { done: hit, progress: hit ? 1 : Math.min(0.6, plays * 0.15), note: plays ? plays + (plays === 1 ? " try" : " tries") + " since you picked it." : "Play it and see." }; }
+      if (goal.test === "streak_le") { let run = 0, best = 0; mine.forEach((r) => { if (r.scores[me] <= goal.target) { run++; best = Math.max(best, run); } else run = 0; }); return { done: best >= goal.count, progress: Math.min(1, best / goal.count), note: best + " of " + goal.count + " in a row so far." }; }
+      return { done: false, progress: 0 };
+    },
+  };
+  window.ChainsGoals = ChainsGoals;
   // v511: rating for one player's hole scores; pulls hole lengths / ssa from the course catalog when the record lacks them
   // v527 — player rating from round records, using the per-course pin from the catalog (ratingFor), not the raw length model.
   function playerRatingFor(rounds, me) {
@@ -2030,6 +2068,90 @@
       </div>
     );
   }
+  // v538 — Chase card on Home: a title you're close to · your next breakthrough · this week.
+  function ChaseCard({ rounds, me, onChallenges, onCourse }) {
+    const [home, setHome] = React.useState(null);
+    const [lead, setLead] = React.useState(null);
+    const [goal, setGoalState] = React.useState(() => ChainsGoals.get());
+    const [picking, setPicking] = React.useState(false);
+    React.useEffect(() => { ChainsGoals.pull(); const t = setTimeout(() => setGoalState(ChainsGoals.get()), 1500); return () => clearTimeout(t); }, [me]);
+    React.useEffect(() => {
+      let alive = true;
+      const hid = ChainsHome.get() || (() => { const c = {}; Object.values(rounds || {}).forEach((r) => { if (r && r.course_id != null && r.status !== "open") c[r.course_id] = (c[r.course_id] || 0) + 1; }); return Object.keys(c).sort((a, b) => c[b] - c[a])[0] || null; })();
+      if (!hid) { setHome(null); return; }
+      loadCatalog().then((cat) => { const c = (cat || []).find((x) => x && String(x.id) === String(hid)); if (!alive || !c) return; setHome(c); if (window.ChainsRounds && ChainsRounds.courseBoard) ChainsRounds.courseBoard(c.id).then((b) => { if (alive) setLead(ChainsRounds.courseTerritory(b || [], me, c.hole_pars || null)); }).catch(() => {}); });
+      return () => { alive = false; };
+    }, [rounds, me]);
+    const suggestions = React.useMemo(() => (home ? ChainsGoals.suggest(rounds, me, home) : []), [home, rounds, me]);
+    const ev = React.useMemo(() => ChainsGoals.evaluate(goal, rounds, me), [goal, rounds, me]);
+    const setGoal = (g) => { const v = g ? Object.assign({}, g, { since: Date.now() }) : null; ChainsGoals.set(v); setGoalState(v); setPicking(false); };
+    // closest title at the home course
+    const chase = React.useMemo(() => {
+      if (!lead || !home) return null;
+      const short = String(home.name || "").replace(/ disc golf.*$/i, "");
+      const mine = lead.me; const items = [];
+      const add = (title, holder, gapText, gapN, open) => items.push({ title, holder, gapText, gapN, open });
+      if (!lead.record) add("Course record", null, "Nobody holds it yet. Your next full round sets it.", 0, true);
+      else if (lead.record.key !== me && mine && mine.best != null) add("Course record", lead.record, "Shoot " + fmtPar(lead.record.best - 1) + " or better. Your best is " + fmtPar(mine.best) + ".", Math.max(1, mine.best - lead.record.best + 1));
+      if (!lead.champion) add("Course champion " + lead.year, null, "Nobody holds it this year. Your next full round takes it.", 0, true);
+      else if (lead.champion.key !== me && mine) add("Course champion " + lead.year, lead.champion, "Beat " + fmtPar(lead.champion.best) + " this year.", Math.max(1, (mine.best != null ? mine.best : lead.champion.best + 3) - lead.champion.best + 1));
+      if (lead.king && lead.king.key !== me && mine) add("Most rounds", lead.king, lead.king.rounds + " to your " + mine.rounds + ". " + (lead.king.rounds - mine.rounds + 1) + " more rounds here takes it.", lead.king.rounds - mine.rounds + 1);
+      if (!lead.birdieLeader) add("Birdie leader " + lead.year, null, "Nobody holds it yet. One birdie here starts it.", 0, true);
+      else if (lead.birdieLeader.key !== me) { const myHoles = (lead.birdieLeaderMine != null) ? lead.birdieLeaderMine : null; add("Birdie leader " + lead.year, lead.birdieLeader, lead.birdieLeader.holes + " different holes birdied this year. Birdie holes you haven't yet.", lead.birdieLeader.holes); }
+      if (!lead.regular) add("Local regular", null, "Play here on 3 different days in 90 days and it's yours.", 0, true);
+      else if (lead.regular.key !== me) add("Local regular", lead.regular, lead.regular.days + " different days in the last 90. Keep showing up.", lead.regular.days);
+      const held = [lead.record, lead.champion, lead.king, lead.birdieLeader, lead.regular, lead.improved].filter((x) => x && x.key === me).length;
+      items.sort((a, b) => (b.open - a.open) || a.gapN - b.gapN);
+      return { item: items[0] || null, held, short };
+    }, [lead, home, me]);
+    if (!home) return null;
+    const card = { background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" };
+    const lbl = { fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".08em", fontSize: 10.5, color: "var(--text-faint)", padding: "9px 14px 2px" };
+    const rowS = { display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderTop: "1px solid var(--border-subtle)", cursor: "pointer", background: "transparent", border: "none", borderTop: "1px solid var(--border-subtle)", width: "100%", textAlign: "left" };
+    const ic = (I, col) => <span style={{ width: 24, height: 24, color: col || "var(--fairway-600)", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><I size={22} /></span>;
+    return (
+      <div>
+        <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", marginBottom: 8 }}>What you're chasing <span style={{ fontWeight: 500, fontSize: 12.5, color: "var(--text-muted)" }}>· {chase ? chase.short : home.name}</span></div>
+        <div style={card}>
+          <div style={lbl}>A title within reach</div>
+          {chase && chase.item ? (
+            <button onClick={onCourse ? () => onCourse(home) : undefined} style={rowS}>
+              {ic(Icons.Flag, chase.item.open ? "var(--ace-500)" : "var(--fairway-600)")}
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)" }}>{chase.item.title}{chase.item.holder ? <span style={{ fontWeight: 500, color: "var(--text-muted)" }}> · {__fn(chase.item.holder.name)} holds it</span> : <span style={{ fontWeight: 500, color: "var(--ace-600)" }}> · open</span>}</span>
+                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", marginTop: 2 }}>{chase.item.gapText}</span>
+              </span>
+              <span style={{ color: "var(--text-faint)", display: "inline-flex" }}><Icons.ChevRight size={18} /></span>
+            </button>
+          ) : <div style={{ padding: "6px 14px 12px", fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-muted)" }}>{chase && chase.held ? "You hold " + chase.held + (chase.held === 1 ? " title" : " titles") + " here. Nothing to chase — defend them." : "Play a full round here and the titles open up."}</div>}
+          <div style={lbl}>Your next breakthrough</div>
+          {goal && !picking ? (
+            <button onClick={() => setPicking(true)} style={rowS}>
+              {ic(ev.done ? Icons.Check : Icons.Target, ev.done ? "var(--score-under, #1f8a5b)" : "var(--fairway-600)")}
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)", textDecoration: ev.done ? "line-through" : "none" }}>{goal.title}</span>
+                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12.5, color: ev.done ? "var(--score-under, #1f8a5b)" : "var(--text-muted)", marginTop: 2 }}>{ev.done ? "Done. Pick the next one." : ev.note || goal.how}</span>
+                {!ev.done && <span style={{ display: "block", marginTop: 6, width: "100%", height: 5, borderRadius: 3, background: "var(--bg-sunken, #eef2ef)", overflow: "hidden" }}><span style={{ display: "block", width: Math.round(ev.progress * 100) + "%", height: "100%", background: "var(--fairway-500)" }} /></span>}
+              </span>
+              <span style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-faint)", flexShrink: 0 }}>Change</span>
+            </button>
+          ) : (
+            <div style={{ borderTop: "1px solid var(--border-subtle)" }}>
+              <div style={{ padding: "8px 14px 4px", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}>Pick one thing from your own history. Only you see it.</div>
+              {suggestions.length ? suggestions.map((g) => <button key={g.id} onClick={() => setGoal(g)} style={Object.assign({}, rowS, { padding: "9px 14px" })}>{ic(Icons.Target)}<span style={{ flex: 1, minWidth: 0 }}><span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--text-strong)" }}>{g.title}</span><span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)" }}>{g.how}</span></span></button>)
+                : <div style={{ padding: "4px 14px 12px", fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-muted)" }}>Two full rounds at {chase ? chase.short : "your home course"} and the suggestions appear.</div>}
+              {goal && picking ? <button onClick={() => setPicking(false)} style={Object.assign({}, rowS, { padding: "9px 14px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontSize: 13 })}>Keep "{goal.title}"</button> : null}
+            </div>
+          )}
+          <button onClick={onChallenges} style={rowS}>
+            {ic(Icons.Calendar)}
+            <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)" }}>This week's challenges</span>
+            <span style={{ color: "var(--text-faint)", display: "inline-flex" }}><Icons.ChevRight size={18} /></span>
+          </button>
+        </div>
+      </div>
+    );
+  }
   function LastRound({ r, me, onOpen }) {
     if (!r) return null;
     const tp = r.scores && me ? r.scores[me] : null; const hs = r.hole_scores && me && r.hole_scores[me] ? toArr(r.hole_scores[me]) : null; const played = hs ? hs.filter((v) => v != null).length : null; const strokes = hs ? hs.reduce((a, v) => a + (v || 0), 0) : null;
@@ -2593,6 +2715,7 @@
           </div>
         </div>
         <HomeEverything onThrow={() => setStage("throw")} onStats={() => setShowStats(true)} onBag={() => setShowBag(true)} onCourses={() => setStage("browse")} onMe={() => setStage("me")} />
+        <ChaseCard rounds={rounds} me={me} onChallenges={() => { try { window.dispatchEvent(new CustomEvent("chains:navigate", { detail: "takeover" })); } catch (e) {} }} onCourse={(c) => { setViewCourse(c); setStage("courseview"); }} />
         <LastRound r={myRounds[0] || null} me={me} onOpen={() => myRounds[0] && setDetail(myRounds[0])} />
         <RecentTrophies me={me} onStats={() => setShowStats(true)} />
         <WeeklyChallenges rounds={rounds} me={me} />
