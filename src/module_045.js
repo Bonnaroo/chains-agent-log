@@ -1518,6 +1518,7 @@
   // v504 — Territory: course leaders + everybody's numbers here.
   function TerritoryCard({ course, me, part }) {
     const [t, setT] = React.useState(null);
+    const [allPlayers, setAllPlayers] = React.useState(false);
     React.useEffect(() => { let alive = true; if (!window.ChainsRounds || !ChainsRounds.courseBoard || !course || course.id == null) return; ChainsRounds.courseBoard(course.id).then((b) => { if (alive) setT(ChainsRounds.courseTerritory(b, me)); }).catch(() => {}); return () => { alive = false; }; }, [course && course.id]);
     if (!t) return null;
     const card = { background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" };
@@ -1528,7 +1529,8 @@
         <div style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)", marginTop: 1 }}>{sub}</div>
       </div>
     );
-    const top = t.players.slice().sort((a, b) => b.rounds - a.rounds || a.avg - b.avg).slice(0, 6);
+    const sortedPlayers = t.players.slice().sort((a, b) => b.rounds - a.rounds || (a.avg == null ? 99 : a.avg) - (b.avg == null ? 99 : b.avg));
+    const top = allPlayers ? sortedPlayers : sortedPlayers.slice(0, 6);
     return (
       <div>
         <TakeoverCard course={course} me={me} />
@@ -1548,10 +1550,11 @@
                   <span style={{ width: 40, textAlign: "right", fontFamily: "var(--font-mono)", fontSize: 12.5, color: "var(--score-under, #1f8a5b)" }}>{p.birdies || 0}</span>
                 </div>
               ))}
+              {sortedPlayers.length > 6 && <button onClick={() => setAllPlayers((v) => !v)} style={{ width: "100%", padding: "9px 12px", border: "none", borderTop: "1px solid var(--border-subtle)", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--fairway-700)" }}>{allPlayers ? "Show fewer" : "Show all " + sortedPlayers.length + " players"}</button>}
             </div>
           )}
         </div>
-        </React.Fragment>}
+        </React.Fragment>
       </div>
     );
   }
