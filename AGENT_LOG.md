@@ -1767,3 +1767,24 @@ featured badge cleared for him to pick).
   "Most rounds went to Kyle."). The holder notice on loss was already there (v528).
 - Harness: partial-round finish renders the block with no errors (titles only move on full rounds);
   test round deleted. index.html **v541**.
+
+## 2026-10-24 — v542: the course board had been silently broken since the `pars` field was added
+
+- **Bug**: in `ChainsRounds.save()` the `prs` (course pars) variable was declared *inside* the per-player
+  loop but used outside it when building the `courseStats` record → `ReferenceError: prs is not
+  defined`, swallowed by `try {} catch {}`. Result: **no courseStats entry was written for any round
+  finished after 2026-10-21** (the 10/22 nine with Kyle and the 10/23 eighteen with Kyle were missing),
+  so titles, boards, the weekly scoreboard and the chase were all working from stale data. Found while
+  testing 9-hole rounds. Fixed (hoisted); `_quiet()` and the courseStats block now `console.error` on a
+  refused/bad write instead of hiding it.
+- **Backfill** (harness, Will's session): rebuilt the missing entries from the round records —
+  pr-mvl4hx5bkhsz 2026-10-23 (Kyle 18, Will 18) and pr-mvjunr6gseuj 2026-10-22 (Kyle 9, Will 9) — then
+  re-ran `ChainsTakeover.sync` + `ChainsNames.firstsSync` for Otterburn. Board now: Kyle course record
+  −9 and course champion 2026, birdie leader (11 holes); Will most rounds (4) and local regular (4 days).
+  Will owns 18 holes by the 3-plays rule (Kyle has 2 plays there). Harness test round removed.
+- **9-hole rounds count** (Will: people often only have time for nine): courseStats keeps rounds with 9+
+  holes, flagged `played` / `full`. Showing-up titles (most rounds, local regular, birdie leader, most
+  birdies, hole owners) use them; score titles (course record, champion, best average, most improved,
+  weekly "best rounds", league standings unless the league is that short) use full rounds only.
+  "Everyone who's played here" shows — for players with no full round.
+- index.html **v542**.
