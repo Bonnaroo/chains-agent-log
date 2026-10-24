@@ -1822,3 +1822,10 @@ featured badge cleared for him to pick).
 
 - "Nine counts" trophy: a nine on an 18-hole course counts (Will's 10/22 nine now shows 1/3).
 - Me → "Titles you hold" opens the titles list (it went to the Challenges tab). index.html **v547**.
+
+## 2026-10-24 — v548: player level
+
+- A **level** from trophy points (`ChainsBadges.level`; thresholds 0/10/25/50/85/130/190/265/355/460 →
+  levels 1–10, slow by design). Me page: "Level 3 · 21 points to level 4" under the username; the
+  Trophy points board shows each player's level. Plain, no names for levels. Will: level 3, 29 points,
+  23 trophies. index.html **v548**.
