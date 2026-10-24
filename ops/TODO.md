@@ -48,7 +48,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done 2026-10-24` BRAND.md (name, pitch, voice, colours, type, logo, stickers, website, store listing)
 - [x] `done 2026-10-24` about.html landing page (chains-app) · `todo` real phone screenshots once Will likes the look
 - [x] `done v534` First sticker (stickers/chains-sticker-otterburn.svg) + `#course=<id>` deep link · `will` print a few and post one at Otterburn
-- [ ] `todo` App Store: plan in `ops/APPSTORE.md` — next build items: account deletion in Settings, privacy policy on about.html; then `chains-native` (Capacitor) repo
+- [x] `done v535` Account deletion in Settings + privacy policy on about.html
+- [ ] `todo` App Store: `chains-native` (Capacitor) repo per `ops/APPSTORE.md`; `will` Apple Developer + Codemagic accounts when ready
 - [x] `done v531` "Add your course" flow (two minutes: name, town, holes, pars, location)
 - [ ] `later` Bag tags (crew ladder), call-outs (hole challenges between two players)
 
