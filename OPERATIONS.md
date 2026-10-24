@@ -85,6 +85,11 @@ Known failure modes so far: Chrome extension offline (testing only), renderer fr
 Firebase rules rejecting a new node (publish rules v2), a mis-tapped 1 creating a phantom ace (8-second
 retract exists).
 
+## 5b. Monitoring
+Set-up steps for UptimeRobot (site up, version keyword, database answering) and Sentry (errors on
+players' phones, no user identity sent) are in `ops/MONITORING.md`. Until Will does them, the AI's
+weekly check is the only monitor.
+
 ## 6. Weekly checks (first session of the week)
 
 - GitHub Actions in `chains-dgpt-data`: all workflows green (DGPT collect, daily rounds backup, discs, OSM
@@ -128,3 +133,5 @@ retract exists).
 4. Railway env vars + service-account key for the password-reset worker.
 5. Send the licence emails in `pipeline/SOURCES.md`.
 6. Two-phone test with Kyle or Gabe (card from two phones, friend request, DM, league invite).
+7. UptimeRobot + Sentry accounts (ops/MONITORING.md, 20 minutes).
+8. When ready for the stores: Apple Developer + Codemagic accounts (ops/APPSTORE.md).
