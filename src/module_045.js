@@ -32,6 +32,16 @@
     },
   };
   window.ChainsHome = ChainsHome;
+  // v539 — favourite courses (local + users/{uid}/profile/favorites). Browsing = home & favourites · nearby · anywhere.
+  const ChainsFavs = {
+    key: () => "chains_favs_v1:" + ((window.ChainsID && ChainsID.whoami && ChainsID.whoami()) || "_"),
+    get: () => { try { return JSON.parse(localStorage.getItem(ChainsFavs.key()) || "[]") || []; } catch (e) { return []; } },
+    has: (cid) => ChainsFavs.get().some((x) => String(x) === String(cid)),
+    toggle: (cid) => { const cur = ChainsFavs.get().filter((x) => String(x) !== String(cid)); const on = cur.length === ChainsFavs.get().length; const next = on ? cur.concat([String(cid)]) : cur; try { localStorage.setItem(ChainsFavs.key(), JSON.stringify(next)); } catch (e) {} try { const u = window.ChainsAuth && ChainsAuth.current && ChainsAuth.current(); const d = cloudDb(); if (u && d) d.ref("users/" + u.uid + "/profile/favorites").set(next).catch(() => {}); } catch (e) {} try { window.dispatchEvent(new Event("chains:favs")); } catch (e) {} return on; },
+    pull: () => { try { const u = window.ChainsAuth && ChainsAuth.current && ChainsAuth.current(); const d = cloudDb(); if (u && d && !ChainsFavs.get().length) d.ref("users/" + u.uid + "/profile/favorites").get().then((sn) => { const v = sn.val(); if (Array.isArray(v) && v.length) { localStorage.setItem(ChainsFavs.key(), JSON.stringify(v)); window.dispatchEvent(new Event("chains:favs")); } }).catch(() => {}); } catch (e) {} },
+  };
+  window.ChainsFavs = ChainsFavs;
+  const milesBetween = (a, b) => { const R = 3958.8, toR = (x) => x * Math.PI / 180; const dLat = toR(b.lat - a.lat), dLng = toR(b.lng - a.lng); const h = Math.sin(dLat / 2) ** 2 + Math.cos(toR(a.lat)) * Math.cos(toR(b.lat)) * Math.sin(dLng / 2) ** 2; return 2 * R * Math.asin(Math.sqrt(h)); };
   // v538 — Chase: the three things you're following (CHALLENGES.md §2b). Lane 2 of four:
   // trophies (permanent) · goals (private, yours) · weekly challenges (short prompts) · titles (public).
   const ChainsGoals = {
@@ -1901,6 +1911,7 @@
     const myRounds = Object.values(rounds || {}).filter((r) => r && r.status !== "open" && r.course_id === courseId && r.scores && me && r.scores[me] != null);
     const myBest = myRounds.length ? Math.min(...myRounds.map((r) => r.scores[me])) : null;
     const [homeTick, setHomeTick] = React.useState(0);
+    const [, setFavTick] = React.useState(0);
     const mastery = React.useMemo(() => { try { return ChainsHome.mastery(rounds, me, courseId, Array.from({ length: N }, (_, i) => (course.hole_pars || [])[i] || 3)); } catch (e) { return []; } }, [rounds, me, courseId, N]);
     const holeStats = (() => { const out = []; for (let h = 0; h < N; h++) { let s = 0, n = 0; myRounds.forEach((r) => { const hs = r.hole_scores && r.hole_scores[me] ? toArr(r.hole_scores[me]) : null; if (hs && hs[h] != null) { s += hs[h]; n++; } }); out.push(n ? s / n : null); } return out; })();
     const T = {
@@ -1928,7 +1939,10 @@
         <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
           <button onClick={onBack} aria-label="Back" style={{ width: 40, height: 40, borderRadius: "50%", border: "1px solid var(--border-default)", background: "var(--bg-elevated)", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--text-strong)", flexShrink: 0 }}><Icons.ChevLeft size={20} /></button>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={T.h1}>{course.name}</div>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+              <div style={Object.assign({}, T.h1, { flex: 1, minWidth: 0 })}>{course.name}</div>
+              <button onClick={() => { const on = ChainsFavs.toggle(course.id); setFavTick((x) => x + 1); if (window.ChainsToast) ChainsToast.show(on ? "Added to your favourites." : "Removed from favourites.", "success"); }} aria-label="Favourite" style={{ width: 40, height: 40, borderRadius: "50%", border: "1px solid var(--border-default)", background: ChainsFavs.has(course.id) ? "var(--gold-100, #fcefc7)" : "var(--bg-elevated)", color: ChainsFavs.has(course.id) ? "var(--gold-600, #b8860b)" : "var(--text-muted)", cursor: "pointer", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}><Icons.Star size={20} /></button>
+            </div>
             {course.community ? <div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--fairway-700)", marginTop: 4 }}>Community course · added by {course.addedName || course.addedBy || "a player"}. Pars from the player; map it on the Holes tab.</div> : null}
             <div style={{ fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-muted)", marginTop: 4 }}>{[course.city ? course.city + (course.state ? ", " + course.state : "") : null, N + " holes", "Par " + (course.par_total || pars.reduce((a, b) => a + b, 0)), course.course_length_ft ? course.course_length_ft.toLocaleString() + " ft" : null, course.est_minutes ? "~" + Math.floor(course.est_minutes / 60) + " hr " + (course.est_minutes % 60) + " min" : null].filter(Boolean).join(" · ")}</div>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6 }}><Stars value={avg} /><span style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-muted)" }}>{avg ? avg.toFixed(1) + " · " + ratings.length + (ratings.length === 1 ? " rating" : " ratings") : "No ratings yet"}</span></div>
@@ -3160,7 +3174,12 @@
     const [cat, setCat] = React.useState(CATALOG);
     const [tab, setTab] = React.useState("recent");
     const [adding, setAdding] = React.useState(false);
-    React.useEffect(() => { if (!cat) loadCatalog().then(setCat); }, []);
+    const [pos, setPos] = React.useState(null);           // v539: nearby
+    const [posErr, setPosErr] = React.useState("");
+    const [, favTick] = React.useState(0);
+    React.useEffect(() => { if (!cat) loadCatalog().then(setCat); ChainsFavs.pull(); const on = () => favTick((x) => x + 1); window.addEventListener("chains:favs", on); return () => window.removeEventListener("chains:favs", on); }, []);
+    React.useEffect(() => { if (tab !== "nearby" || pos || posErr) return; if (!navigator.geolocation) { setPosErr("No location on this device."); return; } navigator.geolocation.getCurrentPosition((g) => setPos({ lat: g.coords.latitude, lng: g.coords.longitude }), () => setPosErr("Couldn't get your location. Check the phone's location setting for the browser."), { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }); }, [tab]);
+    const favs = ChainsFavs.get();
     const recents = React.useMemo(() => {
       let list = []; try { list = JSON.parse(localStorage.getItem(RECENT_COURSES_KEY) || "[]"); } catch (e) {}
       if (!list.length) { try { const c = JSON.parse(localStorage.getItem(LAST_COURSE_KEY) || "null"); if (c) list = [c]; } catch (e) {} }
@@ -3174,7 +3193,9 @@
     const hasData = (c) => Array.isArray(c.hole_lengths) && c.hole_lengths.some((x) => x);
     list = list.slice().sort((a, b) => ((playedHere[b.id] || 0) - (playedHere[a.id] || 0)) || (hasData(b) - hasData(a)) || ((b.popularity_ratings || 0) - (a.popularity_ratings || 0)) || String(a.name).localeCompare(String(b.name))).slice(0, 60);
     const showRecent = !ql && tab === "recent" && recents.length > 0;
-    const rows = showRecent ? recents : list;
+    const nearby = React.useMemo(() => (pos && cat ? cat.filter((c) => c && c.lat != null && c.lng != null).map((c) => Object.assign({}, c, { _mi: milesBetween(pos, c) })).sort((a, b) => a._mi - b._mi).slice(0, 40) : []), [pos, cat]);
+    const favRows = React.useMemo(() => (cat || []).filter((c) => c && favs.some((f) => String(f) === String(c.id))), [cat, favs.join(",")]);
+    const rows = ql ? list : tab === "nearby" ? nearby : tab === "favs" ? favRows : showRecent ? recents : list;
     const T = {
       h1: { fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 26, lineHeight: 1.05, color: "var(--text-strong)" },
       seg: (on) => ({ flex: 1, height: 40, border: "none", borderRadius: 10, background: on ? "var(--fairway-700)" : "transparent", color: on ? "#fff" : "var(--text-body)", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13.5 }),
@@ -3193,12 +3214,15 @@
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={cat && cat.length ? "Search " + cat.length.toLocaleString() + " courses" : "Search courses"} autoFocus={!recents.length}
             style={{ width: "100%", height: 48, padding: "0 16px 0 42px", border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)", fontFamily: "var(--font-sans)", fontSize: 15.5, background: "var(--bg-elevated)", color: "var(--text-strong)", outline: "none", boxSizing: "border-box" }} />
         </div>
-        {!ql && recents.length > 0 && (
+        {!ql && (
           <div style={{ display: "flex", gap: 2, padding: 3, background: "var(--bg-sunken)", borderRadius: 12 }}>
-            <button style={T.seg(tab === "recent")} onClick={() => setTab("recent")}>Recent</button>
-            <button style={T.seg(tab === "all")} onClick={() => setTab("all")}>All courses</button>
+            {recents.length > 0 && <button style={T.seg(tab === "recent")} onClick={() => setTab("recent")}>Recent</button>}
+            {favs.length > 0 && <button style={T.seg(tab === "favs")} onClick={() => setTab("favs")}>Favourites</button>}
+            <button style={T.seg(tab === "nearby")} onClick={() => setTab("nearby")}>Nearby</button>
+            <button style={T.seg(tab === "all")} onClick={() => setTab("all")}>All</button>
           </div>
         )}
+        {!ql && tab === "nearby" && !pos && <div style={{ fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-muted)", padding: "2px 4px" }}>{posErr || "Finding courses near you…"}</div>}
         <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
           {(cat == null && !showRecent) ? <div style={{ padding: 20, fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-faint)" }}>Loading courses…</div>
             : rows.length === 0 ? <div style={{ padding: 20, fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-faint)" }}>No match. You can still score on a blank 18 — tap below.</div>
@@ -3208,7 +3232,7 @@
                 <span style={{ flex: 1, minWidth: 0 }}>
                   <span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{c.name}{c.needs_review ? <span style={{ marginLeft: 8, padding: "1px 7px", borderRadius: 10, background: "var(--bg-sunken, #eef2ef)", color: "var(--text-muted)", fontSize: 10.5, fontWeight: 700, textTransform: "uppercase", verticalAlign: "middle" }}>community</span> : null}</span>
                   <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", marginTop: 2 }}>{[c.city ? c.city + (c.state ? ", " + c.state : "") : null, (c.holes || 18) + " holes", c.par_total ? "Par " + c.par_total : null, c.course_length_ft ? c.course_length_ft.toLocaleString() + " ft" : null].filter(Boolean).join(" · ")}</span>
-                  <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-faint)", marginTop: 2 }}>Est. {est(c)}{playedHere[c.id] ? " · you've played here " + playedHere[c.id] + (playedHere[c.id] === 1 ? " time" : " times") : ""}{c.popularity_ratings ? " · ★ " + (c.grade || "") : ""}</span>
+                  <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-faint)", marginTop: 2 }}>{c._mi != null ? (c._mi < 10 ? Math.round(c._mi * 10) / 10 : Math.round(c._mi)) + " mi · " : ""}Est. {est(c)}{playedHere[c.id] ? " · you've played here " + playedHere[c.id] + (playedHere[c.id] === 1 ? " time" : " times") : ""}{c.popularity_ratings ? " · ★ " + (c.grade || "") : ""}</span>
                 </span>
                 <span style={{ color: "var(--text-faint)", display: "inline-flex" }}><Icons.ChevRight size={18} /></span>
               </button>
