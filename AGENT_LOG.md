@@ -1842,3 +1842,13 @@ featured badge cleared for him to pick).
   gets pinged" → "your friends get told"; "Your crew's rounds" → "Your friends' rounds"; note placeholder
   "Tips for the crew" → "Tips for other players"; cancel-invite message. The tagline "Disc golf, with your
   crew" stays (it's the brand line, BRAND.md). index.html **v550**.
+
+## 2026-10-24 — v551: challenge a friend this week (call-outs)
+
+- Friends screen: a **Challenge** button on each friend row → `callouts/{id}` {from, to, names, week,
+  status}; the friend gets a bell note ("Best full round by Sunday wins. Any course counts."). One per
+  pair per week. **This week's call-outs** card on Friends shows both sides' best full round this week
+  from the course board and who leads; after Sunday the first viewer settles it (`winner`). The
+  "competition" option from Will's brainstorm. `ChainsCallouts` in module 68. Rules v2 + backup kit
+  updated (`callouts`, indexOn week). Harness: created a self call-out, saw "You −4 at Otterburn · Will
+  −4 · Tied", removed it. index.html **v551**.
