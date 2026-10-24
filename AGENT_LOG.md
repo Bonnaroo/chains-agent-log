@@ -1801,3 +1801,8 @@ featured badge cleared for him to pick).
 - Each hole row on the course page Holes tab now says who owns it ("Kyle owns it (avg 2.6)" / "You own
   it" / "Open hole") and who has the most birdies there, under your own mastery target — the "course
   map with title holders on individual holes" from Will's brainstorm, as a list first. index.html **v544**.
+
+## 2026-10-24 — v545: plain names
+
+- "Your territory" → **Titles you hold** everywhere (Go Throw row + section, Me row, course page);
+  "Your crew's rounds" → **Friends' rounds**. index.html **v545**.
