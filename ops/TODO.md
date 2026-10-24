@@ -31,7 +31,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 ## Ops (policies, procedures, backups)
 - [ ] `will` Create PRIVATE repo `chains-backups` and follow `ops/backups-kit/README.md` (6 steps) — until then the nightly rounds backup in chains-dgpt-data is the only one, and that repo is public
 - [x] `done 2026-10-23` OPERATIONS.md: release procedure, rollback, backup/restore, incident steps, weekly checks, who does what
-- [ ] `will` Sentry (crash reporting) + UptimeRobot (uptime) — I give exact steps when you say go
+- [ ] `will` Sentry + UptimeRobot — exact steps in `ops/MONITORING.md` (20 minutes)
 - [ ] `later` Consider making chains-agent-log private (it holds system docs; no secrets, no user data)
 
 ## Course data (the side project — `chains-dgpt-data/pipeline/`)
@@ -48,7 +48,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done 2026-10-24` BRAND.md (name, pitch, voice, colours, type, logo, stickers, website, store listing)
 - [x] `done 2026-10-24` about.html landing page (chains-app) · `todo` real phone screenshots once Will likes the look
 - [x] `done v534` First sticker (stickers/chains-sticker-otterburn.svg) + `#course=<id>` deep link · `will` print a few and post one at Otterburn
-- [ ] `todo` App Store: PWA first (Add to Home Screen, icon, offline shell), then Capacitor wrapper → Apple ($99/yr) + Google ($25)
+- [ ] `todo` App Store: plan in `ops/APPSTORE.md` — next build items: account deletion in Settings, privacy policy on about.html; then `chains-native` (Capacitor) repo
 - [x] `done v531` "Add your course" flow (two minutes: name, town, holes, pars, location)
 - [ ] `later` Bag tags (crew ladder), call-outs (hole challenges between two players)
 
