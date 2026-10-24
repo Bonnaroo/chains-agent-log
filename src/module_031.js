@@ -513,18 +513,21 @@
       var lead = courseTerritory(board, me, catC ? (catC.hole_pars || catC.pars || null) : null); var short = nm.replace(/ disc golf.*$/i, "");
       var crowns = { record: [lead.record, "Course record"], champion: [lead.champion, "Course champion " + lead.year], regular: [lead.regular, "Local regular"], birdieLeader: [lead.birdieLeader, "Birdie leader " + lead.year], improved: [lead.improved, "Most improved"] };
       return d.ref("territory/" + cid + "/crowns").get().then(function (cs) { return cs.val() || {}; }, function () { return {}; }).then(function (prevC) {
-        var now = Date.now();
+        var now = Date.now(); var crownsTaken = [], crownsLost = [], crownsHeld = [];
         Object.keys(crowns).forEach(function (id) {
           var who = crowns[id][0], title = crowns[id][1], was = prevC[id];
           if (!who) { if (was) upd["territory/" + cid + "/crowns/" + id] = null; return; }
           var changed = !was || was.key !== who.key;
+          if (who.key === me) { if (changed) crownsTaken.push({ id: id, title: title, from: was && was.key !== me ? was.name : null }); else crownsHeld.push({ id: id, title: title }); }
+          if (changed && was && was.key === me) crownsLost.push({ id: id, title: title, to: who.name });
           upd["territory/" + cid + "/crowns/" + id] = { key: who.key, name: who.name, title: title, since: changed ? now : (was.since || now) };
           if (changed && was && was.key) {
             upd["territory/" + cid + "/heldLog/" + was.key + "/" + id + "-" + (was.since || now)] = { id: id, title: was.title || title, course: short, from: was.since || now, to: now, lostTo: who.name };
             if (who.key === me) _notify([was.key], _myName() + " took " + title.toLowerCase() + " at " + short, "You held it since " + new Date(was.since || now).toLocaleDateString("en-US", { month: "short", day: "numeric" }) + ". It's there to take back.", "play");
           }
         });
-        return d.ref().update(upd).then(function () { return { took: took, lost: lost, t: t }; }, function () { return { took: took, lost: lost, t: t }; });
+        var res = { took: took, lost: lost, t: t, crownsTaken: crownsTaken, crownsLost: crownsLost, crownsHeld: crownsHeld };
+        return d.ref().update(upd).then(function () { return res; }, function () { return res; });
       });
     }, function () { return { took: [], lost: [], t: t }; });
   }
