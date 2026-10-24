@@ -2215,7 +2215,7 @@
       </button>
     );
   }
-  function MeView({ me, rounds, mobile, onBack, onStats, onBag }) {
+  function MeView({ me, rounds, mobile, onBack, onStats, onBag, onTitles }) {
     const go = (v) => { try { window.dispatchEvent(new CustomEvent("chains:navigate", { detail: v })); } catch (e) {} };
     const [names, setNames] = React.useState(null);
     const [badges, setBadges] = React.useState(null);
@@ -2246,7 +2246,7 @@
         <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
           {row(<Icons.User size={22} />, "Profile photo & account", "Photo, password, recovery email, notifications", () => go("settings"))}
           {row(<Icons.Trophy size={22} />, "Trophies", earned != null && badges ? earned + " of " + badges.badges.length + " earned" : "", onStats)}
-          {row(<Icons.Flag size={22} />, "Titles you hold", names ? names.firsts + " firsts · " + names.holds + " holes owned" : "", () => go("takeover"))}
+          {row(<Icons.Flag size={22} />, "Titles you hold", names ? names.firsts + " firsts · " + names.holds + " holes owned" : "", onTitles || (() => go("takeover")))}
           {row(<Icons.Backpack size={22} />, "Bag", "", onBag)}
           {row(<Icons.Users size={22} />, "Friends & messages", "", () => go("friends"))}
           {row(<Icons.Settings size={22} />, "Settings", "Theme, maps, app", () => go("settings"))}
@@ -2720,7 +2720,7 @@
         </div>
       );
     }
-    if (stage === "me") return <MeView me={me} rounds={rounds} mobile={mobile} onBack={() => setStage("home")} onStats={() => setShowStats(true)} onBag={() => setShowBag(true)} />;
+    if (stage === "me") return <MeView me={me} rounds={rounds} mobile={mobile} onBack={() => setStage("home")} onStats={() => setShowStats(true)} onBag={() => setShowBag(true)} onTitles={() => { setThrowSec("territory"); setStage("throw"); }} />;
 
     // HOME
     const monthKey = new Date().toISOString().slice(0, 7);
