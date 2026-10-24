@@ -19,19 +19,28 @@ def jsx(src):
 # --- manifest + template
 mi=base.find('<script type="__bundler/manifest">'); mj=base.find('</script>',mi); man_txt=base[mi+len('<script type="__bundler/manifest">'):mj]
 man=json.loads(man_txt); ids=list(man.keys())
+try:
+    _orig=json.load(open('/tmp/chains/blob_ids.json')); _orig=[_orig[str(i)] for i in range(len(_orig))]
+    if len(ids)!=len(_orig) and all(u in man for u in _orig if u in man): ids=_orig   # base without Babel: keep the original numbering
+except Exception: pass
 ti=re.search(r'<script type="__bundler/template"[^>]*>',base).end(); tj=base.find('</script',ti)
 tpl=json.loads(base[ti:tj])
-# --- module overrides
-for idx,fn in mods.items(): man[ids[idx]]['data']=gz(open('/tmp/chains/mods/'+fn,encoding='utf-8').read()); man[ids[idx]]['compressed']=True
+# --- module overrides: every edited module is run through esbuild (JSX → JS; plain JS passes through unchanged)
 compiled={}
+for idx,fn in mods.items():
+    u=ids[idx]; src=open('/tmp/chains/mods/'+fn,encoding='utf-8').read(); out=src if LEGACY else jsx(src)
+    man[u]['data']=gz(out); man[u]['compressed']=True; compiled[u]=out
 if not LEGACY:
+    # legacy base (pre-v537): compile the remaining text/babel modules and drop Babel; a v537+ base has neither
     for m in re.finditer(r'<script type="text/babel" src="([0-9a-f-]{36})">',tpl):
-        u=m.group(1); src=get(u); out=jsx(src); man[u]['data']=gz(out); man[u]['compressed']=True; compiled[u]=out
+        u=m.group(1)
+        if u in compiled: continue
+        src=get(u); out=jsx(src); man[u]['data']=gz(out); man[u]['compressed']=True; compiled[u]=out
     tpl=re.sub(r'<script type="text/babel" src="([0-9a-f-]{36})">',r'<script src="\1">',tpl)
     im=re.search(r'<script type="text/babel" data-presets="env,react">(.*?)</script>',tpl,re.S)
     if im: tpl=tpl[:im.start()]+'<script>'+jsx(im.group(1))+'</script>'+tpl[im.end():]
-    bu=ids[5]; assert 'transformScriptTags' in get(bu), 'blob 5 is not Babel'
-    tpl=re.sub(r'<script src="'+bu+r'"[^>]*></script>\s*','',tpl); del man[bu]
+    babel=[u for u in ids if man.get(u) and man[u].get('mime','').endswith('javascript') and 'transformScriptTags' in get(u)]
+    for bu in babel: tpl=re.sub(r'<script src="'+bu+r'"[^>]*></script>\s*','',tpl); del man[bu]
     assert not re.search(r'<script type="text/babel"[^>]*src="[0-9a-f-]{36}"', tpl) and 'data-presets' not in tpl
 tpl=re.sub(r'CHAINS_VERSION = "v[0-9]+','CHAINS_VERSION = "'+ver,tpl)
 tpl=tpl.replace('<title>Chains · Fantasy DGPT 2026</title>','<title>Chains</title>')
