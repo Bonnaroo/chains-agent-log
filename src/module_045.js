@@ -1509,7 +1509,7 @@
             <span style={{ width: 22, fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)", textAlign: "right" }}>{rank}</span>
             {window.Avatar ? <Avatar name={r.name} img={r.photo} size={28} /> : null}
             <span style={{ flex: 1, minWidth: 0 }}><span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: mine ? 700 : 500, fontSize: 14, color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.name}{mine ? " (you)" : ""}</span>{r.badge && r.badge.name ? <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 11, color: r.badge.color || "var(--text-muted)" }}>{r.badge.name}{r.badge.tier ? " · " + r.badge.tier : ""}</span> : null}</span>
-            <span style={{ fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>{r.points}</span>
+            <span style={{ textAlign: "right" }}><span style={{ display: "block", fontFamily: "var(--font-mono)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>{r.points}</span><span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 10.5, color: "var(--text-faint)" }}>Level {window.ChainsBadges && ChainsBadges.level ? ChainsBadges.level(r.points).n : ""}</span></span>
           </div>); })}
         <div style={{ padding: "8px 14px", borderTop: "1px solid var(--border-subtle)", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)" }}>Every trophy tier is worth points. Everyone on Chains, all time.</div>
       </div>
@@ -2238,6 +2238,7 @@
             <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 22, lineHeight: 1 }}>{name}</div>
             <div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--chain-400)", marginTop: 4 }}>{u && u.username ? "@" + u.username : ""}</div>
             {feat ? <div style={{ fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 11, color: feat.color || "var(--ace-500)", marginTop: 5 }}>{feat.name}{feat.tier ? " · " + feat.tier : ""}</div> : null}
+            {badges && window.ChainsBadges && ChainsBadges.level ? (() => { const L = ChainsBadges.level(badges.points); return <div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--chain-400)", marginTop: 5 }}>Level {L.n}{L.next != null ? " · " + L.toNext + " points to level " + (L.n + 1) : " · top level"}</div>; })() : null}
             <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
               {[[mine.length, "rounds"], [best == null ? "—" : fmtPar(best), "best"], [earned == null ? "…" : earned, "trophies"], [badges ? badges.points : "…", "points"]].map(([v, l]) => <div key={l}><div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 20, lineHeight: 1 }}>{v}</div><div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".08em", fontSize: 9.5, color: "var(--chain-400)", marginTop: 3 }}>{l}</div></div>)}
             </div>
