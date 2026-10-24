@@ -1852,3 +1852,20 @@ featured badge cleared for him to pick).
   "competition" option from Will's brainstorm. `ChainsCallouts` in module 68. Rules v2 + backup kit
   updated (`callouts`, indexOn week). Harness: created a self call-out, saw "You −4 at Otterburn · Will
   −4 · Tied", removed it. index.html **v551**.
+
+## 2026-10-24 — Audit against Will's four research papers; v552 contrast fixes
+
+- Will shared four research documents (engagement, design/engineering/retention playbook, visual &
+  interaction design, AI engineering organization) with a brief to audit, prioritise and add to the task
+  list without duplicating. **AUDIT-2026-10-24.md** holds the findings (confirmed / suggestion / needs
+  testing, P1–P3) and the plan; the papers are in `research/`; ops/TODO.md has a new section with every
+  actionable item; README reading order updated. Product decisions were kept (trophy ladders, plain
+  words, bottom bar, Back on top, no second currency, no rewrite).
+- **v552 — the first P1 item (contrast)**: measured computed tokens of the default theme in the harness:
+  white on the orange primary was 3.12:1, `--text-faint` 2.37:1, `--text-muted` 4.22:1, gold text 3.21,
+  orange text 3.82. Changes: primary/accent fill → solid `--ace-700` #C23E10 (5.3:1; the ace-400→500
+  gradients are gone), `--text-muted` #527463 (5.1), `--text-faint` #557866 (4.9), `--score-under`
+  #1A7A50 (5.3), gold text #8F6A08 (4.9), orange text → ace-700, the "you" chips → ace-700. Applied to the
+  three light themes' `--accent`; dark themes untouched (their text tokens are light on dark and pass).
+  DESIGN.md and BRAND.md updated with the rule "white text only on ace-700 or darker".
+- chains-app README no longer calls sw.js an "offline shell". index.html **v552**.
