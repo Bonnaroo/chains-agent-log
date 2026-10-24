@@ -1835,3 +1835,10 @@ featured badge cleared for him to pick).
 - Territory tab: "Everyone who's played here" lists 6 then "Show all N players". A stray `}` text node
   that had been rendering at the bottom of that card since v522 is gone; the full-screen sweep now also
   checks for lone braces. index.html **v549**.
+
+## 2026-10-24 — v550: copy pass (plain words)
+
+- Finish card block "Takeover · you hold 0 of 18 here" → "Holes here · you own 0 of 18"; "the whole crew
+  gets pinged" → "your friends get told"; "Your crew's rounds" → "Your friends' rounds"; note placeholder
+  "Tips for the crew" → "Tips for other players"; cancel-invite message. The tagline "Disc golf, with your
+  crew" stays (it's the brand line, BRAND.md). index.html **v550**.
