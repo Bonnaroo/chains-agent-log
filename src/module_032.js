@@ -448,8 +448,11 @@
     podium: "Medal", drafted_winner: "Star", season_champ: "Trophy",
     front_nine_set: "Grid", back_nine_set: "Grid", problem_solved: "Target", ghost: "TrendUp", birdie_run: "Flame", long_haul: "Compass", return_visit: "Reset", league_debut: "List", league_win: "Trophy" };
   const GLYPH_BY_CAT = { Rounds: "Disc", Weather: "Sun", Scoring: "Flag", Social: "Users", Courses: "Map", Takeover: "Pin", "Hall of Shame": "X", Fantasy: "Trophy" };
+  // v548 — player level from trophy points (public recognition that grows slowly: 1..10)
+  var LEVELS = [0, 10, 25, 50, 85, 130, 190, 265, 355, 460];
+  function level(points) { var p = Number(points) || 0, n = 1; for (var i = 1; i < LEVELS.length; i++) if (p >= LEVELS[i]) n = i + 1; var next = n < LEVELS.length ? LEVELS[n] : null; return { n: n, points: p, next: next, toNext: next == null ? 0 : next - p, progress: next == null ? 1 : (p - LEVELS[n - 1]) / (next - LEVELS[n - 1]) }; }
   function glyphName(b) { return (b && (GLYPH_BY_ID[b.id] || GLYPH_BY_CAT[b.cat])) || "Trophy"; }
   function tierColor(b) { return b && b.level ? (b.color || TIER_COLORS.Earned) : null; }
 
-  w.ChainsBadges = { compute: compute, diff: diff, tierColor: tierColor, glyphName: glyphName, TIER_COLORS: TIER_COLORS, TIER_NAMES: TIER_NAMES };
+  w.ChainsBadges = { compute: compute, diff: diff, tierColor: tierColor, glyphName: glyphName, level: level, LEVELS: LEVELS, TIER_COLORS: TIER_COLORS, TIER_NAMES: TIER_NAMES };
 })();
