@@ -1675,3 +1675,20 @@ featured badge cleared for him to pick).
   PlayView fires `chains:play-nav course:<id>` at 0.9 / 2.6 / 5 s while the app boots. Fixed the existing
   "course:" handler, which set the course but left the stage on Home (now stage "courseview").
 - index.html **v534**.
+
+## 2026-10-24 — v535: delete my account, privacy policy, App Store and monitoring plans
+
+- **Settings → Account → Delete my account** (module 41 UI, `ChainsAuth.deleteAccount(password)` in
+  module 60, now in the build set): password + typing DELETE; re-authenticates, removes `users/{uid}`,
+  `usernames/{key}`, `friends/{key}`, `friendRequests/{key}`, `roundsByPlayer/{key}`, `crewByUser/{key}`
+  and the player's entry in everyone else's friend list, clears local `chains_*` keys, deletes the auth
+  user, reloads. Rounds shared with others keep their scores (the course stats say "Former player" once
+  the display code falls back — the name field stays as it was; follow-up: scrub names on request).
+  Not exercised end-to-end (it would delete Will's account); the UI, the disabled-until-DELETE button
+  and the function's presence were verified in the harness, 0 console errors.
+- **about.html#privacy**: what we store, what we don't, who sees it, how to delete, where it lives.
+- **ops/APPSTORE.md**: home-screen install now (done), Capacitor wrapper later, iOS needs a Mac →
+  Codemagic, accounts/costs table, store review checklist, order of work. **ops/MONITORING.md**:
+  UptimeRobot (3 monitors) and Sentry (snippet for app_base, no user identity) exact steps.
+- Takeover notice wording: "It was yours. Go get it back." (was "Your turf there just shrank").
+- index.html **v535**.
