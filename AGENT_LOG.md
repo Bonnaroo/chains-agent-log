@@ -1829,3 +1829,9 @@ featured badge cleared for him to pick).
   levels 1–10, slow by design). Me page: "Level 3 · 21 points to level 4" under the username; the
   Trophy points board shows each player's level. Plain, no names for levels. Will: level 3, 29 points,
   23 trophies. index.html **v548**.
+
+## 2026-10-24 — v549: everyone who's played here (show all), a stray "}"
+
+- Territory tab: "Everyone who's played here" lists 6 then "Show all N players". A stray `}` text node
+  that had been rendering at the bottom of that card since v522 is gone; the full-screen sweep now also
+  checks for lone braces. index.html **v549**.
