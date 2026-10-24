@@ -88,7 +88,7 @@
     return me ? me.charAt(0).toUpperCase() + me.slice(1) : "Someone";
   }
   function _friendIds() { try { return (w.ChainsFriends && ChainsFriends.list ? ChainsFriends.list() : []).map(function (f) { return f.uid; }).filter(Boolean); } catch (e) { return []; } }
-  function _quiet(d, u) { try { return d.ref().update(u).then(function () { return true; }, function () { return false; }); } catch (e) { return Promise.resolve(false); } }
+  function _quiet(d, u) { try { return d.ref().update(u).then(function () { return true; }, function (e) { try { console.error("[ChainsRounds] write refused", Object.keys(u)[0], e && e.message); } catch (x) {} return false; }); } catch (e) { try { console.error("[ChainsRounds] bad write", Object.keys(u)[0], e && e.message); } catch (x) {} return Promise.resolve(false); } }
   // Shared-round paths (open to every signed-in phone) vs the owner-only mirror.
   function SR(id) { return "sharedRounds/" + id; }
   function _sharedOf(rec) {
@@ -216,18 +216,20 @@
       // v484: app-wide course board. FULL rounds only (every hole scored), per player.
       try {
         var N0 = rec.course.holes || (rec.course.pars ? rec.course.pars.length : 18), ent = {}, any = false;
+        var prs = rec.course.pars ? toArr(rec.course.pars) : null;   // v542 fix: was declared inside the loop, so the write below threw "prs is not defined" and NO courseStats were written since v51x
         Object.keys(players).forEach(function (k) {
           var p = players[k]; var hs = toArr(p.holeScores); var played = 0, strokes = 0;
           for (var i = 0; i < N0; i++) if (hs[i] != null) { played++; strokes += hs[i]; }
-          var birdies = 0, bogeys = 0, prs = rec.course.pars ? toArr(rec.course.pars) : null;
+          var birdies = 0, bogeys = 0;
           if (prs) for (var q = 0; q < N0; q++) { if (hs[q] == null || prs[q] == null) continue; if (hs[q] < prs[q]) birdies++; else if (hs[q] > prs[q]) bogeys++; }
-          if (played === N0 && played > 0) { ent[k] = { name: p.name, total: p.total, strokes: strokes, birdies: birdies, bogeys: bogeys, hs: hs.slice(0, N0) }; any = true; }
+          // v542: 9+ holes count (full flag tells score titles apart from showing-up titles)
+          if (played > 0 && played >= Math.min(9, N0)) { ent[k] = { name: p.name, total: p.total, strokes: strokes, birdies: birdies, bogeys: bogeys, hs: hs.slice(0, N0), played: played, full: played === N0 }; any = true; }
         });
         if (any && !rec.practice) {
           var cs = {}; cs["courseStats/" + String(rec.course.id).replace(/[.#$\[\]\/]/g, "_") + "/" + ctx.id] = { id: ctx.id, ownerKey: rec.ownerKey || null, name: rec.course.name, date: rec.date, holes: N0, parTotal: rec.course.parTotal, pars: prs || null, players: ent, updatedAt: rec.updatedAt };
           _quiet(d, cs);
         }
-      } catch (e) {}
+      } catch (e) { try { console.error("[ChainsRounds] courseStats build failed", e && e.message); } catch (x) {} }
     }
     if (d && rec.owner && rec.owner === au) {
       try {
@@ -367,7 +369,7 @@
     (board || []).forEach(function (r) {
       n++;
       Object.keys(r.players || {}).forEach(function (k) {
-        var p = r.players[k]; if (!p || p.total == null) return;
+        var p = r.players[k]; if (!p || p.total == null || p.full === false) return;
         if (!by[k]) by[k] = { key: k, name: p.name || k, best: p.total, rounds: 0, date: r.date, strokes: p.strokes };
         by[k].rounds++;
         if (p.total < by[k].best || (p.total === by[k].best && String(r.date || "") > String(by[k].date || ""))) { by[k].best = p.total; by[k].date = r.date; by[k].strokes = p.strokes; by[k].name = p.name || by[k].name; }
@@ -384,17 +386,18 @@
     (board || []).forEach(function (r) {
       Object.keys(r.players || {}).forEach(function (k) {
         var p = r.players[k]; if (!p || p.total == null) return;
-        var e = by[k] || (by[k] = { key: k, name: p.name || k, rounds: 0, sum: 0, best: null, bestDate: null, last: null, birdies: 0, bogeys: 0 });
-        e.rounds++; e.sum += p.total; e.name = p.name || e.name; e.birdies += (p.birdies || 0); e.bogeys += (p.bogeys || 0);
-        if (e.best == null || p.total < e.best || (p.total === e.best && String(r.date || "") < String(e.bestDate || ""))) { e.best = p.total; e.bestDate = r.date; }
+        var e = by[k] || (by[k] = { key: k, name: p.name || k, rounds: 0, fullRounds: 0, sum: 0, best: null, bestDate: null, last: null, birdies: 0, bogeys: 0 });
+        var isFull = p.full !== false;
+        e.rounds++; e.name = p.name || e.name; e.birdies += (p.birdies || 0); e.bogeys += (p.bogeys || 0);
+        if (isFull) { e.fullRounds++; e.sum += p.total; if (e.best == null || p.total < e.best || (p.total === e.best && String(r.date || "") < String(e.bestDate || ""))) { e.best = p.total; e.bestDate = r.date; } }
         if (!e.last || String(r.date || "") > String(e.last)) e.last = r.date;
       });
     });
-    var list = Object.keys(by).map(function (k) { var e = by[k]; e.avg = e.rounds ? e.sum / e.rounds : null; return e; });
+    var list = Object.keys(by).map(function (k) { var e = by[k]; e.avg = e.fullRounds ? e.sum / e.fullRounds : null; return e; });
     var king = list.slice().sort(function (a, b) { return b.rounds - a.rounds || a.avg - b.avg || String(a.last || "").localeCompare(String(b.last || "")); })[0] || null;
-    var record = list.slice().sort(function (a, b) { return a.best - b.best || String(a.bestDate || "").localeCompare(String(b.bestDate || "")); })[0] || null;
+    var record = list.filter(function (e) { return e.best != null; }).sort(function (a, b) { return a.best - b.best || String(a.bestDate || "").localeCompare(String(b.bestDate || "")); })[0] || null;
     var birdieKing = list.filter(function (e) { return e.birdies > 0; }).sort(function (a, b) { return b.birdies - a.birdies || a.avg - b.avg; })[0] || null;
-    var steady = list.filter(function (e) { return e.rounds >= 3; }).sort(function (a, b) { return a.avg - b.avg || b.rounds - a.rounds; })[0] || null;
+    var steady = list.filter(function (e) { return e.fullRounds >= 3; }).sort(function (a, b) { return a.avg - b.avg || b.fullRounds - a.fullRounds; })[0] || null;
     // v528 — crowns v2 (CHALLENGES.md §5): season champion, local regular, birdie leader (distinct holes).
     var year = String(new Date().getFullYear()), cut90 = new Date(Date.now() - 90 * 86400000).toISOString().slice(0, 10);
     var season = {}, days = {}, holesBird = {};
@@ -404,19 +407,19 @@
         var p = r.players[k]; if (!p || p.total == null) return;
         if (dte.slice(0, 4) === year) {
           var sE = season[k] || (season[k] = { key: k, name: p.name || k, best: null, bestDate: null, rounds: 0 });
-          sE.rounds++; if (sE.best == null || p.total < sE.best || (p.total === sE.best && dte < String(sE.bestDate || ""))) { sE.best = p.total; sE.bestDate = dte; }
+          sE.rounds++; if (p.full !== false && (sE.best == null || p.total < sE.best || (p.total === sE.best && dte < String(sE.bestDate || "")))) { sE.best = p.total; sE.bestDate = dte; }
           if (prs && p.hs) { var hb = holesBird[k] || (holesBird[k] = { key: k, name: p.name || k, set: {} }); var hs = toArr(p.hs); for (var i = 0; i < hs.length; i++) if (hs[i] != null && prs[i] != null && hs[i] < prs[i]) hb.set[i] = 1; }
         }
         if (dte >= cut90) { var dE = days[k] || (days[k] = { key: k, name: p.name || k, set: {} }); dE.set[dte] = 1; }
       });
     });
-    var champion = Object.keys(season).map(function (k) { return season[k]; }).sort(function (a, b) { return a.best - b.best || String(a.bestDate).localeCompare(String(b.bestDate)); })[0] || null;
+    var champion = Object.keys(season).map(function (k) { return season[k]; }).filter(function (e) { return e.best != null; }).sort(function (a, b) { return a.best - b.best || String(a.bestDate).localeCompare(String(b.bestDate)); })[0] || null;
     var regular = Object.keys(days).map(function (k) { var e = days[k]; e.days = Object.keys(e.set).length; return e; }).filter(function (e) { return e.days >= 3; }).sort(function (a, b) { return b.days - a.days || a.name.localeCompare(b.name); })[0] || null;
     var birdieLeader = Object.keys(holesBird).map(function (k) { var e = holesBird[k]; e.holes = Object.keys(e.set).length; return e; }).filter(function (e) { return e.holes > 0; }).sort(function (a, b) { return b.holes - a.holes; })[0] || null;
     // most improved: 10+ full rounds here; first five average minus last five average (strokes to par)
     var seq = {};
     (board || []).slice().sort(function (a, b) { return String(a.date || "").localeCompare(String(b.date || "")); }).forEach(function (r) {
-      Object.keys(r.players || {}).forEach(function (k) { var p = r.players[k]; if (!p || p.total == null) return; (seq[k] = seq[k] || { key: k, name: p.name || k, tps: [] }).tps.push(p.total); });
+      Object.keys(r.players || {}).forEach(function (k) { var p = r.players[k]; if (!p || p.total == null || p.full === false) return; (seq[k] = seq[k] || { key: k, name: p.name || k, tps: [] }).tps.push(p.total); });
     });
     var improved = Object.keys(seq).map(function (k) { var e = seq[k]; if (e.tps.length < 10) return null; var f = e.tps.slice(0, 5), l = e.tps.slice(-5); var avg = function (a) { return a.reduce(function (x, y) { return x + y; }, 0) / a.length; }; e.drop = Math.round((avg(f) - avg(l)) * 10) / 10; e.rounds = e.tps.length; return e; }).filter(function (e) { return e && e.drop > 0; }).sort(function (a, b) { return b.drop - a.drop; })[0] || null;
     var mine = by[me] || null;
