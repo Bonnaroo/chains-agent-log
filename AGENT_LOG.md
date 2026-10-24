@@ -1724,3 +1724,22 @@ featured badge cleared for him to pick).
   check-in, ace wall, round invite title).
 - Full scoring flow tested on test.html (start → 3 holes → Finish now → finish card → trophies reveal),
   test rounds deleted. index.html **v537**.
+
+## 2026-10-24 — v538: "What you're chasing" on Home (Will's four lanes)
+
+- Will's direction (from a brainstorm with another AI): four lanes, kept visually apart — **trophies**
+  (permanent, on the profile) · **personal goals** (quiet, only you) · **weekly challenges** (short
+  prompts) · **titles/territory** (public, competitive). Home gets a **Chase** section: three things you
+  follow that update on their own.
+- **ChaseCard** (module 45, above Last round): (1) *A title within reach* at your home course — the
+  closest title you don't hold, with the holder and the gap in plain numbers ("Most rounds · Johnny holds
+  it · 52 to your 47. 6 more rounds here takes it"), open titles first ("Local regular · open · play here
+  on 3 different days in 90 days and it's yours"); tap → the course page. (2) *Your next breakthrough* —
+  pick one from suggestions built from your own history there (beat your best, first under par, par a
+  hole you average +0.8 on, first birdie on a hole you've played twice without one, three rounds in a row
+  at or under your recent average); progress bar, "Done. Pick the next one." when met. Stored in
+  `users/{uid}/goal` + local (`ChainsGoals` get/set/pull/suggest/evaluate). (3) *This week's challenges*
+  → Challenges tab.
+- Titles already persist until beaten (crowns) and both sides are told on a change (v528).
+- Verified in the harness (Otterburn: Local regular open; suggestions correct for Will's history). Will's
+  goal left unset for him to pick. index.html **v538**. Source pushed to `chains-agent-log/src/`.
