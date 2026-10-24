@@ -1795,3 +1795,9 @@ featured badge cleared for him to pick).
   nobody wrote it. Now any participant who finalizes writes the board (rules already allow it).
   Verified end-to-end on test.html: a 9-hole finish lands in courseStats as `played 9, full false`
   immediately. index.html **v543**.
+
+## 2026-10-24 — v544: title holders on every hole (Holes tab)
+
+- Each hole row on the course page Holes tab now says who owns it ("Kyle owns it (avg 2.6)" / "You own
+  it" / "Open hole") and who has the most birdies there, under your own mastery target — the "course
+  map with title holders on individual holes" from Will's brainstorm, as a list first. index.html **v544**.
