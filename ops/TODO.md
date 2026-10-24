@@ -4,7 +4,7 @@ Owner: Will. Maintained by whichever AI is working the app. **Every session: tic
 Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hands) · `later`.
 
 ## From the 2026-10-24 audit (AUDIT-2026-10-24.md — numbers refer to it)
-- [ ] `doing` P1 2.1 Contrast tokens: primary button fill → #C23E10, muted → #527463, faint ≥ 4.5:1, gold/green text tokens; default theme first, other themes after
+- [x] `done v552` P1 2.1 Contrast tokens (light themes); `todo` re-measure the dark themes and the hero/ink panels
 - [ ] `will` P1 3.4 Publish rules v2, then AI runs the allowed/denied matrix with a test account
 - [ ] `will` P1 3.5 Create a test account (`chainstest`) so two-account flows can be exercised without Will's account
 - [ ] `todo` P1 3.2 Save-state truth: writeLocal reports failure; "Saved · Synced / Saving…" indicator on the scoring screen
