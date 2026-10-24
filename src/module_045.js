@@ -373,7 +373,7 @@
         if (opts.onChanged) opts.onChanged(inv);
         return false;
       }
-      return ChainsConfirm.show({ title: "Cancel invite to " + (inv.course_name || "this round") + "?", message: "The crew won\u2019t be notified \u2014 it just disappears. This can\u2019t be undone.", confirmLabel: "Cancel invite", danger: true }).then((ok) => {
+      return ChainsConfirm.show({ title: "Cancel invite to " + (inv.course_name || "this round") + "?", message: "Nobody will be notified \u2014 it just disappears. This can\u2019t be undone.", confirmLabel: "Cancel invite", danger: true }).then((ok) => {
         if (!ok) return false;
         return deleteInviteData(id).then((okDel) => {
           if (okDel === false) { toast("Couldn\u2019t cancel \u2014 try again.", "error"); return false; }
@@ -781,7 +781,7 @@
       E("div", { style: { display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 } },
         E("span", { style: { fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".1em", fontSize: 11, color: "var(--text-muted)" } }, "Ace wall")),
       feed.length === 0
-        ? E(Card, { pad: 18 }, E("div", { style: { textAlign: "center", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-faint)" } }, "No aces yet. Hit chains from the tee and it lands here — the whole crew gets pinged."))
+        ? E(Card, { pad: 18 }, E("div", { style: { textAlign: "center", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-faint)" } }, "No aces yet. Hit chains from the tee and it lands here — your friends get told."))
         : E(Card, { pad: 0 }, feed.slice(0, 5).map((a, i) => E("div", { key: a.id, style: { display: "flex", alignItems: "center", gap: 11, padding: "11px 14px", borderTop: i ? "1px solid var(--border-subtle)" : "none" } },
           E(Avatar, { name: a.name, color: a.disc, size: 28 }),
           E("div", { style: { flex: 1, minWidth: 0 } },
@@ -1373,7 +1373,7 @@
     const lostTxt = list(r.lost, "Lost", (a) => { const n = Array.from(new Set(a.map((x) => x.to).filter(Boolean))); return n.length ? "to " + n.map(__fn).join(", ") : ""; });
     return (
       <div style={{ background: "var(--bg-elevated)", border: "1px solid " + (r.took.length ? "var(--ace-200, #f5ddd1)" : "var(--border-subtle)"), borderRadius: "var(--radius-lg)", padding: "10px 14px" }}>
-        <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}><span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>Takeover</span><span style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}>you hold {mine} of {r.t.N} here</span></div>
+        <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}><span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>Holes here</span><span style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}>you own {mine} of {r.t.N}</span></div>
         <div style={{ fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-strong)", marginTop: 4 }}>{tookTxt || lostTxt ? [tookTxt, lostTxt].filter(Boolean).join(" · ") : (mine ? "Held everything you had." : "No holes yet — beat someone's average on a hole to take it.")}</div>
         {(r.crownsTaken && r.crownsTaken.length) || (r.crownsLost && r.crownsLost.length) ? (
           <div style={{ marginTop: 8, fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-strong)" }}>
@@ -2032,7 +2032,7 @@
         <div>
           <div style={T.label}>Player notes {notes.length ? <span style={{ fontWeight: 500, fontSize: 12.5, color: "var(--text-muted)" }}>· {notes.length}</span> : null}</div>
           <div style={Object.assign({}, T.card, { padding: 12 })}>
-            <textarea value={noteText} onChange={(e) => setNoteText(e.target.value)} placeholder="Tips for the crew — lines, OB, where the next tee is, what disc works…" style={{ width: "100%", minHeight: 64, padding: 10, border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)", fontFamily: "var(--font-sans)", fontSize: 14, background: "var(--bg-sunken)", color: "var(--text-strong)", resize: "vertical", boxSizing: "border-box" }} />
+            <textarea value={noteText} onChange={(e) => setNoteText(e.target.value)} placeholder="Tips for other players — lines, OB, where the next tee is, what disc works…" style={{ width: "100%", minHeight: 64, padding: 10, border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)", fontFamily: "var(--font-sans)", fontSize: 14, background: "var(--bg-sunken)", color: "var(--text-strong)", resize: "vertical", boxSizing: "border-box" }} />
             <div style={{ display: "flex", gap: 8, marginTop: 8, alignItems: "center" }}>
               <select value={noteHole} onChange={(e) => setNoteHole(e.target.value)} style={{ height: 40, padding: "0 10px", border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)", fontFamily: "var(--font-sans)", fontSize: 13.5, background: "var(--bg-elevated)", color: "var(--text-strong)" }}><option value="">Whole course</option>{Array.from({ length: N }, (_, h) => <option key={h} value={h}>Hole {h + 1}</option>)}</select>
               <button onClick={submitNote} disabled={busy || !noteText.trim()} style={{ marginLeft: "auto", height: 40, padding: "0 18px", borderRadius: 20, border: "none", background: noteText.trim() ? "var(--ace-500)" : "var(--bg-sunken)", color: noteText.trim() ? "#fff" : "var(--text-faint)", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14 }}>Post</button>
@@ -2582,7 +2582,7 @@
       if (sec === "crew") return wrap("Friends' rounds", "Rounds your friends played", <React.Fragment>
         {crew && crew.length > 0 && (
           <div>
-            <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", marginBottom: 10 }}>Your crew's rounds</div>
+            <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", marginBottom: 10 }}>Your friends' rounds</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {crew.map((r) => <RoundRow key={r.id} r={r} me={me} onOpen={() => setDetail(r)} />)}
             </div>
