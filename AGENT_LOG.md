@@ -1658,3 +1658,20 @@ featured badge cleared for him to pick).
 - Left on purpose: the ★ star rating control (a rating widget, not an icon) and reaction emoji people
   pick themselves (cheers) — both allowed by DESIGN.md.
 - index.html **v533**.
+
+## 2026-10-24 — v534: brand guide, landing page, first sticker, course deep link
+
+- **BRAND.md** in chains-agent-log: the name is just Chains; one line "Disc golf, with your crew"; voice
+  rules; the colour table from the app's CSS variables (ace-500 #FF5A1F action, fairway-700 #205539 brand,
+  pine-800 #16261E dark, bone-50 #FBFAF6 light); type (Saira Condensed / Archivo / JetBrains Mono); logo
+  rules; sticker spec; website spec; store listing; don'ts.
+- **about.html** in chains-app (https://bonnaroo.github.io/chains-app/about.html): what it is, three
+  blocks (Score it · Names on the course · Leagues and challenges), "Open Chains", a QR to the app, the
+  data policy in two sentences. Inline SVG QR (segno), fonts from Google, no other dependencies.
+- **stickers/chains-sticker-otterburn.svg**: 3 × 3 in, pine background, "Think you own this course?
+  Prove it.", QR → `…/chains-app/#course=mi-otterburn`. Print at 100%. More courses = copy the file,
+  change the id and regenerate the QR (segno in Python; see BRAND.md §7).
+- **Deep link** `#course=<id>`: module 47 stores it as `chains_pending_course` and starts on the Play view;
+  PlayView fires `chains:play-nav course:<id>` at 0.9 / 2.6 / 5 s while the app boots. Fixed the existing
+  "course:" handler, which set the course but left the stage on Home (now stage "courseview").
+- index.html **v534**.
