@@ -16,7 +16,7 @@ UDisc is a feature reference only, never a visual one.
 ## 3. Hard rules (an AI must not break these)
 - **No emoji as icons.** Icons come from the app's own SVG set (`Icons.*`, module 46 — add there if one is
   missing). Emoji may appear only inside user-made content (a note, a crew emblem the user picked).
-- **One accent colour** (`--ace-500` orange) for the primary action on a screen, and one only. Everything
+- **One accent colour** (orange: `--ace-700` under text, `--ace-500` for text-free accents) for the primary action on a screen, and one only. Everything
   else is neutral or the fairway green used for "good/under par". No purple, no blue-purple gradients, no
   rainbow chips, no glassy blur panels.
 - **One type family** (the app's `--font-sans` for text, `--font-display` for headings and labels,
@@ -48,15 +48,18 @@ UDisc is a feature reference only, never a visual one.
 
 ## 5. Components (use these, don't improvise new ones)
 - **Card**: `--bg-elevated`, 1 px `--border-subtle`, radius `--radius-lg`, no shadow unless it floats.
-- **Primary button**: full width, 52–56 px, `--ace-500` → `--ace-600` gradient allowed, white display text,
-  uppercase. One per screen.
+- **Primary button**: full width, 52–56 px, **solid `--ace-700` (#C23E10)** with white display text,
+  uppercase. One per screen. (v552: white on `--ace-500` measured 3.1:1 — below 4.5:1 — so orange with
+  text on it is always ace-700; ace-500 stays for accents that carry no text: bars, dots, rings.)
 - **Secondary button**: outline, `--border-default`, text `--text-strong`.
 - **Row** (list item): icon 24 px in `--fairway-600` · title 15/700 · sub 13 `--text-muted` · chevron right.
 - **Stat tile**: number in `--font-mono` 22–26/800, label 11 uppercase `--text-muted`.
 - **Chip / tag**: 11–12 px, `--bg-sunken`, text `--text-strong`; the "you" state uses `--ace-500` + white.
 - **Segmented control**: `--bg-sunken` track, `--fairway-700` selected pill, 36–40 px tall.
-- **Score colours** (the only semantic colours): under par `--score-under` green, par `--fairway-700`,
-  over par `--score-over` red. Never use red/green for anything that isn't a score.
+- **Score colours** (the only semantic colours): under par `--score-under` green (#1A7A50 on light),
+  par `--fairway-700`, over par `--score-over` red. Gold tier text is `#8F6A08` (gold-600 fails on white).
+- **Text tokens must pass 4.5:1 on `--bg-elevated`**: muted `#527463` (5.1), faint `#557866` (4.9).
+  Re-check with the formula in AUDIT-2026-10-24 §2.1 whenever a theme token changes. Never use red/green for anything that isn't a score.
 - **Hero/ink panel**: dark pine gradient, bone text — one per screen at most, for the one big number.
 
 ## 6. Scoring screen specifics
