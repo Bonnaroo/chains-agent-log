@@ -4,6 +4,7 @@ Owner: Will. Maintained by whichever AI is working the app. **Every session: tic
 Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hands) · `later`.
 
 ## Bugs / fixes
+- [x] `done v542` courseStats never written since the pars field (silent ReferenceError) — backfilled 10/22 + 10/23; refused writes now logged
 - [ ] `todo` Two-player test of every shared flow with a second account (card from two phones, friend request, DM, league invite, Takeover notifications) — nothing shared has had a real two-phone test yet
 - [ ] `todo` Lost & found friend notification didn't post in the harness test (board itself works) — reproduce on a phone
 - [ ] `todo` Course-page "Everyone who's played here" table only shows the first 6 — paginate
