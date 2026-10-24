@@ -1743,3 +1743,13 @@ featured badge cleared for him to pick).
 - Titles already persist until beaten (crowns) and both sides are told on a change (v528).
 - Verified in the harness (Otterburn: Local regular open; suggestions correct for Will's history). Will's
   goal left unset for him to pick. index.html **v538**. Source pushed to `chains-agent-log/src/`.
+
+## 2026-10-24 — v539: browse courses three ways
+
+- **Courses picker tabs**: Recent · Favourites (when you have any) · **Nearby** · All. Nearby asks the
+  phone for its location once and lists the 40 closest catalog courses with miles ("1.9 mi · Est. 1 hr
+  26 min"). Favourites come from the star on the course page header (`ChainsFavs`: local +
+  `users/{uid}/profile/favorites`). Search still searches everything.
+- Harness check with a mocked location at Otterburn: 1.9 mi Otterburn, 4.6 mi The Curd, Mott Park next;
+  star toggled → Favourites tab appears (Otterburn left starred for Will). 0 errors.
+- index.html **v539**.
