@@ -27,7 +27,7 @@ NODES = [
     "territory", "territoryLog", "courseFirsts", "crews", "crewByUser", "crewCodes",
     "courseLeagues", "courseLeagueCodes", "leagues", "joinCodes", "leagueCodes",
     "sharedBags", "courseGeo", "courseCommunity", "lostFound", "messages", "threads",
-    "aces", "config", "admins", "bugReports", "playerCourses", "weekly",
+    "aces", "config", "admins", "bugReports", "playerCourses", "weekly", "callouts",
 ]
 LEGACY_NODES = ["notifications", "live", "picks", "standings", "members", "events", "settings", "clubhouse", "pot"]
 
