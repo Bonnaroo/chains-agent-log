@@ -3,6 +3,26 @@
 Owner: Will. Maintained by whichever AI is working the app. **Every session: tick what shipped, add what came up.**
 Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hands) · `later`.
 
+## From the 2026-10-24 audit (AUDIT-2026-10-24.md — numbers refer to it)
+- [ ] `doing` P1 2.1 Contrast tokens: primary button fill → #C23E10, muted → #527463, faint ≥ 4.5:1, gold/green text tokens; default theme first, other themes after
+- [ ] `will` P1 3.4 Publish rules v2, then AI runs the allowed/denied matrix with a test account
+- [ ] `will` P1 3.5 Create a test account (`chainstest`) so two-account flows can be exercised without Will's account
+- [ ] `todo` P1 3.2 Save-state truth: writeLocal reports failure; "Saved · Synced / Saving…" indicator on the scoring screen
+- [ ] `todo` P1 3.1 Write-failure sweep: no bare catch around a cloud write (modules 31/45/68/70)
+- [ ] `will` P1 3.7 Private backups repo → then AI restore drill into an isolated node; consider stopping the public rounds backup
+- [x] `done` P1 4.3 chains-app README no longer calls sw.js an offline shell
+- [ ] `todo` P2 1.2 Count-title ties keep the incumbent (most rounds, birdie leader, local regular)
+- [ ] `todo` P2 2.2/2.3 Browser Back for pushed screens; aria-labels on score −/+ (player + hole)
+- [ ] `todo` P2 2.8 Scoring screen states: offline, pending sync, couldn't save
+- [ ] `todo` P2 3.14 tests/ with node tests for courseTerritory, weeklyStandings, level, ladder
+- [ ] `todo` P2 4.1/4.2 build.py writes the HANDOFF live line on promote; CHAINS_SYSTEM.md reconciled (build, nodes v542–v551)
+- [ ] `todo` P2 3.8 Points board from a maintained top-N node; home-course reads instead of allCourseStats where possible
+- [ ] `todo` P2 1.9/3.9 Minimal metrics counters (round_started/final, goal_picked, callout_created, time-to-home)
+- [ ] `todo` P2 1.6 Imported-rounds policy (personal history yes; course record/champion no?) — Will decides
+- [ ] `todo` P2 3.12 OPERATIONS rollback sentence qualified; "compatibility" line in each release entry
+- [ ] `todo` P2 3.11 Account deletion end-to-end with the test account; scrub names in shared scores
+- [ ] `later` P3 1.3 rules sheet per title · 1.5 goal baseline median/back-it-up · 1.7 layout versions · 1.8 notification digest · 2.4 focus trap in sheets · 2.7 readiness-driven deep link · 3.10 service-worker decision · 4.4 task claims when a second agent exists · 4.6 release manifest with artifact hash
+
 ## Bugs / fixes
 - [x] `done v542` courseStats never written since the pars field (silent ReferenceError) — backfilled 10/22 + 10/23; refused writes now logged
 - [ ] `todo` Two-player test of every shared flow with a second account (card from two phones, friend request, DM, league invite, Takeover notifications) — nothing shared has had a real two-phone test yet
