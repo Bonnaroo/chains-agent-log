@@ -1806,3 +1806,14 @@ featured badge cleared for him to pick).
 
 - "Your territory" → **Titles you hold** everywhere (Go Throw row + section, Me row, course page);
   "Your crew's rounds" → **Friends' rounds**. index.html **v545**.
+
+## 2026-10-24 — v546: Groups (bones) on the Friends screen
+
+- Will: "me and my friends want to set up our group — group challenges and group play". **Your group**
+  card at the bottom of Friends (module 68 `GroupCard`, reusing the crews backend `crews/ crewByUser/
+  crewCodes/`): start a group (name) or join with a code; in a group: name, code + Share, members with
+  this month's round counts, "4 group rounds this month · best −4 by Kyle", and the **group birdie map**
+  at the course the group plays most — holes birdied by anyone in the group this month, X of 18
+  (CHALLENGES.md §6 crew birdie map). Leave the group. Groups never pool titles — the card says so.
+  Not on Home, not on the Challenges tab (lanes stay separate); nothing nags you to make one.
+- Harness: created, saw stats and map, left; orphan group record removed. index.html **v546**.
