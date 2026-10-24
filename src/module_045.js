@@ -1324,7 +1324,7 @@
     return (
       <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", padding: "10px 14px" }}>
         <div style={{ display: "flex", alignItems: "baseline", gap: 8 }}>
-          <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>Your territory</span>
+          <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>Titles you hold</span>
           <span style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 16, color: (m.holes || (names && names.firsts)) ? "var(--ace-600)" : "var(--text-faint)" }}>{(names ? names.firsts : 0) + m.holes}</span>
           <span style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)" }}>{(m.holes || (names && names.firsts)) ? (names ? names.firsts + " firsts · " : "") + m.holes + " holes owned" + (m.total ? " · " + m.total + (m.total === 1 ? " course" : " courses") : "") : "— finish a round to get on a course"}</span>
           <button onClick={() => { try { window.dispatchEvent(new CustomEvent("chains:navigate", { detail: "takeover" })); } catch (e) {} }} style={{ marginLeft: "auto", background: "transparent", border: "none", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--fairway-700)", fontWeight: 600 }}>Challenges →</button>
@@ -1819,7 +1819,7 @@
     const held = list.filter((x) => x.t.isKing || x.t.hasRecord);
     return (
       <div>
-        <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", marginBottom: 8 }}>Your territory <span style={{ fontWeight: 500, fontSize: 12.5, color: "var(--text-muted)" }}>· {held.length} of {list.length} courses</span></div>
+        <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", marginBottom: 8 }}>Titles you hold <span style={{ fontWeight: 500, fontSize: 12.5, color: "var(--text-muted)" }}>· {held.length} of {list.length} courses</span></div>
         <div className="gt-strip" style={{ display: "flex", gap: 8, overflowX: "auto", scrollbarWidth: "none", paddingBottom: 2 }}>
           {list.map((x) => (
             <button key={x.cid} onClick={() => onOpenCourse && onOpenCourse(x.cid)} style={{ flexShrink: 0, width: 150, textAlign: "left", padding: "10px 12px", borderRadius: "var(--radius-lg)", border: "1px solid " + (x.t.isKing || x.t.hasRecord ? "var(--gold-500, #d4a017)" : "var(--border-subtle)"), background: x.t.isKing || x.t.hasRecord ? "linear-gradient(160deg, var(--gold-50, #fbf6e9), var(--bg-elevated))" : "var(--bg-elevated)", cursor: "pointer" }}>
@@ -2246,7 +2246,7 @@
         <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
           {row(<Icons.User size={22} />, "Profile photo & account", "Photo, password, recovery email, notifications", () => go("settings"))}
           {row(<Icons.Trophy size={22} />, "Trophies", earned != null && badges ? earned + " of " + badges.badges.length + " earned" : "", onStats)}
-          {row(<Icons.Flag size={22} />, "Your territory", names ? names.firsts + " firsts · " + names.holds + " holes owned" : "", () => go("takeover"))}
+          {row(<Icons.Flag size={22} />, "Titles you hold", names ? names.firsts + " firsts · " + names.holds + " holes owned" : "", () => go("takeover"))}
           {row(<Icons.Backpack size={22} />, "Bag", "", onBag)}
           {row(<Icons.Users size={22} />, "Friends & messages", "", () => go("friends"))}
           {row(<Icons.Settings size={22} />, "Settings", "Theme, maps, app", () => go("settings"))}
@@ -2575,7 +2575,7 @@
       </React.Fragment>);
       if (sec === "trophies") return wrap("Trophy case", "Every ladder, with progress to the next tier", <BadgeShelf me={me} mobile={mobile} />);
       if (sec === "rivals") return wrap("Rivalries & aces", "Head to head with your friends", <React.Fragment><Rivalries me={me} mobile={mobile} /><AcesWall me={me} mobile={mobile} /></React.Fragment>);
-      if (sec === "crew") return wrap("Your crew's rounds", "Rounds your friends played", <React.Fragment>
+      if (sec === "crew") return wrap("Friends' rounds", "Rounds your friends played", <React.Fragment>
         {crew && crew.length > 0 && (
           <div>
             <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", marginBottom: 10 }}>Your crew's rounds</div>
@@ -2585,7 +2585,7 @@
           </div>
         )}
       </React.Fragment>);
-      if (sec === "territory") return wrap("Your territory", "Courses where you hold something", <React.Fragment>
+      if (sec === "territory") return wrap("Titles you hold", "Courses where your name is on something", <React.Fragment>
         <MyTerritory me={me} onOpenCourse={(cid) => { const c = (CATALOG || []).find((x) => x && String(x.id) === String(cid)); if (c) { setViewCourse(c); setStage("courseview"); } }} />
       </React.Fragment>);
       const lifetime = myRounds.filter((r) => !r.practice);
@@ -2713,9 +2713,9 @@
             {row(<Icons.List size={20} />, "My rounds", myRounds.length ? myRounds.length + (myRounds.length === 1 ? " round" : " rounds") + " · import from UDisc · export" : "No rounds yet", () => setThrowSec("rounds"))}
             {row(<Icons.TrendUp size={20} />, "My stats", "Averages, best rounds, trends", () => setShowStats(true))}
             {row(<Icons.Trophy size={20} />, "Trophy case", "Every ladder and what's next", () => setThrowSec("trophies"))}
-            {row(<Icons.Flag size={20} />, "Your territory", "Holes and records you hold", () => setThrowSec("territory"))}
+            {row(<Icons.Flag size={20} />, "Titles you hold", "Holes and records with your name on them", () => setThrowSec("territory"))}
             {row(<Icons.Users size={20} />, "Rivalries & aces", "Head to head · the ace wall", () => setThrowSec("rivals"))}
-            {crew && crew.length > 0 ? row(<Icons.Disc size={20} />, "Your crew's rounds", crew.length + " recent", () => setThrowSec("crew")) : null}
+            {crew && crew.length > 0 ? row(<Icons.Disc size={20} />, "Friends' rounds", crew.length + " recent", () => setThrowSec("crew")) : null}
           </div>
         </div>
       );
