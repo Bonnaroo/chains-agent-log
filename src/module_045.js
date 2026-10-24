@@ -1918,6 +1918,9 @@
     const myBest = myRounds.length ? Math.min(...myRounds.map((r) => r.scores[me])) : null;
     const [homeTick, setHomeTick] = React.useState(0);
     const [, setFavTick] = React.useState(0);
+    // v544 — who holds each hole (owner + most birdies) for the Holes tab, from the course board
+    const [holders, setHolders] = React.useState(null);
+    React.useEffect(() => { let alive = true; if (!window.ChainsRounds || !ChainsRounds.courseBoard || courseId == null || !window.ChainsTakeover) return; ChainsRounds.courseBoard(courseId).then((b) => { if (!alive) return; const t = ChainsTakeover.compute(b || []); const marks = window.ChainsNames && ChainsNames.holeMarks ? ChainsNames.holeMarks(b || []) : []; setHolders({ own: t.holes, marks }); }).catch(() => {}); return () => { alive = false; }; }, [courseId]);
     const mastery = React.useMemo(() => { try { return ChainsHome.mastery(rounds, me, courseId, Array.from({ length: N }, (_, i) => (course.hole_pars || [])[i] || 3)); } catch (e) { return []; } }, [rounds, me, courseId, N]);
     const holeStats = (() => { const out = []; for (let h = 0; h < N; h++) { let s = 0, n = 0; myRounds.forEach((r) => { const hs = r.hole_scores && r.hole_scores[me] ? toArr(r.hole_scores[me]) : null; if (hs && hs[h] != null) { s += hs[h]; n++; } }); out.push(n ? s / n : null); } return out; })();
     const T = {
@@ -2006,6 +2009,7 @@
                   <span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)" }}>Par {pars[h]}{lens[h] ? " · " + lens[h] + " ft" : ""}{course.hole_notes && course.hole_notes[String(h + 1)] ? " · note" : ""}</span>
                   {m && m.n ? <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12, color: m.kind === "fix" ? "var(--score-over, #c23a33)" : m.kind === "birdie" || m.kind === "repeat" ? "var(--fairway-700)" : "var(--text-muted)", marginTop: 2 }}>{m.target}{m.prog ? " · " + m.prog : ""}{m.best != null ? " · best " + m.best : ""}</span> : null}
                   <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-faint)" }}>{ok ? "Mapped" : "Not mapped yet"}{avgH != null ? " · you average " + avgH.toFixed(1) : ""}</span>
+                  {holders ? (() => { const o = holders.own[h] && holders.own[h].owner; const bl = holders.marks[h] && holders.marks[h].birdieLeader; if (!o && !bl) return null; return <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--fairway-700)", marginTop: 2 }}>{o ? (o.key === me ? "You own it" : __fn(o.name) + " owns it") + " (avg " + (Math.round(o.avg * 10) / 10) + ")" : "Open hole"}{bl ? " · most birdies: " + (bl.key === me ? "you" : __fn(bl.name)) + " (" + bl.n + ")" : ""}</span>; })() : null}
                 </span>
                 <span style={{ color: "var(--text-faint)", display: "inline-flex" }}><Icons.ChevRight size={18} /></span>
               </button>); })}
