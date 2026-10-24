@@ -58,7 +58,7 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done v538` Chase on Home (title within reach · next breakthrough · this week) · `v540` hole birdie titles in the chase
 - [x] `done v539` Courses: Recent · Favourites · Nearby · All
 - [ ] `todo` Groups: your own crew (name, members), group challenges, group play — Will wants this after the single-player loop feels right
-- [ ] `todo` Post-round recap: add "you passed X for <title>" / "X is now 1 round behind you" lines
+- [x] `done v541` Post-round recap names titles taken/lost
 - [x] `done v524` Home course + mastery map + "What moved" recap
 - [x] `done v525` Week · Month · Trophies tabs, month set + Month complete ladder, points, streak freeze
 - [x] `done v527` Trophy points board (everyone on Chains)
