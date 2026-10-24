@@ -26,8 +26,9 @@ app doesn't do yet.
 ## 4. Colour (the app's own CSS variables — use these exact values)
 | Role | Name | Hex |
 |---|---|---|
-| Accent (the one action colour) | ace-500 | `#FF5A1F` |
-| Accent pressed | ace-600 | `#E84A14` |
+| Accent, text-free (bars, dots, rings) | ace-500 | `#FF5A1F` |
+| Action fill under white text | ace-700 | `#C23E10` (5.3:1) |
+| Action pressed | ace-800 | `#A6330C` |
 | Brand green (good, under par) | fairway-700 | `#205539` |
 | Green mid | fairway-500 | `#3A8657` |
 | Dark background (hero, stickers) | pine-800 | `#16261E` |
@@ -38,7 +39,7 @@ app doesn't do yet.
 | Muted text | chain-500 | `#7C8882` |
 | Gold (tiers, records) | gold-600 | `#B8860B` |
 
-Rules: one orange thing per surface. Green is the brand, orange is the action. Black-on-white body text.
+Rules: one orange thing per surface. White text only on ace-700 or darker (ace-500 measures 3.1:1). Green is the brand, orange is the action. Black-on-white body text.
 No gradients in print. No purple, no blue.
 
 ## 5. Type
