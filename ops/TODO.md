@@ -48,13 +48,17 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 ## Growth
 - [x] `done 2026-10-24` BRAND.md (name, pitch, voice, colours, type, logo, stickers, website, store listing)
 - [x] `done 2026-10-24` about.html landing page (chains-app) · `todo` real phone screenshots once Will likes the look
-- [x] `done v534` First sticker (stickers/chains-sticker-otterburn.svg) + `#course=<id>` deep link · `will` print a few and post one at Otterburn
+- [x] `done v534` First sticker file exists · **parked** (Will 2026-10-24: not ready for stickers until the app is where he likes it)
 - [x] `done v535` Account deletion in Settings + privacy policy on about.html
 - [ ] `todo` App Store: `chains-native` (Capacitor) repo per `ops/APPSTORE.md`; `will` Apple Developer + Codemagic accounts when ready
 - [x] `done v531` "Add your course" flow (two minutes: name, town, holes, pars, location)
 - [ ] `later` Bag tags (crew ladder), call-outs (hole challenges between two players)
 
 ## Challenges & trophies (CHALLENGES.md build order)
+- [x] `done v538` Chase on Home (title within reach · next breakthrough · this week) · `v540` hole birdie titles in the chase
+- [x] `done v539` Courses: Recent · Favourites · Nearby · All
+- [ ] `todo` Groups: your own crew (name, members), group challenges, group play — Will wants this after the single-player loop feels right
+- [ ] `todo` Post-round recap: add "you passed X for <title>" / "X is now 1 round behind you" lines
 - [x] `done v524` Home course + mastery map + "What moved" recap
 - [x] `done v525` Week · Month · Trophies tabs, month set + Month complete ladder, points, streak freeze
 - [x] `done v527` Trophy points board (everyone on Chains)
