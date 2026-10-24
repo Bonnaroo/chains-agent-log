@@ -541,6 +541,77 @@
       </div></__Portal>
     );
   }
+  // v546 — Groups (bones). Your own group of friends: a name, a code, who's in, what you did together this
+  // month, and the group birdie map at the course you all play most. Uses the crews backend
+  // (crews/, crewByUser/, crewCodes/). Groups never pool anyone's titles — those stay personal.
+  function GroupCard({ mobile }) {
+    const TK = window.ChainsTakeover;
+    const [g, setG] = React.useState(undefined);
+    const [mode, setMode] = React.useState(null);        // "new" | "join"
+    const [name, setName] = React.useState("");
+    const [code, setCode] = React.useState("");
+    const [busy, setBusy] = React.useState(false);
+    const [err, setErr] = React.useState("");
+    const [month, setMonth] = React.useState(null);
+    const me = meKey();
+    const load = () => { if (!TK || !TK.crewMine) { setG(null); return; } TK.crewMine().then((c) => setG(c || null)).catch(() => setG(null)); };
+    React.useEffect(load, []);
+    // this month together: rounds by members, best round, birdie map at the most-played course
+    React.useEffect(() => {
+      let alive = true; if (!g || !window.ChainsRounds || !ChainsRounds.allCourseStats) return;
+      const keys = Object.keys(g.members || {}); const ym = new Date().toISOString().slice(0, 7);
+      ChainsRounds.allCourseStats().then((all) => {
+        if (!alive) return;
+        const perCourse = {}; let rounds = 0, best = null; const byMember = {};
+        Object.keys(all || {}).forEach((cid) => (all[cid] || []).forEach((r) => {
+          if (String(r.date || "").slice(0, 7) !== ym) return;
+          const prs = r.pars ? r.pars : null; let any = false;
+          keys.forEach((k) => { const p = r.players && r.players[k]; if (!p) return; any = true; rounds++; byMember[k] = (byMember[k] || 0) + 1; if (p.full !== false && (best == null || p.total < best.tp)) best = { tp: p.total, name: p.name || k, course: r.name };
+            if (prs && p.hs) { const pc = perCourse[cid] || (perCourse[cid] = { name: r.name, holes: {}, n: r.holes || prs.length, rounds: 0 }); pc.rounds++; const hs = Array.isArray(p.hs) ? p.hs : Object.values(p.hs); hs.forEach((v, i) => { if (v != null && prs[i] != null && v < prs[i]) pc.holes[i] = pc.holes[i] || (p.name || k); }); } });
+        }));
+        const top = Object.values(perCourse).sort((a, b) => b.rounds - a.rounds)[0] || null;
+        setMonth({ rounds, best, byMember, map: top });
+      }).catch(() => {});
+      return () => { alive = false; };
+    }, [g && g.id]);
+    const card = { background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" };
+    const inp = { width: "100%", height: 46, padding: "0 12px", border: "1px solid var(--border-default)", borderRadius: "var(--radius-md)", fontFamily: "var(--font-sans)", fontSize: 15, color: "var(--text-strong)", background: "var(--bg-elevated)" };
+    const act = async (fn) => { setBusy(true); setErr(""); try { const r = await fn(); if (r && r.ok === false) setErr(r.err || "Didn't work."); else { setMode(null); setName(""); setCode(""); load(); } } catch (e) { setErr(String(e && e.message || e)); } setBusy(false); };
+    if (g === undefined) return null;
+    return (
+      <div>
+        <div style={T.lbl}>Your group</div>
+        {!g ? (
+          <div style={card}>
+            <div style={{ padding: "12px 14px 4px", fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-muted)" }}>You and your friends, as a group: what you played together this month and the holes you've birdied between you. Your own titles stay yours.</div>
+            {mode === "new" ? <div style={{ padding: "8px 14px 14px", display: "flex", flexDirection: "column", gap: 8 }}><input value={name} onChange={(e) => setName(e.target.value)} placeholder="Group name" maxLength={28} style={inp} /><Button variant="accent" full size="lg" disabled={busy} onClick={() => act(() => TK.crewCreate(name, "#205539", ""))}>{busy ? "Starting…" : "Start the group"}</Button></div>
+            : mode === "join" ? <div style={{ padding: "8px 14px 14px", display: "flex", flexDirection: "column", gap: 8 }}><input value={code} onChange={(e) => setCode(e.target.value.toUpperCase())} placeholder="Group code" maxLength={8} style={inp} /><Button variant="accent" full size="lg" disabled={busy} onClick={() => act(() => TK.crewJoin(code))}>{busy ? "Joining…" : "Join"}</Button></div>
+            : <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "8px 14px 14px" }}><Button variant="secondary" size="lg" onClick={() => setMode("new")}>Start a group</Button><Button variant="secondary" size="lg" onClick={() => setMode("join")}>Join with a code</Button></div>}
+            {err ? <div style={{ padding: "0 14px 12px", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--score-over, #c23a33)" }}>{err}</div> : null}
+          </div>
+        ) : (
+          <div style={card}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "12px 14px" }}>
+              <div style={{ flex: 1, minWidth: 0 }}><div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)" }}>{g.name}</div><div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}>{Object.keys(g.members || {}).length} in · code <span style={{ fontFamily: "var(--font-mono)", fontWeight: 700, color: "var(--text-strong)" }}>{g.code}</span></div></div>
+              <Button variant="secondary" size="md" onClick={() => { const txt = "Join my group \u201c" + g.name + "\u201d on Chains \u2014 code " + g.code + "  " + location.origin + location.pathname; if (navigator.share) navigator.share({ title: g.name, text: txt }).catch(() => {}); else { try { navigator.clipboard.writeText(txt); window.ChainsToast && ChainsToast.show("Copied.", "success"); } catch (e) {} } }}>Share code</Button>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, padding: "0 14px 12px" }}>{Object.keys(g.members || {}).map((k) => <span key={k} style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "4px 10px 4px 4px", borderRadius: 999, background: "var(--bg-sunken, #eef2ef)", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-strong)" }}><Av m={{ name: (g.members[k] && g.members[k].name) || k, disc: "#7C8882" }} size={22} />{(g.members[k] && g.members[k].name) || k}{k === me ? " (you)" : ""}{month && month.byMember[k] ? <span style={{ color: "var(--text-muted)" }}> · {month.byMember[k]}</span> : null}</span>)}</div>
+            {month && (
+              <div style={{ borderTop: "1px solid var(--border-subtle)", padding: "10px 14px" }}>
+                <div style={{ fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-strong)" }}><b>{month.rounds}</b> group round{month.rounds === 1 ? "" : "s"} this month{month.best ? " · best " + (month.best.tp > 0 ? "+" + month.best.tp : month.best.tp === 0 ? "E" : month.best.tp) + " by " + String(month.best.name).split(" ")[0] : ""}</div>
+                {month.map && (() => { const got = Object.keys(month.map.holes).length; const N = month.map.n || 18; return (
+                  <div style={{ marginTop: 8 }}>
+                    <div style={{ fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", marginBottom: 6 }}>Group birdie map at {String(month.map.name).replace(/ disc golf.*$/i, "")} · {got} of {N} holes birdied between you this month{got >= N ? " \u2014 complete" : ""}</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(9, 1fr)", gap: 4 }}>{Array.from({ length: N }, (_, i) => <span key={i} title={month.map.holes[i] || ""} style={{ height: 26, borderRadius: 6, display: "inline-flex", alignItems: "center", justifyContent: "center", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 700, background: month.map.holes[i] ? "var(--fairway-600)" : "var(--bg-sunken, #eef2ef)", color: month.map.holes[i] ? "#fff" : "var(--text-faint)" }}>{i + 1}</span>)}</div>
+                  </div>); })()}
+              </div>
+            )}
+            <button onClick={() => { if (window.ChainsConfirm) ChainsConfirm.show({ title: "Leave " + g.name + "?", confirmLabel: "Leave" }).then((ok) => { if (ok) TK.crewLeave().then(load); }); }} style={{ width: "100%", padding: "10px 14px", border: "none", borderTop: "1px solid var(--border-subtle)", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-muted)", textAlign: "left" }}>Leave the group</button>
+          </div>
+        )}
+      </div>
+    );
+  }
   function FriendsSection({ mobile }) {
     const [, force] = React.useState(0);
     const [invite, setInvite] = React.useState(false);
@@ -737,6 +808,7 @@
             </div>
           </div></__Portal>
         )}
+        <GroupCard mobile={mobile} />
         {invite && <InviteFriendsModal onClose={() => setInvite(false)} mobile={mobile} />}
         {full && <MyQRFullscreen code={code} onClose={() => setFull(false)} />}
         {chat && window.ChainsChat && <ChatSheet friend={chat} onClose={() => setChat(null)} />}
