@@ -1753,3 +1753,9 @@ featured badge cleared for him to pick).
 - Harness check with a mocked location at Otterburn: 1.9 mi Otterburn, 4.6 mi The Curd, Mott Park next;
   star toggled → Favourites tab appears (Otterburn left starred for Will). 0 errors.
 - index.html **v539**.
+
+## 2026-10-24 — v540: hole birdie titles join the chase
+
+- The Chase card now also ranks per-hole birdie titles ("Most birdies on hole 8 · Kyle holds it · 2 more
+  birdies on hole 8 takes it (3 to your 2)") against the course-wide ones, by how close you are. Open
+  titles still come first. index.html **v540**.
