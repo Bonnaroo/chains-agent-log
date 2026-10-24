@@ -22,6 +22,19 @@ these are my accomplishments") · Connection ("my friends and I have something g
 - **Trophies** — the permanent ladders (88 now; target ~100), each with progress to the next tier, points per
   tier, a chosen *title* under your name, and 3 pinned badges on the profile.
 
+## 2b. Four lanes, kept apart on screen (Will, 2026-10-24)
+| Lane | Where | Who sees it | Shipped |
+|---|---|---|---|
+| Trophies — permanent milestones | Challenges → Trophies; profile title | everyone | 100 ladders (v532) |
+| Personal goals — quiet, yours | Home → "What you're chasing" → next breakthrough | only you | v538 |
+| Weekly challenges — short prompts | Challenges → This week / month | you + community board | v522–v525 |
+| Titles / territory — public, competitive | course page → Territory; Home → "a title within reach" | everyone | crowns v528/v536, hole owners v513 |
+Home opens with the Chase section: a title within reach (closest one you don't hold at your home course,
+open titles first), your next breakthrough (picked from your own history), this week. Titles stay with the
+holder until actually beaten; when they change hands both players are told. Empty courses say "nobody
+holds this yet — your next full round takes it". Browsing: home + favourites, nearby, anywhere (search) —
+nearby/favourites still to build. Groups (your own crew, group challenges) later.
+
 ## 3. Three tracks (so beginners and grinders both have something)
 | Track | Compared to | Examples |
 |---|---|---|
@@ -103,5 +116,5 @@ acceptance/completion · beginner vs experienced return rate · "did this make t
 time. Not app opens.
 
 ## 11. Build order
-1. Home course + mastery map + specific recap (v524) 2. Season set + points + titles + streak freeze
-3. Crowns v2 (champion, local regular, birdie leader/rate, most improved) 4. Crew challenges 5. Practice (opt-in)
+1. Home course + mastery map + recap (v524) ✔ 2. Season set + points + titles + streak freeze (v525–v529) ✔
+3. Crowns v2 (v528, v536) ✔ 4. Chase on Home (v538) ✔ 5. Favourites + nearby browsing 6. Crew challenges 7. Practice (opt-in)
