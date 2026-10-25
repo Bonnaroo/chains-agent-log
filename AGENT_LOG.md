@@ -1970,3 +1970,15 @@ featured badge cleared for him to pick).
 - How verified: read both sections back after the edit; `ops/check.py` run below. No app build.
 - Compatibility: docs only, nothing in the app or data changed.
 - Live stays v555.
+
+## 2026-10-25 — check.py runs on Windows (shared tooling; agent: claude-haiku:limited)
+
+- Why: `ops/check.py` ran `node_modules/.bin/esbuild` directly, which is a shell script on Windows, so the
+  static step errored with WinError 193 and the check could never be green on a Windows PC.
+- Change: one call. On Windows the esbuild JS entry runs through `node node_modules/esbuild/bin/esbuild`;
+  Linux still uses `node_modules/.bin/esbuild`. The three checks and everything else are unchanged.
+  Pushed as its own commit `f492d19f` so the next agent can see it.
+- How verified: `py -3 ops/check.py` on Windows, same session, after the change: COLD START OK, STATIC OK
+  (18 modules: esbuild + tdz clean), DOCS OK, ALL GREEN. Before the change it was NOT GREEN for the reason above.
+- Not verified: the Linux path was not run in this session (no Linux shell here). It is unchanged code.
+- Compatibility: tooling only; no app or data change. Live stays v555.
