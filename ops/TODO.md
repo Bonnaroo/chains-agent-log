@@ -7,8 +7,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done v552` P1 2.1 Contrast tokens (light themes); `todo` re-measure the dark themes and the hero/ink panels
 - [ ] `will` P1 3.4 Publish rules v2, then AI runs the allowed/denied matrix with a test account
 - [ ] `will` P1 3.5 Create a test account (`chainstest`) so two-account flows can be exercised without Will's account
-- [ ] `todo` P1 3.2 Save-state truth: writeLocal reports failure; "Saved · Synced / Saving…" indicator on the scoring screen
-- [ ] `todo` P1 3.1 Write-failure sweep: no bare catch around a cloud write (modules 31/45/68/70)
+- [x] `done v553` P1 3.2 Save-state truth: writeLocal reports failure; Saving… / Saved · synced / Not synced / Offline line on the scoring screen
+- [x] `done v553` P1 3.1 Every cloud write logs a refusal (Reference.prototype wrap in module 12) + one toast per session
 - [ ] `will` P1 3.7 Private backups repo → then AI restore drill into an isolated node; consider stopping the public rounds backup
 - [x] `done` P1 4.3 chains-app README no longer calls sw.js an offline shell
 - [ ] `todo` P2 1.2 Count-title ties keep the incumbent (most rounds, birdie leader, local regular)
