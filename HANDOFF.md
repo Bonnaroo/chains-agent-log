@@ -1,11 +1,11 @@
 # CHAINS — HAND-OFF MANUAL (read this first)
 
-> **Paste this to a new AI:** "You are taking over engineering for Chains, a disc golf app. Read HANDOFF.md
-> in the GitHub repo `Bonnaroo/chains-agent-log` top to bottom, then `CHAINS_SYSTEM.md` (architecture)
-> and the last 5 entries of `AGENT_LOG.md` (what just happened). Do not change anything until you have
-> rebuilt the workbench (section 4) and deployed one no-op build to `test.html` successfully. Every change
-> ships to `test.html` first, gets verified in a real browser, then goes to `index.html`. Every deploy ends
-> with an entry in `AGENT_LOG.md` and an update to section 9 of this file."
+> **Paste this to a new AI:** "You are one of several AI engineers on Chains, a disc golf app. Open the
+> GitHub repo `Bonnaroo/chains-agent-log` and read `AGENTS.md`, then `START_HERE.md`, then `ops/PROTOCOL.md`
+> and `ops/STATE.md`. Follow the protocol exactly: name yourself, rebuild the workbench, run
+> `python3 ops/check.py` until it prints ALL GREEN, claim one item from `ops/TODO.md` 'Next up', ship it to
+> `test.html` first, verify, then `index.html`, push your sources to `src/`, write the AGENT_LOG entry, and
+> run the session-end checklist. Never skip the checklist."
 
 Owner: Will (Guillermo), commissioner. He is not a developer — give him exact click-by-click steps for
 anything he must do (Firebase console, Railway, GitHub secrets). He tests on his iPhone at Otterburn Disc
@@ -167,7 +167,7 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 
 ## 9. CURRENT STATE — update this every deploy
 
-- **Live:** index.html **v555** (2026-10-25). Staging test.html v555. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
+- **Live:** index.html **v554** (2026-10-25). Staging test.html v554. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
 - **Start with `START_HERE.md`** (cold start verified byte-for-byte from GitHub alone on 2026-10-25).
 - **What the app is now:** Home = "What you're chasing" (a title within reach at your home course, your
   next breakthrough, this week) · last round · newest trophies · weekly challenges · feed. Challenges tab =
