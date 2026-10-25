@@ -16,7 +16,13 @@ didn't happen.
    `ops/STATE.md` fill "In flight"; push both files **before** you start working.
 5. Say hello to Will in one line: what you're about to do and roughly how long.
 
-## B. Work (one item at a time)
+## B. Work — three duties every session, in this order
+1. **Bugs first**: anything S1/S2 in `ops/BUGS.md` "Open" outranks the TODO queue (full tier; limited tier if the module is allowed).
+2. **One queue item** from `ops/TODO.md` "Next up".
+3. **Sweep**: audit the screen group with the oldest date in `ops/SWEEP.md` (it is the next item in the rotation, not optional). Bugs → BUGS.md with steps; improvements → TODO.md with a "done =" line; small clear fixes within DESIGN/CHALLENGES rules → ship them (full tier). Update the sweep date.
+If you only have time for one thing, do 1, then 3, then 2.
+
+### Work rules (one item at a time)
 - Follow the loop in START_HERE §4: edit `mods/` → esbuild + `tdz.js` clean → build to **test.html** →
   verify → promote to **index.html** → push `src/` → log → HANDOFF Live line → tick TODO.
 - Verify with what you have (`ops/CAPABILITIES.md`). If you cannot verify a screen yourself, build to
