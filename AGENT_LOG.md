@@ -1897,3 +1897,17 @@ featured badge cleared for him to pick).
   Play (course page, round detail, stats, hub sections); in-app Back pops it; Back during a live round
   re-pushes and never exits the round. Harness: course page → Back → course list; scoring → Back → still
   scoring. Compatibility: additive. index.html **v554**.
+
+## 2026-10-25 — Handoff pack (Will is moving the work to another model for a while)
+
+- **START_HERE.md** added at the top of the reading order: the next AI's first hour — what to read, the
+  never-do list (product decisions), the exact cold-start commands (verified: a fresh `/tmp/chains` built
+  from GitHub alone reproduces live v554 byte for byte), the change loop, how to verify with and without
+  browser automation, testing etiquette on the shared database, a module map, and the current state.
+- **ops/TODO.md** now opens with a numbered **Next up** queue, each item with a "done =" check, a claim
+  convention (`doing <who, date>`), and the "blocked on Will" list in one place. Audit items keep their
+  numbers (AUDIT-2026-10-24.md).
+- HANDOFF §9 rewritten for v554 (it still described v514); §1 wording updated; README points to START_HERE.
+- `ops/build.py` in GitHub now includes module 12 (the write-logging module) in its build set.
+- State at hand-off: live **v554**; no open test records; Will's title/goal untouched (goal unset, Otterburn
+  favourited); nothing half-built in `src/`.
