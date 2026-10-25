@@ -54,3 +54,20 @@ didn't happen.
   then investigate.
 - Docs disagree: newest AGENT_LOG entry wins; fix the stale doc the same session.
 - You can't build: don't ship anything; write what fails in STATE.md "Blocked" and tell Will.
+
+## F. Tiers — which agents may do what (the build enforces it)
+Name yourself with a tier in `/tmp/chains/agent`: `<name>:full` or `<name>:limited`. Be honest; Will decides
+who is which. Rule of thumb from Will: strong coding agents (Claude Code, Codex CLI, GPT-class) are
+**full**; smaller, local or unfamiliar models (Ollama/Hermes/Qwen/DeepSeek etc.) are **limited**.
+
+| | full | limited |
+|---|---|---|
+| Claim TODO items | any | only items tagged `[any]` |
+| Edit modules | all | only `8 12 17 19 24 32 38 41 42 46 57 58` (trophies, rating, notifications, aces, icons, settings UI, Firebase init, season panel, primitives) — **never** 31 rounds engine, 45 PlayView, 47 shell, 60 auth, 68 leagues/friends, 70 chat |
+| Build to test.html | yes | yes (same staging lock) |
+| Promote to index.html | yes | **no** — leave it staged, tell Will; a full agent or Will promotes |
+| Docs, tests, recipes, research, reviews | yes | yes — this is where limited agents add the most value |
+| Firebase rules file, backup kit, build.py | yes | no |
+
+A limited agent that needs a protected module writes the change as a TODO item (what, where, done =) for
+a full agent. `build.py` refuses limited promotes and limited edits to protected modules outright.
