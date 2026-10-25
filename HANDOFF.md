@@ -20,7 +20,9 @@ One single-file web app (`index.html`, ~2.5 MB) hosted on GitHub Pages at
 
 - **Fantasy DGPT league** (6 friends draft pros; 2026 season is over, 2027 opens in spring).
 - **Go Throw** — score your own disc golf rounds (solo or a card of friends, live sync), maps, bag, trophies.
-- **Takeover** — INTVL-style territory: every hole at every course has an owner; crews; monthly race.
+- **Titles on every course** — course record, champion, most rounds, local regular, birdie leader, most
+  improved, hole owners, permanent firsts; shown on course pages and chased from Home. (Plain words: no
+  king/crown.) Groups and call-outs between friends.
 - **Course leagues** (friends' leagues at a real course), **course pages** (ratings, notes, lost & found),
   **friends + messaging**, **weekly challenges**, **in-app notifications**, **UDisc CSV import**.
 
@@ -166,10 +168,22 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 ## 9. CURRENT STATE — update this every deploy
 
 - **Live:** index.html **v554** (2026-10-25). Staging test.html v554. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
-- **Just shipped:** Takeover hub (month race, courses, crews), lost & found per course, 86 trophies,
-  leagues v2 (pledge-to-start, handicap, verified-only, final/judge, ace pot), profile photos.
-- **Known gaps / next:** second test account for two-player checks (none exists yet — create one via the
-  app's sign-up: username `claudetest`); App Store path = PWA first, then Capacitor; nightly backup job;
-  Sentry; 86 → 100 trophies (ideas in AGENT_LOG 2026-10-22); per-hole Takeover notifications only fire on
-  the finisher's device; rules v2 still unpublished by Will.
-- **Open bugs:** none confirmed. Will reported a missing avatar once (not reproduced; photos now override).
+- **Start with `START_HERE.md`** (cold start verified byte-for-byte from GitHub alone on 2026-10-25).
+- **What the app is now:** Home = "What you're chasing" (a title within reach at your home course, your
+  next breakthrough, this week) · last round · newest trophies · weekly challenges · feed. Challenges tab =
+  This week · This month · Trophies (100 ladders, points, level 1–10, titles). Course pages = Course ·
+  Holes (mastery + who owns each hole) · Territory (titles: record, champion, most rounds, local regular,
+  birdie leader, most improved; hole owners; firsts; everyone who's played) · Board (ratings, notes, lost &
+  found). Courses browse: Recent · Favourites · Nearby · All + add your course. Leagues: one-window formats
+  and weekly leagues (league night, best N of M, strokes or points, divisions, reminders, calendar).
+  Friends: requests, chat, call-outs (challenge a friend this week), groups (bones). Settings: photo,
+  password, username, recovery email, notifications, delete account. Fantasy league: 2026 archived, 2027
+  opens in spring.
+- **Engineering state:** JSX precompiled at build (no Babel); sources in `src/`; every Firebase write
+  logs a refusal + one toast; save-state line while scoring; phone Back closes pushed screens; 9-hole
+  rounds count for showing-up titles; `tdz.js` check before every build.
+- **Waiting on Will:** publish rules v2 · test account `chainstest` · private backups repo · monitoring ·
+  run the course pipeline once · imported-rounds policy.
+- **Next for the AI:** `ops/TODO.md` → "Next up", in order.
+- **Open bugs:** none confirmed. Unverified: lost & found friend notice in the harness; Will's one-time
+  missing avatar; every two-phone flow (no second account yet).
