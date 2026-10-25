@@ -1,5 +1,6 @@
 import sys,re,zlib,base64,gzip,io,json,hashlib,urllib.request,subprocess,os
-"""build.py vNNN <test.html|index.html> "msg" [--babel]
+"""build.py vNNN <test.html|index.html|local> "msg" [--babel] [--dry]
+Needs /tmp/chains/agent (your agent name) for any push; see ops/PROTOCOL.md.
 v537+: JSX modules are compiled with esbuild at build time and Babel standalone (640 KB gzipped, plus
 seconds of compile on every phone load) is dropped from the bundle. --babel builds the old way."""
 ver,target,msg=sys.argv[1],sys.argv[2],sys.argv[3]; LEGACY='--babel' in sys.argv
@@ -54,11 +55,59 @@ for idx,fn in mods.items():
 open('/tmp/chains/app_'+ver+'.html','w',encoding='utf-8').write(out)
 print('built',len(out)//1024,'KB','compiled',len(compiled),'modules','babel dropped' if not LEGACY else 'legacy')
 if target=='local': raise SystemExit(0)
+# ---------------------------------------------------------------------------------------------------
+# v555 coordination (ops/PROTOCOL.md §D): every push is attributed to an agent, test.html is a single
+# shared staging slot with a lock in ops/STATE.md, versions must move forward, and promoting to
+# index.html rewrites the Live lines in HANDOFF.md and ops/STATE.md itself (no hand edit to drift).
+import datetime,os
 T=open('/tmp/chains/tok').read().strip()
+AGENT=(os.environ.get('CHAINS_AGENT') or (open('/tmp/chains/agent').read().strip() if os.path.exists('/tmp/chains/agent') else '')).strip()
+if not AGENT: raise SystemExit('ABORT: name yourself first — echo "<agent-name>" > /tmp/chains/agent (e.g. claude-cowork, hermes-local)')
+DRY='--dry' in sys.argv
 def req(url,data=None,method='GET',raw=False):
-    r=urllib.request.Request(url,data=data,method=method,headers={'Authorization':'token '+T,'Content-Type':'application/json','Accept':'application/vnd.github.raw' if raw else 'application/vnd.github+json'})
+    r=urllib.request.Request(url,data=data,method=method,headers={'Authorization':'token '+T,'Content-Type':'application/json','Accept':'application/vnd.github.raw' if raw else 'application/vnd.github+json','User-Agent':'chains-build'})
     return urllib.request.urlopen(r).read() if raw else json.load(urllib.request.urlopen(r))
-cur=req('https://api.github.com/repos/Bonnaroo/chains-app/contents/'+target); body=out.encode('utf-8')
-res=req('https://api.github.com/repos/Bonnaroo/chains-app/contents/'+target,data=json.dumps({'message':target+': '+ver+' '+msg,'content':base64.b64encode(body).decode(),'sha':cur['sha']}).encode(),method='PUT')
-b=req('https://api.github.com/repos/Bonnaroo/chains-app/git/blobs/'+res['content']['sha'],raw=True)
-print(target,ver,'commit',res['commit']['sha'][:8],'blob ok',hashlib.sha256(b).hexdigest()==hashlib.sha256(body).hexdigest())
+AL='https://api.github.com/repos/Bonnaroo/chains-agent-log/contents/'
+def gh_get(path): return req(AL+path,raw=True).decode('utf-8')
+def gh_put(path,text,message):
+    if DRY: print('DRY would write',path,'::',message); return
+    try: sha=req(AL+path)['sha']
+    except Exception: sha=None
+    body={'message':message,'content':base64.b64encode(text.encode('utf-8')).decode()}
+    if sha: body['sha']=sha
+    req(AL+path,data=json.dumps(body).encode(),method='PUT')
+now=datetime.datetime.utcnow(); nowS=now.strftime('%Y-%m-%d %H:%MZ'); today=now.strftime('%Y-%m-%d')
+vn=int(ver[1:])
+state=gh_get('ops/STATE.md'); handoff=gh_get('HANDOFF.md')
+mLive=re.search(r'index\.html: \*\*(v\d+)\*\*',state); liveV=int(mLive.group(1)[1:]) if mLive else 0
+mStg=re.search(r'^- Staging: (.*)$',state,re.M); stg=(mStg.group(1).strip() if mStg else 'free')
+# staging lock: "free" or "<agent> vNNN since YYYY-MM-DD HH:MMZ"
+held=re.match(r'(\S+) (v\d+) since (\d{4}-\d\d-\d\d \d\d:\d\dZ)',stg)
+if held and held.group(1)!=AGENT:
+    age=(now-datetime.datetime.strptime(held.group(3),'%Y-%m-%d %H:%MZ')).total_seconds()/3600
+    if age<2: raise SystemExit('ABORT: test.html is held by '+held.group(1)+' ('+held.group(2)+', '+('%.1f'%age)+' h ago). Wait, or coordinate in ops/STATE.md.')
+    print('note: taking over a stale staging lock from',held.group(1),'(%.1f h)'%age)
+if target=='test.html' and vn<=liveV: raise SystemExit('ABORT: '+ver+' is not above live v'+str(liveV)+' — use v'+str(liveV+1))
+if target=='index.html':
+    if vn!=liveV+1 and vn!=liveV: raise SystemExit('ABORT: promote '+ver+' but live is v'+str(liveV)+' (expected v'+str(liveV+1)+'). Someone shipped in between — re-pull src/ and rebuild.')
+    if not (held and held.group(1)==AGENT and held.group(2)==ver): print('warning: promoting '+ver+' without having staged it as '+AGENT+' (staging: '+stg+')')
+# --- push the app file
+body=out.encode('utf-8')
+if DRY: print('DRY would push',target,ver)
+else:
+    cur=req('https://api.github.com/repos/Bonnaroo/chains-app/contents/'+target)
+    res=req('https://api.github.com/repos/Bonnaroo/chains-app/contents/'+target,data=json.dumps({'message':target+': '+ver+' '+msg+' ['+AGENT+']','content':base64.b64encode(body).decode(),'sha':cur['sha']}).encode(),method='PUT')
+    b=req('https://api.github.com/repos/Bonnaroo/chains-app/git/blobs/'+res['content']['sha'],raw=True)
+    print(target,ver,'commit',res['commit']['sha'][:8],'blob ok',hashlib.sha256(b).hexdigest()==hashlib.sha256(body).hexdigest(),'by',AGENT)
+# --- update the board
+if target=='test.html':
+    state2=re.sub(r'^- Staging: .*$','- Staging: '+AGENT+' '+ver+' since '+nowS,state,flags=re.M) if mStg else state.replace('## In flight','- Staging: '+AGENT+' '+ver+' since '+nowS+'\n\n## In flight',1)
+    gh_put('ops/STATE.md',state2,'STATE: staging '+ver+' by '+AGENT)
+else:
+    state2=re.sub(r'index\.html: \*\*v\d+\*\* \([^)]*\) · test\.html: v\d+','index.html: **'+ver+'** ('+today+') · test.html: '+ver,state)
+    state2=re.sub(r'^- Staging: .*$','- Staging: free',state2,flags=re.M)
+    gh_put('ops/STATE.md',state2,'STATE: live '+ver+' ('+AGENT+')')
+    h2=re.sub(r'- \*\*Live:\*\* index\.html \*\*v\d+\*\* \([^)]*\)\. Staging test\.html v\d+\.','- **Live:** index.html **'+ver+'** ('+today+'). Staging test.html '+ver+'.',handoff)
+    if h2!=handoff: gh_put('HANDOFF.md',h2,'HANDOFF: live '+ver+' ('+AGENT+')')
+    else: print('warning: HANDOFF Live line not found — update it by hand')
+    print('board updated: live',ver,'by',AGENT,'— now write the AGENT_LOG entry and tick ops/TODO.md')
