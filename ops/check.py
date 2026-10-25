@@ -41,7 +41,7 @@ try:
     if not m2 or m2.group(1) != lv: fail("ops/STATE.md says " + (m2.group(1) if m2 else "?") + " but live is " + lv)
     log = gh("AGENT_LOG.md")
     if lv not in log: fail("AGENT_LOG.md has no entry mentioning " + lv)
-    todo = gh("ops/TODO.md"); claims = re.findall(r"`doing ([^`]+)`", todo)
+    todo = gh("ops/TODO.md"); claims = [c for c in re.findall(r"`doing ([^`]+)`", todo) if "<" not in c]
     say("claims in TODO: " + (", ".join(claims) if claims else "none"))
     if ok: say("DOCS OK")
 except Exception as e: fail("docs check errored (token missing?): " + str(e)[:160])
