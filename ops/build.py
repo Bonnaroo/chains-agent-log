@@ -3,7 +3,7 @@ import sys,re,zlib,base64,gzip,io,json,hashlib,urllib.request,subprocess,os
 v537+: JSX modules are compiled with esbuild at build time and Babel standalone (640 KB gzipped, plus
 seconds of compile on every phone load) is dropped from the bundle. --babel builds the old way."""
 ver,target,msg=sys.argv[1],sys.argv[2],sys.argv[3]; LEGACY='--babel' in sys.argv
-mods={60:'module_060.js',8:'module_008.js',46:'module_046.js',24:'module_024.js',57:'module_057.js',42:'module_042.js',38:'module_038.js',45:'module_045.js',32:'module_032.js',31:'module_031.js',70:'module_070.js',68:'module_068.js',17:'module_017.js',19:'module_019.js',47:'module_047.js',58:'module_058.js',41:'module_041.js'}
+mods={12:'module_012.js',60:'module_060.js',8:'module_008.js',46:'module_046.js',24:'module_024.js',57:'module_057.js',42:'module_042.js',38:'module_038.js',45:'module_045.js',32:'module_032.js',31:'module_031.js',70:'module_070.js',68:'module_068.js',17:'module_017.js',19:'module_019.js',47:'module_047.js',58:'module_058.js',41:'module_041.js'}
 base=open('/tmp/chains/app_base.html',encoding='utf-8').read()
 ESB='/tmp/chains/node_modules/.bin/esbuild'
 def gz(src):
