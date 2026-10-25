@@ -10,8 +10,7 @@ ship gets: a version number one higher than the last, an `AGENT_LOG.md` entry, t
 and the edited sources pushed to `src/`. If you cannot do all four, do not ship.
 
 ## 1. Read these, in this order (30 minutes)
-0. `AGENTS.md` (one screen) → `ops/PROTOCOL.md` (how every session starts and ends) → `ops/STATE.md` (what is true now). Then:
-1. This file.
+1. This file, then `ops/PROTOCOL.md` (how every session starts and ends) and `ops/STATE.md` (what is true now).
 2. `HANDOFF.md` — the manual (sections 3, 4b, 5, 6, 8 matter most).
 3. `AGENT_LOG.md` — **the last 10 entries** (what just happened and why).
 4. `ops/TODO.md` — the only task list. The top section "Next up" is the queue; take the first unclaimed item.
@@ -42,19 +41,24 @@ The sandbox is wiped between sessions. The GitHub token is in Will's `Desktop\DG
 (Contents + Workflows on the four repos; cannot create repos or dispatch Actions).
 
 ```bash
-mkdir -p /tmp/chains/mods && cd /tmp/chains
-# token: copy the contents of Desktop\DGFT Token.txt into /tmp/chains/tok (one line, no newline issues)
-T=$(cat /tmp/chains/tok); AL="https://api.github.com/repos/Bonnaroo/chains-agent-log/contents"
+mkdir -p /tmp/chains/mods /tmp/chains/ops && cd /tmp/chains
+echo "<your-agent-name>" > agent        # e.g. claude-code, codex-cli, hermes-local — every push is attributed to it
+# token: the file has trailing spaces/newlines — strip them (on Will's PC it is Desktop\DGFT Token.txt)
+tr -d '\r\n ' < "/path/to/DGFT Token.txt" > tok
+T=$(cat tok); AL="https://api.github.com/repos/Bonnaroo/chains-agent-log/contents"
 raw() { curl -s -H "Authorization: token $T" -H "Accept: application/vnd.github.raw" "$AL/$1" -o "$2"; }
-raw ops/build.py build.py; raw ops/push.py push.py; raw ops/tdz.js tdz.js; raw ops/blob_ids.json blob_ids.json
-raw HANDOFF.md HANDOFF.md; raw AGENT_LOG.md AGENT_LOG.md; mkdir -p ops && raw ops/TODO.md ops/TODO.md
+raw ops/build.py build.py; raw ops/push.py push.py; raw ops/tdz.js tdz.js; raw ops/blob_ids.json blob_ids.json; raw ops/check.py ops/check.py
+raw HANDOFF.md HANDOFF.md; raw AGENT_LOG.md AGENT_LOG.md; raw ops/TODO.md ops/TODO.md; raw ops/STATE.md ops/STATE.md
 for i in 008 012 017 019 024 031 032 038 041 042 045 046 047 057 058 060 068 070; do raw src/module_$i.js mods/module_$i.js; done
 curl -s https://bonnaroo.github.io/chains-app/index.html -o app_base.html      # the live file is the base
 npm init -y >/dev/null 2>&1; npm i esbuild@0.21.5 espree eslint-scope --silent
 grep -o 'CHAINS_VERSION = \\"v[0-9]*' app_base.html                             # must print the live version
-python3 build.py v999 local "check" | tail -1                                   # must print "built … babel dropped"
+python3 ops/check.py                                                            # must end with ALL GREEN
 ```
-If the last line fails, stop and read `HANDOFF.md §4b`. Do not ship.
+If it isn't green, stop and read `HANDOFF.md §4b` and `ops/HOWTO/`. Do not ship.
+`build.py` refuses to push unless you are named (`agent` file), the version is above the live one, and
+nobody else holds `test.html` (the "Staging" line in `ops/STATE.md`); on promote it rewrites the Live lines
+in HANDOFF.md and STATE.md for you. `--dry` shows what it would do.
 
 `build.py` takes **`mods={...}`** (the modules it rebuilds) from its own first lines; every module listed
 there is read from `/tmp/chains/mods/`. Edit only those files. Numbers = `src/module_NNN.js` names.
@@ -64,14 +68,14 @@ there is read from `/tmp/chains/mods/`. Edit only those files. Numbers = `src/mo
    `assert s.count(a) == 1` **before** any replace, write the file **once at the end**, and
    `s.encode('utf-8')` before writing (HANDOFF gotchas 5 and 6).
 2. Check: `./node_modules/.bin/esbuild mods/module_NNN.js --loader:.js=jsx --target=es2018 > /tmp/c.js && node tdz.js /tmp/c.js` → must print `clean`.
-3. Build to staging: `python3 build.py v555 test.html "v555: what changed"` (next number after the HANDOFF Live line).
+3. Build to staging: `python3 build.py vNNN test.html "vNNN: what changed"` (NNN = live + 1; build.py checks). This locks test.html to you until you promote (or 2 h).
 4. Wait ~2 minutes, confirm: `curl -s https://bonnaroo.github.io/chains-app/test.html | md5sum` equals `md5sum < app_v555.html`.
 5. Verify on test.html (§5). 0 console errors, the change visible, nothing else broken.
-6. Promote: `python3 build.py v555 index.html "v555 live: what changed"`.
-7. Push sources: `python3 push.py chains-agent-log src/module_NNN.js mods/module_NNN.js "src: module NNN v555"` for every edited module.
-8. Log: append an entry to `AGENT_LOG.md` (date, version, what/why/where, how verified, "Compatibility:
-   additive" or what an older build would not understand), push it; update the HANDOFF §9 Live line;
-   tick `ops/TODO.md`. Push each with `push.py chains-agent-log <path> <localfile> "<msg>"`.
+6. Promote: `python3 build.py vNNN index.html "vNNN live: what changed"` — this also updates the Live lines in HANDOFF.md and ops/STATE.md and frees staging.
+7. Push sources: `python3 push.py chains-agent-log src/module_NNN.js mods/module_NNN.js "src: module NNN vNNN"` for every edited module.
+8. Log: append an entry to `AGENT_LOG.md` (date, agent name, version, what/why/where, how verified,
+   "Compatibility: additive" or what an older build would not understand), push it; tick `ops/TODO.md`;
+   update `ops/STATE.md` "In flight"/"Last sessions". Push each with `push.py chains-agent-log <path> <localfile> "<msg>"`.
 
 ## 5. How to verify (pick what you have)
 - **Best**: Claude-in-Chrome on Will's PC: open `https://bonnaroo.github.io/chains-app/test.html?harness=N#play`,
@@ -110,7 +114,7 @@ record and its code entry). Never change Will's title/goal/favourites without pu
 | Course catalog + pipeline | repo `chains-dgpt-data` (`data/courses.json`, `pipeline/`) |
 
 ## 8. Current state (2026-10-25) and what to do next
-- **Live v554.** Home opens with "What you're chasing"; weekly/monthly challenges; 100 trophies, points,
+- **Live v555** (v555 = build coordination only; the app is v554's). Home opens with "What you're chasing"; weekly/monthly challenges; 100 trophies, points,
   levels; titles per course (record, champion, most rounds, local regular, birdie leader, most improved,
   hole owners); weekly leagues; groups and call-outs on Friends; add-your-course; nearby/favourites;
   delete account; precompiled build (no Babel); every cloud write logged; save-state line while scoring;
