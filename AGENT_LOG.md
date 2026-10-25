@@ -1932,3 +1932,20 @@ featured badge cleared for him to pick).
   `archive/sept-2026-agent-company/` so they can't be mistaken for the current process.
 - Hermes (another AI Will is bringing in) has read the pack and intends to claim TODO "Next up" #1. This
   agent makes no further app changes this session to avoid overlap.
+
+## 2026-10-25 — v555: build coordination for several agents (app unchanged; agent: claude-cowork)
+
+- Will: several AIs may work on Chains, sometimes at the same time, and must always be on the same page.
+  Re-read the whole hand-off pack with fresh eyes and did a cold start from a wiped sandbox using only the
+  token file and GitHub — it rebuilt live v554 byte for byte. Found and fixed: a circular/duplicated
+  reading order (README/START_HERE), the token file needs whitespace stripped, check.py wasn't in the
+  cold-start commands, HANDOFF's "paste this" prompt pointed at the old routine, a stale `claudetest` name.
+- **build.py now enforces the protocol** (`ops/build.py`): every push needs an agent name
+  (`/tmp/chains/agent`) and carries it in the commit message; **test.html is a locked staging slot** —
+  building to it writes `- Staging: <agent> vNNN since <time>` to `ops/STATE.md`, and another agent's
+  build is refused for 2 h or until promote; a test.html version must be above live and a promote must be
+  live+1 ("someone shipped in between"); **promote rewrites the Live lines in HANDOFF.md and STATE.md**
+  itself (audit item 4.1 — no more drift); `--dry` previews. Tested: refusals for no name / stale version
+  / held staging, and a real stage → promote of v555 (identical app) that updated both files.
+- `ops/check.py` reports the staging line; it also caught that this entry was missing before I wrote it.
+- Compatibility: additive (no app change; v555 is byte-identical in behaviour to v554).
