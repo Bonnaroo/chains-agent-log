@@ -1884,3 +1884,16 @@ featured badge cleared for him to pick).
   saved on this phone — storage is full**.
 - Harness: scored a hole ("Thru 1 · You E · Saved · synced"), forced a denied write to `config/…` →
   console line + toast; test round removed. Compatibility: additive. index.html **v553**.
+
+## 2026-10-25 — v554: audit P2 batch 1 (ties, score labels, phone Back)
+
+- **Count titles keep the incumbent on a tie** (audit 1.2): `courseTerritory(board, me, pars, holders)` —
+  most rounds, local regular and birdie leader break ties in favour of the current holder from
+  `territory/{course}/crowns`; the sync reads crowns first; readers (course page, Territory, Home chase)
+  fetch them (`ChainsRounds.crownsFor`, cached). "Most rounds" is now a persisted crown too (`king`).
+- **Score buttons announce themselves** (2.3): "Kyle, hole 4: one stroke less (now 3)" / "…: 3 (par)" /
+  "…: tap for par 3".
+- **Phone Back closes the pushed screen** (2.2): one history entry while anything is open above Home in
+  Play (course page, round detail, stats, hub sections); in-app Back pops it; Back during a live round
+  re-pushes and never exits the round. Harness: course page → Back → course list; scoring → Back → still
+  scoring. Compatibility: additive. index.html **v554**.
