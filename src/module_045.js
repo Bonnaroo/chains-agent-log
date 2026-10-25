@@ -1217,10 +1217,12 @@
     const [heldLog, setHeldLog] = React.useState(null);   // v528: titles I held here before and lost
     React.useEffect(() => { let alive = true; try { const d = cloudDb(); if (!d || !me || !course || course.id == null) return; d.ref("territory/" + String(course.id).replace(/[.#$\[\]\/]/g, "_") + "/heldLog/" + me).get().then((s) => { if (alive) setHeldLog(Object.values(s.val() || {}).sort((a, b) => b.to - a.to)); }).catch(() => {}); } catch (e) {} return () => { alive = false; }; }, [course && course.id, me]);
     React.useEffect(() => { let alive = true; if (!course || course.id == null) return; const go = (b) => { if (!alive) return; setBoard(b || []); if (window.ChainsNames) ChainsNames.firstsSync(course.id, b || [], me, course.name).then((r) => { if (alive) setFirsts(r); }); }; if (boardIn) go(boardIn); else if (window.ChainsRounds && ChainsRounds.courseBoard) ChainsRounds.courseBoard(course.id).then(go).catch(() => go([])); return () => { alive = false; }; }, [course && course.id, boardIn]);
+    const [, crownTick] = React.useState(0);
+    React.useEffect(() => { let alive = true; if (window.ChainsRounds && ChainsRounds.crownsFor && course && course.id != null && !ChainsRounds.crownsCached(course.id)) ChainsRounds.crownsFor(course.id).then(() => { if (alive) crownTick((x) => x + 1); }); return () => { alive = false; }; }, [course && course.id]);
     if (!board || !window.ChainsTakeover) return null;
     const t = ChainsTakeover.compute(board);
     const marks = window.ChainsNames ? ChainsNames.holeMarks(board) : [];
-    const lead = window.ChainsRounds && ChainsRounds.courseTerritory ? ChainsRounds.courseTerritory(board, me, course.hole_pars || course.pars || null) : null;
+    const lead = window.ChainsRounds && ChainsRounds.courseTerritory ? ChainsRounds.courseTerritory(board, me, course.hole_pars || course.pars || null, ChainsRounds.crownsCached ? ChainsRounds.crownsCached(course.id) : null) : null;
     const N = t.N || (course.holes || 18);
     // --- tally names per person (firsts + holds) → "the ones to beat"
     const tally = {}; const add = (k, name, what) => { if (!k) return; const e = tally[k] || (tally[k] = { key: k, name: name || k, n: 0, firsts: 0, holds: 0, what: [] }); e.n++; if (what === "first") e.firsts++; else e.holds++; };
@@ -1519,7 +1521,7 @@
   function TerritoryCard({ course, me, part }) {
     const [t, setT] = React.useState(null);
     const [allPlayers, setAllPlayers] = React.useState(false);
-    React.useEffect(() => { let alive = true; if (!window.ChainsRounds || !ChainsRounds.courseBoard || !course || course.id == null) return; ChainsRounds.courseBoard(course.id).then((b) => { if (alive) setT(ChainsRounds.courseTerritory(b, me)); }).catch(() => {}); return () => { alive = false; }; }, [course && course.id]);
+    React.useEffect(() => { let alive = true; if (!window.ChainsRounds || !ChainsRounds.courseBoard || !course || course.id == null) return; Promise.all([ChainsRounds.courseBoard(course.id), ChainsRounds.crownsFor ? ChainsRounds.crownsFor(course.id) : Promise.resolve(null)]).then(([b, cr]) => { if (alive) setT(ChainsRounds.courseTerritory(b, me, course.hole_pars || null, cr)); }).catch(() => {}); return () => { alive = false; }; }, [course && course.id]);
     if (!t) return null;
     const card = { background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" };
     const big = (icon, title, who, sub, mine) => (
@@ -2107,7 +2109,7 @@
       let alive = true;
       const hid = ChainsHome.get() || (() => { const c = {}; Object.values(rounds || {}).forEach((r) => { if (r && r.course_id != null && r.status !== "open") c[r.course_id] = (c[r.course_id] || 0) + 1; }); return Object.keys(c).sort((a, b) => c[b] - c[a])[0] || null; })();
       if (!hid) { setHome(null); return; }
-      loadCatalog().then((cat) => { const c = (cat || []).find((x) => x && String(x.id) === String(hid)); if (!alive || !c) return; setHome(c); if (window.ChainsRounds && ChainsRounds.courseBoard) ChainsRounds.courseBoard(c.id).then((b) => { if (alive) { setBoard(b || []); setLead(ChainsRounds.courseTerritory(b || [], me, c.hole_pars || null)); } }).catch(() => {}); });
+      loadCatalog().then((cat) => { const c = (cat || []).find((x) => x && String(x.id) === String(hid)); if (!alive || !c) return; setHome(c); if (window.ChainsRounds && ChainsRounds.courseBoard) Promise.all([ChainsRounds.courseBoard(c.id), ChainsRounds.crownsFor ? ChainsRounds.crownsFor(c.id) : Promise.resolve(null)]).then(([b, cr]) => { if (alive) { setBoard(b || []); setLead(ChainsRounds.courseTerritory(b || [], me, c.hole_pars || null, cr)); } }).catch(() => {}); });
       return () => { alive = false; };
     }, [rounds, me]);
     const suggestions = React.useMemo(() => (home ? ChainsGoals.suggest(rounds, me, home) : []), [home, rounds, me]);
@@ -2274,6 +2276,28 @@
     React.useEffect(() => { let cid = null; try { cid = localStorage.getItem("chains_pending_course"); if (cid) localStorage.removeItem("chains_pending_course"); } catch (e) {} if (!cid) return; const fire = () => { try { window.dispatchEvent(new CustomEvent("chains:play-nav", { detail: "course:" + cid })); } catch (e) {} }; const ts = [900, 2600, 5000].map((ms) => setTimeout(fire, ms)); return () => ts.forEach(clearTimeout); }, []);
     const [showWeeklies, setShowWeeklies] = React.useState(false);
     const [showStats, setShowStats] = React.useState(false);
+    // v554 — the phone's Back button closes the pushed screen (audit 2.2). One history entry while anything
+    // is open above Home; closing it in-app pops that entry; Back during a live round re-pushes (never exits).
+    const pushedRef = React.useRef(0);
+    const topOpen = detail ? "detail" : showStats ? "stats" : (stage !== "home" ? stage : null);
+    React.useEffect(() => {
+      try {
+        if (topOpen && !pushedRef.current) { history.pushState({ chainsPush: 1 }, ""); pushedRef.current = 1; }
+        else if (!topOpen && pushedRef.current) { pushedRef.current = 0; if (history.state && history.state.chainsPush) history.back(); }
+      } catch (e) {}
+    }, [topOpen]);
+    React.useEffect(() => {
+      const on = () => {
+        if (!pushedRef.current) return;
+        pushedRef.current = 0;
+        if (detail) setDetail(null);
+        else if (showStats) setShowStats(false);
+        else if (stage === "score") { try { history.pushState({ chainsPush: 1 }, ""); pushedRef.current = 1; } catch (e) {} }
+        else if (stage === "courseview") setStage("browse");
+        else if (stage !== "home") setStage("home");
+      };
+      window.addEventListener("popstate", on); return () => window.removeEventListener("popstate", on);
+    });
     const [showBag, setShowBag] = React.useState(false);
     const [active, setActive] = React.useState(() => { try { return JSON.parse(localStorage.getItem("chains_play_active") || "null"); } catch (e) { return null; } });
     // CRASH-PROOF RESUME: if the local pointer is missing (app killed, storage
@@ -4475,12 +4499,12 @@
                     <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{g.name}{isMe && group.length > 1 ? <span style={{ fontWeight: 500, color: "var(--text-faint)" }}> · you</span> : g.guest ? <span style={{ fontWeight: 500, color: "var(--text-faint)" }}> · guest</span> : null}</div>
                     <div style={{ fontFamily: "var(--font-mono)", fontSize: 12.5, color: thru ? parColor(tp) : "var(--text-faint)", marginTop: 2, whiteSpace: "nowrap", height: 16, lineHeight: "16px" }}>{thru ? fmtPar(tp) + " (" + totalHoleStrokes(g) + ") thru " + thru : "no holes yet"}</div>
                   </div>
-                  <button onClick={() => { if (isSet && raw > 1) tap(g, hole, raw - 1); else if (!isSet) tap(g, hole, par - 1); }} aria-label={"Minus for " + g.name} style={{ width: 44, height: 44, borderRadius: "50%", border: "1px solid var(--border-default)", background: "var(--bg-elevated)", cursor: "pointer", fontSize: 22, color: "var(--text-strong)", flexShrink: 0, touchAction: "manipulation" }}>−</button>
-                  <button onClick={() => { if (!isSet) tap(g, hole, par); }} aria-label={isSet ? g.name + " score " + raw : "Tap for par " + par + " for " + g.name} style={{ width: 62, height: 52, borderRadius: 12, border: isSet ? "none" : "2px dashed var(--border-default)", background: isSet ? (d < 0 ? "var(--score-under, #1a7a50)" : d === 0 ? "var(--fairway-700)" : "var(--score-over, #c23a33)") : "transparent", color: isSet ? "#fff" : "var(--text-muted)", cursor: isSet ? "default" : "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", lineHeight: 1, flexShrink: 0, touchAction: "manipulation" }}>
+                  <button onClick={() => { if (isSet && raw > 1) tap(g, hole, raw - 1); else if (!isSet) tap(g, hole, par - 1); }} aria-label={__fn(g.name) + ", hole " + (hole + 1) + ": one stroke less" + (isSet ? " (now " + raw + ")" : "")} style={{ width: 44, height: 44, borderRadius: "50%", border: "1px solid var(--border-default)", background: "var(--bg-elevated)", cursor: "pointer", fontSize: 22, color: "var(--text-strong)", flexShrink: 0, touchAction: "manipulation" }}>−</button>
+                  <button onClick={() => { if (!isSet) tap(g, hole, par); }} aria-label={isSet ? __fn(g.name) + ", hole " + (hole + 1) + ": " + raw + " (" + lbl + ")" : __fn(g.name) + ", hole " + (hole + 1) + ": tap for par " + par} style={{ width: 62, height: 52, borderRadius: 12, border: isSet ? "none" : "2px dashed var(--border-default)", background: isSet ? (d < 0 ? "var(--score-under, #1a7a50)" : d === 0 ? "var(--fairway-700)" : "var(--score-over, #c23a33)") : "transparent", color: isSet ? "#fff" : "var(--text-muted)", cursor: isSet ? "default" : "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", lineHeight: 1, flexShrink: 0, touchAction: "manipulation" }}>
                     <span style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: isSet ? 24 : 18 }}>{isSet ? raw : par}</span>
                     <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 8.5, marginTop: 3, opacity: .9 }}>{lbl}</span>
                   </button>
-                  <button onClick={() => tap(g, hole, isSet ? raw + 1 : par + 1)} aria-label={"Plus for " + g.name} style={{ width: 44, height: 44, borderRadius: "50%", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontSize: 22, flexShrink: 0, touchAction: "manipulation" }}>+</button>
+                  <button onClick={() => tap(g, hole, isSet ? raw + 1 : par + 1)} aria-label={__fn(g.name) + ", hole " + (hole + 1) + ": one stroke more" + (isSet ? " (now " + raw + ")" : "")} style={{ width: 44, height: 44, borderRadius: "50%", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontSize: 22, flexShrink: 0, touchAction: "manipulation" }}>+</button>
                 </div>
               );
             })}
