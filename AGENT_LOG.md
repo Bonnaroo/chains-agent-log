@@ -1982,3 +1982,34 @@ featured badge cleared for him to pick).
   (18 modules: esbuild + tdz clean), DOCS OK, ALL GREEN. Before the change it was NOT GREEN for the reason above.
 - Not verified: the Linux path was not run in this session (no Linux shell here). It is unchanged code.
 - Compatibility: tooling only; no app or data change. Live stays v555.
+
+## 2026-10-25 — v556: declutter Home and Go Throw (agent: claude-cowork:full)
+
+- Why: Will (2026-10-25): "way too much going on", "make it slick, clean". Research
+  (Visual & Interaction Design §2: content inventory essential / helpful / optional; Home = resume, the
+  route to Play, home-course item, one challenge, not every module above the fold; reduce containers)
+  and DESIGN §4 ("Home is a front door, not a dashboard") already said so; the screens had drifted.
+- Home (module 045, the HOME return): greeting · month numbers · **Start a round + 3 tiles**
+  (Go Throw · Leagues · Friends — `HomeTiles` rewritten; Courses/Challenges/More are on the bar) ·
+  Chase · Last round · This week · feed. **Cut:** the "Signed in as … · Account" line (Settings has it),
+  the 8-tile grid (`HomeEverything`, now unused), Newest trophies (Trophy case / Challenges have them),
+  What's new (moved to the **More sheet**, module 047, above Sign out via `window.ChainsWhatsNew`),
+  the footer "All rounds, stats & trophies" link. 2250 px → 1410 px at 400 wide (under two screens).
+- Chase card: the duplicate "This week's challenges" row removed (the This week block is right below);
+  with no goal set it shows one row "Pick a goal" instead of three suggestions inline; the picker closes
+  with "Not now" (or "Keep …" when a goal exists).
+- Go Throw hub: the "Your game" card (dark rating hero + 3 stats + 4 chips, three layers in one card)
+  is now one flat tappable row — Rating · Rounds · Best · Avg — that opens My stats, where the tier and
+  scoring mix already live. Rows "Rivalries & aces" + "Friends' rounds" merged into **"Friends on the
+  course"** (`throwSec === "friends"`: friends' rounds, Rivalries, AcesWall); old "rivals"/"crew"
+  sections kept for existing callers. 955 px → 760 px (one screen).
+- Feed ("What's happening"): six rows then "Show more"; course names shortened ("Otterburn", not
+  "Otterburn Disc Golf Park"); "You're king of …" → "You've played … the most · N rounds" (king wording
+  is banned); the "X is not: +2 average lately" line removed (calling a friend out as cold on everyone's
+  Home is the kind of social comparison the engagement paper warns about).
+- How verified: esbuild + tdz clean (045, 047); test.html md5 = local build; Chrome harness 400×760 as
+  Will: Home, Go Throw, Friends on the course, Pick a goal → Not now, More sheet (What's new present),
+  0 console errors, no "king" and no " not: " text on Home. Promoted; build.py wrote the Live lines.
+- Not done (on purpose): no feature deleted. Everything cut from Home is still ≤ 2 taps away.
+- Compatibility: additive — UI only, no data shape changed; an older build reads the same nodes.
+
