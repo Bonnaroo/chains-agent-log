@@ -9,12 +9,13 @@ Update at every session start and end. Keep it short. Dates are YYYY-MM-DD.
 - Automation running: chains-dgpt-data workflows (DGPT collect, daily rounds backup, discs, OSM geo, course pipeline Sundays)
 
 ## In flight
-- claude-cowork:full, 2026-10-25 — TODO 0 (declutter Home + Go Throw), building to test.html as v556
+- (nobody) — no item claimed
 
 ## Blocked on Will
 - publish rules v2 · test account `chainstest` · private `chains-backups` repo + bot login + secrets · UptimeRobot/Sentry (ops/MONITORING.md) · Run workflow once on "Course data pipeline" · imported-rounds policy (audit 1.6)
 
 ## Last sessions (newest first; one line each: date · agent · what)
+- 2026-10-25 · claude-cowork:full · v556 declutter Home (front door: Start + 3 tiles, chase, last round, this week, feed) + Go Throw (flat stat row, 5 rows); What's new → More; feed wording
 - 2026-10-25 · claude-haiku:limited · TODO 5 done (OPERATIONS rollback: additive-only rule, Compatibility line); docs only, Live still v555
 - 2026-10-25 · claude-cowork · v555 build coordination (staging lock, agent names, auto Live lines); fresh-eyes pass on the pack
 - 2026-10-25 · claude-cowork · v552–v554 (contrast, write logging + save-state, ties/labels/Back); audit of Will's four papers; handoff pack (START_HERE, PROTOCOL, STATE, HOWTO, check.py)
