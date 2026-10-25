@@ -41,6 +41,7 @@ try:
     if not m2 or m2.group(1) != lv: fail("ops/STATE.md says " + (m2.group(1) if m2 else "?") + " but live is " + lv)
     log = gh("AGENT_LOG.md")
     if lv not in log: fail("AGENT_LOG.md has no entry mentioning " + lv)
+    ms = re.search(r"^- Staging: (.*)$", st, re.M); say("staging: " + (ms.group(1) if ms else "line missing"))
     todo = gh("ops/TODO.md"); claims = [c for c in re.findall(r"`doing ([^`]+)`", todo) if "<" not in c]
     say("claims in TODO: " + (", ".join(claims) if claims else "none"))
     if ok: say("DOCS OK")
