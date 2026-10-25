@@ -10,6 +10,7 @@ ship gets: a version number one higher than the last, an `AGENT_LOG.md` entry, t
 and the edited sources pushed to `src/`. If you cannot do all four, do not ship.
 
 ## 1. Read these, in this order (30 minutes)
+0. `AGENTS.md` (one screen) → `ops/PROTOCOL.md` (how every session starts and ends) → `ops/STATE.md` (what is true now). Then:
 1. This file.
 2. `HANDOFF.md` — the manual (sections 3, 4b, 5, 6, 8 matter most).
 3. `AGENT_LOG.md` — **the last 10 entries** (what just happened and why).
@@ -17,6 +18,9 @@ and the edited sources pushed to `src/`. If you cannot do all four, do not ship.
 5. `DESIGN.md` — before touching any screen. `CHALLENGES.md` — before touching trophies/challenges/titles.
 6. `AUDIT-2026-10-24.md` — the open findings behind the TODO items (numbers match).
 7. `OPERATIONS.md` — release, rollback, backups, incidents.
+8. `ops/HOWTO/` — recipes ("if you don't know how, look here"); `ops/CAPABILITIES.md` — what your setup can verify; `GLOSSARY.md`.
+
+Then run `python3 ops/check.py` (after §3) — it must print `ALL GREEN` before you ship anything, and again before you stop.
 
 ## 2. What you must never do (product decisions already made — don't reopen them)
 - No scraping UDisc or any other app's course data. Courses come from OpenStreetMap, PDGA licence,
