@@ -1949,3 +1949,15 @@ featured badge cleared for him to pick).
   / held staging, and a real stage → promote of v555 (identical app) that updated both files.
 - `ops/check.py` reports the staging line; it also caught that this entry was missing before I wrote it.
 - Compatibility: additive (no app change; v555 is byte-identical in behaviour to v554).
+
+## 2026-10-25 — Agent tiers (docs + build.py only; agent: claude-cowork:full)
+
+- Will: strong coding agents get full access; smaller/unknown models should be told what not to touch,
+  because he will run many AIs in parallel while Claude's usage is out. Added **tiers** (PROTOCOL §F):
+  `agent` file is `<name>:full|limited`. `build.py` refuses a limited agent's promote to index.html and
+  any limited change to protected modules 31/45/47/60/68/70 (it now reports "modules changed vs the base"
+  on every build); limited agents stage to test.html only and a full agent or Will promotes. TODO items
+  are tagged `[full]` / `[any]`; items 2, 4, 5, 9 are `[any]` (tests, docs, contrast re-measure).
+- Note for whoever picks up: item 1 (scoring Retry) is `[full]` — Hermes, if limited, should take 2 or 4.
+- Honest limit: a tier is self-declared; this protects against mistakes, not malice.
+- No app change. Live stays v555.
