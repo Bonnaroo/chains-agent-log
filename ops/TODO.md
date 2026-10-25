@@ -11,8 +11,8 @@ Status words: `todo` · `doing` · `done <version>` · `will` (needs Will's hand
 - [x] `done v553` P1 3.1 Every cloud write logs a refusal (Reference.prototype wrap in module 12) + one toast per session
 - [ ] `will` P1 3.7 Private backups repo → then AI restore drill into an isolated node; consider stopping the public rounds backup
 - [x] `done` P1 4.3 chains-app README no longer calls sw.js an offline shell
-- [ ] `todo` P2 1.2 Count-title ties keep the incumbent (most rounds, birdie leader, local regular)
-- [ ] `todo` P2 2.2/2.3 Browser Back for pushed screens; aria-labels on score −/+ (player + hole)
+- [x] `done v554` P2 1.2 Count-title ties keep the incumbent
+- [x] `done v554` P2 2.2/2.3 Phone Back closes pushed screens; score −/+ announce player + hole
 - [ ] `todo` P2 2.8 Scoring screen states: offline, pending sync, couldn't save
 - [ ] `todo` P2 3.14 tests/ with node tests for courseTerritory, weeklyStandings, level, ladder
 - [ ] `todo` P2 4.1/4.2 build.py writes the HANDOFF live line on promote; CHAINS_SYSTEM.md reconciled (build, nodes v542–v551)
