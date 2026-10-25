@@ -1869,3 +1869,18 @@ featured badge cleared for him to pick).
   three light themes' `--accent`; dark themes untouched (their text tokens are light on dark and pass).
   DESIGN.md and BRAND.md updated with the rule "white text only on ace-700 or darker".
 - chains-app README no longer calls sw.js an "offline shell". index.html **v552**.
+
+## 2026-10-25 — v553: audit P1 3.1 + 3.2 — no silent cloud writes; save-state truth
+
+- **Every Firebase write is observed** (module 12, where the SDK is initialised): `Reference.prototype`
+  `set/update/remove/push` are wrapped so a rejection logs `[Chains] cloud write refused <op> <path>
+  <code>` whatever the caller does with the promise, raises a `chains:write-failed` event, and shows one
+  toast per session ("Something didn't save to the cloud. It's still on this phone and will retry.").
+  Callers' own `.catch()` keep working; no call sites changed, so the 70-odd bare catches are harmless now.
+- **Save-state truth** (module 31 `_track` → `ChainsRounds.sync()` + `chains:sync`): tracked writes
+  (`_commit`, `_quiet`) keep pending/failed counters; `writeLocal` returns false and flags `localFail`
+  instead of swallowing a quota error. The scoring header line now ends with **Saving… / Saved · synced
+  / Not synced — N changes refused; retries on your next tap / Offline — saved on this phone / Not
+  saved on this phone — storage is full**.
+- Harness: scored a hole ("Thru 1 · You E · Saved · synced"), forced a denied write to `config/…` →
+  console line + toast; test round removed. Compatibility: additive. index.html **v553**.
