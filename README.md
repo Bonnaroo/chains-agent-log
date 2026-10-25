@@ -4,16 +4,16 @@ Chains is a disc golf app (score rounds, names on every course, leagues, your cr
 single file `index.html` in `Bonnaroo/chains-app`; data files live in `Bonnaroo/chains-dgpt-data`; the
 scoring poller in `Bonnaroo/chains-poller`. **This repo is where any person, app or AI should start.**
 
-0. **`AGENTS.md` → `START_HERE.md` → `ops/PROTOCOL.md` → `ops/STATE.md` — in that order, every session.** `ops/HOWTO/` has a recipe per job; `ops/check.py` proves your setup.
-0b. `START_HERE.md` — read first. The next AI's first hour: cold start, the loop, what never to do.
-1. `HANDOFF.md` — the manual. What it is, where everything lives, how to build, ship and test.
-2. `CHAINS_SYSTEM.md` — architecture and data model.
-3. `AGENT_LOG.md` — what changed, when, and why (newest at the bottom).
-4. `DESIGN.md` (how screens must look) and `CHALLENGES.md` (how trophies, challenges, home course and crowns fit together).
-5. `AUDIT-2026-10-24.md` — findings and the prioritized plan from the four research papers in `research/`.
-6. `OPERATIONS.md` — how it is run: release, rollback, backups, incidents, weekly checks, data policy.
-7. `ops/TODO.md` — the running to-do list. `ops/` — kits (backups).
-8. `firebase/` — database rules.
+**Every session, in this order:** `AGENTS.md` (one screen) → `START_HERE.md` (first hour, cold start) →
+`ops/PROTOCOL.md` (how a session starts and ends, claims) → `ops/STATE.md` (what is true now) → last 10
+entries of `AGENT_LOG.md` → `ops/TODO.md` "Next up". Then `python3 ops/check.py` must print ALL GREEN.
+
+Reference, read when needed: `HANDOFF.md` (the manual) · `CHAINS_SYSTEM.md` (architecture, data model) ·
+`DESIGN.md` (screens) · `CHALLENGES.md` (trophies, challenges, titles) · `AUDIT-2026-10-24.md` (findings
+behind the TODO numbers; papers in `research/`) · `OPERATIONS.md` (release, rollback, backups, incidents) ·
+`BRAND.md` · `GLOSSARY.md` · `ops/HOWTO/` (one recipe per job) · `ops/CAPABILITIES.md` (what your setup
+can verify) · `ops/APPSTORE.md`, `ops/MONITORING.md` · `firebase/` (rules; v2 is the file to publish) ·
+`src/` (the app's module sources — the source of truth since v537) · `archive/` (old, don't use).
 
 Owner: Will (commissioner). Rules of the road: ship to `test.html` first, verify in a real browser, then
 `index.html`; log every deploy; keep words plain; nothing from UDisc is copied.
