@@ -3967,6 +3967,21 @@
       </div></Portal>
     );
   }
+  // v553 — save-state truth: what the cloud and this phone actually have (audit 3.2).
+  function SyncState() {
+    const [s, setS] = React.useState(() => (window.ChainsRounds && ChainsRounds.sync ? Object.assign({}, ChainsRounds.sync()) : null));
+    React.useEffect(() => { const on = (e) => setS(Object.assign({}, e.detail)); window.addEventListener("chains:sync", on); return () => window.removeEventListener("chains:sync", on); }, []);
+    if (!s) return null;
+    const online = typeof navigator === "undefined" || navigator.onLine !== false;
+    let txt, col = "var(--text-muted)";
+    if (s.localFail) { txt = "Not saved on this phone — storage is full"; col = "var(--score-over, #c23a33)"; }
+    else if (!online) { txt = "Offline — saved on this phone, syncs when you're back"; col = "var(--score-over, #c23a33)"; }
+    else if (s.failed > 0) { txt = "Not synced — " + s.failed + (s.failed === 1 ? " change" : " changes") + " refused; retries on your next tap"; col = "var(--score-over, #c23a33)"; }
+    else if (s.pending > 0) txt = "Saving…";
+    else if (s.lastOk) { txt = "Saved · synced"; col = "var(--score-under, #1a7a50)"; }
+    else txt = "Saved on this phone";
+    return <span style={{ color: col }}>{" · " + txt}</span>;
+  }
   function ScoreBoard({ draft, rounds, onDone, onBail, mobile }) {
     const course = draft.course || {};
     const [pars, setPars] = React.useState(() => (course.hole_pars && course.hole_pars.length) ? course.hole_pars.slice() : Array(course.holes || 18).fill(3));
@@ -4395,7 +4410,7 @@
           <button onClick={onBail} style={S.barBtn} aria-label="Save and exit"><Icons.ChevLeft size={18} /> Exit</button>
           <div style={{ flex: 1, minWidth: 0, textAlign: "center" }}>
             <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{course.name}</div>
-            <div style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)" }}>{headline}{group.length > 1 ? (() => { let lead = null; group.forEach((g) => { const tp = toParThru(g); if (lead == null || tp < lead.tp) lead = { name: g.name, tp }; }); return lead ? " · Lead " + __fn(lead.name) + " " + fmtPar(lead.tp) : ""; })() : ""}</div>
+            <div style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)" }}>{headline}{group.length > 1 ? (() => { let lead = null; group.forEach((g) => { const tp = toParThru(g); if (lead == null || tp < lead.tp) lead = { name: g.name, tp }; }); return lead ? " · Lead " + __fn(lead.name) + " " + fmtPar(lead.tp) : ""; })() : ""}<SyncState /></div>
           </div>
           <button onClick={() => setMenuOpen(true)} style={S.barBtn} aria-label="Round menu"><span style={{ fontSize: 22, lineHeight: 1 }}>☰</span></button>
         </div>
