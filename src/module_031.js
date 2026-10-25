@@ -88,7 +88,7 @@
     return me ? me.charAt(0).toUpperCase() + me.slice(1) : "Someone";
   }
   function _friendIds() { try { return (w.ChainsFriends && ChainsFriends.list ? ChainsFriends.list() : []).map(function (f) { return f.uid; }).filter(Boolean); } catch (e) { return []; } }
-  function _quiet(d, u) { try { return d.ref().update(u).then(function () { return true; }, function (e) { try { console.error("[ChainsRounds] write refused", Object.keys(u)[0], e && e.message); } catch (x) {} return false; }); } catch (e) { try { console.error("[ChainsRounds] bad write", Object.keys(u)[0], e && e.message); } catch (x) {} return Promise.resolve(false); } }
+  function _quiet(d, u) { try { return _track(d.ref().update(u)).then(function () { return true; }, function (e) { try { console.error("[ChainsRounds] write refused", Object.keys(u)[0], e && e.message); } catch (x) {} return false; }); } catch (e) { try { console.error("[ChainsRounds] bad write", Object.keys(u)[0], e && e.message); } catch (x) {} return Promise.resolve(false); } }
   // Shared-round paths (open to every signed-in phone) vs the owner-only mirror.
   function SR(id) { return "sharedRounds/" + id; }
   function _sharedOf(rec) {
@@ -97,18 +97,28 @@
   function _indexParticipants(u, id, participants, val) {
     Object.keys(participants || {}).forEach(function (k) { u["roundsByPlayer/" + k + "/" + id] = val; });
   }
+  // v553 — save-state truth (audit 3.2): every tracked cloud write moves a counter; the scoring screen
+  // reads ChainsRounds.sync() → { pending, failed, lastOk, lastFail, localFail } and listens to "chains:sync".
+  var _sync = { pending: 0, failed: 0, lastOk: 0, lastFail: 0, localFail: false };
+  function _syncEmit() { try { w.dispatchEvent(new CustomEvent("chains:sync", { detail: _sync })); } catch (e) {} }
+  function _track(p) {
+    if (!p || !p.then) return p;
+    _sync.pending++; _syncEmit();
+    return p.then(function (v) { _sync.pending = Math.max(0, _sync.pending - 1); _sync.lastOk = Date.now(); _sync.failed = 0; _syncEmit(); return v; }, function (e) { _sync.pending = Math.max(0, _sync.pending - 1); _sync.failed++; _sync.lastFail = Date.now(); _syncEmit(); throw e; });
+  }
+  function sync() { return _sync; }
   function _commit(d, u, failMsg) {
     try {
       var p = d.ref().update(u);
       if (!p || !p.then) return Promise.resolve(true);
-      return p.then(function () { return true; }).catch(function (e) { _failOnce(failMsg, e); return false; });
-    } catch (e) { _failOnce(failMsg, e); return Promise.resolve(false); }
+      return _track(p).then(function () { return true; }).catch(function (e) { _failOnce(failMsg, e); return false; });
+    } catch (e) { _failOnce(failMsg, e); _sync.failed++; _sync.lastFail = Date.now(); _syncEmit(); return Promise.resolve(false); }
   }
 
   // Local mirror so My Rounds works offline and survives a refresh mid-round.
   var LK = "chains_rounds_v1";
   function readLocal() { try { var o = JSON.parse(localStorage.getItem(LK) || "{}") || {}; Object.keys(o).forEach(function (k) { fixRound(o[k]); }); return o; } catch (e) { return {}; } }
-  function writeLocal(o) { try { localStorage.setItem(LK, JSON.stringify(o)); } catch (e) {} }
+  function writeLocal(o) { try { localStorage.setItem(LK, JSON.stringify(o)); if (_sync.localFail) { _sync.localFail = false; _syncEmit(); } return true; } catch (e) { try { console.error("[ChainsRounds] local save failed", e && e.message); } catch (x) {} _sync.localFail = true; _syncEmit(); return false; } }
   function putLocal(r) { var o = readLocal(); o[r.id] = r; writeLocal(o); }
 
   // Build the players map from a scoring group + per-key hole arrays. `totals` is a
@@ -1050,7 +1060,7 @@
     var us = {}; us[SR(id)] = Object.assign(_sharedOf(rec), { finishedBy: ownerKey }); _indexParticipants(us, id, rec.participants, true);
     return _commit(d, u).then(function () { return _commit(d, us); }).then(function () { try { _indexWrite(d, id, true); } catch (e) {} try { save(Object.assign({}, ctx, { id: id, status: "final" })); } catch (e) {} return id; });
   }
-  w.ChainsRounds = {
+  w.ChainsRounds = { sync: sync,
     importRound: importRound, courseTerritory: courseTerritory, allCourseStats: allCourseStats,
     available: function () { return !!whoami(); }, whoami: whoami, hideForMe: hideForMe, scorePatch: scorePatch, requestJoin: requestJoin, approveJoin: approveJoin, declineJoin: declineJoin, editFinalScore: editFinalScore, setPractice: setPractice, setNotes: setNotes,
     start: start, save: save, finalize: finalize, remove: remove, setCell: setCell, setPars: setPars, addPlayer: addPlayer, participantRounds: participantRounds, fetchRound: fetchRound, mergeShared: mergeShared, authUid: authUid, cheer: cheer, uncheer: uncheer, comment: comment, courseBoard: courseBoard, courseRanking: courseRanking,
