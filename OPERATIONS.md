@@ -34,7 +34,9 @@ them. Full database exports go only to the private repo.
 6. `build.py vNNN index.html "message"` — same version number. Never promote a version that was not seen
    on test.html first.
 7. **Log it the same session**: AGENT_LOG.md entry (what, why, where in the code), HANDOFF §9 current-state
-   line, ops/TODO.md ticks. A deploy without a log entry is incomplete.
+   line, ops/TODO.md ticks. A deploy without a log entry is incomplete. Every release entry ends with a
+   line starting `Compatibility:` that says either `additive` or what an older build would not understand
+   (for example, "Compatibility: older builds ignore the new field, nothing to migrate").
 8. Tell Will in one or two plain sentences what changed and what to try on his phone.
 
 Version numbers only go up. One version per build; if a build is redone, the number stays the same until it
@@ -47,8 +49,10 @@ is promoted.
 - To roll back: `build.py` is not needed. Fetch the previous version's `index.html` from the commit
   (`https://api.github.com/repos/Bonnaroo/chains-app/commits?path=index.html`), and PUT it back as
   `index.html` with a message "rollback to vNNN". Then update HANDOFF §9 and log the reason.
-- Data written by the rolled-back version stays in Firebase. Unknown fields are ignored by older versions,
-  so rolling the app back never needs a data rollback.
+- Data written by the rolled-back version stays in Firebase. This is safe only for **additive** changes
+  (new fields or nodes that older versions ignore). If a release changed the meaning or shape of existing
+  data, a rollback is not enough: read the release's "Compatibility:" line in AGENT_LOG.md and write the
+  data fix before or with the rollback. Check that line before rolling back.
 
 ## 4. Backups
 
