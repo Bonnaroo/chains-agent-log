@@ -1571,17 +1571,18 @@
           const rs = ((await (window.ChainsRounds && ChainsRounds.loadGroup ? ChainsRounds.loadGroup() : Promise.resolve([]))) || []).map(normalizeRound).filter((r) => r && r.status !== "open" && !r.practice);
           const nameOf = (k, r) => { const g = r && (r.group || []).find((x) => x && x.id === k); return k === me ? "You" : ((g && g.name) || (window.ChainsFriends && (ChainsFriends.profile(k) || {}).name) || String(k).charAt(0).toUpperCase() + String(k).slice(1)); };
           const first = (n) => String(n || "").split(" ")[0];
+          const shortName = (n) => String(n || "").replace(/ disc golf.*$/i, ""); // v556: "Otterburn", not "Otterburn Disc Golf Park", on every line
           // rounds finished (last 14 days)
           const cut = Date.now() - 14 * 86400000;
-          rs.forEach((r) => { const at = Date.parse(r.created_at || r.date || 0) || 0; if (at < cut) return; (r.group || []).forEach((g) => { if (!g || !r.scores || r.scores[g.id] == null || /^guest/.test(g.id)) return; out.push({ at, kind: "round", icon: "⛳", text: nameOf(g.id, r) + " finished " + (r.course_name || "a round") + " · " + fmtPar(r.scores[g.id]), r }); }); });
+          rs.forEach((r) => { const at = Date.parse(r.created_at || r.date || 0) || 0; if (at < cut) return; (r.group || []).forEach((g) => { if (!g || !r.scores || r.scores[g.id] == null || /^guest/.test(g.id)) return; out.push({ at, kind: "round", icon: "⛳", text: nameOf(g.id, r) + " finished " + shortName(r.course_name || "a round") + " · " + fmtPar(r.scores[g.id]), r }); }); });
           // aces
           try { (window.ChainsAces && ChainsAces.feed ? ChainsAces.feed() : []).forEach((a) => { if ((a.ts || 0) < Date.now() - 90 * 86400000) return; out.push({ at: a.ts || 0, kind: "ace", icon: "🎯", text: (a.who === me ? "You" : first(a.name)) + " hit an ACE" + (a.hole ? " on hole " + a.hole : "") + " at " + (a.course || "the course") }); }); } catch (e) {}
           // hot / not over the last 14 days (full rounds only, 2+ rounds)
           const by = {}; rs.forEach((r) => { const at = Date.parse(r.created_at || r.date || 0) || 0; if (at < cut) return; (r.group || []).forEach((g) => { if (!g || /^guest/.test(g.id) || !r.scores || r.scores[g.id] == null) return; (by[g.id] = by[g.id] || { n: 0, sum: 0, best: null, worst: null, name: nameOf(g.id, r), at: 0 }); const e = by[g.id]; e.n++; e.sum += r.scores[g.id]; e.best = e.best == null ? r.scores[g.id] : Math.min(e.best, r.scores[g.id]); e.worst = e.worst == null ? r.scores[g.id] : Math.max(e.worst, r.scores[g.id]); e.at = Math.max(e.at, at); }); });
           const ppl = Object.keys(by).map((k) => Object.assign({ key: k, avg: by[k].sum / by[k].n }, by[k])).filter((p) => p.n >= 2);
-          if (ppl.length) { const hot = ppl.slice().sort((a, b) => a.avg - b.avg)[0]; out.push({ at: hot.at, kind: "hot", icon: "🔥", text: (hot.key === me ? "You're" : first(hot.name) + " is") + " hot: averaging " + (hot.avg > 0 ? "+" : "") + (Math.round(hot.avg * 10) / 10) + " over " + hot.n + " rounds" }); if (ppl.length > 1) { const cold = ppl.slice().sort((a, b) => b.avg - a.avg)[0]; if (cold.key !== hot.key) out.push({ at: cold.at - 1, kind: "cold", icon: "🥶", text: (cold.key === me ? "You're" : first(cold.name) + " is") + " not: " + (cold.avg > 0 ? "+" : "") + (Math.round(cold.avg * 10) / 10) + " average lately" }); } }
+          if (ppl.length) { const hot = ppl.slice().sort((a, b) => a.avg - b.avg)[0]; out.push({ at: hot.at, kind: "hot", icon: "🔥", text: (hot.key === me ? "You're" : first(hot.name) + " is") + " hot: averaging " + (hot.avg > 0 ? "+" : "") + (Math.round(hot.avg * 10) / 10) + " over " + hot.n + " rounds" }); }
           // course records held
-          try { const all = await ChainsRounds.allCourseStats(); Object.keys(all).forEach((cid) => { const t = ChainsRounds.courseTerritory(all[cid], me); const nm = (all[cid][0] && all[cid][0].name) || cid; if (t.record) out.push({ at: Date.parse(t.record.bestDate || 0) || 0, kind: "record", icon: null, text: (t.record.key === me ? "You hold" : first(t.record.name) + " holds") + " the " + nm + " record · " + fmtPar(t.record.best) }); if (t.king && t.rounds >= 3) out.push({ at: Date.parse(t.king.last || 0) || 0, kind: "king", icon: "👑", text: (t.king.key === me ? "You're" : first(t.king.name) + " is") + " king of " + nm + " · " + t.king.rounds + " rounds" }); }); } catch (e) {}
+          try { const all = await ChainsRounds.allCourseStats(); Object.keys(all).forEach((cid) => { const t = ChainsRounds.courseTerritory(all[cid], me); const nm = shortName((all[cid][0] && all[cid][0].name) || cid); if (t.record) out.push({ at: Date.parse(t.record.bestDate || 0) || 0, kind: "record", icon: null, text: (t.record.key === me ? "You hold" : first(t.record.name) + " holds") + " the " + nm + " record · " + fmtPar(t.record.best) }); if (t.king && t.rounds >= 3) out.push({ at: Date.parse(t.king.last || 0) || 0, kind: "king", icon: "👑", text: (t.king.key === me ? "You've" : first(t.king.name) + " has") + " played " + nm + " the most · " + t.king.rounds + " rounds" }); }); } catch (e) {}
           out.sort((a, b) => b.at - a.at);
           if (alive) setItems(out.slice(0, 12));
         } catch (e) { if (alive) setItems([]); }
@@ -1590,12 +1591,17 @@
       const fn = () => load(); window.addEventListener("chains:rounds", fn); window.addEventListener("chains:friends", fn);
       return () => { alive = false; window.removeEventListener("chains:rounds", fn); window.removeEventListener("chains:friends", fn); };
     }, [me]);
+    const [more, setMore] = React.useState(false); // v556: six rows, then "Show more"
     if (!items || !items.length) return null;
+    const shown = more ? items : items.slice(0, 6);
     return (
       <div>
-        <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", marginBottom: 8 }}>What's happening</div>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+          <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)" }}>What's happening</span>
+          {items.length > 6 && <button onClick={() => setMore((v) => !v)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--ace-700)" }}>{more ? "Show less" : "Show more"}</button>}
+        </div>
         <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
-          {items.map((it, i) => (
+          {shown.map((it, i) => (
             <div key={i} onClick={it.r && onOpenRound ? () => onOpenRound(it.r) : undefined} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderTop: i ? "1px solid var(--border-subtle)" : "none", cursor: it.r ? "pointer" : "default", background: it.kind === "ace" ? "var(--gold-50, #fbf6e9)" : "transparent" }}>
               <span style={{ width: 26, display: "inline-flex", justifyContent: "center", color: it.kind === "ace" ? "var(--ace-600)" : "var(--fairway-600)" }}>{it.kind === "ace" ? <Icons.Star size={20} /> : <Icons.Disc size={20} />}</span>
               <span style={{ flex: 1, minWidth: 0, fontFamily: "var(--font-sans)", fontSize: 13.5, color: "var(--text-strong)", lineHeight: 1.35 }}>{it.text}</span>
@@ -1817,6 +1823,7 @@
       </div>
     );
   }
+  window.ChainsWhatsNew = WhatsNew; // v556: shown in the More sheet, no longer on Home
   function MyTerritory({ me, onOpenCourse }) {
     const [list, setList] = React.useState(null);
     React.useEffect(() => { let alive = true; if (!window.ChainsRounds || !ChainsRounds.allCourseStats || !me) return; ChainsRounds.allCourseStats().then((all) => { if (!alive) return; const out = []; Object.keys(all).forEach((cid) => { const t = ChainsRounds.courseTerritory(all[cid], me); if (!t.me) return; const name = (all[cid][0] && all[cid][0].name) || cid; out.push({ cid, name, t }); }); out.sort((a, b) => (b.t.isKing + b.t.hasRecord) - (a.t.isKing + a.t.hasRecord) || b.t.me.rounds - a.t.me.rounds); setList(out); }).catch(() => { if (alive) setList([]); }); return () => { alive = false; }; }, [me]);
@@ -2063,21 +2070,22 @@
     );
   }
   /* ---- v516 Home tiles + Me ---- */
-  function HomeTiles({ onPlay, onStats, onThrow, onMe, onCourses }) {
+  // v556 Home tiles: the one primary action and three doors (Go Throw · Leagues · Friends). Courses, Challenges, More are on the bar.
+  function HomeTiles({ onPlay, onThrow }) {
     const go = (v) => { try { window.dispatchEvent(new CustomEvent("chains:navigate", { detail: v })); } catch (e) {} };
     const T = [
-      [<Icons.Disc size={22} />, "Go Throw", "Rounds · stats · trophies", onThrow],
-      [<Icons.Trophy size={22} />, "Leagues", "Course leagues · season 2026", () => go("myleagues")],
+      [<Icons.Disc size={22} />, "Go Throw", onThrow],
+      [<Icons.Trophy size={22} />, "Leagues", () => go("myleagues")],
+      [<Icons.Users size={22} />, "Friends", () => go("friends")],
     ];
-    const tile = { display: "flex", alignItems: "center", gap: 12, padding: "14px", borderRadius: "var(--radius-lg)", border: "1px solid var(--border-subtle)", background: "var(--bg-elevated)", cursor: "pointer", textAlign: "left", minHeight: 68 };
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         <button onClick={onPlay} className="cw-press" style={{ height: 56, borderRadius: "var(--radius-lg)", border: "none", background: "var(--ace-700)", color: "#fff", cursor: "pointer", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", letterSpacing: ".05em", fontSize: 17, boxShadow: "0 8px 20px -8px var(--ace-500)" }}>Start a round</button>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-          {T.map(([ic, t, d, fn]) => (
-            <button key={t} onClick={fn} style={tile}>
-              <span style={{ width: 36, height: 36, borderRadius: 10, background: "var(--fairway-100)", color: "var(--fairway-700)", display: "inline-flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{ic}</span>
-              <span style={{ minWidth: 0 }}><span style={{ display: "block", fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: 14, color: "var(--text-strong)", lineHeight: 1.1 }}>{t}</span><span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 11.5, color: "var(--text-muted)", marginTop: 3, lineHeight: 1.3 }}>{d}</span></span>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+          {T.map(([ic, t, fn]) => (
+            <button key={t} onClick={fn} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 6, padding: "12px 4px 10px", minHeight: 68, borderRadius: "var(--radius-lg)", border: "1px solid var(--border-subtle)", background: "var(--bg-elevated)", cursor: "pointer" }}>
+              <span style={{ width: 36, height: 36, borderRadius: 10, background: "var(--fairway-100)", color: "var(--fairway-700)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{ic}</span>
+              <span style={{ fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--text-strong)" }}>{t}</span>
             </button>))}
         </div>
       </div>
@@ -2173,19 +2181,23 @@
               </span>
               <span style={{ fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-faint)", flexShrink: 0 }}>Change</span>
             </button>
+          ) : !picking ? (
+            <button onClick={() => setPicking(true)} style={rowS}>
+              {ic(Icons.Target)}
+              <span style={{ flex: 1, minWidth: 0 }}>
+                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)" }}>Pick a goal</span>
+                <span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)", marginTop: 2 }}>One thing from your own history. Only you see it.</span>
+              </span>
+              <span style={{ color: "var(--text-faint)", display: "inline-flex" }}><Icons.ChevRight size={18} /></span>
+            </button>
           ) : (
             <div style={{ borderTop: "1px solid var(--border-subtle)" }}>
               <div style={{ padding: "8px 14px 4px", fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}>Pick one thing from your own history. Only you see it.</div>
               {suggestions.length ? suggestions.map((g) => <button key={g.id} onClick={() => setGoal(g)} style={Object.assign({}, rowS, { padding: "9px 14px" })}>{ic(Icons.Target)}<span style={{ flex: 1, minWidth: 0 }}><span style={{ display: "block", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 14, color: "var(--text-strong)" }}>{g.title}</span><span style={{ display: "block", fontFamily: "var(--font-sans)", fontSize: 12, color: "var(--text-muted)" }}>{g.how}</span></span></button>)
                 : <div style={{ padding: "4px 14px 12px", fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-muted)" }}>Two full rounds at {chase ? chase.short : "your home course"} and the suggestions appear.</div>}
-              {goal && picking ? <button onClick={() => setPicking(false)} style={Object.assign({}, rowS, { padding: "9px 14px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontSize: 13 })}>Keep "{goal.title}"</button> : null}
+              <button onClick={() => setPicking(false)} style={Object.assign({}, rowS, { padding: "9px 14px", color: "var(--text-muted)", fontFamily: "var(--font-sans)", fontSize: 13 })}>{goal ? "Keep \"" + goal.title + "\"" : "Not now"}</button>
             </div>
           )}
-          <button onClick={onChallenges} style={rowS}>
-            {ic(Icons.Calendar)}
-            <span style={{ flex: 1, fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14.5, color: "var(--text-strong)" }}>This week's challenges</span>
-            <span style={{ color: "var(--text-faint)", display: "inline-flex" }}><Icons.ChevRight size={18} /></span>
-          </button>
         </div>
       </div>
     );
@@ -2602,6 +2614,17 @@
         </div>
       </React.Fragment>);
       if (sec === "trophies") return wrap("Trophy case", "Every ladder, with progress to the next tier", <BadgeShelf me={me} mobile={mobile} />);
+      if (sec === "friends") return wrap("Friends on the course", "Their rounds, head to head, the ace wall", <React.Fragment>
+        {crew && crew.length > 0 && (
+          <div>
+            <div style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 16, color: "var(--text-strong)", marginBottom: 10 }}>Your friends' rounds</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {crew.map((r) => <RoundRow key={r.id} r={r} me={me} onOpen={() => setDetail(r)} />)}
+            </div>
+          </div>
+        )}
+        <Rivalries me={me} mobile={mobile} /><AcesWall me={me} mobile={mobile} />
+      </React.Fragment>);
       if (sec === "rivals") return wrap("Rivalries & aces", "Head to head with your friends", <React.Fragment><Rivalries me={me} mobile={mobile} /><AcesWall me={me} mobile={mobile} /></React.Fragment>);
       if (sec === "crew") return wrap("Friends' rounds", "Rounds your friends played", <React.Fragment>
         {crew && crew.length > 0 && (
@@ -2686,55 +2709,22 @@
           </div>
         )}
         {lifetime.length > 0 && (() => {
-          const st = lifetimeStats(myRounds.filter((r) => !r.practice), me); // v487: practice rounds stay in history, out of stats
+          // v556: one flat row (rating · rounds · best · avg). The hero, tier and scoring mix live in My stats.
+          const st = lifetimeStats(lifetime, me); // v487: practice rounds stay in history, out of stats
+          const pr = playerRatingFor(myRounds, me);
           const cell = (label, val, color) => (
             <div style={{ flex: 1, textAlign: "center" }}>
-              <div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 21, color: color || "var(--text-strong)" }}>{val}</div>
-              <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--text-faint)", marginTop: 2 }}>{label}</div>
-            </div>
-          );
-          const chip = (label, n, color) => (
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", gap: 3, padding: "8px 4px", borderRadius: "var(--radius-sm)", background: "var(--bg-sunken)" }}>
-              <span style={{ width: 9, height: 9, borderRadius: "50%", background: color }} />
-              <span style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 15, color: "var(--text-strong)" }}>{n}</span>
-              <span style={{ fontFamily: "var(--font-sans)", fontSize: 9.5, color: "var(--text-faint)" }}>{label}</span>
+              <div style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 22, lineHeight: 1, color: color || "var(--text-strong)" }}>{val}</div>
+              <div style={{ fontFamily: "var(--font-sans)", fontSize: 11.5, color: "var(--text-muted)", marginTop: 5 }}>{label}</div>
             </div>
           );
           return (
-            <div>
-              <div style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".1em", fontSize: 11, color: "var(--text-muted)", marginBottom: 10 }}>Your game</div>
-              <Card pad={0}>
-                {(() => {
-                  const pr = playerRatingFor(myRounds, me);
-                  if (!pr) return null;
-                  const tier = window.ChainsRating.tier(pr.rating);
-                  return (
-                    <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", borderBottom: "1px solid var(--border-subtle)", background: "linear-gradient(100deg, var(--pine-700) 0%, var(--bg-ink-deep, #16221d) 100%)" }}>
-                      <div style={{ display: "flex", flexDirection: "column" }}>
-                        <span style={{ fontFamily: "var(--font-mono)", fontWeight: 800, fontSize: 30, color: "var(--bone-50)", lineHeight: 1 }}>{pr.rating}</span>
-                        <span style={{ fontFamily: "var(--font-display)", fontWeight: 600, textTransform: "uppercase", letterSpacing: ".06em", fontSize: 9.5, color: "var(--ace-400)", marginTop: 3 }}>Chains rating</span>
-                      </div>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <span style={{ display: "inline-block", fontFamily: "var(--font-display)", fontWeight: 700, textTransform: "uppercase", letterSpacing: ".04em", fontSize: 12, color: "var(--bone-50)", background: "rgba(255,255,255,.12)", borderRadius: "var(--radius-pill)", padding: "3px 11px" }}>{tier}</span>
-                        <div style={{ fontFamily: "var(--font-sans)", fontSize: 10.5, color: "var(--chain-300)", marginTop: 5 }}>Chains estimate · best {pr.counted} of last {Math.min(pr.n, 20)} {pr.n === 1 ? "round" : "rounds"} · not an official PDGA number</div>
-                      </div>
-                    </div>
-                  );
-                })()}
-                <div style={{ display: "flex", padding: "13px 10px", borderBottom: "1px solid var(--border-subtle)" }}>
-                  {cell("Rounds", st.rounds)}
-                  {cell("Best", st.best == null ? "—" : fmtPar(st.best), st.best != null && st.best < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)")}
-                  {cell("Avg", st.avg == null ? "—" : (st.avg > 0 ? "+" : "") + (Math.round(st.avg * 10) / 10), st.avg != null && st.avg < 0 ? "var(--score-under, #1a7a50)" : "var(--text-strong)")}
-                </div>
-                <div style={{ display: "flex", gap: 6, padding: "11px 12px" }}>
-                  {st.eagle > 0 && chip("Eagle+", st.eagle, "var(--ace-500, #2a6fdb)")}
-                  {chip("Birdie", st.birdie, "var(--score-under, #1a7a50)")}
-                  {chip("Par", st.par, "var(--text-faint)")}
-                  {chip("Bogey", st.bogey, "var(--score-over, #c23a33)")}
-                  {st.dbl > 0 && chip("Dbl+", st.dbl, "var(--clay-700, #8f2f1f)")}
-                </div>
-              </Card>
-            </div>
+            <button onClick={() => setShowStats(true)} aria-label="Your game. Opens My stats." style={{ display: "flex", width: "100%", background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", padding: "14px 6px", cursor: "pointer" }}>
+              {pr ? cell("Rating", pr.rating) : null}
+              {cell("Rounds", st.rounds)}
+              {cell("Best", st.best == null ? "—" : fmtPar(st.best), st.best != null && st.best < 0 ? "var(--score-under, #1a7a50)" : null)}
+              {cell("Avg", st.avg == null ? "—" : (st.avg > 0 ? "+" : "") + (Math.round(st.avg * 10) / 10), st.avg != null && st.avg < 0 ? "var(--score-under, #1a7a50)" : null)}
+            </button>
           );
         })()}
           <div style={{ background: "var(--bg-elevated)", border: "1px solid var(--border-subtle)", borderRadius: "var(--radius-lg)", overflow: "hidden" }}>
@@ -2742,8 +2732,7 @@
             {row(<Icons.TrendUp size={20} />, "My stats", "Averages, best rounds, trends", () => setShowStats(true))}
             {row(<Icons.Trophy size={20} />, "Trophy case", "Every ladder and what's next", () => setThrowSec("trophies"))}
             {row(<Icons.Flag size={20} />, "Titles you hold", "Holes and records with your name on them", () => setThrowSec("territory"))}
-            {row(<Icons.Users size={20} />, "Rivalries & aces", "Head to head · the ace wall", () => setThrowSec("rivals"))}
-            {crew && crew.length > 0 ? row(<Icons.Disc size={20} />, "Friends' rounds", crew.length + " recent", () => setThrowSec("crew")) : null}
+            {row(<Icons.Users size={20} />, "Friends on the course", crew && crew.length > 0 ? crew.length + (crew.length === 1 ? " recent round" : " recent rounds") + " · head to head · aces" : "Head to head · the ace wall", () => setThrowSec("friends"))}
           </div>
         </div>
       );
@@ -2758,11 +2747,10 @@
     const firstName = (myDisplayName(me) || "").split(" ")[0];
     return (
       <div className="gt-root" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {/* v488 greeting + this month */}
+        {/* v556 Home is a front door, not a dashboard (DESIGN §4, research §2): greeting · month · Start + 3 tiles · chase · last round · this week · feed */}
         <div style={{ padding: "4px 2px 0" }}>
           <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, textTransform: "uppercase", fontSize: mobile ? 26 : 30, lineHeight: 1, color: "var(--text-strong)" }}>{firstName ? "Happy discing, " + firstName + "!" : "Happy discing!"}{me ? <BadgeChip uid={me} size={30} /> : null}</div>
-          {(() => { try { const u = window.ChainsAuth && ChainsAuth.current && ChainsAuth.current(); const mm = me && window.ChainsEngine && ChainsEngine.member ? ChainsEngine.member(me) : null; if (!u) return null; return <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 6, fontFamily: "var(--font-sans)", fontSize: 12.5, color: "var(--text-muted)" }}><Avatar name={myDisplayName(me) || "You"} color={(mm && mm.disc) || "#E8590C"} size={22} />Signed in as <b style={{ color: "var(--text-strong)" }}>{myDisplayName(me)}</b>{u.username ? " · @" + u.username : ""}<button onClick={() => { try { window.dispatchEvent(new CustomEvent("chains:navigate", { detail: "settings" })); } catch (e) {} }} style={{ marginLeft: "auto", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 12.5, color: "var(--ace-700)" }}>Account</button></div>; } catch (e) { return null; } })()}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 10, marginBottom: 8 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 12, marginBottom: 8 }}>
             <span style={{ fontFamily: "var(--font-sans)", fontWeight: 700, fontSize: 14, color: "var(--text-strong)" }}>Your progress in {monthName}</span>
             {myRounds.length > 0 && <button onClick={() => setShowStats(true)} style={{ border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--ace-700)" }}>Show all</button>}
           </div>
@@ -2775,14 +2763,11 @@
             ))}
           </div>
         </div>
-        <HomeEverything onThrow={() => setStage("throw")} onStats={() => setShowStats(true)} onBag={() => setShowBag(true)} onCourses={() => setStage("browse")} onMe={() => setStage("me")} />
+        <HomeTiles onPlay={beginRound} onThrow={() => setStage("throw")} />
         <ChaseCard rounds={rounds} me={me} onChallenges={() => { try { window.dispatchEvent(new CustomEvent("chains:navigate", { detail: "takeover" })); } catch (e) {} }} onCourse={(c) => { setViewCourse(c); setStage("courseview"); }} />
         <LastRound r={myRounds[0] || null} me={me} onOpen={() => myRounds[0] && setDetail(myRounds[0])} />
-        <RecentTrophies me={me} onStats={() => setShowStats(true)} />
         <WeeklyChallenges rounds={rounds} me={me} />
-        <WhatsNew />
         <ActivityFeed me={me} onOpenRound={(r) => setDetail(r)} />
-        <div style={{ textAlign: "center", padding: "4px 0 8px" }}><button onClick={() => setStage("throw")} style={{ background: "transparent", border: "none", cursor: "pointer", fontFamily: "var(--font-sans)", fontWeight: 600, fontSize: 13, color: "var(--fairway-700)" }}>All rounds, stats & trophies →</button></div>
       </div>
     );
   }
