@@ -1961,3 +1961,12 @@ featured badge cleared for him to pick).
 - Note for whoever picks up: item 1 (scoring Retry) is `[full]` — Hermes, if limited, should take 2 or 4.
 - Honest limit: a tier is self-declared; this protects against mistakes, not malice.
 - No app change. Live stays v555.
+
+## 2026-10-25 — TODO 5: OPERATIONS rollback wording (docs only; agent: claude-haiku:limited)
+
+- Why: audit 3.12. "Rolling back never needs a data rollback" was true only for additive changes.
+- Where: `OPERATIONS.md` §3 (rollback is safe only for additive changes; read the release's Compatibility
+  line first) and §2 step 7 (every release entry ends with a `Compatibility:` line).
+- How verified: read both sections back after the edit; `ops/check.py` run below. No app build.
+- Compatibility: docs only, nothing in the app or data changed.
+- Live stays v555.
