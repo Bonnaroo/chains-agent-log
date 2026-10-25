@@ -394,7 +394,19 @@
   }
   // v504 TERRITORY: who owns a course. King = most full rounds (tie → better average);
   // Record = lowest full-round score (tie → earlier date). Everyone's data, one read.
-  function courseTerritory(board, me, fallbackPars) {
+  // v554 — count titles: a tie keeps the incumbent (audit 1.2). `holders` = territory/{course}/crowns, when known.
+  // Current holders for a course (territory/{course}/crowns), cached per session so readers agree with the sync.
+  var _crownsCache = {};
+  function crownsFor(courseId) {
+    var d = db(), cid = String(courseId).replace(/[.#$\[\]\/]/g, "_");
+    if (!d) return Promise.resolve({});
+    return d.ref("territory/" + cid + "/crowns").get().then(function (s) { _crownsCache[cid] = s.val() || {}; return _crownsCache[cid]; }, function () { return _crownsCache[cid] || {}; });
+  }
+  function crownsCached(courseId) { return _crownsCache[String(courseId).replace(/[.#$\[\]\/]/g, "_")] || null; }
+  function courseTerritory(board, me, fallbackPars, holders) {
+    holders = holders || {};
+    var inc = function (id) { return holders[id] && holders[id].key; };
+    var keepInc = function (id, a, b) { var h = inc(id); return h ? ((b.key === h) - (a.key === h)) : 0; };
     var by = {};
     (board || []).forEach(function (r) {
       Object.keys(r.players || {}).forEach(function (k) {
@@ -407,7 +419,7 @@
       });
     });
     var list = Object.keys(by).map(function (k) { var e = by[k]; e.avg = e.fullRounds ? e.sum / e.fullRounds : null; return e; });
-    var king = list.slice().sort(function (a, b) { return b.rounds - a.rounds || a.avg - b.avg || String(a.last || "").localeCompare(String(b.last || "")); })[0] || null;
+    var king = list.slice().sort(function (a, b) { return b.rounds - a.rounds || keepInc("king", a, b) || (a.avg == null ? 99 : a.avg) - (b.avg == null ? 99 : b.avg) || String(a.last || "").localeCompare(String(b.last || "")); })[0] || null;
     var record = list.filter(function (e) { return e.best != null; }).sort(function (a, b) { return a.best - b.best || String(a.bestDate || "").localeCompare(String(b.bestDate || "")); })[0] || null;
     var birdieKing = list.filter(function (e) { return e.birdies > 0; }).sort(function (a, b) { return b.birdies - a.birdies || a.avg - b.avg; })[0] || null;
     var steady = list.filter(function (e) { return e.fullRounds >= 3; }).sort(function (a, b) { return a.avg - b.avg || b.fullRounds - a.fullRounds; })[0] || null;
@@ -427,8 +439,8 @@
       });
     });
     var champion = Object.keys(season).map(function (k) { return season[k]; }).filter(function (e) { return e.best != null; }).sort(function (a, b) { return a.best - b.best || String(a.bestDate).localeCompare(String(b.bestDate)); })[0] || null;
-    var regular = Object.keys(days).map(function (k) { var e = days[k]; e.days = Object.keys(e.set).length; return e; }).filter(function (e) { return e.days >= 3; }).sort(function (a, b) { return b.days - a.days || a.name.localeCompare(b.name); })[0] || null;
-    var birdieLeader = Object.keys(holesBird).map(function (k) { var e = holesBird[k]; e.holes = Object.keys(e.set).length; return e; }).filter(function (e) { return e.holes > 0; }).sort(function (a, b) { return b.holes - a.holes; })[0] || null;
+    var regular = Object.keys(days).map(function (k) { var e = days[k]; e.days = Object.keys(e.set).length; return e; }).filter(function (e) { return e.days >= 3; }).sort(function (a, b) { return b.days - a.days || keepInc("regular", a, b) || a.name.localeCompare(b.name); })[0] || null;
+    var birdieLeader = Object.keys(holesBird).map(function (k) { var e = holesBird[k]; e.holes = Object.keys(e.set).length; return e; }).filter(function (e) { return e.holes > 0; }).sort(function (a, b) { return b.holes - a.holes || keepInc("birdieLeader", a, b) || a.name.localeCompare(b.name); })[0] || null;
     // most improved: 10+ full rounds here; first five average minus last five average (strokes to par)
     var seq = {};
     (board || []).slice().sort(function (a, b) { return String(a.date || "").localeCompare(String(b.date || "")); }).forEach(function (r) {
@@ -526,9 +538,10 @@
       // persisted at territory/{course}/crowns/{id}; a lost crown becomes a dated line in
       // territory/{course}/heldLog/{player}, and the previous holder is told.
       var catC = null; try { var cat = (w.ChainsCatalog && ChainsCatalog.get && ChainsCatalog.get()) || w.CATALOG || []; catC = cat.find(function (c) { return c && String(c.id) === String(courseId); }) || null; } catch (e) {}
-      var lead = courseTerritory(board, me, catC ? (catC.hole_pars || catC.pars || null) : null); var short = nm.replace(/ disc golf.*$/i, "");
-      var crowns = { record: [lead.record, "Course record"], champion: [lead.champion, "Course champion " + lead.year], regular: [lead.regular, "Local regular"], birdieLeader: [lead.birdieLeader, "Birdie leader " + lead.year], improved: [lead.improved, "Most improved"] };
+      var short = nm.replace(/ disc golf.*$/i, "");
       return d.ref("territory/" + cid + "/crowns").get().then(function (cs) { return cs.val() || {}; }, function () { return {}; }).then(function (prevC) {
+        var lead = courseTerritory(board, me, catC ? (catC.hole_pars || catC.pars || null) : null, prevC);   // v554: incumbents win ties
+        var crowns = { record: [lead.record, "Course record"], king: [lead.king, "Most rounds"], champion: [lead.champion, "Course champion " + lead.year], regular: [lead.regular, "Local regular"], birdieLeader: [lead.birdieLeader, "Birdie leader " + lead.year], improved: [lead.improved, "Most improved"] };
         var now = Date.now(); var crownsTaken = [], crownsLost = [], crownsHeld = [];
         Object.keys(crowns).forEach(function (id) {
           var who = crowns[id][0], title = crowns[id][1], was = prevC[id];
@@ -537,6 +550,7 @@
           if (who.key === me) { if (changed) crownsTaken.push({ id: id, title: title, from: was && was.key !== me ? was.name : null }); else crownsHeld.push({ id: id, title: title }); }
           if (changed && was && was.key === me) crownsLost.push({ id: id, title: title, to: who.name });
           upd["territory/" + cid + "/crowns/" + id] = { key: who.key, name: who.name, title: title, since: changed ? now : (was.since || now) };
+          (_crownsCache[cid] = _crownsCache[cid] || {})[id] = upd["territory/" + cid + "/crowns/" + id];
           if (changed && was && was.key) {
             upd["territory/" + cid + "/heldLog/" + was.key + "/" + id + "-" + (was.since || now)] = { id: id, title: was.title || title, course: short, from: was.since || now, to: now, lostTo: who.name };
             if (who.key === me) _notify([was.key], _myName() + " took " + title.toLowerCase() + " at " + short, "You held it since " + new Date(was.since || now).toLocaleDateString("en-US", { month: "short", day: "numeric" }) + ". It's there to take back.", "play");
@@ -1060,7 +1074,7 @@
     var us = {}; us[SR(id)] = Object.assign(_sharedOf(rec), { finishedBy: ownerKey }); _indexParticipants(us, id, rec.participants, true);
     return _commit(d, u).then(function () { return _commit(d, us); }).then(function () { try { _indexWrite(d, id, true); } catch (e) {} try { save(Object.assign({}, ctx, { id: id, status: "final" })); } catch (e) {} return id; });
   }
-  w.ChainsRounds = { sync: sync,
+  w.ChainsRounds = { sync: sync, crownsFor: crownsFor, crownsCached: crownsCached,
     importRound: importRound, courseTerritory: courseTerritory, allCourseStats: allCourseStats,
     available: function () { return !!whoami(); }, whoami: whoami, hideForMe: hideForMe, scorePatch: scorePatch, requestJoin: requestJoin, approveJoin: approveJoin, declineJoin: declineJoin, editFinalScore: editFinalScore, setPractice: setPractice, setNotes: setNotes,
     start: start, save: save, finalize: finalize, remove: remove, setCell: setCell, setPars: setPars, addPlayer: addPlayer, participantRounds: participantRounds, fetchRound: fetchRound, mergeShared: mergeShared, authUid: authUid, cheer: cheer, uncheer: uncheer, comment: comment, courseBoard: courseBoard, courseRanking: courseRanking,
