@@ -1911,3 +1911,24 @@ featured badge cleared for him to pick).
 - `ops/build.py` in GitHub now includes module 12 (the write-logging module) in its build set.
 - State at hand-off: live **v554**; no open test records; Will's title/goal untouched (goal unset, Otterburn
   favourited); nothing half-built in `src/`.
+
+## 2026-10-25 — Multi-AI operating system in the repo (Will: any model must be able to take over cold)
+
+- Agent: claude-cowork. Docs only; no app change.
+- **AGENTS.md / CLAUDE.md** at the root of all four repos (the names ChatGPT/Codex, Cursor, Hermes and
+  Claude tools read by default) → "read START_HERE, follow PROTOCOL, read STATE, take the next TODO item".
+- **ops/PROTOCOL.md**: session start (identify, read, rebuild, `check.py`, claim, say hello) · work (one
+  item, verify by what you have) · session end (push src, log, HANDOFF line, TODO, STATE, `check.py`) ·
+  overlap rules (one claim per agent, 24 h staleness, versions serialise builds, git history as tie-breaker)
+  · what to do if things are broken on arrival.
+- **ops/STATE.md** (live board: version, in flight, blocked on Will, last sessions, open risks),
+  **ops/CAPABILITIES.md** (what each AI setup can verify and the fallback: Will tests test.html on his
+  phone), **GLOSSARY.md**, **ops/HOWTO/** (ship a build, edit safely, verify with/without browser, read
+  Firebase, clean test data, add a trophy, add a node, rollback, update docs).
+- **ops/check.py**: one command — rebuilds the live version from `src/` + the live file and compares
+  md5 (COLD START OK), esbuild + tdz on all 18 build-set modules (STATIC OK), HANDOFF/STATE/AGENT_LOG
+  agree with the live version and lists claims (DOCS OK). Ran green at the end of this session.
+- September's "company of agents" files (PROGRESS.md, ROADMAP.md, build_state.py) moved to
+  `archive/sept-2026-agent-company/` so they can't be mistaken for the current process.
+- Hermes (another AI Will is bringing in) has read the pack and intends to claim TODO "Next up" #1. This
+  agent makes no further app changes this session to avoid overlap.
