@@ -463,6 +463,7 @@
                 })}
               </div>
             </div>); })}
+          {window.ChainsWhatsNew ? (function () { const WN = window.ChainsWhatsNew; return <div style={{ marginBottom: 10 }}><WN /></div>; })() : null}
           <button onClick={() => { onClose(); if (window.ChainsConfirm && window.ChainsAuth) ChainsConfirm.show({ title: "Sign out of Chains?", confirmLabel: "Sign out" }).then((ok) => { if (ok) ChainsAuth.signOut(); }); }} style={{ width: "100%", padding: "12px", border: "none", background: "transparent", cursor: "pointer", fontFamily: "var(--font-sans)", fontSize: 13, color: "var(--text-faint)" }}>Sign out</button>
         </div>
       </div>
