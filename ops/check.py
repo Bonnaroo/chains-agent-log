@@ -21,8 +21,10 @@ except Exception as e: fail("cold start build failed: " + str(e)[:200])
 try:
     mods = re.search(r"mods=\{([^}]*)\}", open(W + "/build.py").read()).group(1)
     files = re.findall(r"'(module_\d+\.js)'", mods); bad = []
+    # Windows: .bin/esbuild is a shell script, so run the package's JS entry through node instead
+    esb = ["node", W + "/node_modules/esbuild/bin/esbuild"] if os.name == "nt" else [W + "/node_modules/.bin/esbuild"]
     for f in files:
-        c = subprocess.run([W + "/node_modules/.bin/esbuild", W + "/mods/" + f, "--loader:.js=jsx", "--target=es2018", "--log-level=error"], capture_output=True, text=True)
+        c = subprocess.run(esb + [W + "/mods/" + f, "--loader:.js=jsx", "--target=es2018", "--log-level=error"], capture_output=True, text=True)
         if c.returncode: bad.append(f + " (syntax)"); continue
         open("/tmp/_c.js", "w").write(c.stdout)
         t = subprocess.run(["node", W + "/tdz.js", "/tmp/_c.js"], capture_output=True, text=True).stdout.strip()
