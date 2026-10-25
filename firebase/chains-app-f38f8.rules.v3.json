@@ -1,0 +1,270 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$uid": {
+        ".read": "auth != null && ($uid === auth.uid || root.child('admins').child(auth.uid).val() === true)",
+        ".write": "auth != null && $uid === auth.uid"
+      }
+    },
+    "admins": {
+      "$uid": {
+        ".read": "auth != null && $uid === auth.uid",
+        ".write": false
+      }
+    },
+    "config": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    },
+    "usernames": {
+      ".read": "auth != null",
+      "$username": {
+        ".write": "auth != null && ((!newData.exists() && data.child('uid').val() === auth.uid) || (newData.child('uid').val() === auth.uid && (!data.exists() || data.child('uid').val() === auth.uid)))"
+      }
+    },
+    "friendCodes": {
+      "$code": {
+        ".read": "auth != null",
+        ".write": "auth != null && (!data.exists() || data.val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.val() === root.child('users').child(auth.uid).child('username').val())"
+      }
+    },
+    "friends": {
+      "$key": {
+        ".read": "auth != null",
+        "$other": {
+          ".write": "auth != null && (($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val()) || (($other === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $other === root.child('users').child(auth.uid).child('profile').child('username').val() || $other === root.child('users').child(auth.uid).child('username').val()) && root.child('friendRequests').child($key).child($other).exists()))"
+        }
+      }
+    },
+    "friendRequests": {
+      "$to": {
+        ".read": "auth != null && ($to === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $to === root.child('users').child(auth.uid).child('profile').child('username').val() || $to === root.child('users').child(auth.uid).child('username').val())",
+        "$from": {
+          ".read": "auth != null",
+          ".write": "auth != null && ($from === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $from === root.child('users').child(auth.uid).child('profile').child('username').val() || $from === root.child('users').child(auth.uid).child('username').val() || $to === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $to === root.child('users').child(auth.uid).child('profile').child('username').val() || $to === root.child('users').child(auth.uid).child('username').val())"
+        }
+      }
+    },
+    "playRounds": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('owner').val() === auth.uid) || data.child('owner').val() === auth.uid)"
+      }
+    },
+    "liveRounds": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && (newData.child('owner').val() === auth.uid || !newData.exists())) || data.child('owner').val() === auth.uid || root.child('playRounds').child($id).child('owner').val() === auth.uid)"
+      }
+    },
+    "sharedRounds": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('owner').val() === auth.uid) || data.child('owner').val() === auth.uid || (data.child('participants').child(root.child('users').child(auth.uid).child('profile').child('memberId').val()).exists() || data.child('participants').child(root.child('users').child(auth.uid).child('profile').child('username').val()).exists() || data.child('participants').child(root.child('users').child(auth.uid).child('username').val()).exists()))"
+      }
+    },
+    "roundsByPlayer": {
+      ".read": "auth != null",
+      "$key": {
+        "$id": {
+          ".write": "auth != null"
+        }
+      }
+    },
+    "courseStats": {
+      ".read": "auth != null",
+      "$course": {
+        "$id": {
+          ".write": "auth != null && (!data.exists() || (data.child('ownerKey').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.child('players').child(root.child('users').child(auth.uid).child('profile').child('memberId').val()).exists() || data.child('ownerKey').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.child('players').child(root.child('users').child(auth.uid).child('profile').child('username').val()).exists() || data.child('ownerKey').val() === root.child('users').child(auth.uid).child('username').val() || data.child('players').child(root.child('users').child(auth.uid).child('username').val()).exists()))",
+          ".validate": "!newData.exists() || newData.child('id').val() === $id"
+        }
+      }
+    },
+    "sharedBags": {
+      ".read": "auth != null",
+      "$key": {
+        ".write": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())"
+      }
+    },
+    "leagues": {
+      ".read": "auth != null",
+      "$leagueId": {
+        ".write": "auth != null && (!data.exists() || data.child('commissioner').val() === auth.uid || root.child('admins').child(auth.uid).val() === true)",
+        "members": {
+          "$uid": {
+            ".write": "auth != null && ($uid === auth.uid || data.parent().parent().child('commissioner').val() === auth.uid)"
+          }
+        }
+      }
+    },
+    "joinCodes": {
+      ".read": "auth != null",
+      "$code": {
+        ".write": "auth != null && (!data.exists() || root.child('leagues').child(data.val()).child('commissioner').val() === auth.uid)"
+      }
+    },
+    "leagueCodes": {
+      ".read": "auth != null",
+      "$code": {
+        ".write": "auth != null && (!data.exists() || root.child('leagues').child(data.val()).child('commissioner').val() === auth.uid)"
+      }
+    },
+    "bugReports": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      "$id": {
+        ".write": "auth != null && !data.exists()"
+      }
+    },
+    "courseGeo": {
+      ".read": "auth != null",
+      "$course": {
+        "holes": {
+          "$n": {
+            "tee": {
+              ".write": "auth != null"
+            },
+            "basket": {
+              ".write": "auth != null"
+            }
+          }
+        }
+      }
+    },
+    "messages": {
+      "$tid": {
+        ".read": "auth != null && ($tid.beginsWith(root.child('users').child(auth.uid).child('profile').child('memberId').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('profile').child('memberId').val()) || $tid.beginsWith(root.child('users').child(auth.uid).child('profile').child('username').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('profile').child('username').val()) || $tid.beginsWith(root.child('users').child(auth.uid).child('username').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('username').val()))",
+        ".write": "auth != null && ($tid.beginsWith(root.child('users').child(auth.uid).child('profile').child('memberId').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('profile').child('memberId').val()) || $tid.beginsWith(root.child('users').child(auth.uid).child('profile').child('username').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('profile').child('username').val()) || $tid.beginsWith(root.child('users').child(auth.uid).child('username').val() + '~') || $tid.endsWith('~' + root.child('users').child(auth.uid).child('username').val()))"
+      }
+    },
+    "threads": {
+      "$key": {
+        ".read": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())",
+        "$other": {
+          ".write": "auth != null && (($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val()) || ($other === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $other === root.child('users').child(auth.uid).child('profile').child('username').val() || $other === root.child('users').child(auth.uid).child('username').val()))"
+        }
+      }
+    },
+    "courseCommunity": {
+      ".read": "auth != null",
+      "$course": {
+        "ratings": {
+          "$key": {
+            ".write": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())"
+          }
+        },
+        "notes": {
+          "$id": {
+            ".write": "auth != null && (!data.exists() ? (newData.child('by').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || newData.child('by').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || newData.child('by').val() === root.child('users').child(auth.uid).child('username').val()) : (data.child('by').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.child('by').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.child('by').val() === root.child('users').child(auth.uid).child('username').val()))"
+          }
+        }
+      }
+    },
+    "passwordResetRequests": {
+      ".read": false,
+      "$id": {
+        ".write": "!data.exists() && newData.hasChildren(['username','email','requestedAt']) && newData.child('status').val() === 'pending'"
+      }
+    },
+    "admin": {
+      ".read": "auth != null && root.child('admins').child(auth.uid).val() === true",
+      ".write": "auth != null && root.child('admins').child(auth.uid).val() === true"
+    },
+    "courseLeagues": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('owner').val() === auth.uid) || data.child('owner').val() === auth.uid)",
+        "members": {
+          "$key": {
+            ".write": "auth != null && (data.parent().parent().child('owner').val() === auth.uid || ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val()) || (newData.exists() && data.parent().parent().child('members').child(root.child('users').child(auth.uid).child('profile').child('memberId').val()).exists()))"
+          }
+        }
+      }
+    },
+    "courseLeagueCodes": {
+      ".read": "auth != null",
+      "$code": {
+        ".write": "auth != null && (!data.exists() || root.child('courseLeagues').child(data.val()).child('owner').val() === auth.uid)"
+      }
+    },
+    "territory": {
+      ".read": "auth != null",
+      "$course": {
+        ".write": "auth != null && newData.exists()"
+      }
+    },
+    "territoryLog": {
+      ".read": "auth != null",
+      "$month": {
+        "$id": {
+          ".write": "auth != null && !data.exists()"
+        }
+      }
+    },
+    "lostFound": {
+      ".read": "auth != null",
+      "$course": {
+        "$id": {
+          ".write": "auth != null && (!data.exists() ? (newData.child('by').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || newData.child('by').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || newData.child('by').val() === root.child('users').child(auth.uid).child('username').val()) : (data.child('by').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.child('by').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.child('by').val() === root.child('users').child(auth.uid).child('username').val()))"
+        }
+      }
+    },
+    "crews": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && (!data.exists() || (data.child('owner').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.child('owner').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.child('owner').val() === root.child('users').child(auth.uid).child('username').val()))",
+        "members": {
+          "$key": {
+            ".write": "auth != null && (($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val()) || (data.parent().parent().child('owner').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.parent().parent().child('owner').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.parent().parent().child('owner').val() === root.child('users').child(auth.uid).child('username').val()))"
+          }
+        }
+      }
+    },
+    "crewByUser": {
+      ".read": "auth != null",
+      "$key": {
+        ".write": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())"
+      }
+    },
+    "crewCodes": {
+      ".read": "auth != null",
+      "$code": {
+        ".write": "auth != null && !data.exists()"
+      }
+    },
+    "courseFirsts": {
+      ".read": "auth != null",
+      "$course": {
+        "$id": {
+          ".write": "auth != null && !data.exists()"
+        }
+      }
+    },
+    "weekly": {
+      ".read": "auth != null",
+      "$week": {
+        "$key": {
+          ".write": "auth != null && ($key === root.child('users').child(auth.uid).child('profile').child('memberId').val() || $key === root.child('users').child(auth.uid).child('profile').child('username').val() || $key === root.child('users').child(auth.uid).child('username').val())"
+        }
+      }
+    },
+    "playerCourses": {
+      ".read": "auth != null",
+      "$id": {
+        ".write": "auth != null && (!data.exists() || data.child('addedUid').val() === auth.uid)",
+        ".validate": "newData.hasChildren(['name','holes','hole_pars','addedUid'])"
+      }
+    },
+    "callouts": {
+      ".read": "auth != null",
+      ".indexOn": [
+        "week"
+      ],
+      "$id": {
+        ".write": "auth != null && ((!data.exists() && newData.child('status').val() === 'open' && (newData.child('from').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || newData.child('from').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || newData.child('from').val() === root.child('users').child(auth.uid).child('username').val()) && newData.child('to').val() !== newData.child('from').val()) || (data.exists() && (data.child('from').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.child('to').val() === root.child('users').child(auth.uid).child('profile').child('memberId').val() || data.child('from').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.child('to').val() === root.child('users').child(auth.uid).child('profile').child('username').val() || data.child('from').val() === root.child('users').child(auth.uid).child('username').val() || data.child('to').val() === root.child('users').child(auth.uid).child('username').val()) && (!newData.exists() || (newData.child('from').val() === data.child('from').val() && newData.child('to').val() === data.child('to').val() && newData.child('week').val() === data.child('week').val()))))"
+      }
+    }
+  },
+  "_about": "v3 draft 2026-10-25 (claude-cowork) from GPT's read-only review. NOT PUBLISHED. See ops/RULES-v3-NOTES.md for what changed, what it does not protect, and the two-account test that must pass first."
+}
