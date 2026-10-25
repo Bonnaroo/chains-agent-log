@@ -9,7 +9,7 @@ Update at every session start and end. Keep it short. Dates are YYYY-MM-DD.
 - Automation running: chains-dgpt-data workflows (DGPT collect, daily rounds backup, discs, OSM geo, course pipeline Sundays)
 
 ## In flight
-- (nobody) — no item claimed
+- claude-cowork:full, 2026-10-25 — TODO 0 (declutter Home + Go Throw), building to test.html as v556
 
 ## Blocked on Will
 - publish rules v2 · test account `chainstest` · private `chains-backups` repo + bot login + secrets · UptimeRobot/Sentry (ops/MONITORING.md) · Run workflow once on "Course data pipeline" · imported-rounds policy (audit 1.6)
