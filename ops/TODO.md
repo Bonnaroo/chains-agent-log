@@ -19,7 +19,13 @@ Tags: `[full]` = full-tier agents only (touches protected modules); `[any]` = an
 10. [ ] `todo` [full] **Groups next**: group challenge of the month with a reward line; group vs group at a course (later: chat). Done = card on Friends shows the month challenge and progress.
 11. [ ] `later` Everything in "From the 2026-10-24 audit" marked P3, then the sections below.
 
-**Blocked on Will (ask once, with steps, then move on):** publish rules v2 · create test account `chainstest` · private `chains-backups` repo + bot login + secrets · UptimeRobot + Sentry (ops/MONITORING.md) · click Run workflow on "Course data pipeline" · licence emails (chains-dgpt-data/pipeline/SOURCES.md). When the test account exists: run the rules allowed/denied matrix, the two-account flows (cardmate finish, friend request, DM, league invite, call-out, title change), and account deletion end-to-end; log results.
+**Security (from GPT's read-only review, ops/reviews/2026-10-25-gpt-rules-v2-and-restore-drill.md):**
+- [x] `done 2026-10-25` Rules v3 draft: sharedRounds create as owner · courseStats change/delete only by owner or a player on the card · territory can't be wiped · callouts create as yourself, parties immutable · usernames uid immutable. Unpublished.
+- [ ] `will` Create `chainstest`, then an AI runs the six-row matrix in RULES-v3-NOTES §3 and logs it; then Will publishes v3.
+- [ ] `will` Restore drill (RULES-v3-NOTES §4): needs the private `chains-backups` repo **and** a separate Firebase test project (console → Add project, e.g. `chains-restore-test`). Then an AI runs it and logs pass/fail with hashes.
+- [ ] `later` Server-side derivation of titles, weekly standings, points, call-out winners, firsts (Cloud Functions; needs the Blaze plan — Will decides). Until then those values are client-computed and rules are containment only (RULES-v3-NOTES §2).
+
+**Blocked on Will (ask once, with steps, then move on):** publish rules **v3** (draft + test matrix in ops/RULES-v3-NOTES.md; needs the test account first) · create test account `chainstest` · private `chains-backups` repo + bot login + secrets · UptimeRobot + Sentry (ops/MONITORING.md) · click Run workflow on "Course data pipeline" · licence emails (chains-dgpt-data/pipeline/SOURCES.md). When the test account exists: run the rules allowed/denied matrix, the two-account flows (cardmate finish, friend request, DM, league invite, call-out, title change), and account deletion end-to-end; log results.
 
 ## From the 2026-10-24 audit (AUDIT-2026-10-24.md — numbers refer to it)
 - [x] `done v552` P1 2.1 Contrast tokens (light themes); `todo` re-measure the dark themes and the hero/ink panels
