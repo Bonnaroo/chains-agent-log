@@ -4,6 +4,7 @@ Update at every session start and end. Keep it short. Dates are YYYY-MM-DD.
 
 ## Live
 - index.html: **v554** (2026-10-25) · test.html: v554
+- Staging: free
 - Database: Firebase `chains-app-f38f8` (rules **v1 deployed**, v2 file written but unpublished)
 - Automation running: chains-dgpt-data workflows (DGPT collect, daily rounds backup, discs, OSM geo, course pipeline Sundays)
 
