@@ -42,7 +42,7 @@ The sandbox is wiped between sessions. The GitHub token is in Will's `Desktop\DG
 
 ```bash
 mkdir -p /tmp/chains/mods /tmp/chains/ops && cd /tmp/chains
-echo "<your-agent-name>" > agent        # e.g. claude-code, codex-cli, hermes-local — every push is attributed to it
+echo "<your-agent-name>:<tier>" > agent   # tier = full (Claude Code, Codex CLI, GPT-class) or limited (local/small models); see PROTOCOL §F
 # token: the file has trailing spaces/newlines — strip them (on Will's PC it is Desktop\DGFT Token.txt)
 tr -d '\r\n ' < "/path/to/DGFT Token.txt" > tok
 T=$(cat tok); AL="https://api.github.com/repos/Bonnaroo/chains-agent-log/contents"
