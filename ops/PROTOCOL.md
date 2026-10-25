@@ -36,12 +36,18 @@ didn't happen.
 5. **ops/STATE.md**: version, "In flight" cleared or updated, "Last sessions" line added, blocked list current.
 6. Run `python3 ops/check.py` once more. Tell Will: what shipped, what to try, what you need from him.
 
-## D. If two AIs overlap
+## D. If two AIs overlap (the build enforces most of this)
+- You must be named: `/tmp/chains/agent` holds your agent name; every commit message carries it.
 - Claims are per TODO item; one item per agent at a time. A claim older than 24 h is stale and may be taken
   over — note the takeover in STATE.md.
-- Builds are serialised by version number: read HANDOFF's Live line and STATE.md right before you build;
-  if the number moved, re-pull `src/` for any module you touched and merge before building.
-- Never force-overwrite a module another agent changed; `src/` history in git is the tie-breaker.
+- **test.html is one shared slot.** `build.py` writes `- Staging: <agent> vNNN since <time>` into
+  `ops/STATE.md` when you build to test.html and refuses to let anyone else build to test.html for 2 hours
+  or until you promote (which sets it back to `free`). Promote or free it (edit the line) before you stop.
+- Versions move forward: build.py refuses a test.html version that isn't above live, and a promote that
+  isn't live+1 ("someone shipped in between" → re-pull `src/` for your modules, merge, rebuild).
+- Promote rewrites the Live lines in HANDOFF.md and STATE.md itself; you still write the AGENT_LOG entry.
+- Never force-overwrite a module another agent changed; `src/` history in git is the tie-breaker. If two
+  agents must touch the same module, the second waits for the first's promote, re-pulls, then edits.
 
 ## E. If something is broken when you arrive
 - App down or a screen crashing: OPERATIONS.md §5 (incident) → roll back first (HOWTO/rollback.md), log,
