@@ -4,7 +4,8 @@ Chains is a disc golf app (score rounds, names on every course, leagues, your cr
 single file `index.html` in `Bonnaroo/chains-app`; data files live in `Bonnaroo/chains-dgpt-data`; the
 scoring poller in `Bonnaroo/chains-poller`. **This repo is where any person, app or AI should start.**
 
-0. **`START_HERE.md` — read first.** The next AI's first hour: cold start, the loop, what never to do.
+0. **`AGENTS.md` → `START_HERE.md` → `ops/PROTOCOL.md` → `ops/STATE.md` — in that order, every session.** `ops/HOWTO/` has a recipe per job; `ops/check.py` proves your setup.
+0b. `START_HERE.md` — read first. The next AI's first hour: cold start, the loop, what never to do.
 1. `HANDOFF.md` — the manual. What it is, where everything lives, how to build, ship and test.
 2. `CHAINS_SYSTEM.md` — architecture and data model.
 3. `AGENT_LOG.md` — what changed, when, and why (newest at the bottom).
