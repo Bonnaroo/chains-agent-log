@@ -27,10 +27,14 @@ except Exception: pass
 ti=re.search(r'<script type="__bundler/template"[^>]*>',base).end(); tj=base.find('</script',ti)
 tpl=json.loads(base[ti:tj])
 # --- module overrides: every edited module is run through esbuild (JSX → JS; plain JS passes through unchanged)
-compiled={}
+compiled={}; touched=[]
 for idx,fn in mods.items():
     u=ids[idx]; src=open('/tmp/chains/mods/'+fn,encoding='utf-8').read(); out=src if LEGACY else jsx(src)
+    try:
+        if get(u)!=out: touched.append(idx)
+    except Exception: touched.append(idx)
     man[u]['data']=gz(out); man[u]['compressed']=True; compiled[u]=out
+print('modules changed vs the base:',sorted(touched) or 'none')
 if not LEGACY:
     # legacy base (pre-v537): compile the remaining text/babel modules and drop Babel; a v537+ base has neither
     for m in re.finditer(r'<script type="text/babel" src="([0-9a-f-]{36})">',tpl):
@@ -62,7 +66,16 @@ if target=='local': raise SystemExit(0)
 import datetime,os
 T=open('/tmp/chains/tok').read().strip()
 AGENT=(os.environ.get('CHAINS_AGENT') or (open('/tmp/chains/agent').read().strip() if os.path.exists('/tmp/chains/agent') else '')).strip()
-if not AGENT: raise SystemExit('ABORT: name yourself first — echo "<agent-name>" > /tmp/chains/agent (e.g. claude-cowork, hermes-local)')
+if not AGENT: raise SystemExit('ABORT: name yourself first — echo "<agent-name>:<tier>" > /tmp/chains/agent (tiers: full | limited; e.g. claude-code:full, hermes-local:limited)')
+TIER='limited'
+if ':' in AGENT: AGENT,TIER=AGENT.split(':',1); TIER=TIER.strip().lower()
+if TIER not in ('full','limited'): raise SystemExit('ABORT: tier must be full or limited (agent file: name:tier)')
+# limited tier (ops/PROTOCOL.md §F): may stage to test.html only, and only modules on the limited list
+LIMITED_MODS={8,12,17,19,24,32,38,41,42,46,57,58}   # engines/leaf modules; NOT 31 (rounds), 45 (PlayView), 47 (shell), 60 (auth), 68 (leagues/friends), 70 (chat)
+if TIER=='limited':
+    if target=='index.html': raise SystemExit('ABORT: limited-tier agents do not promote to index.html. Leave it on test.html, tell Will, and a full-tier agent (or Will) promotes.')
+    bad=[i for i in touched if i not in LIMITED_MODS]
+    if bad: raise SystemExit('ABORT: limited-tier agents may not change modules '+str(sorted(bad))+' (rounds engine, PlayView, shell, auth, leagues/friends, chat). Allowed: '+str(sorted(LIMITED_MODS))+'. Put the change in ops/TODO.md for a full-tier agent instead.')
 DRY='--dry' in sys.argv
 def req(url,data=None,method='GET',raw=False):
     r=urllib.request.Request(url,data=data,method=method,headers={'Authorization':'token '+T,'Content-Type':'application/json','Accept':'application/vnd.github.raw' if raw else 'application/vnd.github+json','User-Agent':'chains-build'})
@@ -82,7 +95,7 @@ state=gh_get('ops/STATE.md'); handoff=gh_get('HANDOFF.md')
 mLive=re.search(r'index\.html: \*\*(v\d+)\*\*',state); liveV=int(mLive.group(1)[1:]) if mLive else 0
 mStg=re.search(r'^- Staging: (.*)$',state,re.M); stg=(mStg.group(1).strip() if mStg else 'free')
 # staging lock: "free" or "<agent> vNNN since YYYY-MM-DD HH:MMZ"
-held=re.match(r'(\S+) (v\d+) since (\d{4}-\d\d-\d\d \d\d:\d\dZ)',stg)
+held=re.match(r'(\S+?)(?::\w+)? (v\d+) since (\d{4}-\d\d-\d\d \d\d:\d\dZ)',stg)
 if held and held.group(1)!=AGENT:
     age=(now-datetime.datetime.strptime(held.group(3),'%Y-%m-%d %H:%MZ')).total_seconds()/3600
     if age<2: raise SystemExit('ABORT: test.html is held by '+held.group(1)+' ('+held.group(2)+', '+('%.1f'%age)+' h ago). Wait, or coordinate in ops/STATE.md.')
@@ -96,12 +109,13 @@ body=out.encode('utf-8')
 if DRY: print('DRY would push',target,ver)
 else:
     cur=req('https://api.github.com/repos/Bonnaroo/chains-app/contents/'+target)
-    res=req('https://api.github.com/repos/Bonnaroo/chains-app/contents/'+target,data=json.dumps({'message':target+': '+ver+' '+msg+' ['+AGENT+']','content':base64.b64encode(body).decode(),'sha':cur['sha']}).encode(),method='PUT')
+    res=req('https://api.github.com/repos/Bonnaroo/chains-app/contents/'+target,data=json.dumps({'message':target+': '+ver+' '+msg+' ['+AGENT+':'+TIER+']','content':base64.b64encode(body).decode(),'sha':cur['sha']}).encode(),method='PUT')
+    print('tier',TIER)
     b=req('https://api.github.com/repos/Bonnaroo/chains-app/git/blobs/'+res['content']['sha'],raw=True)
     print(target,ver,'commit',res['commit']['sha'][:8],'blob ok',hashlib.sha256(b).hexdigest()==hashlib.sha256(body).hexdigest(),'by',AGENT)
 # --- update the board
 if target=='test.html':
-    state2=re.sub(r'^- Staging: .*$','- Staging: '+AGENT+' '+ver+' since '+nowS,state,flags=re.M) if mStg else state.replace('## In flight','- Staging: '+AGENT+' '+ver+' since '+nowS+'\n\n## In flight',1)
+    state2=re.sub(r'^- Staging: .*$','- Staging: '+AGENT+':'+TIER+' '+ver+' since '+nowS,state,flags=re.M) if mStg else state.replace('## In flight','- Staging: '+AGENT+':'+TIER+' '+ver+' since '+nowS+'\n\n## In flight',1)
     gh_put('ops/STATE.md',state2,'STATE: staging '+ver+' by '+AGENT)
 else:
     state2=re.sub(r'index\.html: \*\*v\d+\*\* \([^)]*\) · test\.html: v\d+','index.html: **'+ver+'** ('+today+') · test.html: '+ver,state)
