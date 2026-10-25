@@ -167,7 +167,7 @@ validate first (`out.encode('utf-8')`) or you truncate the file (it happened).**
 
 ## 9. CURRENT STATE — update this every deploy
 
-- **Live:** index.html **v554** (2026-10-25). Staging test.html v554. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
+- **Live:** index.html **v555** (2026-10-25). Staging test.html v555. Read DESIGN.md and CHALLENGES.md. **Read DESIGN.md before touching any screen.**
 - **Start with `START_HERE.md`** (cold start verified byte-for-byte from GitHub alone on 2026-10-25).
 - **What the app is now:** Home = "What you're chasing" (a title within reach at your home course, your
   next breakthrough, this week) · last round · newest trophies · weekly challenges · feed. Challenges tab =
